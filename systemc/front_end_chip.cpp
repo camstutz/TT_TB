@@ -1,33 +1,33 @@
 /*!
- * @file DataConcentratorChip.cpp
+ * @file front_end_chip.cpp
  * @author Christian Amstutz
- * @date Dec 9, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "DataConcentratorChip.hpp"
+#include "front_end_chip.hpp"
 
 // *****************************************************************************
 
 // *****************************************************************************
 
 /*!
- * @class DataConcentratorChip
+ * @class front_end_chip
  *
  * The module is sensitive to ....
  */
 
-DataConcentratorChip::DataConcentratorChip(sc_module_name _name)
+front_end_chip::front_end_chip(sc_module_name _name)
     : sc_module(_name) {
 
   // ----- Process registration ------------------------------------------------
   //SC_THREAD();
-  //  sensitive << clk;
+  //  sensitive << event_in << clk;
 
   // ----- Module variable initialization --------------------------------------
 

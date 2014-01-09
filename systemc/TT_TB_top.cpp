@@ -1,13 +1,13 @@
 /*!
  * @file TT_TB_top.cpp
  * @author Christian Amstutz
- * @date Dec 6, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
 #include <systemc.h>
@@ -17,9 +17,9 @@
 
 #include "TT_configuration.hpp"
 
-#include "SensorModule.hpp"
-#include "DataOrganizer.hpp"
-#include "HitGenerator.hpp"
+#include "sensor_module.hpp"
+#include "data_organizer.hpp"
+#include "hit_generator.hpp"
 
 int sc_main(int argc, char *agv[]) {
 
@@ -32,19 +32,19 @@ int sc_main(int argc, char *agv[]) {
 
   // ----- Module instance declarations ----------------------------------------
 
-  HitGenerator hitGenerator("Hit_Generator", "../hits.txt");
-  SensorModule *sensorModule[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z];
+  hit_generator hitGenerator("Hit_Generator", "../hits.txt");
+  sensor_module *sensorModule[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z];
   for(int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
     for(int phi=0; phi<NR_DETECTOR_PHI; phi++) {
       for(int z=0; z<NR_DETECTOR_Z; z++) {
         std::string moduleName;
         std::stringstream moduleNameStr(moduleName);
         moduleNameStr << "SensorModule_L" << layer << "P" << phi << "Z" << z;
-        sensorModule[layer][phi][z] = new SensorModule(moduleName.c_str());
+        sensorModule[layer][phi][z] = new sensor_module(moduleName.c_str());
       }
     }
   }
-  DataOrganizer<NR_SENSOR_MODULES> dataOrganizer("Data_Organizer");
+  data_organizer<NR_SENSOR_MODULES> dataOrganizer("Data_Organizer");
 
   // ----- Module port binding -------------------------------------------------
   // Clock distribution

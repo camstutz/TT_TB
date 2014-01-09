@@ -1,29 +1,31 @@
 /*!
- * @file DataOrganizerChip.hpp
+ * @file front_end_chip.hpp
  * @author Christian Amstutz
- * @date Dec 10, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
 #pragma once
 
 #include <systemc.h>
-//#include <iostream>
+
+#include "FE_DataFormat.hpp"
 
 /*!
  * @brief
  */
-class DataOrganizerChip : public sc_module {
+class front_end_chip : public sc_module {
 
 public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
+  sc_out<int> data_output;
 
   // ----- Local Channel Declarations ------------------------------------------
 
@@ -37,8 +39,8 @@ public:
   /*!
    * Constructor:
    */
-  DataOrganizerChip(sc_module_name _name);
-  SC_HAS_PROCESS(DataOrganizerChip);
+  front_end_chip(sc_module_name _name);
+  SC_HAS_PROCESS(front_end_chip);
 
 private:
 

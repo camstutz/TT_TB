@@ -1,31 +1,33 @@
 /*!
- * @file DataOrganizer.hpp
+ * @file hit_generator.hpp
  * @author Christian Amstutz
- * @date Dec 10, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
 #pragma once
 
+#include <string>
 #include <systemc.h>
-//#include <iostream>
+#include <sstream>
+
+#include "HitEvent.hpp"
 
 /*!
  * @brief
  */
-template<int SENSORMODULE_NR>
-class DataOrganizer : public sc_module {
+class hit_generator : public sc_module {
 
 public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
-  sc_in<int> sensorInputs[SENSORMODULE_NR];
+  sc_out<int> data_output;
 
   // ----- Local Channel Declarations ------------------------------------------
 
@@ -39,12 +41,8 @@ public:
   /*!
    * Constructor:
    */
-  DataOrganizer(sc_module_name _name)
-      : sc_module(_name) {
-
-    return;
-  }
-  SC_HAS_PROCESS(DataOrganizer);
+  hit_generator(sc_module_name _name, std::string hitFileName);
+  SC_HAS_PROCESS(hit_generator);
 
 private:
 

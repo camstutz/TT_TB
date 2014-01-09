@@ -1,7 +1,7 @@
 /*!
- * @file FrontEndChip.cpp
+ * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date Dec 9, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  */
@@ -10,28 +10,29 @@
  *  Copyright (c) 2013 by Christian Amstutz
  */
 
-#include "FrontEndChip.hpp"
+#include "data_organizer.hpp"
 
 // *****************************************************************************
 
 // *****************************************************************************
 
 /*!
- * @class FrontEndChip
+ * @class data_organizer
  *
  * The module is sensitive to ....
  */
 
-FrontEndChip::FrontEndChip(sc_module_name _name)
-    : sc_module(_name) {
+//data_organizer::data_organizer(sc_module_name _name)
+//    : sc_module(_name) {
 
   // ----- Process registration ------------------------------------------------
   //SC_THREAD();
-  //  sensitive << event_in << clk;
+  //  sensitive << clk;
 
   // ----- Module variable initialization --------------------------------------
 
   // ----- Module instance / channel binding -----------------------------------
 
-  return;
-}
+  //return;
+//}
+

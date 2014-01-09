@@ -1,29 +1,29 @@
 /*!
- * @file DataOrganizer.cpp
+ * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date Dec 10, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
-//#include "DataOrganizer.hpp"
+#include "data_concentrator.hpp"
 
 // *****************************************************************************
 
 // *****************************************************************************
 
 /*!
- * @class DataOrganizer
+ * @class data_concentrator
  *
  * The module is sensitive to ....
  */
 
-//DataOrganizer::DataOrganizer(sc_module_name _name)
-//    : sc_module(_name) {
+data_concentrator::data_concentrator(sc_module_name _name)
+    : sc_module(_name) {
 
   // ----- Process registration ------------------------------------------------
   //SC_THREAD();
@@ -33,6 +33,5 @@
 
   // ----- Module instance / channel binding -----------------------------------
 
-  //return;
-//}
-
+  return;
+}

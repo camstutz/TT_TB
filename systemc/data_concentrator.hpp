@@ -1,20 +1,19 @@
 /*!
- * @file DataConcentratorChip.hpp
+ * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Dec 6, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
 #pragma once
 
 #include <systemc.h>
-//#include <iostream>
 
 #include "TT_configuration.hpp"
 #include "FE_DataFormat.hpp"
@@ -23,7 +22,7 @@
 /*!
  * @brief
  */
-class DataConcentratorChip : public sc_module {
+class data_concentrator : public sc_module {
 
 public:
   // ----- Port Declarations ---------------------------------------------------
@@ -40,8 +39,8 @@ public:
   // ----- Module Instantiations -----------------------------------------------
 
   // ----- Constructor ---------------------------------------------------------
-  DataConcentratorChip(sc_module_name _name);
-  SC_HAS_PROCESS(DataConcentratorChip);
+  data_concentrator(sc_module_name _name);
+  SC_HAS_PROCESS(data_concentrator);
 
 private:
 

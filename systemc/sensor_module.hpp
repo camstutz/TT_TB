@@ -1,30 +1,29 @@
 /*!
- * @file HitGenerator.hpp
+ * @file sensor_module.hpp
  * @author Christian Amstutz
- * @date Dec 10, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
 #pragma once
 
-#include <string>
 #include <systemc.h>
-//#include <iostream>
-//#include <fstream>
-#include <sstream>
 
-#include "HitEvent.hpp"
+#include "TT_configuration.hpp"
+#include "front_end_chip.hpp"
+#include "data_concentrator.hpp"
+#include "FE_DataFormat.hpp"
 
 /*!
  * @brief
  */
-class HitGenerator : public sc_module {
+class sensor_module : public sc_module {
 
 public:
   // ----- Port Declarations ---------------------------------------------------
@@ -38,13 +37,15 @@ public:
   // ----- Other Method Declarations -------------------------------------------
 
   // ----- Module Instantiations -----------------------------------------------
+  front_end_chip *frontEndChip[NR_FRONTENDCHIP_PER_MODULE];
+  data_concentrator dataConcentrator;
 
   // ----- Constructor ---------------------------------------------------------
   /*!
    * Constructor:
    */
-  HitGenerator(sc_module_name _name, std::string hitFileName);
-  SC_HAS_PROCESS(HitGenerator);
+  sensor_module(sc_module_name _name);
+  SC_HAS_PROCESS(sensor_module);
 
 private:
 

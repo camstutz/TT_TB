@@ -1,29 +1,30 @@
 /*!
- * @file DataOrganizerChip.cpp
+ * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date Dec 9, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "DataOrganizerChip.hpp"
+#include "sensor_module.hpp"
 
 // *****************************************************************************
 
 // *****************************************************************************
 
 /*!
- * @class DataOrganizerChip
+ * @class sensor_module
  *
  * The module is sensitive to ....
  */
 
-DataOrganizerChip::DataOrganizerChip(sc_module_name _name)
-    : sc_module(_name) {
+sensor_module::sensor_module(sc_module_name _name) :
+    sc_module(_name),
+    dataConcentrator("DC") {
 
   // ----- Process registration ------------------------------------------------
   //SC_THREAD();
@@ -32,6 +33,11 @@ DataOrganizerChip::DataOrganizerChip(sc_module_name _name)
   // ----- Module variable initialization --------------------------------------
 
   // ----- Module instance / channel binding -----------------------------------
+  dataConcentrator.clk(clk);
+  for(int fe=0; fe<NR_FRONTENDCHIP_PER_MODULE; fe++) {
+    //TODO: dataConcentrator.data_input(frontEndChip[fe]->data_output);
+  }
+  dataConcentrator.data_output(data_output);
 
   return;
 }

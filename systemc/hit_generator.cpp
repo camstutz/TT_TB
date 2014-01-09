@@ -1,28 +1,28 @@
 /*!
- * @file HitGenerator.cpp
+ * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date Dec 10, 2013
+ * @date Jan 9, 2014
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "HitGenerator.hpp"
+#include "hit_generator.hpp"
 
 // *****************************************************************************
 
 // *****************************************************************************
 
 /*!
- * @class HitGenerator
+ * @class hit_generator
  *
  * The module is sensitive to ....
  */
 
-HitGenerator::HitGenerator(sc_module_name _name , std::string hitFileName)
+hit_generator::hit_generator(sc_module_name _name , std::string hitFileName)
     : sc_module(_name) {
 
   // ----- Process registration ------------------------------------------------
