@@ -28,6 +28,7 @@ class sensor_module : public sc_module {
 public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
+  sc_in<stub> stub_input[NR_FRONTENDCHIP_PER_MODULE];
   sc_out<int> data_output;
 
   // ----- Local Channel Declarations ------------------------------------------

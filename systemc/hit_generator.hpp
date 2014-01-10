@@ -17,7 +17,9 @@
 #include <systemc.h>
 #include <sstream>
 
+#include "TT_configuration.hpp"
 #include "HitEvent.hpp"
+#include "stub.hpp"
 
 /*!
  * @brief
@@ -27,7 +29,7 @@ class hit_generator : public sc_module {
 public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
-  sc_out<int> data_output;
+  sc_out<stub> data_output[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z][NR_FRONTENDCHIP_PER_MODULE];
 
   // ----- Local Channel Declarations ------------------------------------------
 

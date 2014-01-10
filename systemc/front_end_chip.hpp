@@ -15,6 +15,8 @@
 
 #include <systemc.h>
 
+#include "TT_configuration.hpp"
+#include "stub.hpp"
 #include "FE_DataFormat.hpp"
 
 /*!
@@ -25,7 +27,8 @@ class front_end_chip : public sc_module {
 public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
-  sc_out<int> data_output;
+  sc_in<stub> stub_input;
+  sc_out<sc_bv<FE_CHIP_OUTPUT_WIDTH> > data_output;
 
   // ----- Local Channel Declarations ------------------------------------------
 

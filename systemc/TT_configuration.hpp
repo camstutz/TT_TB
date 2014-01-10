@@ -14,9 +14,12 @@
 // Number of hits that can be handled by a single front end chip
 #define NR_HITS_PER_FE_CHIP        3
 
-#define NR_FRONTENDCHIP_PER_MODULE 8  // Number of front-end chips per sensor module
+// Bit width of the front end chip output
+#define FE_CHIP_OUTPUT_WIDTH      10
+
 #define NR_DETECTOR_LAYERS         6  // Number of detector sensor modules existing at the detector
 #define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector
 #define NR_DETECTOR_Z              1  // Number of sensors on length of the detector
+#define NR_FRONTENDCHIP_PER_MODULE 8  // Number of front-end chips per sensor module
 
 #define NR_SENSOR_MODULES NR_DETECTOR_LAYERS*NR_DETECTOR_PHI*NR_DETECTOR_Z // Total number of sensor modules of a detector

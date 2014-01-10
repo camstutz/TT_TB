@@ -14,8 +14,6 @@
 
 // *****************************************************************************
 
-// *****************************************************************************
-
 /*!
  * @class sensor_module
  *
@@ -35,6 +33,7 @@ sensor_module::sensor_module(sc_module_name _name) :
   // ----- Module instance / channel binding -----------------------------------
   dataConcentrator.clk(clk);
   for(int fe=0; fe<NR_FRONTENDCHIP_PER_MODULE; fe++) {
+    frontEndChip[fe]->stub_input(stub_input[fe]);
     //TODO: dataConcentrator.data_input(frontEndChip[fe]->data_output);
   }
   dataConcentrator.data_output(data_output);
