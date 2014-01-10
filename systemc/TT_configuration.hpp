@@ -1,15 +1,18 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date Dec 10, 2013
+ * @date Jan 10, 2014
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2014 by Christian Amstutz
  */
+
+// Number of hits that can be handled by a single front end chip
+#define NR_HITS_PER_FE_CHIP        3
 
 #define NR_FRONTENDCHIP_PER_MODULE 8  // Number of front-end chips per sensor module
 #define NR_DETECTOR_LAYERS         6  // Number of detector sensor modules existing at the detector
