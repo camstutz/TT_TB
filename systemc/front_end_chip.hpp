@@ -28,7 +28,7 @@ public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
   sc_in<stub> stub_input;
-  sc_out<sc_bv<FE_CHIP_OUTPUT_WIDTH> > data_output;
+  //sc_out<sc_bv<FE_CHIP_OUTPUT_WIDTH> > data_output;
 
   // ----- Local Channel Declarations ------------------------------------------
 

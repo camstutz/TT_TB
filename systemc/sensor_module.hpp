@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.hpp
  * @author Christian Amstutz
- * @date Jan 9, 2014
+ * @date Jan 13, 2014
  *
  * @brief
  *
@@ -12,6 +12,9 @@
  */
 
 #pragma once
+
+#include <sstream>
+#include <vector>
 
 #include <systemc.h>
 
@@ -28,7 +31,7 @@ class sensor_module : public sc_module {
 public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
-  sc_in<stub> stub_input[NR_FRONTENDCHIP_PER_MODULE];
+  std::vector<sc_in<stub> *> stub_inputs;
   sc_out<int> data_output;
 
   // ----- Local Channel Declarations ------------------------------------------
@@ -38,7 +41,7 @@ public:
   // ----- Other Method Declarations -------------------------------------------
 
   // ----- Module Instantiations -----------------------------------------------
-  front_end_chip *frontEndChip[NR_FRONTENDCHIP_PER_MODULE];
+  front_end_chip *front_end_chips[NR_FRONTENDCHIP_PER_MODULE];
   data_concentrator dataConcentrator;
 
   // ----- Constructor ---------------------------------------------------------

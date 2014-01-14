@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_top.cpp
  * @author Christian Amstutz
- * @date Jan 9, 2014
+ * @date Jan 13, 2014
  *
  * @brief
  */
@@ -25,42 +25,39 @@ int sc_main(int argc, char *agv[]) {
 
   // ----- Channel declarations ------------------------------------------------
   sc_clock LHC_clock("LHC_clock", 25, SC_NS, 0.5, 10, SC_NS, true);
-  
-  sc_signal<int> moduleLinks[NR_SENSOR_MODULES];
 
   // ----- Variable declarations -----------------------------------------------
 
   // ----- Module instance declarations ----------------------------------------
 
   hit_generator hitGenerator("Hit_Generator", "hits.txt");
+  //! TODO: change sensorModule array to std::vector and use iterators for the loops
   sensor_module *sensorModule[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z];
   for(int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
     for(int phi=0; phi<NR_DETECTOR_PHI; phi++) {
       for(int z=0; z<NR_DETECTOR_Z; z++) {
-        std::string moduleName;
-        std::stringstream moduleNameStr(moduleName);
-        moduleNameStr << "SensorModule_L" << layer << "P" << phi << "Z" << z;
-
-        sensorModule[layer][phi][z] = new sensor_module(moduleName.c_str());
+        std::ostringstream moduleName;
+        moduleName << "SensorModule_L" << layer << "P" << phi << "Z" << z;
+        sensorModule[layer][phi][z] = new sensor_module(moduleName.str().c_str());
       }
     }
   }
-  data_organizer<NR_SENSOR_MODULES> dataOrganizer("Data_Organizer");
+//  data_organizer<NR_SENSOR_MODULES> dataOrganizer("Data_Organizer");
 
   // ----- Module port binding -------------------------------------------------
-  // Clock distribution
-  hitGenerator.clk(LHC_clock);
+
+  //! TODO: use iterators here
   for(unsigned int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
     for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
       for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
         sensorModule[layer][phi][z]->clk(LHC_clock);
         for(unsigned int n=0; n<NR_FRONTENDCHIP_PER_MODULE; n++) {
-          sensorModule[layer][phi][z]->stub_input[n](hitGenerator.data_output[layer][phi][z][n]);
+          (*sensorModule[layer][phi][z]->stub_inputs[n])(*hitGenerator.hit_outputs[layer][phi][z][n]);
         }
       }
     }
   }
-  dataOrganizer.clk(LHC_clock);
+//  dataOrganizer.clk(LHC_clock);
 
 
   // Binding: Sensor Modules --> Data Organizer

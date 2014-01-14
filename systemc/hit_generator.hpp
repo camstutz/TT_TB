@@ -16,6 +16,7 @@
 #include <string>
 #include <systemc.h>
 #include <sstream>
+#include <queue>
 
 #include "TT_configuration.hpp"
 #include "HitEvent.hpp"
@@ -28,12 +29,13 @@ class hit_generator : public sc_module {
 
 public:
   // ----- Port Declarations ---------------------------------------------------
-  sc_in<bool> clk;
-  sc_out<stub> data_output[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z][NR_FRONTENDCHIP_PER_MODULE];
+  //sc_out<stub> data_output[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z][NR_FRONTENDCHIP_PER_MODULE];
+  std::vector<std::vector<std::vector<std::vector<sc_in<stub> *> > > > hit_outputs;
 
   // ----- Local Channel Declarations ------------------------------------------
 
   // ----- Process Declarations ------------------------------------------------
+  void schedule_hits();
 
   // ----- Other Method Declarations -------------------------------------------
 
@@ -47,5 +49,6 @@ public:
   SC_HAS_PROCESS(hit_generator);
 
 private:
-
+  std::queue<HitEvent> hit_queue;
+  int readFile(const std::string &hit_file);
 };
