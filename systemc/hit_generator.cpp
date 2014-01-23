@@ -42,10 +42,10 @@ hit_generator::hit_generator(sc_module_name _name , std::string hitFileName)
       for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
         hit_outputs[layer][phi][z].resize(NR_FRONTENDCHIP_PER_MODULE);
         for(unsigned int fe=0; fe<NR_FRONTENDCHIP_PER_MODULE; fe++) {
-          sc_out<stub> *hit_port;
+          sc_fifo_out<stub> *hit_port;
           std::ostringstream port_name;
           port_name << "hit_outputL" << layer << "P" << phi << "Z" << z << "F" << fe;
-          hit_port = new sc_out<stub>(port_name.str().c_str());
+          hit_port = new sc_fifo_out<stub>(port_name.str().c_str());
           hit_outputs[layer][phi][z][fe] = hit_port;
         }
       }

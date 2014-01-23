@@ -32,10 +32,10 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
       for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
         hit_signals[layer][phi][z].resize(NR_FRONTENDCHIP_PER_MODULE);
         for(unsigned int fe=0; fe<NR_FRONTENDCHIP_PER_MODULE; fe++) {
-          sc_signal<stub> *hit_signal;
+          sc_fifo<stub> *hit_signal;
           std::ostringstream signal_name;
           signal_name << "hit_signal_L" << layer << "P" << phi << "Z" << z << "F" << fe;
-          hit_signal = new sc_signal<stub>(signal_name.str().c_str());
+          hit_signal = new sc_fifo<stub>(signal_name.str().c_str(), MAX_NR_HITS_PER_FE);
           hit_signals[layer][phi][z][fe] = hit_signal;
           dut_hit_generator.hit_outputs[layer][phi][z][fe]->bind(*hit_signals[layer][phi][z][fe]);
         }
@@ -49,7 +49,7 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
     for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
       for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
         for(unsigned int fe=0; fe<NR_FRONTENDCHIP_PER_MODULE; fe++) {
-          sensitive << *hit_signals[layer][phi][z][fe];
+          sensitive << hit_signals[layer][phi][z][fe]->data_written_event();
         }
       }
     }
@@ -72,9 +72,8 @@ void hit_generator_tb::check_output() {
       for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
         for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
           for(unsigned int fe=0; fe<NR_FRONTENDCHIP_PER_MODULE; fe++) {
-            if (hit_signals[layer][phi][z][fe]->event()) {
-              stub read_stub;
-              read_stub = hit_signals[layer][phi][z][fe]->read();
+            stub read_stub;
+            while (hit_signals[layer][phi][z][fe]->nb_read(read_stub) ) {
               std::cout << sc_time_stamp () << " @ hit_generator."
                         << "L" << layer
                         << "P" << phi

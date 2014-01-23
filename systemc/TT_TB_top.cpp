@@ -33,30 +33,40 @@ int sc_main(int argc, char *agv[]) {
   hit_generator hitGenerator("Hit_Generator", "hits.txt");
   //! TODO: change sensorModule array to std::vector and use iterators for the loops
   sensor_module *sensorModule[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z];
-  for(int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
-    for(int phi=0; phi<NR_DETECTOR_PHI; phi++) {
-      for(int z=0; z<NR_DETECTOR_Z; z++) {
-        std::ostringstream moduleName;
-        moduleName << "SensorModule_L" << layer << "P" << phi << "Z" << z;
-        sensorModule[layer][phi][z] = new sensor_module(moduleName.str().c_str());
-      }
-    }
-  }
+
+  sensorModule[0][0][0] = new sensor_module("sensor_module");
+  sensorModule[0][0][0]->clk(LHC_clock);
+  //std::cout << (*hitGenerator.hit_outputs[0][0][0][0]).name() << std::endl;
+  //sensorModule[0][0][0]->stub_inputs[0]->bind(*hitGenerator.hit_outputs[0][0][0][0]);
+  //sc_signal<stub> test;
+
+  //hitGenerator.hit_outputs[0][0][0][0]->bind(test);
+  //sensorModule[0][0][0]->stub_inputs[0]->bind(test);
+
+//  for(int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
+//    for(int phi=0; phi<NR_DETECTOR_PHI; phi++) {
+//      for(int z=0; z<NR_DETECTOR_Z; z++) {
+//        std::ostringstream moduleName;
+//        moduleName << "SensorModule_L" << layer << "P" << phi << "Z" << z;
+//        sensorModule[layer][phi][z] = new sensor_module(moduleName.str().c_str());
+//      }
+//    }
+//  }
 //  data_organizer<NR_SENSOR_MODULES> dataOrganizer("Data_Organizer");
 
   // ----- Module port binding -------------------------------------------------
 
   //! TODO: use iterators here
-  for(unsigned int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
-    for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
-      for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
-        sensorModule[layer][phi][z]->clk(LHC_clock);
-        for(unsigned int n=0; n<NR_FRONTENDCHIP_PER_MODULE; n++) {
-          (*sensorModule[layer][phi][z]->stub_inputs[n])(*hitGenerator.hit_outputs[layer][phi][z][n]);
-        }
-      }
-    }
-  }
+//  for(unsigned int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
+//    for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
+//      for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
+//        sensorModule[layer][phi][z]->clk(LHC_clock);
+//        for(unsigned int n=0; n<NR_FRONTENDCHIP_PER_MODULE; n++) {
+//          (*sensorModule[layer][phi][z]->stub_inputs[n])(*hitGenerator.hit_outputs[layer][phi][z][n]);
+//        }
+//      }
+//    }
+//  }
 //  dataOrganizer.clk(LHC_clock);
 
 

@@ -31,7 +31,7 @@ public:
   // ----- Port Declarations ---------------------------------------------------
 
   // ----- Local Channel Declarations ------------------------------------------
-  std::vector<std::vector<std::vector<std::vector<sc_signal<stub> *> > > > hit_signals;
+  std::vector<std::vector<std::vector<std::vector<sc_fifo<stub> *> > > > hit_signals;
 
   // ----- Process Declarations ------------------------------------------------
   void check_output();

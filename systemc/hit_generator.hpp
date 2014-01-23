@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.hpp
  * @author Christian Amstutz
- * @date Jan 9, 2014
+ * @date Jan 23, 2014
  *
  * @brief
  *
@@ -30,7 +30,7 @@ class hit_generator : public sc_module {
 public:
   // ----- Port Declarations ---------------------------------------------------
   //sc_out<stub> data_output[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z][NR_FRONTENDCHIP_PER_MODULE];
-  std::vector<std::vector<std::vector<std::vector<sc_out<stub> *> > > > hit_outputs;
+  std::vector<std::vector<std::vector<std::vector<sc_fifo_out<stub> *> > > > hit_outputs;
 
   // ----- Local Channel Declarations ------------------------------------------
 
