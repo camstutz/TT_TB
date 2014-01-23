@@ -68,7 +68,7 @@ void hit_generator::schedule_hits() {
     hit = hit_queue.front();
     hit_queue.pop();
 
-    wait_time = (hit.timeStamp * sc_time(250, SC_NS)) - sc_time_stamp();
+    wait_time = (hit.timeStamp * sc_time(25, SC_NS)) - sc_time_stamp();
     wait(wait_time);
 
     processed_stub.setAddress(hit.stubAddress);
