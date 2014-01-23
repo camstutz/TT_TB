@@ -1,7 +1,7 @@
 /*!
- * @file hit_generator.hpp
- * @author Christian Amstutz
- * @date Jan 9, 2014
+ * @file hit_generator_test.hpp
+ * @author Christian
+ * @date Jan 15, 2014
  *
  * @brief
  *
@@ -13,42 +13,42 @@
 
 #pragma once
 
-#include <string>
-#include <systemc.h>
+#include <vector>
 #include <sstream>
-#include <queue>
 
-#include "TT_configuration.hpp"
-#include "HitEvent.hpp"
-#include "stub.hpp"
+#include "systemc.h"
+
+#include "../systemc/TT_configuration.hpp"
+#include "../systemc/hit_generator.hpp"
+#include "../systemc/stub.hpp"
 
 /*!
  * @brief
  */
-class hit_generator : public sc_module {
+class hit_generator_tb : public sc_module {
 
 public:
   // ----- Port Declarations ---------------------------------------------------
-  //sc_out<stub> data_output[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z][NR_FRONTENDCHIP_PER_MODULE];
-  std::vector<std::vector<std::vector<std::vector<sc_out<stub> *> > > > hit_outputs;
 
   // ----- Local Channel Declarations ------------------------------------------
+  std::vector<std::vector<std::vector<std::vector<sc_signal<stub> *> > > > hit_signals;
 
   // ----- Process Declarations ------------------------------------------------
-  void schedule_hits();
+  void check_output();
 
   // ----- Other Method Declarations -------------------------------------------
 
   // ----- Module Instantiations -----------------------------------------------
 
+  hit_generator dut_hit_generator;
+
   // ----- Constructor ---------------------------------------------------------
   /*!
    * Constructor:
    */
-  hit_generator(sc_module_name _name, std::string hitFileName);
-  SC_HAS_PROCESS(hit_generator);
+  hit_generator_tb(sc_module_name _name);
+  SC_HAS_PROCESS(hit_generator_tb);
 
 private:
-  std::queue<HitEvent> hit_queue;
-  int readFile(const std::string &hit_file);
+
 };
