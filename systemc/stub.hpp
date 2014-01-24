@@ -1,7 +1,7 @@
 /*!
  * @file stub.hpp
  * @author Christian Amstutz
- * @date Jan 10, 2014
+ * @date Jan 24, 2014
  *
  * @brief
  *
@@ -25,10 +25,10 @@ class stub {
 
 private:
   /** Address of the strip on the silicon detector */
-  int address;
+  unsigned int address;
 
   /** represents the difference of the hits between the two silicon detectors */
-  int bend;
+  unsigned int bend;
 
 public:
   /** Constructor. The default values are 0 for the address and 0 for the bend.

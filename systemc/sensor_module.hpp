@@ -21,7 +21,6 @@
 #include "TT_configuration.hpp"
 #include "front_end_chip.hpp"
 #include "data_concentrator.hpp"
-#include "FE_DataFormat.hpp"
 
 /*!
  * @brief
@@ -31,7 +30,7 @@ class sensor_module : public sc_module {
 public:
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
-  std::vector<sc_in<stub> *> stub_inputs;
+  std::vector<sc_fifo_in<stub> *> stub_inputs;
   sc_out<int> data_output;
 
   // ----- Local Channel Declarations ------------------------------------------
@@ -52,5 +51,6 @@ public:
   SC_HAS_PROCESS(sensor_module);
 
 private:
+  //std::vector<sc_signal<stub> *> stub_signals;
 
 };

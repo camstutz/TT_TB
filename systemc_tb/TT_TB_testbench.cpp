@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date Jan 15, 2014
+ * @date Jan 23, 2014
  *
  * @brief
  */
@@ -15,6 +15,7 @@
 #include <string>
 
 #include "hit_generator_tb.hpp"
+#include "front_end_chip_tb.hpp"
 
 int sc_main(int argc, char *agv[]) {
 
@@ -24,7 +25,8 @@ int sc_main(int argc, char *agv[]) {
 
   // ----- Module instance declarations ----------------------------------------
 
-  hit_generator_tb hit_generator_tb("Hit_Generator_TB");
+  //hit_generator_tb hit_generator_tb("Hit_Generator_TB");
+  front_end_chip_tb front_end_chip_tb("Front_End_Chip_TB");
 
   // ----- Time unit / resolution setup ----------------------------------------
 

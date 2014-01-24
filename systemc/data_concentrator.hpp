@@ -16,7 +16,6 @@
 #include <systemc.h>
 
 #include "TT_configuration.hpp"
-#include "FE_DataFormat.hpp"
 #include "DC_DataFormat.hpp"
 
 /*!

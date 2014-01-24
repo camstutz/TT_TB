@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date Jan 13, 2014
+ * @date Jan 23, 2014
  *
  * @brief
  */
@@ -38,16 +38,19 @@ sensor_module::sensor_module(sc_module_name _name) :
   for(int fe_nr=0; fe_nr<NR_FRONTENDCHIP_PER_MODULE; fe_nr++) {
 
     // creating and naming the hit inputs
-    sc_in<stub> *stub_port;
+    sc_fifo_in<stub> *stub_port;
     std::ostringstream port_name;
-    port_name << "stub_input" << fe_nr;
-    stub_port = new sc_in<stub>(port_name.str().c_str());
+    port_name << "stub_input_FE" << fe_nr;
+    stub_port = new sc_fifo_in<stub>(port_name.str().c_str());
     stub_inputs[fe_nr] = stub_port;
+
+    //creating internal signals
 
     // creating, naming and binding the front end chips
     std::ostringstream front_end_name;
     front_end_name << "FrontEnd" << fe_nr;
     front_end_chips[fe_nr] = new front_end_chip(front_end_name.str().c_str());
+    front_end_chips[fe_nr]->clk(clk);
     front_end_chips[fe_nr]->stub_input(*stub_inputs[fe_nr]);
     //TODO: dataConcentrator.data_input(front_end_chips[fe_nr]->data_output);
   }
