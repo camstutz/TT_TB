@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip_tb.cpp
  * @author Christian Amstutz
- * @date Jan 23, 2014
+ * @date Jan 24, 2014
  */
 
 /*
@@ -25,7 +25,7 @@ front_end_chip_tb::front_end_chip_tb(sc_module_name _name) :
     dut_front_end_chip("Front_End_Chip_DUT"),
     en_sig("en"),
     stub_input_sig("stub_input"),
-    hit1_dv_sig("clk_sig"),
+    hit1_dv_sig("hit1_dv"),
     hit1_data_sig("hit1_data"),
     hit2_dv_sig("hit2_dv"),
     hit2_data_sig("hit2_data"),
@@ -46,7 +46,9 @@ front_end_chip_tb::front_end_chip_tb(sc_module_name _name) :
   // ----- Process registration ------------------------------------------------
   SC_THREAD(generate_stubs);
   SC_THREAD(analyse_FE_data);
-  sensitive << hit1_dv_sig << hit2_dv_sig << hit3_dv_sig;
+    sensitive << hit1_dv_sig << hit2_dv_sig << hit3_dv_sig;
+  SC_THREAD(analyse_FE_dv);
+    sensitive << hit1_dv_sig << hit2_dv_sig << hit3_dv_sig;
 
   // ----- Module variable initialization --------------------------------------
 
@@ -112,21 +114,35 @@ void front_end_chip_tb::generate_stubs() {
 // *****************************************************************************
 void front_end_chip_tb::analyse_FE_data() {
 
+  sc_bv<13> read_hit;
+
   while(1) {
     wait();
     if(hit1_dv_sig.read() == true) {
+      read_hit = hit1_data_sig.read();
       std::cout << sc_time_stamp() <<" Hit1: "
-                << std::hex << hit1_data_sig.read()
+                << " " << read_hit.to_string()
+                << " (0x" << std::hex << read_hit << ")"
+                << " - Address: " << (read_hit >> 5)
+                << " Bend: " << (read_hit & 0x01F)
                 << std::endl;
     }
     if(hit2_dv_sig.read() == true) {
-      std::cout << sc_time_stamp() <<" Hit2: "
-                << std::hex <<  hit2_data_sig.read()
+      read_hit = hit2_data_sig.read();
+      std::cout << sc_time_stamp() <<" Hit1: "
+                << " " << read_hit.to_string()
+                << " (0x" << std::hex << read_hit << ")"
+                << " - Address: " << (read_hit >> 5)
+                << " Bend: " << (read_hit & 0x01F)
                 << std::endl;
     }
     if(hit3_dv_sig.read() == true) {
-      std::cout << sc_time_stamp() <<" Hit3: "
-                << std::hex <<  hit3_data_sig.read()
+      read_hit = hit3_data_sig.read();
+      std::cout << sc_time_stamp() <<" Hit1: "
+                << " " << read_hit.to_string()
+                << " (0x" << std::hex << read_hit << ")"
+                << " - Address: " << (read_hit >> 5)
+                << " Bend: " << (read_hit & 0x01F)
                 << std::endl;
     }
   }
@@ -134,3 +150,12 @@ void front_end_chip_tb::analyse_FE_data() {
   return;
 }
 
+// *****************************************************************************
+void front_end_chip_tb::analyse_FE_dv() {
+
+  while(1) {
+    wait();
+    std::cout << "DV";
+  }
+
+}

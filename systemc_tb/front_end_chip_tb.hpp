@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip_tb.hpp
  * @author Christian Amstutz
- * @date Jan 23, 2014
+ * @date Jan 24, 2014
  *
  * @brief
  *
@@ -12,9 +12,6 @@
  */
 
 #pragma once
-
-#include <vector>
-//#include <sstream>
 
 #include "systemc.h"
 
@@ -43,6 +40,7 @@ public:
   // ----- Process Declarations ------------------------------------------------
   void generate_stubs();
   void analyse_FE_data();
+  void analyse_FE_dv();
 
   // ----- Other Method Declarations -------------------------------------------
 

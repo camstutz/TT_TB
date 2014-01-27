@@ -51,7 +51,8 @@ void front_end_chip::end_of_elaboration() {
   SC_THREAD(prioritize_hits);
     sensitive << stub_input.data_written_event();
   SC_THREAD(write_hits);
-    sensitive << clk.posedge_event(); //selected_stubs.data_written_event();
+    //sensitive << clk.posedge_event();
+    sensitive << selected_stubs.data_written_event();
 }
 
 // *****************************************************************************
@@ -59,12 +60,14 @@ void front_end_chip::prioritize_hits() {
 
   while(1) {
     wait();
-    //if(!clk.event()) {
-    //  wait(clk.posedge_event());
-    //}
+    if(!clk.posedge()) {
+      wait(clk.posedge_event());
+    }
 
     stub act_stub;
-    for(int i=0; i <= std::min(stub_input.num_available(), NR_HITS_PER_FE_CHIP); i++) {
+    for(int i=0;
+        i <= std::min(stub_input.num_available(), NR_HITS_PER_FE_CHIP);
+        i++) {
       stub_input.nb_read(act_stub);
       selected_stubs.nb_write(act_stub);
     }
@@ -82,34 +85,31 @@ void front_end_chip::write_hits() {
     stub read_stub;
     sc_bv<FE_CHIP_OUTPUT_WIDTH> output_hit;
 
-    hit1_dv.write(false);
-    hit2_dv.write(false);
-    hit3_dv.write(false);
-
     if(selected_stubs.nb_read(read_stub)) {
       hit1_dv.write(true);
-      output_hit = read_stub.getAddress() << 5;
-      //output_hit = ((0xFF & read_stub.getAddress()) << 5 ) &
-      //             ( 0x1F & read_stub.getBend());
+      output_hit = ((0xFF & read_stub.getAddress()) << 5 ) |
+                   ( 0x1F & read_stub.getBend());
       hit1_data.write(output_hit);
-      std::cout << sc_time_stamp() << " write_hits(1): 0x" << output_hit << std::endl;
     }
     if(selected_stubs.nb_read(read_stub)) {
       hit2_dv.write(true);
-      output_hit = read_stub.getAddress() << 5;
-      //output_hit = ((0xFF & read_stub.getAddress()) << 5 ) &
-      //             ( 0x1F & read_stub.getBend());
+      output_hit = ((0xFF & read_stub.getAddress()) << 5 ) |
+                   ( 0x1F & read_stub.getBend());
       hit2_data.write(output_hit);
-      std::cout << sc_time_stamp() << " write_hits(2): 0x" << output_hit << std::endl;
     }
     if(selected_stubs.nb_read(read_stub)) {
       hit3_dv.write(true);
-      output_hit = read_stub.getAddress() << 5;
-      //output_hit = ((0xFF & read_stub.getAddress()) << 5 ) &
-      //             ( 0x1F & read_stub.getBend());
+      output_hit = (read_stub.getAddress() << 5) | 1;
+      output_hit = ((0xFF & read_stub.getAddress()) << 5 ) |
+                   ( 0x1F & read_stub.getBend());
       hit3_data.write(output_hit);
-      std::cout << sc_time_stamp() << " write_hits(3): 0x" << output_hit << std::endl;
     }
+
+    wait(clk.posedge_event());
+
+    hit1_dv.write(false);
+    hit2_dv.write(false);
+    hit3_dv.write(false);
   }
 
 }
