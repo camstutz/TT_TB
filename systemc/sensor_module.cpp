@@ -56,7 +56,6 @@ sensor_module::sensor_module(sc_module_name _name) :
   }
 
   dataConcentrator.clk(clk);
-  dataConcentrator.data_output(data_output);
 
   return;
 }
