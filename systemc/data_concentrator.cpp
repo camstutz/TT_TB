@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date Jan 9, 2014
+ * @date Jan 31, 2014
  *
  * @brief
  */
@@ -111,16 +111,20 @@ void data_concentrator::advance_clock_phase() {
 // *****************************************************************************
 void data_concentrator::write_DO_output() {
 
-  sc_bv<DO_OUTPUT_WIDTH> temp_output;
-
   //! todo: change constants numbers to parameter
   while(1) {
     wait();
+
+    sc_bv<DO_OUTPUT_WIDTH> output_val;
+    output_val(DO_OUTPUT_WIDTH-3,0) = output_buffer((clock_phase.read()+1)*(DO_OUTPUT_WIDTH-2)-1, clock_phase.read()*(DO_OUTPUT_WIDTH-2));
+    output_val[DO_OUTPUT_WIDTH-2] = 0;
     if (clock_phase.read() == 0) {
-      do_output.write( (1, 1, output_buffer((clock_phase.read()+1)*30-1, clock_phase.read()*30)) );
+      output_val[DO_OUTPUT_WIDTH-1] = 1;
+      do_output.write( output_val );
     }
     else {
-      do_output.write( (0, 1, output_buffer((clock_phase.read()+1)*30-1, clock_phase.read()*30)) );
+      output_val[DO_OUTPUT_WIDTH-1] =  0;
+      do_output.write( output_val );
     }
   }
 }
@@ -128,13 +132,14 @@ void data_concentrator::write_DO_output() {
 // *****************************************************************************
 void data_concentrator::create_output_buffer() {
 
+  //! todo: change constants numbers to parameter
+
   // Buffer size is only 12 in real system
   if (stub_buffer.size() > 12) {
     std::cout << "data_concentrator: Stub buffer overflow!" << std::endl;
   }
   stub_buffer.resize(12, empty_slot);
 
-  //! todo: change constants numbers to parameter
   for(unsigned short i; i<12; i++) {
     output_buffer( (i+1)*20-1, i*20) = stub_buffer[i];
   }
