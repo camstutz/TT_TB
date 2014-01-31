@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_tb.cpp
  * @author Christian Amstutz
- * @date Jan 27, 2014
+ * @date Jan 31, 2014
  */
 
 /*
@@ -82,6 +82,19 @@ data_concentrator_tb::data_concentrator_tb(sc_module_name _name) :
 
   // ----- Module instance / channel binding -----------------------------------
 
+  log_buffer << std::endl
+             << "Simulation Output of Data Concentrator TB:" << std::endl
+             << "*******************************************" << std::endl;
+
+  return;
+}
+
+// *****************************************************************************
+
+data_concentrator_tb::~data_concentrator_tb() {
+
+  std::cout << log_buffer.str();
+
   return;
 }
 
@@ -91,7 +104,7 @@ void data_concentrator_tb::generate_hit_data() {
   //wait(50, SC_NS);
   hit0_dv.write(true);
   hit0_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
 
   wait(25, SC_NS);
   hit0_dv.write(false);
@@ -99,10 +112,10 @@ void data_concentrator_tb::generate_hit_data() {
   wait(25, SC_NS);
   hit1_dv.write(true);
   hit1_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
   hit2_dv.write(true);
   hit2_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
 
   wait(25, SC_NS);
   hit1_dv.write(false);
@@ -111,10 +124,10 @@ void data_concentrator_tb::generate_hit_data() {
   wait(25, SC_NS);
   hit1_dv.write(true);
   hit1_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
   hit2_dv.write(true);
   hit2_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
 
   wait(25, SC_NS);
   hit1_dv.write(false);
@@ -123,10 +136,10 @@ void data_concentrator_tb::generate_hit_data() {
   wait(25, SC_NS);
   hit1_dv.write(true);
   hit1_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
   hit2_dv.write(true);
   hit2_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
 
   wait(25, SC_NS);
   hit1_dv.write(false);
@@ -135,10 +148,10 @@ void data_concentrator_tb::generate_hit_data() {
   wait(25, SC_NS);
   hit1_dv.write(true);
   hit1_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
   hit2_dv.write(true);
   hit2_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
 
   wait(25, SC_NS);
   hit1_dv.write(false);
@@ -147,10 +160,10 @@ void data_concentrator_tb::generate_hit_data() {
   wait(25, SC_NS);
   hit1_dv.write(true);
   hit1_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
   hit2_dv.write(true);
   hit2_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
 
   wait(25, SC_NS);
   hit1_dv.write(false);
@@ -159,10 +172,10 @@ void data_concentrator_tb::generate_hit_data() {
   wait(25, SC_NS);
   hit1_dv.write(true);
   hit1_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
   hit2_dv.write(true);
   hit2_data.write("0b1111111100001");
-  std::cout << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
 
   wait(25, SC_NS);
   hit1_dv.write(false);
@@ -176,6 +189,6 @@ void data_concentrator_tb::print_output() {
 
   while(1) {
     wait();
-    std::cout << sc_time_stamp() << ": " << do_output.read() << std::endl;
+    log_buffer << sc_time_stamp() << ": " << do_output.read() << std::endl;
   }
 }

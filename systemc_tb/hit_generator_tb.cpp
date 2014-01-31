@@ -59,9 +59,20 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
 
   // ----- Module instance / channel binding -----------------------------------
 
+  log_buffer << std::endl
+             << "Simulation Output of Hit Generator TB:" << std::endl
+             << "*******************************************" << std::endl;
+
   return;
 }
 
+// *****************************************************************************
+hit_generator_tb::~hit_generator_tb() {
+
+  std::cout << log_buffer.str();
+
+  return;
+}
 
 // *****************************************************************************
 void hit_generator_tb::check_output() {
@@ -74,14 +85,14 @@ void hit_generator_tb::check_output() {
           for(unsigned int fe=0; fe<NR_FRONTENDCHIP_PER_MODULE; fe++) {
             stub read_stub;
             while (hit_signals[layer][phi][z][fe]->nb_read(read_stub) ) {
-              std::cout << sc_time_stamp () << " @ hit_generator."
-                        << "L" << layer
-                        << "P" << phi
-                        << "Z" << z
-                        << "FE" << fe
-                        << " : " << std::hex
-                        << "0x" << read_stub.getAddress() << " - "
-                        << "0x" << read_stub.getBend() << std::endl;
+              log_buffer << sc_time_stamp () << " @ hit_generator."
+                         << "L" << layer
+                         << "P" << phi
+                         << "Z" << z
+                         << "FE" << fe
+                         << " : " << std::hex
+                         << "0x" << read_stub.getAddress() << " - "
+                         << "0x" << read_stub.getBend() << std::endl;
             }
           }
         }

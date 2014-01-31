@@ -48,7 +48,9 @@ public:
    */
   hit_generator_tb(sc_module_name _name);
   SC_HAS_PROCESS(hit_generator_tb);
+  ~hit_generator_tb();
 
 private:
+  std::ostringstream log_buffer;
 
 };

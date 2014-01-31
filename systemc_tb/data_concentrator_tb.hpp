@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_tb.hpp
  * @author Christian Amstutz
- * @date Jan 27, 2014
+ * @date Jan 31, 2014
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
 
 #include "systemc.h"
 
@@ -65,7 +66,9 @@ public:
    */
   data_concentrator_tb(sc_module_name _name);
   SC_HAS_PROCESS(data_concentrator_tb);
+  ~data_concentrator_tb();
 
 private:
+  std::ostringstream log_buffer;
 
 };

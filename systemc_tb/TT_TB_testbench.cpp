@@ -26,8 +26,8 @@ int sc_main(int argc, char *agv[]) {
 
   // ----- Module instance declarations ----------------------------------------
 
-  //hit_generator_tb hit_generator_tb("Hit_Generator_TB");
-  //front_end_chip_tb front_end_chip_tb("Front_End_Chip_TB");
+  hit_generator_tb hit_generator_tb("Hit_Generator_TB");
+  front_end_chip_tb front_end_chip_tb("Front_End_Chip_TB");
   data_concentrator_tb data_concentrator_tb("Data_Concentrator_TB");
 
   // ----- Time unit / resolution setup ----------------------------------------
@@ -38,7 +38,7 @@ int sc_main(int argc, char *agv[]) {
 
   std::cout << std::endl << "Start test bench ..." << std::endl << std::endl;
 
-  sc_start();
+  sc_start(1000, SC_NS);
 
   std::cout << std::endl << "Test bench ended." << std::endl;
 

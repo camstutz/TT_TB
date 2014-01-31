@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip_tb.hpp
  * @author Christian Amstutz
- * @date Jan 27, 2014
+ * @date Jan 31, 2014
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
 
 #include "systemc.h"
 
@@ -56,7 +57,9 @@ public:
    */
   front_end_chip_tb(sc_module_name _name);
   SC_HAS_PROCESS(front_end_chip_tb);
+  ~front_end_chip_tb();
 
 private:
+  std::ostringstream log_buffer;
 
 };

@@ -54,6 +54,18 @@ front_end_chip_tb::front_end_chip_tb(sc_module_name _name) :
 
   // ----- Module instance / channel binding -----------------------------------
 
+    log_buffer << std::endl
+               << "Simulation Output of Front End Chip TB:" << std::endl
+               << "*******************************************" << std::endl;
+
+  return;
+}
+
+// *****************************************************************************
+front_end_chip_tb::~front_end_chip_tb() {
+
+  std::cout << log_buffer.str();
+
   return;
 }
 
@@ -67,7 +79,7 @@ void front_end_chip_tb::generate_stubs() {
   stim_stub.setAddress(255);
   stim_stub.setBend(1);
   stub_input_sig.write(stim_stub);
-  std::cout << sc_time_stamp() << " " << stim_stub << std::endl;
+  log_buffer << sc_time_stamp() << " " << stim_stub << std::endl;
 
   wait(32, SC_NS);
   stim_stub.setAddress(100);
@@ -77,36 +89,34 @@ void front_end_chip_tb::generate_stubs() {
   stim_stub.setAddress(120);
   stim_stub.setBend(3);
   stub_input_sig.write(stim_stub);
-  std::cout << sc_time_stamp() << " " << stim_stub << std::endl;
+  log_buffer << sc_time_stamp() << " " << stim_stub << std::endl;
 
   wait(1, SC_NS);
   stim_stub.setAddress(101);
   stim_stub.setBend(4);
   stub_input_sig.write(stim_stub);
-  std::cout << sc_time_stamp() << " " << stim_stub << std::endl;
+  log_buffer << sc_time_stamp() << " " << stim_stub << std::endl;
   wait(1, SC_NS);
   stim_stub.setAddress(101);
   stim_stub.setBend(5);
   stub_input_sig.write(stim_stub);
-  std::cout << sc_time_stamp() << " " << stim_stub << std::endl;
+  log_buffer << sc_time_stamp() << " " << stim_stub << std::endl;
 
   wait(25, SC_NS);
   stim_stub.setAddress(1);
   stim_stub.setBend(6);
   stub_input_sig.write(stim_stub);
-  std::cout << sc_time_stamp() << " " << stim_stub << std::endl;
+  log_buffer << sc_time_stamp() << " " << stim_stub << std::endl;
 
   wait(25, SC_NS);
   stim_stub.setAddress(12);
   stim_stub.setBend(7);
   stub_input_sig.write(stim_stub);
-  std::cout << sc_time_stamp() << " " << stim_stub << std::endl;
+  log_buffer << sc_time_stamp() << " " << stim_stub << std::endl;
   stim_stub.setAddress(13);
   stim_stub.setBend(8);
   stub_input_sig.write(stim_stub);
-  std::cout << sc_time_stamp() << " " << stim_stub << std::endl;
-
-  //std::cout << "Exit generate_stubs()" << std::endl;
+  log_buffer << sc_time_stamp() << " " << stim_stub << std::endl;
 
   return;
 }
@@ -120,30 +130,30 @@ void front_end_chip_tb::analyse_FE_data() {
     wait();
     if(hit1_dv_sig.read() == true) {
       read_hit = hit1_data_sig.read();
-      std::cout << sc_time_stamp() <<" Hit1: "
-                << " " << read_hit.to_string()
-                << " (0x" << std::hex << read_hit << ")"
-                << " - Address: " << (read_hit >> 5)
-                << " Bend: " << (read_hit & 0x01F)
-                << std::endl;
+      log_buffer << sc_time_stamp() <<" Hit1: "
+                 << " " << read_hit.to_string()
+                 << " (0x" << std::hex << read_hit << ")"
+                 << " - Address: " << (read_hit >> 5)
+                 << " Bend: " << (read_hit & 0x01F)
+                 << std::endl;
     }
     if(hit2_dv_sig.read() == true) {
       read_hit = hit2_data_sig.read();
-      std::cout << sc_time_stamp() <<" Hit1: "
-                << " " << read_hit.to_string()
-                << " (0x" << std::hex << read_hit << ")"
-                << " - Address: " << (read_hit >> 5)
-                << " Bend: " << (read_hit & 0x01F)
-                << std::endl;
+      log_buffer << sc_time_stamp() <<" Hit1: "
+                 << " " << read_hit.to_string()
+                 << " (0x" << std::hex << read_hit << ")"
+                 << " - Address: " << (read_hit >> 5)
+                 << " Bend: " << (read_hit & 0x01F)
+                 << std::endl;
     }
     if(hit3_dv_sig.read() == true) {
       read_hit = hit3_data_sig.read();
-      std::cout << sc_time_stamp() <<" Hit1: "
-                << " " << read_hit.to_string()
-                << " (0x" << std::hex << read_hit << ")"
-                << " - Address: " << (read_hit >> 5)
-                << " Bend: " << (read_hit & 0x01F)
-                << std::endl;
+      log_buffer << sc_time_stamp() <<" Hit1: "
+                 << " " << read_hit.to_string()
+                 << " (0x" << std::hex << read_hit << ")"
+                 << " - Address: " << (read_hit >> 5)
+                 << " Bend: " << (read_hit & 0x01F)
+                 << std::endl;
     }
   }
 
@@ -155,7 +165,7 @@ void front_end_chip_tb::analyse_FE_dv() {
 
   while(1) {
     wait();
-    std::cout << "DV";
+    log_buffer << sc_time_stamp() << ": DV" << std::endl;
   }
 
 }
