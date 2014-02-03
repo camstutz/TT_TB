@@ -1,7 +1,7 @@
 /*!
  * @file stub.hpp
  * @author Christian Amstutz
- * @date Jan 24, 2014
+ * @date Feb 3, 2014
  *
  * @brief
  *
@@ -18,34 +18,32 @@
 
 #include <systemc.h>
 
+#include "TT_configuration.hpp"
+
 /*!
  * @brief
  */
 class stub {
 
-private:
-  /** Address of the strip on the silicon detector */
-  unsigned int address;
-
-  /** represents the difference of the hits between the two silicon detectors */
-  unsigned int bend;
-
 public:
+  typedef sc_bv<NR_STUB_ADDRESS_BITS> stub_address_t;
+  typedef sc_bv<NR_STUB_BEND_BITS> stub_bend_t;
+
   /** Constructor. The default values are 0 for the address and 0 for the bend.
    *  */
-  stub(const int address=0, const int bend=0);
+  stub(const stub_address_t address=0, const stub_bend_t bend=0);
 
   /** Setter function for the address of the stub */
-  void setAddress(const int address);
+  void setAddress(const stub_address_t address);
 
   /** Getter function for the address of the stub */
-  int  getAddress() const;
+  stub_address_t  getAddress() const;
 
   /** Setter function for the bend of the stub */
-  void setBend(const int bend);
+  void setBend(const stub_bend_t bend);
 
   /** Getter function for the address of the stub */
-  int  getBend() const;
+  stub_bend_t  getBend() const;
 
   /** Comparison of two stub objects */
   bool operator == (const stub &rhs) const;
@@ -59,4 +57,11 @@ public:
 
   /** Function for tracing support in SystemC */
   friend void sc_trace(sc_trace_file *tf, const stub &v, const std::string &name);
+
+private:
+  /** Address of the strip on the silicon detector */
+  stub_address_t address;
+
+  /** represents the difference of the hits between the two silicon detectors */
+  stub_bend_t bend;
 };

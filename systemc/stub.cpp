@@ -1,7 +1,7 @@
 /*!
- * @file stub.hpp
+ * @file stub.cpp
  * @author Christian Amstutz
- * @date Jan 10, 2014
+ * @date Feb 3, 2014
  *
  * @brief
  *
@@ -14,33 +14,35 @@
 #include "stub.hpp"
 
 // *****************************************************************************
-stub::stub(const int address, const int bend) : address(address), bend(bend) {
+stub::stub(const stub::stub_address_t address, const stub::stub_bend_t bend) :
+    address(address),
+    bend(bend) {
 
   return;
 }
 
 // *****************************************************************************
-void stub::setAddress(const int address) {
+void stub::setAddress(const stub::stub_address_t address) {
 
   this->address = address;
   return;
 }
 
 // *****************************************************************************
-int stub::getAddress() const {
+stub::stub_address_t stub::getAddress() const {
 
   return address;
 }
 
 // *****************************************************************************
-void stub::setBend(const int bend) {
+void stub::setBend(const stub::stub_bend_t bend) {
 
   this->bend = bend;
   return;
 }
 
 // *****************************************************************************
-int stub::getBend() const {
+stub::stub_bend_t stub::getBend() const {
 
   return bend;
 }
@@ -63,7 +65,8 @@ stub& stub::operator = (const stub & rhs) {
 // *****************************************************************************
 ostream& operator << (ostream &os, stub const &v) {
 
-  os << "[" << v.address << "," << v.bend << "]";
+  os << "[" << std::hex << v.address.to_uint()
+     << "," << v.bend.to_uint() << "]";
 
   return os;
 }

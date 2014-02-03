@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.hpp
  * @author Christian Amstutz
- * @date Jan 23, 2014
+ * @date Feb 3, 2014
  *
  * @brief
  *
@@ -14,9 +14,10 @@
 #pragma once
 
 #include <string>
-#include <systemc.h>
 #include <sstream>
 #include <queue>
+
+#include <systemc.h>
 
 #include "TT_configuration.hpp"
 #include "HitEvent.hpp"
@@ -28,9 +29,14 @@
 class hit_generator : public sc_module {
 
 public:
+  typedef sc_fifo_out<stub> *hit_out_t;
+  typedef std::vector<hit_out_t> z_dim_out_t;
+  typedef std::vector<z_dim_out_t> phi_dim_out_t;
+  typedef std::vector<phi_dim_out_t> layer_dim_out_t;
+  typedef std::vector<layer_dim_out_t> hit_out_bus_t;
+
   // ----- Port Declarations ---------------------------------------------------
-  //sc_out<stub> data_output[NR_DETECTOR_LAYERS][NR_DETECTOR_PHI][NR_DETECTOR_Z][NR_FRONTENDCHIP_PER_MODULE];
-  std::vector<std::vector<std::vector<std::vector<sc_fifo_out<stub> *> > > > hit_outputs;
+  hit_out_bus_t hit_outputs;
 
   // ----- Local Channel Declarations ------------------------------------------
 
