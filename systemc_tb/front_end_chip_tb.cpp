@@ -139,7 +139,7 @@ void front_end_chip_tb::analyse_FE_data() {
     }
     if(hit2_dv_sig.read() == true) {
       read_hit = hit2_data_sig.read();
-      log_buffer << sc_time_stamp() <<" Hit1: "
+      log_buffer << sc_time_stamp() <<" Hit2: "
                  << " " << read_hit.to_string()
                  << " (0x" << std::hex << read_hit << ")"
                  << " - Address: " << (read_hit >> 5)
@@ -148,7 +148,7 @@ void front_end_chip_tb::analyse_FE_data() {
     }
     if(hit3_dv_sig.read() == true) {
       read_hit = hit3_data_sig.read();
-      log_buffer << sc_time_stamp() <<" Hit1: "
+      log_buffer << sc_time_stamp() <<" Hit3: "
                  << " " << read_hit.to_string()
                  << " (0x" << std::hex << read_hit << ")"
                  << " - Address: " << (read_hit >> 5)

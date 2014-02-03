@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.cpp
  * @author Christian Amstutz
- * @date Jan 24, 2014
+ * @date Feb 3, 2014
  *
  * @brief
  */
