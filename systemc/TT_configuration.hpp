@@ -22,7 +22,7 @@
 #define NR_STUB_BEND_BITS 5
 
 // Number of hits that can be handled by a single front end chip
-#define NR_HITS_PER_FE_CHIP        3
+#define MAX_HITS_PER_FE_CHIP        3
 
 // Bit width of the front end chip output
 #define FE_CHIP_OUTPUT_WIDTH      13
@@ -36,6 +36,3 @@
 #define NR_FE_CHIP_PER_MODULE      8  // Number of front-end chips per sensor module
 
 #define NR_SENSOR_MODULES NR_DETECTOR_LAYERS*NR_DETECTOR_PHI*NR_DETECTOR_Z // Total number of sensor modules of a detector
-
-// Maximal number of possible hits per front end chip
-#define MAX_NR_HITS_PER_FE        10

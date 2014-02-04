@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip_tb.hpp
  * @author Christian Amstutz
- * @date Jan 31, 2014
+ * @date Feb 4, 2014
  *
  * @brief
  *
@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <array>
 
 #include "systemc.h"
 
@@ -28,17 +29,17 @@
 class front_end_chip_tb : public sc_module {
 
 public:
+  typedef struct {
+    sc_signal<bool> *dv;
+    sc_signal<stub> *data;
+  } fe_signal_t;
+
   // ----- Port Declarations ---------------------------------------------------
 
   // ----- Local Channel Declarations ------------------------------------------
   sc_signal<bool> en_sig;
   sc_fifo<stub> stub_input_sig;
-  sc_signal<bool> hit1_dv_sig;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit1_data_sig;
-  sc_signal<bool> hit2_dv_sig;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit2_data_sig;
-  sc_signal<bool> hit3_dv_sig;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit3_data_sig;
+  std::array<fe_signal_t, MAX_HITS_PER_FE_CHIP> fe_out_signals;
 
   // ----- Process Declarations ------------------------------------------------
   void generate_stubs();
@@ -58,6 +59,7 @@ public:
   front_end_chip_tb(sc_module_name _name);
   SC_HAS_PROCESS(front_end_chip_tb);
   ~front_end_chip_tb();
+  void end_of_elaboration();
 
 private:
   std::ostringstream log_buffer;

@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.cpp
  * @author Christian Amstutz
- * @date Feb 3, 2014
+ * @date Feb 4, 2014
  *
  * @brief
  */
@@ -22,25 +22,30 @@
  * The module is sensitive to ....
  */
 
-front_end_chip::front_end_chip(sc_module_name _name)
+front_end_chip::front_end_chip(const sc_module_name _name)
     : sc_module(_name),
       clk("clk"),
       en("en"),
       stub_input("stub_in"),
-      hit1_dv("hit1_dv"),
-      hit1_data("hit1_data"),
-      hit2_dv("hit2_dv"),
-      hit2_data("hit2_data"),
-      hit3_dv("hit3_dv"),
-      hit3_data("hit3_data"),
-      selected_stubs("sel_stubs", NR_HITS_PER_FE_CHIP) {
+      selected_stubs("sel_stubs", MAX_HITS_PER_FE_CHIP) {
 
   // ----- Process registration ------------------------------------------------
-
 
   // ----- Module variable initialization --------------------------------------
 
   // ----- Module instance / channel binding -----------------------------------
+
+  // Name the hit output ports
+  unsigned int out_cnt = 1;
+  for(hit_out_t& output : hit_outputs) {
+    std::ostringstream port_name_dv, port_name_data;
+    port_name_dv << "hit" << out_cnt << "_dv";
+    output.dv = new sc_out<bool>(port_name_dv.str().c_str());
+    port_name_data << "hit" << out_cnt << "_data";
+    output.data = new sc_out<stub>(port_name_data.str().c_str());
+
+    out_cnt++;
+  }
 
   return;
 }
@@ -51,7 +56,6 @@ void front_end_chip::end_of_elaboration() {
   SC_THREAD(prioritize_hits);
     sensitive << stub_input.data_written_event();
   SC_THREAD(write_hits);
-    //sensitive << clk.posedge_event();
     sensitive << selected_stubs.data_written_event();
 }
 
@@ -66,7 +70,7 @@ void front_end_chip::prioritize_hits() {
 
     stub act_stub;
     for(int i=0;
-        i <= std::min(stub_input.num_available(), NR_HITS_PER_FE_CHIP);
+        i <= std::min(stub_input.num_available(), MAX_HITS_PER_FE_CHIP);
         i++) {
       stub_input.nb_read(act_stub);
       selected_stubs.nb_write(act_stub);
@@ -82,34 +86,17 @@ void front_end_chip::write_hits() {
   while (1) {
     wait();
 
-    stub read_stub;
-    sc_bv<FE_CHIP_OUTPUT_WIDTH> output_hit;
-
-    if(selected_stubs.nb_read(read_stub)) {
-      hit1_dv.write(true);
-      output_hit = ((0xFF & read_stub.getAddress()) << 5 ) |
-                   ( 0x1F & read_stub.getBend());
-      hit1_data.write(output_hit);
-    }
-    if(selected_stubs.nb_read(read_stub)) {
-      hit2_dv.write(true);
-      output_hit = ((0xFF & read_stub.getAddress()) << 5 ) |
-                   ( 0x1F & read_stub.getBend());
-      hit2_data.write(output_hit);
-    }
-    if(selected_stubs.nb_read(read_stub)) {
-      hit3_dv.write(true);
-      output_hit = (read_stub.getAddress() << 5) | 1;
-      output_hit = ((0xFF & read_stub.getAddress()) << 5 ) |
-                   ( 0x1F & read_stub.getBend());
-      hit3_data.write(output_hit);
+    unsigned int num_stubs = selected_stubs.num_available();
+    for (unsigned int i=0; i<num_stubs; i++) {
+      hit_outputs[i].dv->write(true);
+      hit_outputs[i].data->write(selected_stubs.read());
     }
 
     wait(clk.posedge_event());
 
-    hit1_dv.write(false);
-    hit2_dv.write(false);
-    hit3_dv.write(false);
+    for(hit_out_t& output : hit_outputs) {
+      output.dv->write(false);
+    }
   }
 
 }
