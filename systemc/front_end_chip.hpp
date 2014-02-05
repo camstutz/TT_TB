@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.hpp
  * @author Christian Amstutz
- * @date Feb 4, 2014
+ * @date Feb 5, 2014
  *
  * @brief
  *
@@ -33,6 +33,7 @@ public:
     sc_out<bool> *dv;
     sc_out<stub> *data;
   } hit_out_t;
+  typedef std::array<hit_out_t, MAX_HITS_PER_FE_CHIP> fe_out_t;
 
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
@@ -40,7 +41,7 @@ public:
 
   sc_fifo_in<stub> stub_input;
 
-  std::array<hit_out_t, MAX_HITS_PER_FE_CHIP> hit_outputs;
+  fe_out_t hit_outputs;
 
   // ----- Local Channel Declarations ------------------------------------------
   sc_fifo<stub> selected_stubs;
