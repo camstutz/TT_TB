@@ -22,13 +22,15 @@
 #define NR_STUB_BEND_BITS 5
 
 // Number of hits that can be handled by a single front end chip
-#define MAX_HITS_PER_FE_CHIP        3
-
-// Bit width of the front end chip output
-#define FE_CHIP_OUTPUT_WIDTH      13
+#define MAX_HITS_PER_FE_CHIP       3
 
 // Bit width of the data concentrator output
-#define DO_OUTPUT_WIDTH           32
+#define DC_OUTPUT_WIDTH           32
+// Duration in cycles of the window in the data concentrator
+#define NR_DC_WINDOW_CYCLES        8
+// Number of stubs transmitted by the data concentrator
+//! todo: calculate this value
+#define NR_DC_OUT_STUBS           12
 
 #define NR_DETECTOR_LAYERS         6  // Number of detector sensor modules existing at the detector
 #define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector

@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_tb.cpp
  * @author Christian Amstutz
- * @date Jan 31, 2014
+ * @date Feb 5, 2014
  */
 
 /*
@@ -22,69 +22,57 @@
 data_concentrator_tb::data_concentrator_tb(sc_module_name _name) :
     sc_module(_name),
     rst("rst"),
-    hit0_dv("hit0_dv"),
-    hit0_data("hit0_data"),
-    hit1_dv("hit1_dv"),
-    hit1_data("hit1_data"),
-    hit2_dv("hit2_dv"),
-    hit2_data("hit2_data"),
-    hit3_dv("hit3_dv"),
-    hit3_data("hit3_data"),
-    hit4_dv("hit4_dv"),
-    hit4_data("hit4_data"),
-    hit5_dv("hit5_dv"),
-    hit5_data("hit5_data"),
-    hit6_dv("hit6_dv"),
-    hit6_data("hit6_data"),
-    hit7_dv("hit7_dv"),
-    hit7_data("hit7_data"),
-    do_output("do_output"),
-    LHC_clock("LHC_clock", 25, SC_NS, 0.5, 10, SC_NS, true),
+    LHC_clock("LHC_clock", LHC_CLOCK_PREIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
     dut_data_concentrator("Data_Concentrator_DUT") {
 
   // ----- Creation and binding of signals -------------------------------------
   dut_data_concentrator.clk(LHC_clock);
   dut_data_concentrator.rst(rst);
 
-  dut_data_concentrator.hit0_dv(hit0_dv);
-  dut_data_concentrator.hit0_data(hit0_data);
-  dut_data_concentrator.hit1_dv(hit1_dv);
-  dut_data_concentrator.hit1_data(hit1_data);
-  dut_data_concentrator.hit2_dv(hit2_dv);
-  dut_data_concentrator.hit2_data(hit2_data);
-  dut_data_concentrator.hit3_dv(hit3_dv);
-  dut_data_concentrator.hit3_data(hit3_data);
-  dut_data_concentrator.hit4_dv(hit4_dv);
-  dut_data_concentrator.hit4_data(hit4_data);
-  dut_data_concentrator.hit5_dv(hit5_dv);
-  dut_data_concentrator.hit5_data(hit5_data);
-  dut_data_concentrator.hit6_dv(hit6_dv);
-  dut_data_concentrator.hit6_data(hit6_data);
-  dut_data_concentrator.hit7_dv(hit7_dv);
-  dut_data_concentrator.hit7_data(hit7_data);
+  unsigned int fe_cnt = 0;
+  for(front_end_signal_t &fe_signal: fe_signals) {
+    unsigned int hit_cnt = 0;
+    for (front_end_in_t &fe_in_port: fe_signal) {
+      std::ostringstream port_name_dv, port_name_data;
+      port_name_dv << "fe" << fe_cnt << "_dv" << hit_cnt;
+      fe_in_port.dv = new sc_signal<bool>(port_name_dv.str().c_str());
+      port_name_data << "fe" << fe_cnt << "_d" << hit_cnt;
+      fe_in_port.data = new sc_signal<stub>(port_name_data.str().c_str());
 
-  dut_data_concentrator.do_output(do_output);
+      dut_data_concentrator.fe_stub_in[fe_cnt][hit_cnt].dv->bind(*fe_in_port.dv);
+      dut_data_concentrator.fe_stub_in[fe_cnt][hit_cnt].data->bind(*fe_in_port.data);
+
+      hit_cnt++;
+    }
+    fe_cnt++;
+  }
+
+  dut_data_concentrator.dc_out(dc_output);
 
   // ----- Process registration ------------------------------------------------
   SC_THREAD(generate_hit_data);
   SC_THREAD(print_output);
-    sensitive << do_output;
+    sensitive << dc_output;
 
   // ----- Module variable initialization --------------------------------------
-  hit0_dv = false;
-  hit1_dv = false;
-  hit2_dv = false;
-  hit3_dv = false;
-  hit4_dv = false;
-  hit5_dv = false;
-  hit6_dv = false;
-  hit7_dv = false;
 
   // ----- Module instance / channel binding -----------------------------------
 
   log_buffer << std::endl
              << "Simulation Output of Data Concentrator TB:" << std::endl
              << "*******************************************" << std::endl;
+
+  return;
+}
+
+// *****************************************************************************
+void data_concentrator_tb::end_of_elaboration() {
+
+  for(front_end_signal_t &fe_signal: fe_signals) {
+    for (front_end_in_t &fe_in_port: fe_signal) {
+      fe_in_port.dv->write(false);
+    }
+  }
 
   return;
 }
@@ -101,85 +89,41 @@ data_concentrator_tb::~data_concentrator_tb() {
 // *****************************************************************************
 void data_concentrator_tb::generate_hit_data() {
 
-  //wait(50, SC_NS);
-  hit0_dv.write(true);
-  hit0_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  wait(50, SC_NS);
+  write_fe(4,2,255,0);
 
-  wait(25, SC_NS);
-  hit0_dv.write(false);
+  wait(25,SC_NS);
+  release_fe(4,2);
 
-  wait(25, SC_NS);
-  hit1_dv.write(true);
-  hit1_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-  hit2_dv.write(true);
-  hit2_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
+  wait(200, SC_NS);
+  write_fe(1,1,255,31);
+  write_fe(1,2,255,31);
+  write_fe(1,3,255,31);
+  write_fe(2,1,255,31);
+  write_fe(2,2,255,31);
+  write_fe(2,3,255,31);
+  write_fe(3,1,255,31);
+  write_fe(3,2,255,31);
+  write_fe(3,3,255,31);
+  write_fe(4,1,255,31);
+  write_fe(4,2,255,31);
+  write_fe(4,3,255,31);
+  write_fe(5,3,255,31);
 
-  wait(25, SC_NS);
-  hit1_dv.write(false);
-  hit2_dv.write(false);
-
-  wait(25, SC_NS);
-  hit1_dv.write(true);
-  hit1_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-  hit2_dv.write(true);
-  hit2_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-
-  wait(25, SC_NS);
-  hit1_dv.write(false);
-  hit2_dv.write(false);
-
-  wait(25, SC_NS);
-  hit1_dv.write(true);
-  hit1_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-  hit2_dv.write(true);
-  hit2_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-
-  wait(25, SC_NS);
-  hit1_dv.write(false);
-  hit2_dv.write(false);
-
-  wait(25, SC_NS);
-  hit1_dv.write(true);
-  hit1_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-  hit2_dv.write(true);
-  hit2_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-
-  wait(25, SC_NS);
-  hit1_dv.write(false);
-  hit2_dv.write(false);
-
-  wait(25, SC_NS);
-  hit1_dv.write(true);
-  hit1_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-  hit2_dv.write(true);
-  hit2_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-
-  wait(25, SC_NS);
-  hit1_dv.write(false);
-  hit2_dv.write(false);
-
-  wait(25, SC_NS);
-  hit1_dv.write(true);
-  hit1_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-  hit2_dv.write(true);
-  hit2_data.write("0b1111111100001");
-  log_buffer << sc_time_stamp() << ": writing data \"0b1111111100001\" " << std::endl;
-
-  wait(25, SC_NS);
-  hit1_dv.write(false);
-  hit2_dv.write(false);
+  wait(25,SC_NS);
+  release_fe(1,1);
+  release_fe(1,2);
+  release_fe(1,3);
+  release_fe(2,1);
+  release_fe(2,2);
+  release_fe(2,3);
+  release_fe(3,1);
+  release_fe(3,2);
+  release_fe(3,3);
+  release_fe(4,1);
+  release_fe(4,2);
+  release_fe(4,3);
+  release_fe(5,3);
 
   return;
 }
@@ -189,6 +133,39 @@ void data_concentrator_tb::print_output() {
 
   while(1) {
     wait();
-    log_buffer << sc_time_stamp() << ": " << do_output.read() << std::endl;
+    log_buffer << sc_time_stamp() << ": " << dc_output.read() << std::endl;
   }
+}
+
+// *****************************************************************************
+void data_concentrator_tb::write_fe(
+    const unsigned int fe_chip,
+    const unsigned int hit_nr,
+    const unsigned int address,
+    const unsigned int bend) {
+
+  stub send_stub;
+
+  fe_signals[fe_chip][hit_nr].dv->write(true);
+  send_stub.setAddress(address);
+  send_stub.setBend(bend);
+  fe_signals[fe_chip][hit_nr].data->write(send_stub);
+
+  unsigned int output = (address << 5) | bend;
+  log_buffer << sc_time_stamp() << ": writing to "
+             << fe_signals[4][2].data->name()
+             << " --> " << std::hex << output << std::dec
+             << std::endl;
+
+  return;
+}
+
+// *****************************************************************************
+void data_concentrator_tb::release_fe(
+    const unsigned int fe_chip,
+    const unsigned int hit_nr) {
+
+  fe_signals[fe_chip][hit_nr].dv->write(false);
+
+  return;
 }

@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_tb.hpp
  * @author Christian Amstutz
- * @date Jan 31, 2014
+ * @date Feb 5, 2014
  *
  * @brief
  *
@@ -15,7 +15,7 @@
 
 #include <iostream>
 #include <sstream>
-
+#include <array>
 #include "systemc.h"
 
 #include "../systemc/TT_configuration.hpp"
@@ -27,34 +27,26 @@
 class data_concentrator_tb : public sc_module {
 
 public:
+  typedef struct {
+    sc_signal<bool> *dv;
+    sc_signal<stub> *data;
+  } front_end_in_t;
+  typedef std::array<front_end_in_t, MAX_HITS_PER_FE_CHIP> front_end_signal_t;
+
   // ----- Port Declarations ---------------------------------------------------
 
   // ----- Local Channel Declarations ------------------------------------------
   sc_signal<bool> rst;
+  std::array<front_end_signal_t, NR_FE_CHIP_PER_MODULE> fe_signals;
 
-  sc_signal<bool> hit0_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit0_data;
-  sc_signal<bool> hit1_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit1_data;
-  sc_signal<bool> hit2_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit2_data;
-  sc_signal<bool> hit3_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit3_data;
-  sc_signal<bool> hit4_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit4_data;
-  sc_signal<bool> hit5_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit5_data;
-  sc_signal<bool> hit6_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit6_data;
-  sc_signal<bool> hit7_dv;
-  sc_signal<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit7_data;
-
-  sc_signal<sc_bv<DO_OUTPUT_WIDTH> > do_output;
+  sc_signal<sc_bv<DC_OUTPUT_WIDTH> > dc_output;
   // ----- Process Declarations ------------------------------------------------
   void generate_hit_data();
   void print_output();
 
   // ----- Other Method Declarations -------------------------------------------
+  void write_fe(const unsigned int fe_chip, const unsigned int hit_nr, const unsigned int address, const unsigned int bend);
+  void release_fe(const unsigned int fe_chip, const unsigned int hit_nr);
 
   // ----- Module Instantiations -----------------------------------------------
   sc_clock LHC_clock;
@@ -67,8 +59,8 @@ public:
   data_concentrator_tb(sc_module_name _name);
   SC_HAS_PROCESS(data_concentrator_tb);
   ~data_concentrator_tb();
+  void end_of_elaboration();
 
 private:
   std::ostringstream log_buffer;
-
 };

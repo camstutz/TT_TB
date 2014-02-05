@@ -35,7 +35,7 @@ front_end_chip::front_end_chip(const sc_module_name _name)
 
   // ----- Module instance / channel binding -----------------------------------
 
-  // Name the hit output ports
+  // Create and name the hit output ports
   unsigned int out_cnt = 1;
   for(hit_out_t& output : hit_outputs) {
     std::ostringstream port_name_dv, port_name_data;

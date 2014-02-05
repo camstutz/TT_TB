@@ -1,7 +1,7 @@
 /*!
  * @file stub.hpp
  * @author Christian Amstutz
- * @date Feb 3, 2014
+ * @date Feb 4, 2014
  *
  * @brief
  *
@@ -44,6 +44,9 @@ public:
 
   /** Getter function for the address of the stub */
   stub_bend_t  getBend() const;
+
+  /** Getter function for the whole stub as a bit vector */
+  sc_bv<NR_STUB_ADDRESS_BITS + NR_STUB_BEND_BITS> getBitVector() const;
 
   /** Comparison of two stub objects */
   bool operator == (const stub &rhs) const;

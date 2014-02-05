@@ -1,7 +1,7 @@
 /*!
  * @file stub.cpp
  * @author Christian Amstutz
- * @date Feb 3, 2014
+ * @date Feb 4, 2014
  *
  * @brief
  *
@@ -45,6 +45,13 @@ void stub::setBend(const stub::stub_bend_t bend) {
 stub::stub_bend_t stub::getBend() const {
 
   return bend;
+}
+
+// *****************************************************************************
+sc_bv<NR_STUB_ADDRESS_BITS + NR_STUB_BEND_BITS> stub::getBitVector() const {
+
+  return ( (sc_bv<NR_STUB_ADDRESS_BITS>(address),
+            sc_bv<NR_STUB_BEND_BITS>(bend)) );
 }
 
 // *****************************************************************************

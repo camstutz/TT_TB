@@ -35,7 +35,7 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
           sc_fifo<stub> *hit_signal;
           std::ostringstream signal_name;
           signal_name << "hit_signal_L" << layer << "P" << phi << "Z" << z << "F" << fe;
-          hit_signal = new sc_fifo<stub>(signal_name.str().c_str(), MAX_NR_HITS_PER_FE);
+          hit_signal = new sc_fifo<stub>(signal_name.str().c_str(), MAX_HITS_PER_FE_CHIP);
           hit_signals[layer][phi][z][fe] = hit_signal;
           dut_hit_generator.hit_outputs[layer][phi][z][fe]->bind(*hit_signals[layer][phi][z][fe]);
         }

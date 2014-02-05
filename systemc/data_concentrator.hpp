@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Jan 27, 2014
+ * @date Feb 4, 2014
  *
  * @brief
  *
@@ -13,12 +13,15 @@
 
 #pragma once
 
-#include <vector>
+#include <array>
 #include <iostream>
+#include <sstream>
 
 #include <systemc.h>
 
 #include "TT_configuration.hpp"
+#include "nbits.hpp"
+#include "stub.hpp"
 
 /*!
  * @brief
@@ -26,37 +29,28 @@
 class data_concentrator : public sc_module {
 
 public:
+  typedef struct {
+    sc_in<bool> *dv;
+    sc_in<stub> *data;
+  } front_end_in_t;
+  typedef std::array<front_end_in_t, MAX_HITS_PER_FE_CHIP> front_end_port_t;
+
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
   sc_in<bool> rst;
+  std::array<front_end_port_t, NR_FE_CHIP_PER_MODULE> fe_stub_in;
 
-  sc_in<bool> hit0_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit0_data;
-  sc_in<bool> hit1_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit1_data;
-  sc_in<bool> hit2_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit2_data;
-  sc_in<bool> hit3_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit3_data;
-  sc_in<bool> hit4_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit4_data;
-  sc_in<bool> hit5_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit5_data;
-  sc_in<bool> hit6_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit6_data;
-  sc_in<bool> hit7_dv;
-  sc_in<sc_bv<FE_CHIP_OUTPUT_WIDTH> > hit7_data;
-
-  sc_out<sc_bv<DO_OUTPUT_WIDTH> > do_output;
-
+  //! todo: think about the data type of dc_out, generic ?
+  sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
 
   // ----- Local Channel Declarations ------------------------------------------
+  //! todo: change width to generic
   sc_signal<sc_uint<3> > clock_phase;
 
   // ----- Process Declarations ------------------------------------------------
   void advance_clock_phase();
   void read_FE_chips();
-  void write_DO_output();
+  void write_output();
 
   // ----- Other Method Declarations -------------------------------------------
 
@@ -67,11 +61,11 @@ public:
   SC_HAS_PROCESS(data_concentrator);
 
 private:
+  //! todo: make long_stub generic, probably an object
   typedef sc_bv<20> long_stub;
   const long_stub empty_slot;
   std::vector<long_stub> stub_buffer;
-  //! todo: change sc_bv size to constants
-  sc_bv<32*8> output_buffer;
+  sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
 
   void create_output_buffer();
 };

@@ -214,5 +214,18 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-#Doxygen
+############
+# Doxygen
+############
+
 documentation/
+
+############
+## SystemC
+############
+
+# Waveform files
+*.vcd
+
+# Folder to hide modules temporarily
+exclude/
