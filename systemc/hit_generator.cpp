@@ -74,11 +74,11 @@ void hit_generator::schedule_hits() {
     hit = hit_queue.front();
     hit_queue.pop();
 
-    wait_time = (hit.timeStamp * sc_time(LHC_CLOCK_PREIOD_NS, SC_NS));
+    wait_time = (hit.timeStamp * sc_time(LHC_CLOCK_PERIOD_NS, SC_NS));
     wait_time = wait_time - sc_time_stamp();
     wait(wait_time);
 
-    //! todo: check vor validity of data and adapt to given range if possible
+    //! todo: check for validity of data and adapt to given range if possible
 
     processed_stub.setAddress(hit.stubAddress);
     processed_stub.setBend(hit.stubBend);

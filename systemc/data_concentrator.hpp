@@ -32,13 +32,14 @@ public:
   typedef struct {
     sc_in<bool> *dv;
     sc_in<stub> *data;
-  } front_end_in_t;
-  typedef std::array<front_end_in_t, MAX_HITS_PER_FE_CHIP> front_end_port_t;
+  } fe_in_t;
+  typedef std::array<fe_in_t, MAX_HITS_PER_FE_CHIP> fe_port_t;
+  typedef std::array<fe_port_t, NR_FE_CHIP_PER_MODULE> fe_field_t;
 
   // ----- Port Declarations ---------------------------------------------------
   sc_in<bool> clk;
   sc_in<bool> rst;
-  std::array<front_end_port_t, NR_FE_CHIP_PER_MODULE> fe_stub_in;
+  fe_field_t fe_stub_in;
 
   //! todo: think about the data type of dc_out, generic ?
   sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;

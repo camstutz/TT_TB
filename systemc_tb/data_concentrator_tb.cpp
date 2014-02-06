@@ -22,7 +22,7 @@
 data_concentrator_tb::data_concentrator_tb(sc_module_name _name) :
     sc_module(_name),
     rst("rst"),
-    LHC_clock("LHC_clock", LHC_CLOCK_PREIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+    LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
     dut_data_concentrator("Data_Concentrator_DUT") {
 
   // ----- Creation and binding of signals -------------------------------------

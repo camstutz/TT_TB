@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date Feb 3, 2014
+ * @date Feb 4, 2014
  *
  * @brief
  *
@@ -14,7 +14,7 @@
 
 // Define the clock frequency and the period in nanoseconds of the LHC clock
 #define LHC_CLOCK_FREQ 40000000
-#define LHC_CLOCK_PREIOD_NS 25
+#define LHC_CLOCK_PERIOD_NS 25
 
 // Number of bits to represent the address of a stub
 #define NR_STUB_ADDRESS_BITS 8

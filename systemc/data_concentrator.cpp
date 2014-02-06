@@ -44,9 +44,9 @@ data_concentrator::data_concentrator(sc_module_name _name) :
 
   // Create and name the input ports
   unsigned int fe_cnt = 0;
-  for(front_end_port_t &fe_port : fe_stub_in) {
+  for(fe_port_t &fe_port : fe_stub_in) {
     unsigned int hit_cnt = 0;
-    for(front_end_in_t &fe_in : fe_port) {
+    for(fe_in_t &fe_in : fe_port) {
       std::ostringstream port_name_dv, port_name_data;
       port_name_dv << "fe" << fe_cnt << "_dv" << hit_cnt;
       fe_in.dv = new sc_in<bool>(port_name_dv.str().c_str());
@@ -67,8 +67,8 @@ void data_concentrator::read_FE_chips() {
     wait();
 
     unsigned int fe_cnt=0;
-    for (front_end_port_t &fe_port : fe_stub_in) {
-      for (front_end_in_t &fe_in : fe_port) {
+    for (fe_port_t &fe_port : fe_stub_in) {
+      for (fe_in_t &fe_in : fe_port) {
         if (fe_in.dv->read() == true) {
           //! todo: make generic
           sc_bv<20> data_word;
