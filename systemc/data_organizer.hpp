@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date Feb 6, 2014
+ * @date Feb 7, 2014
  *
  * @brief
  *
@@ -38,7 +38,7 @@ public:
   sc_in<bool> clk;
   sc_in<bool> rst;
 
-  sc_in<sc_bv<DC_OUTPUT_WIDTH> > do_in;
+  sc_in<sc_bv<DC_OUTPUT_WIDTH> > stream_in;
 
   stub_out_field_t stub_out;
 

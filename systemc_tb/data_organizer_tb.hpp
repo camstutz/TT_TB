@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_tb.hpp
  * @author Christian Amstutz
- * @date Feb 6, 2014
+ * @date Feb 7, 2014
  *
  * @brief
  *
@@ -20,6 +20,7 @@
 
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/data_organizer.hpp"
+#include "../systemc/stub_ext.hpp"
 
 /*!
  * @brief
@@ -48,14 +49,14 @@ public:
 
   // ----- Module Instantiations -----------------------------------------------
   sc_clock LHC_clock;
-  data_concentrator dut_data_concentrator;
+  data_organizer dut_data_organizer;
 
   // ----- Constructor ---------------------------------------------------------
   /*!
    * Constructor:
    */
   data_organizer_tb(sc_module_name _name);
-  SC_HAS_PROCESS(data_concentrator_tb);
+  SC_HAS_PROCESS(data_organizer_tb);
   ~data_organizer_tb();
   void end_of_elaboration();
 

@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date Jan 9, 2014
+ * @date Feb 7, 2014
  *
  * @brief
  */
@@ -14,16 +14,16 @@
 
 // *****************************************************************************
 
-// *****************************************************************************
-
 /*!
  * @class data_organizer
  *
  * The module is sensitive to ....
  */
 
-//data_organizer::data_organizer(sc_module_name _name)
-//    : sc_module(_name) {
+data_organizer::data_organizer(sc_module_name _name) :
+        sc_module(_name),
+        clk("clk"),
+        rst("rst") {
 
   // ----- Process registration ------------------------------------------------
   //SC_THREAD();
@@ -33,6 +33,6 @@
 
   // ----- Module instance / channel binding -----------------------------------
 
-  //return;
-//}
+    return;
+}
 
