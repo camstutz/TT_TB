@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date Feb 4, 2014
+ * @date Feb 6, 2014
  *
  * @brief
  *
@@ -31,6 +31,7 @@
 // Number of stubs transmitted by the data concentrator
 //! todo: calculate this value
 #define NR_DC_OUT_STUBS           12
+#define NR_DO_OUT_STUBS           12
 
 #define NR_DETECTOR_LAYERS         6  // Number of detector sensor modules existing at the detector
 #define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector
