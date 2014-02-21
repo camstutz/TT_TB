@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.hpp
  * @author Christian Amstutz
- * @date Feb 5, 2014
+ * @date Feb 20, 2014
  *
  * @brief
  *
@@ -18,6 +18,8 @@
 
 #include <systemc.h>
 
+#include "../lib/systemc_helpers/sc_map/sc_map_linear.hpp"
+
 #include "stub.hpp"
 #include "TT_configuration.hpp"
 #include "front_end_chip.hpp"
@@ -26,41 +28,40 @@
 /*!
  * @brief
  */
-class sensor_module : public sc_module {
-
+class sensor_module : public sc_module
+{
 public:
-  typedef sc_fifo_in<stub> stub_in_t;
-  typedef struct {
-    sc_signal<bool> *dv;
-    sc_signal<stub> *data;
-  } hit_signal_t;
-  typedef std::array<hit_signal_t, MAX_HITS_PER_FE_CHIP> fe_signal_t;
 
-  // ----- Port Declarations ---------------------------------------------------
-  sc_in<bool> clk;
-  std::array<stub_in_t*, NR_FE_CHIP_PER_MODULE> stub_inputs;
+    //* todo: define this struct globally
+    typedef struct {
+        bool dv;
+        stub data;
+    } hit_signal_t;
 
-  //! todo: think about the data type of dc_out, generic ?
-  sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
+    // ----- Port Declarations -------------------------------------------------
+    sc_in<bool> clk;
+    sc_map_linear<sc_fifo_in<stub> > stub_inputs;
+    //! todo: think about the data type of dc_out, generic ?
+    sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
 
-  // ----- Local Channel Declarations ------------------------------------------
-  std::array<fe_signal_t, NR_FE_CHIP_PER_MODULE> fe_out_signals;
-  sc_signal<bool> true_sig;
+    // ----- Local Channel Declarations ----------------------------------------
+    sc_map_linear<hit_signal_t> fe_out_signals;
+    sc_signal<bool> true_sig;
 
-  // ----- Process Declarations ------------------------------------------------
+    // ----- Process Declarations ----------------------------------------------
 
-  // ----- Other Method Declarations -------------------------------------------
+    // ----- Other Method Declarations -----------------------------------------
 
-  // ----- Module Instantiations -----------------------------------------------
-  std::array<front_end_chip*, NR_FE_CHIP_PER_MODULE> front_end_chips;
-  data_concentrator dataConcentrator;
+    // ----- Module Instantiations ---------------------------------------------
+    sc_map_linear<front_end_chip> front_end_chips;
+    data_concentrator dataConcentrator;
 
-  // ----- Constructor ---------------------------------------------------------
-  /*!
-   * Constructor:
-   */
-  sensor_module(const sc_module_name _name);
-  SC_HAS_PROCESS(sensor_module);
+    // ----- Constructor -------------------------------------------------------
+    /*!
+     * Constructor:
+     */
+    sensor_module(const sc_module_name _name);
+    SC_HAS_PROCESS(sensor_module);
 
 private:
 

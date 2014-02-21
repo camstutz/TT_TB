@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.hpp
  * @author Christian Amstutz
- * @date Feb 3, 2014
+ * @date Feb 20, 2014
  *
  * @brief
  *
@@ -19,6 +19,8 @@
 
 #include <systemc.h>
 
+#include "../lib/systemc_helpers/sc_map/sc_map_4d.hpp"
+
 #include "TT_configuration.hpp"
 #include "HitEvent.hpp"
 #include "stub.hpp"
@@ -26,35 +28,30 @@
 /*!
  * @brief
  */
-class hit_generator : public sc_module {
-
+class hit_generator : public sc_module
+{
 public:
-  typedef sc_fifo_out<stub> *hit_out_t;
-  typedef std::vector<hit_out_t> z_dim_out_t;
-  typedef std::vector<z_dim_out_t> phi_dim_out_t;
-  typedef std::vector<phi_dim_out_t> layer_dim_out_t;
-  typedef std::vector<layer_dim_out_t> hit_out_bus_t;
 
-  // ----- Port Declarations ---------------------------------------------------
-  hit_out_bus_t hit_outputs;
+    // ----- Port Declarations ---------------------------------------------------
+    sc_map_4d<sc_fifo_out<stub> > hit_outputs;
 
-  // ----- Local Channel Declarations ------------------------------------------
+    // ----- Local Channel Declarations ------------------------------------------
 
-  // ----- Process Declarations ------------------------------------------------
-  void schedule_hits();
+    // ----- Process Declarations ------------------------------------------------
+    void schedule_hits();
 
-  // ----- Other Method Declarations -------------------------------------------
+    // ----- Other Method Declarations -------------------------------------------
 
-  // ----- Module Instantiations -----------------------------------------------
+    // ----- Module Instantiations -----------------------------------------------
 
-  // ----- Constructor ---------------------------------------------------------
-  /*!
-   * Constructor:
-   */
-  hit_generator(sc_module_name _name, std::string hitFileName);
-  SC_HAS_PROCESS(hit_generator);
+    // ----- Constructor ---------------------------------------------------------
+    /*!
+     * Constructor:
+     */
+    hit_generator(sc_module_name _name, std::string hitFileName);
+    SC_HAS_PROCESS(hit_generator);
 
 private:
-  std::queue<HitEvent> hit_queue;
-  int readFile(const std::string &hit_file);
+    std::queue<HitEvent> hit_queue;
+    int readFile(const std::string &hit_file);
 };
