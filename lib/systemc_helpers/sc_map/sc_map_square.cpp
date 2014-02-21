@@ -57,7 +57,33 @@ template<typename object_type>
 object_type& sc_map_square<object_type>::at(const key_type key_Y,
         const key_type key_X)
 {
-    return (*objects_map[key_Y][key_X]);
+    // todo: at exception handling for out range accesses
+    return (*objects_map.at(key_Y).at(key_X) );
+}
+
+//******************************************************************************
+template<typename object_type>
+std::pair<bool, typename sc_map_square<object_type>::full_key_type>
+        sc_map_square<object_type>::get_key(object_type& object) const
+{
+    std::pair<bool, full_key_type> full_key;
+    full_key.first = false;
+
+    for (auto Y_dim_element : objects_map)
+    {
+        for (auto map_element : Y_dim_element.second)
+        {
+            if (map_element.second == &object)
+            {
+                full_key.first = true;
+                full_key.second.Y_dim = Y_dim_element.first;
+                full_key.second.X_dim = map_element.first;
+                break;
+            }
+        }
+    }
+
+    return (full_key);
 }
 
 //******************************************************************************
@@ -96,6 +122,7 @@ object_type* sc_map_square<object_type>::creator::operator() (
     sc_map_square<object_type>::key_type id_X = id % size_X;
     sc_map_square<object_type>::key_type id_Y = id / size_X;
 
+    // todo: only remove if there is number in the end of name
     std::string full_name(name);
     std::size_t id_pos = full_name.find_first_of('_');
     full_name = full_name.substr(0, id_pos);

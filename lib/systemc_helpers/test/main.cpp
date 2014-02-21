@@ -59,6 +59,27 @@ int sc_main(int argc, char *agv[])
     snk3.input.bind(signals3);
     snk4.input.bind(signals4);
 
+    // Testing get_key()
+    for (auto& this_sig : signals1)
+    {
+        std::pair<bool, sc_map_linear<sc_signal<bool> >::full_key_type> the_key = signals1.get_key(this_sig);
+        std::cout << "Key: " << the_key.first << " - " << the_key.second.X_dim << std::endl;
+    }
+    std::pair<bool, sc_map_linear<sc_signal<bool> >::full_key_type> the_key2 = signals1.get_key(signals1.at(0));
+    std::cout << "Key: " << the_key2.first << " - " << the_key2.second.X_dim << std::endl;
+    sc_signal<bool> test_signal;
+    std::pair<bool, sc_map_linear<sc_signal<bool> >::full_key_type> the_key = signals1.get_key(test_signal);
+    std::cout << "Key: " << the_key.first << " - " << the_key.second.X_dim << std::endl;
+
+    std::pair<bool, sc_map_square<sc_signal<bool> >::full_key_type> the_key3 = signals2.get_key(signals2.at(1,1));
+    std::cout << "Key: " << the_key3.first << " - " << the_key3.second.Y_dim << "," << the_key3.second.X_dim << std::endl;
+
+    std::pair<bool, sc_map_cube<sc_signal<bool> >::full_key_type> the_key4 = signals3.get_key(signals3.at(3,1,1));
+    std::cout << "Key: " << the_key4.first << " - " << the_key4.second.Z_dim << "," << the_key4.second.Y_dim << "," << the_key4.second.X_dim << std::endl;
+
+    std::pair<bool, sc_map_4d<sc_signal<bool> >::full_key_type> the_key5 = signals4.get_key(signals4.at(2,3,0,1));
+    std::cout << "Key: " << the_key5.first << " - " << the_key5.second.W_dim << ","<< the_key5.second.Z_dim << "," << the_key5.second.Y_dim << "," << the_key5.second.X_dim << std::endl;
+
     // **** Setup Tracing
     sc_trace_file* fp;
     fp=sc_create_vcd_trace_file("wave");

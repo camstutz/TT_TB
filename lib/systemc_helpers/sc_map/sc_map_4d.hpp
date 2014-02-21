@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_4d.hpp
  * @author Christian Amstutz
- * @date Feb 19, 2014
+ * @date Feb 21, 2014
  *
  * @brief
  *
@@ -26,6 +26,13 @@ class sc_map_4d : public sc_map_base<object_type>
 {
 public:
     typedef typename sc_map_base<object_type>::key_type key_type;
+    typedef struct
+    {
+        key_type W_dim;
+        key_type Z_dim;
+        key_type Y_dim;
+        key_type X_dim;
+    } full_key_type;
     typedef typename sc_map_base<object_type>::size_type size_type;
 
     static const key_type default_start_id_W = 0;
@@ -45,8 +52,10 @@ public:
     size_type size_Z();
     size_type size_Y();
     size_type size_X();
+
     object_type& at(const key_type key_W, const key_type key_Z,
             const key_type key_Y, const key_type key_X);
+    std::pair<bool, full_key_type> get_key(object_type& object) const;
 
     template<typename signal_type>
     bool bind(sc_map_4d<signal_type>& signals_map);
