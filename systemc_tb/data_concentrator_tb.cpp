@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_tb.cpp
  * @author Christian Amstutz
- * @date Feb 5, 2014
+ * @date Feb 21, 2014
  */
 
 /*
@@ -20,33 +20,16 @@
  */
 
 data_concentrator_tb::data_concentrator_tb(sc_module_name _name) :
-    sc_module(_name),
-    rst("rst"),
-    LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-    dut_data_concentrator("Data_Concentrator_DUT") {
-
+        sc_module(_name),
+        rst("rst"),
+        fe_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "fe_signal"),
+        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+        dut_data_concentrator("Data_Concentrator_DUT")
+{
   // ----- Creation and binding of signals -------------------------------------
   dut_data_concentrator.clk(LHC_clock);
   dut_data_concentrator.rst(rst);
-
-  unsigned int fe_cnt = 0;
-  for(front_end_signal_t &fe_signal: fe_signals) {
-    unsigned int hit_cnt = 0;
-    for (front_end_in_t &fe_in_port: fe_signal) {
-      std::ostringstream port_name_dv, port_name_data;
-      port_name_dv << "fe" << fe_cnt << "_dv" << hit_cnt;
-      fe_in_port.dv = new sc_signal<bool>(port_name_dv.str().c_str());
-      port_name_data << "fe" << fe_cnt << "_d" << hit_cnt;
-      fe_in_port.data = new sc_signal<stub>(port_name_data.str().c_str());
-
-      dut_data_concentrator.fe_stub_in[fe_cnt][hit_cnt].dv->bind(*fe_in_port.dv);
-      dut_data_concentrator.fe_stub_in[fe_cnt][hit_cnt].data->bind(*fe_in_port.data);
-
-      hit_cnt++;
-    }
-    fe_cnt++;
-  }
-
+  dut_data_concentrator.fe_stub_in.bind(fe_signals);
   dut_data_concentrator.dc_out(dc_output);
 
   // ----- Process registration ------------------------------------------------
@@ -66,106 +49,99 @@ data_concentrator_tb::data_concentrator_tb(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void data_concentrator_tb::end_of_elaboration() {
-
-  for(front_end_signal_t &fe_signal: fe_signals) {
-    for (front_end_in_t &fe_in_port: fe_signal) {
-      fe_in_port.dv->write(false);
+void data_concentrator_tb::end_of_elaboration()
+{
+    for (auto& fe_signal : fe_signals)
+    {
+        fe_signal.write(fe_out_data());
     }
-  }
 
-  return;
+    return;
 }
 
 // *****************************************************************************
+data_concentrator_tb::~data_concentrator_tb()
+{
+    std::cout << log_buffer.str();
 
-data_concentrator_tb::~data_concentrator_tb() {
-
-  std::cout << log_buffer.str();
-
-  return;
+    return;
 }
 
 // *****************************************************************************
-void data_concentrator_tb::generate_hit_data() {
+void data_concentrator_tb::generate_hit_data()
+{
+    wait(50, SC_NS);
+    write_fe(4,2,255,0);
 
-  wait(50, SC_NS);
-  write_fe(4,2,255,0);
+    wait(25,SC_NS);
+    release_fe(4,2);
 
-  wait(25,SC_NS);
-  release_fe(4,2);
+    wait(200, SC_NS);
+    write_fe(1,1,255,31);
+    write_fe(1,2,255,31);
+    write_fe(1,0,255,31);
+    write_fe(2,1,255,31);
+    write_fe(2,2,255,31);
+    write_fe(2,0,255,31);
+    write_fe(3,1,255,31);
+    write_fe(3,2,255,31);
+    write_fe(3,0,255,31);
+    write_fe(4,1,255,31);
+    write_fe(4,2,255,31);
+    write_fe(4,0,255,31);
+    write_fe(0,0,255,31);
 
-  wait(200, SC_NS);
-  write_fe(1,1,255,31);
-  write_fe(1,2,255,31);
-  write_fe(1,3,255,31);
-  write_fe(2,1,255,31);
-  write_fe(2,2,255,31);
-  write_fe(2,3,255,31);
-  write_fe(3,1,255,31);
-  write_fe(3,2,255,31);
-  write_fe(3,3,255,31);
-  write_fe(4,1,255,31);
-  write_fe(4,2,255,31);
-  write_fe(4,3,255,31);
-  write_fe(5,3,255,31);
+    wait(25,SC_NS);
+    release_fe(1,1);
+    release_fe(1,2);
+    release_fe(1,0);
+    release_fe(2,1);
+    release_fe(2,2);
+    release_fe(2,0);
+    release_fe(3,1);
+    release_fe(3,2);
+    release_fe(3,0);
+    release_fe(4,1);
+    release_fe(4,2);
+    release_fe(4,0);
+    release_fe(0,0);
 
-  wait(25,SC_NS);
-  release_fe(1,1);
-  release_fe(1,2);
-  release_fe(1,3);
-  release_fe(2,1);
-  release_fe(2,2);
-  release_fe(2,3);
-  release_fe(3,1);
-  release_fe(3,2);
-  release_fe(3,3);
-  release_fe(4,1);
-  release_fe(4,2);
-  release_fe(4,3);
-  release_fe(5,3);
-
-  return;
+    return;
 }
 
 // *****************************************************************************
-void data_concentrator_tb::print_output() {
-
-  while(1) {
-    wait();
-    log_buffer << sc_time_stamp() << ": " << dc_output.read() << std::endl;
-  }
+void data_concentrator_tb::print_output()
+{
+    while(1) {
+       wait();
+       log_buffer << sc_time_stamp() << ": " << dc_output.read() << std::endl;
+    }
 }
 
 // *****************************************************************************
-void data_concentrator_tb::write_fe(
-    const unsigned int fe_chip,
-    const unsigned int hit_nr,
-    const unsigned int address,
-    const unsigned int bend) {
+void data_concentrator_tb::write_fe( const unsigned int fe_chip,
+        const unsigned int hit_nr, const unsigned int address,
+        const unsigned int bend)
+{
+    fe_out_data fe_data;
+    fe_data.set_dv(true);
+    fe_data.set_data(stub(address, bend));
+    fe_signals.at(fe_chip, hit_nr).write(fe_data);
 
-  stub send_stub;
+    unsigned int output = (address << 5) | bend;
+    log_buffer << sc_time_stamp() << ": writing to "
+               << fe_signals.at(fe_chip,hit_nr).name()
+               << " --> " << std::hex << output << std::dec
+               << std::endl;
 
-  fe_signals[fe_chip][hit_nr].dv->write(true);
-  send_stub.setAddress(address);
-  send_stub.setBend(bend);
-  fe_signals[fe_chip][hit_nr].data->write(send_stub);
-
-  unsigned int output = (address << 5) | bend;
-  log_buffer << sc_time_stamp() << ": writing to "
-             << fe_signals[4][2].data->name()
-             << " --> " << std::hex << output << std::dec
-             << std::endl;
-
-  return;
+    return;
 }
 
 // *****************************************************************************
-void data_concentrator_tb::release_fe(
-    const unsigned int fe_chip,
-    const unsigned int hit_nr) {
+void data_concentrator_tb::release_fe(const unsigned int fe_chip,
+        const unsigned int hit_nr)
+{
+    fe_signals.at(fe_chip, hit_nr).write(fe_out_data());
 
-  fe_signals[fe_chip][hit_nr].dv->write(false);
-
-  return;
+    return;
 }

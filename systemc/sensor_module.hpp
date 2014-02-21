@@ -19,6 +19,7 @@
 #include <systemc.h>
 
 #include "../lib/systemc_helpers/sc_map/sc_map_linear.hpp"
+#include "../lib/systemc_helpers/sc_map/sc_map_square.hpp"
 
 #include "stub.hpp"
 #include "TT_configuration.hpp"
@@ -32,12 +33,6 @@ class sensor_module : public sc_module
 {
 public:
 
-    //* todo: define this struct globally
-    typedef struct {
-        bool dv;
-        stub data;
-    } hit_signal_t;
-
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_map_linear<sc_fifo_in<stub> > stub_inputs;
@@ -45,7 +40,7 @@ public:
     sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_linear<hit_signal_t> fe_out_signals;
+    sc_map_square<sc_signal<fe_out_data> > fe_out_signals;
     sc_signal<bool> true_sig;
 
     // ----- Process Declarations ----------------------------------------------

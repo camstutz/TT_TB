@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.cpp
  * @author Christian Amstutz
- * @date Feb 20, 2014
+ * @date Feb 21, 2014
  *
  * @brief
  */
@@ -83,9 +83,9 @@ void front_end_chip::write_hits()
         unsigned int num_stubs = selected_stubs.num_available();
         for (unsigned int i=0; i<num_stubs; i++)
         {
-            hit_out_t hit_to_write;
-            hit_to_write.dv = true;
-            hit_to_write.data = selected_stubs.read();
+            fe_out_data hit_to_write;
+            hit_to_write.set_dv(true);
+            hit_to_write.set_data(selected_stubs.read());
             hit_outputs.at(i).write(hit_to_write);
         }
 
@@ -94,9 +94,9 @@ void front_end_chip::write_hits()
         //* todo: write parallel to all ports when implemented in map
         for(auto& output : hit_outputs)
         {
-            hit_out_t hit_to_write;
-            hit_to_write.dv = false;
-            //* todo: add data value
+            fe_out_data hit_to_write;
+            hit_to_write.set_dv(false);
+            hit_to_write.set_data(stub(0,0));
             output.write(hit_to_write);
         }
     }

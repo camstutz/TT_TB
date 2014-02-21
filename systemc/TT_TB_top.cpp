@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 #include <systemc.h>
 
@@ -46,7 +47,10 @@ int sc_main(int argc, char *agv[])
 
         //* todo: XXX
         //sens_module.stub_inputs(hit_fifos.getLinear(1,2,3));
-        //sens_module.dc_out.bind(fe_signals.at(1,2,3));
+
+        std::pair<bool, sc_map_cube<sensor_module>::full_key_type> full_key;
+        full_key = sensor_modules.get_key(sens_module);
+        sens_module.dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
     }
 
     // ----- Time unit / resolution setup ----------------------------------------

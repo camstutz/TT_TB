@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_tb.hpp
  * @author Christian Amstutz
- * @date Feb 5, 2014
+ * @date Feb 21, 2014
  *
  * @brief
  *
@@ -15,8 +15,10 @@
 
 #include <iostream>
 #include <sstream>
-#include <array>
+
 #include "systemc.h"
+
+#include "../lib/systemc_helpers/sc_map/sc_map_square.hpp"
 
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/data_concentrator.hpp"
@@ -24,43 +26,40 @@
 /*!
  * @brief
  */
-class data_concentrator_tb : public sc_module {
-
+class data_concentrator_tb : public sc_module
+{
 public:
-  typedef struct {
-    sc_signal<bool> *dv;
-    sc_signal<stub> *data;
-  } front_end_in_t;
-  typedef std::array<front_end_in_t, MAX_HITS_PER_FE_CHIP> front_end_signal_t;
 
-  // ----- Port Declarations ---------------------------------------------------
+    // ----- Port Declarations -------------------------------------------------
 
-  // ----- Local Channel Declarations ------------------------------------------
-  sc_signal<bool> rst;
-  std::array<front_end_signal_t, NR_FE_CHIP_PER_MODULE> fe_signals;
+    // ----- Local Channel Declarations ----------------------------------------
+    sc_signal<bool> rst;
+    sc_map_square<sc_signal<fe_out_data> > fe_signals;
+    sc_signal<sc_bv<DC_OUTPUT_WIDTH> > dc_output;
 
-  sc_signal<sc_bv<DC_OUTPUT_WIDTH> > dc_output;
-  // ----- Process Declarations ------------------------------------------------
-  void generate_hit_data();
-  void print_output();
+    // ----- Process Declarations ----------------------------------------------
+    void generate_hit_data();
+    void print_output();
 
-  // ----- Other Method Declarations -------------------------------------------
-  void write_fe(const unsigned int fe_chip, const unsigned int hit_nr, const unsigned int address, const unsigned int bend);
-  void release_fe(const unsigned int fe_chip, const unsigned int hit_nr);
+    // ----- Other Method Declarations -----------------------------------------
+    void write_fe(const unsigned int fe_chip, const unsigned int hit_nr,
+            const unsigned int address, const unsigned int bend);
+    void release_fe(const unsigned int fe_chip, const unsigned int hit_nr);
 
-  // ----- Module Instantiations -----------------------------------------------
-  sc_clock LHC_clock;
-  data_concentrator dut_data_concentrator;
+    // ----- Module Instantiations ---------------------------------------------
+    sc_clock LHC_clock;
+    data_concentrator dut_data_concentrator;
 
-  // ----- Constructor ---------------------------------------------------------
-  /*!
-   * Constructor:
-   */
-  data_concentrator_tb(sc_module_name _name);
-  SC_HAS_PROCESS(data_concentrator_tb);
-  ~data_concentrator_tb();
-  void end_of_elaboration();
+    // ----- Constructor ---------------------------------------------------------
+    /*!
+     * Constructor:
+     */
+    data_concentrator_tb(sc_module_name _name);
+    SC_HAS_PROCESS(data_concentrator_tb);
+    ~data_concentrator_tb();
+    void end_of_elaboration();
 
 private:
-  std::ostringstream log_buffer;
+    std::ostringstream log_buffer;
+
 };

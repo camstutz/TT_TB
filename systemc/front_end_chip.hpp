@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.hpp
  * @author Christian Amstutz
- * @date Feb 20, 2014
+ * @date Feb 21, 2014
  *
  * @brief
  *
@@ -24,24 +24,20 @@
 
 #include "TT_configuration.hpp"
 #include "stub.hpp"
+#include "fe_out_data.hpp"
 
 /*!
  * @brief
  */
+//* todo: If data is written at the clock cycle it will be lost
 class front_end_chip : public sc_module
 {
 public:
-    typedef struct
-    {
-        bool dv;
-        stub data;
-    } hit_out_t;
-
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> en;
     sc_fifo_in<stub> stub_input;
-    sc_map_linear<sc_signal<hit_out_t> > hit_outputs;
+    sc_map_linear<sc_out<fe_out_data> > hit_outputs;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_fifo<stub> selected_stubs;

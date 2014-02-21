@@ -65,7 +65,7 @@ void hit_generator::schedule_hits()
                 << "L" << hit.layer
                 << "P" << hit.phiCoordinate
                 << "Z" << hit.zCoordinate
-                << "FE" <<hit.frontEndChipNr
+                << "FE" << hit.frontEndChipNr
                 << " Stub --> 0x"
                 << processed_stub.getAddress() << "/0x"
                 << processed_stub.getBend() << std::endl;

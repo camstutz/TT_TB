@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date Feb 20, 2014
+ * @date Feb 21, 2014
  *
  * @brief
  */
@@ -44,7 +44,6 @@ data_concentrator::data_concentrator(sc_module_name _name) :
     // ----- Module instance / channel binding -----------------------------------
 
     // Create and name the input ports
-    unsigned int fe_cnt = 0;
 
     return;
 }
@@ -56,17 +55,17 @@ void data_concentrator::read_FE_chips()
     {
         wait();
 
-        unsigned int fe_cnt=0;
-        for (fe_port_t &fe_port : fe_stub_in) {
-            for (fe_in_t &fe_in : fe_port) {
-                if (fe_in.dv->read() == true) {
-                    //! todo: make generic
-                    sc_bv<20> data_word;
-                    data_word = ( (true, sc_bv<3>(clock_phase.read()), sc_bv<3>(fe_cnt), fe_in.data->read().getBitVector()) );
-                    stub_buffer.push_back(data_word);
-                }
+        for(auto& fe_in : fe_stub_in)
+        {
+            fe_out_data fe_data = fe_in.read();
+            if (fe_data.get_dv() == true)
+            {
+                std::pair<bool, sc_map_square<sc_in<fe_out_data> >::full_key_type> signal_key;
+                signal_key = fe_stub_in.get_key(fe_in);
+                sc_bv<20> data_word;
+                data_word = ( (true, sc_bv<3>(clock_phase.read()), sc_bv<3>(signal_key.second.Y_dim), fe_data.get_data().getBitVector()) );
+                stub_buffer.push_back(data_word);
             }
-            fe_cnt++;
         }
     }
 

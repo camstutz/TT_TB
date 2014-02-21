@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Feb 20, 2014
+ * @date Feb 21, 2014
  *
  * @brief
  *
@@ -13,9 +13,7 @@
 
 #pragma once
 
-#include <array>
 #include <iostream>
-#include <sstream>
 
 #include <systemc.h>
 
@@ -24,6 +22,7 @@
 #include "TT_configuration.hpp"
 #include "nbits.hpp"
 #include "stub.hpp"
+#include "fe_out_data.hpp"
 
 /*!
  * @brief
@@ -31,17 +30,10 @@
 class data_concentrator : public sc_module
 {
 public:
-    typedef struct
-    {
-        bool *dv;
-        stub *data;
-    } fe_in_t;
-
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> rst;
-    sc_map_square<sc_signal<fe_in_t> > fe_stub_in;
-
+    sc_map_square<sc_in<fe_out_data> > fe_stub_in;
     //! todo: think about the data type of dc_out, generic ?
     sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
 

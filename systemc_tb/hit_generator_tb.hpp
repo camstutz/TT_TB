@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_test.hpp
  * @author Christian
- * @date Jan 15, 2014
+ * @date Feb 21, 2014
  *
  * @brief
  *
@@ -18,6 +18,8 @@
 
 #include "systemc.h"
 
+#include "../lib/systemc_helpers/sc_map/sc_map_4d.hpp"
+
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/hit_generator.hpp"
 #include "../systemc/stub.hpp"
@@ -25,32 +27,32 @@
 /*!
  * @brief
  */
-class hit_generator_tb : public sc_module {
-
+class hit_generator_tb : public sc_module
+{
 public:
-  // ----- Port Declarations ---------------------------------------------------
+    // ----- Port Declarations ---------------------------------------------------
 
-  // ----- Local Channel Declarations ------------------------------------------
-  std::vector<std::vector<std::vector<std::vector<sc_fifo<stub> *> > > > hit_signals;
+    // ----- Local Channel Declarations ------------------------------------------
+    sc_map_4d<sc_fifo<stub> > hit_signals;
 
-  // ----- Process Declarations ------------------------------------------------
-  void check_output();
+    // ----- Process Declarations ------------------------------------------------
+    void check_output();
 
-  // ----- Other Method Declarations -------------------------------------------
+    // ----- Other Method Declarations -------------------------------------------
 
-  // ----- Module Instantiations -----------------------------------------------
+    // ----- Module Instantiations -----------------------------------------------
 
-  hit_generator dut_hit_generator;
+    hit_generator dut_hit_generator;
 
-  // ----- Constructor ---------------------------------------------------------
-  /*!
-   * Constructor:
-   */
-  hit_generator_tb(sc_module_name _name);
-  SC_HAS_PROCESS(hit_generator_tb);
-  ~hit_generator_tb();
+    // ----- Constructor ---------------------------------------------------------
+    /*!
+     * Constructor:
+     */
+    hit_generator_tb(sc_module_name _name);
+    SC_HAS_PROCESS(hit_generator_tb);
+    ~hit_generator_tb();
 
 private:
-  std::ostringstream log_buffer;
+    std::ostringstream log_buffer;
 
 };

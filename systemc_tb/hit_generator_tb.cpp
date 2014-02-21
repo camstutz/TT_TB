@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_tb.cpp
  * @author Christian Amstutz
- * @date Jan 15, 2014
+ * @date Jan 21, 2014
  */
 
 /*
@@ -20,84 +20,64 @@
  */
 
 hit_generator_tb::hit_generator_tb(sc_module_name _name) :
-    sc_module(_name),
-    dut_hit_generator("Hit_Generator_DUT", "test_hits.txt") {
+        sc_module(_name),
+        hit_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_signal"),
+        dut_hit_generator("Hit_Generator_DUT", "test_hits.txt")
+{
+    // ----- Creation and binding of signals -----------------------------------
+    dut_hit_generator.hit_outputs.bind(hit_signals);
 
-  // ----- Creation and binding of signals -------------------------------------
-  hit_signals.resize(NR_DETECTOR_LAYERS);
-  for(unsigned int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
-    hit_signals[layer].resize(NR_DETECTOR_PHI);
-    for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
-      hit_signals[layer][phi].resize(NR_DETECTOR_Z);
-      for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
-        hit_signals[layer][phi][z].resize(NR_FE_CHIP_PER_MODULE);
-        for(unsigned int fe=0; fe<NR_FE_CHIP_PER_MODULE; fe++) {
-          sc_fifo<stub> *hit_signal;
-          std::ostringstream signal_name;
-          signal_name << "hit_signal_L" << layer << "P" << phi << "Z" << z << "F" << fe;
-          hit_signal = new sc_fifo<stub>(signal_name.str().c_str(), MAX_HITS_PER_FE_CHIP);
-          hit_signals[layer][phi][z][fe] = hit_signal;
-          dut_hit_generator.hit_outputs[layer][phi][z][fe]->bind(*hit_signals[layer][phi][z][fe]);
-        }
-      }
+    // ----- Process registration ----------------------------------------------
+    SC_THREAD(check_output);
+    for (auto& hit_signal : hit_signals)
+    {
+        sensitive << hit_signal.data_written_event();
     }
-  }
+    //hit_signals.make_sensitive(this->sensitive);
 
-  // ----- Process registration ------------------------------------------------
-  SC_THREAD(check_output);
-  for(unsigned int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
-    for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
-      for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
-        for(unsigned int fe=0; fe<NR_FE_CHIP_PER_MODULE; fe++) {
-          sensitive << hit_signals[layer][phi][z][fe]->data_written_event();
-        }
-      }
-    }
-  }
+    // ----- Module variable initialization ------------------------------------
 
-  // ----- Module variable initialization --------------------------------------
+    // ----- Module instance / channel binding ---------------------------------
 
-  // ----- Module instance / channel binding -----------------------------------
+    log_buffer << std::endl
+               << "Simulation Output of Hit Generator TB:" << std::endl
+               << "*******************************************" << std::endl;
 
-  log_buffer << std::endl
-             << "Simulation Output of Hit Generator TB:" << std::endl
-             << "*******************************************" << std::endl;
-
-  return;
+    return;
 }
 
 // *****************************************************************************
-hit_generator_tb::~hit_generator_tb() {
+hit_generator_tb::~hit_generator_tb()
+{
+   std::cout << log_buffer.str();
 
-  std::cout << log_buffer.str();
-
-  return;
+   return;
 }
 
 // *****************************************************************************
-void hit_generator_tb::check_output() {
+void hit_generator_tb::check_output()
+{
+  while(1)
+  {
+      wait();
 
-  while(1) {
-    wait();
-    for(unsigned int layer=0; layer<NR_DETECTOR_LAYERS; layer++) {
-      for(unsigned int phi=0; phi<NR_DETECTOR_PHI; phi++) {
-        for(unsigned int z=0; z<NR_DETECTOR_Z; z++) {
-          for(unsigned int fe=0; fe<NR_FE_CHIP_PER_MODULE; fe++) {
-            stub read_stub;
-            while (hit_signals[layer][phi][z][fe]->nb_read(read_stub) ) {
+      for (auto& hit_signal: hit_signals)
+      {
+          stub read_stub;
+          while (hit_signal.nb_read(read_stub)) {
+              std::pair<bool, sc_map_4d<sc_fifo<stub>>::full_key_type> signal_key;
+              signal_key = hit_signals.get_key(hit_signal);
               log_buffer << sc_time_stamp () << " @ hit_generator."
-                         << "L" << layer
-                         << "P" << phi
-                         << "Z" << z
-                         << "FE" << fe
+                         << "L" << signal_key.second.W_dim
+                         << "P" << signal_key.second.Z_dim
+                         << "Z" << signal_key.second.Y_dim
+                         << "FE" << signal_key.second.X_dim
                          << " : " << std::hex
                          << "0x" << read_stub.getAddress() << " - "
                          << "0x" << read_stub.getBend() << std::endl;
-            }
           }
-        }
       }
-    }
+
   }
 
   return;
