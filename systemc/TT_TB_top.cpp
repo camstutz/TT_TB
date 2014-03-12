@@ -17,6 +17,7 @@
 #include <systemc.h>
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../lib/systemc_helpers/sc_analyzer/sc_analyzer.hpp"
 
 #include "TT_configuration.hpp"
 #include "hit_generator.hpp"
@@ -25,6 +26,9 @@
 
 int sc_main(int argc, char *agv[])
 {
+    sc_analyzer analyzer;
+    analyzer.register_model_setup_start();
+
     // ----- Channel declarations ------------------------------------------------
     sc_clock LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true);
 
@@ -94,13 +98,17 @@ int sc_main(int argc, char *agv[])
     std::cout << "Start simulation ..." << std::endl;
     #endif
 
+    analyzer.register_simulation_start();
     sc_start(1000, SC_NS);
+    analyzer.register_simulation_end();
 
 //  sc_close_vcd_trace_file(trace_file);
 
     #ifdef DEBUG
     std::cout << "Simulation ended." << std::endl;
     #endif
+
+    analyzer.print_report();
   
     return (0);
 }
