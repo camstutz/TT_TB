@@ -56,6 +56,4 @@ public:
     sensor_module(const sc_module_name _name);
     SC_HAS_PROCESS(sensor_module);
 
-private:
-
 };

@@ -41,7 +41,8 @@ hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
 // *****************************************************************************
 void hit_generator::schedule_hits()
 {
-    while(!hit_queue.empty()) {
+    while (!hit_queue.empty())
+    {
         sc_time wait_time;
         HitEvent hit;
         stub processed_stub;

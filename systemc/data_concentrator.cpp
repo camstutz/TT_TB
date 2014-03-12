@@ -98,44 +98,51 @@ void data_concentrator::advance_clock_phase()
 // *****************************************************************************
 void data_concentrator::write_output() {
 
-  //! todo: change constants numbers to parameter
-  while(1) {
-    wait();
+    //! todo: change constants numbers to parameter
+    while(1)
+    {
+        wait();
 
-    sc_bv<DC_OUTPUT_WIDTH> output_val;
-    unsigned int high_buffer = (clock_phase.read()+1)*(DC_OUTPUT_WIDTH-2)-1;
-    unsigned int low_buffer = clock_phase.read()*(DC_OUTPUT_WIDTH-2);
-    output_val(DC_OUTPUT_WIDTH-3,0) = output_buffer(high_buffer, low_buffer);
-    output_val[DC_OUTPUT_WIDTH-2] = 0;
-    // Indicate the beginning of a window by the first bit of a data word
-    if (clock_phase.read() == 0) {
-      output_val[DC_OUTPUT_WIDTH-1] = 1;
+        sc_bv<DC_OUTPUT_WIDTH> output_val;
+        unsigned int high_buffer = (clock_phase.read()+1)*(DC_OUTPUT_WIDTH-2)-1;
+        unsigned int low_buffer = clock_phase.read()*(DC_OUTPUT_WIDTH-2);
+        output_val(DC_OUTPUT_WIDTH-3,0) = output_buffer(high_buffer, low_buffer);
+        output_val[DC_OUTPUT_WIDTH-2] = 0;
+
+        // Indicate the beginning of a window by the first bit of a data word
+        if (clock_phase.read() == 0)
+        {
+            output_val[DC_OUTPUT_WIDTH-1] = 1;
+        }
+        else
+        {
+            output_val[DC_OUTPUT_WIDTH-1] = 0;
+        }
+
+        dc_out.write(output_val);
     }
-    else {
-      output_val[DC_OUTPUT_WIDTH-1] = 0;
-    }
-    dc_out.write(output_val);
-  }
 
 }
 
 // *****************************************************************************
-void data_concentrator::create_output_buffer() {
+void data_concentrator::create_output_buffer()
+{
+    output_buffer = sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES>(0);
 
-  output_buffer = sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES>(0);
+    // Buffer size is maximal NR_DC_OUT_STUBS in real system
+    if (stub_buffer.size() > NR_DC_OUT_STUBS)
+    {
+        std::cout << "data_concentrator: Stub buffer overflow!" << std::endl;
+    }
+    stub_buffer.resize(NR_DC_OUT_STUBS, empty_slot);
 
-  // Buffer size is only NR_DC_OUT_STUBS in real system
-  if (stub_buffer.size() > NR_DC_OUT_STUBS) {
-    std::cout << "data_concentrator: Stub buffer overflow!" << std::endl;
-  }
-  stub_buffer.resize(NR_DC_OUT_STUBS, empty_slot);
+    for(unsigned short i; i<NR_DC_OUT_STUBS; i++)
+    {
+        //! todo: change stub length to constant
+        output_buffer( (i+1)*20-1, i*20) = stub_buffer[i];
+    }
 
-  for(unsigned short i; i<NR_DC_OUT_STUBS; i++) {
-    //! todo: change stub length to constant
-    output_buffer( (i+1)*20-1, i*20) = stub_buffer[i];
-  }
+    stub_buffer.clear();
 
-  stub_buffer.clear();
-
-  return;
+    return;
 }
