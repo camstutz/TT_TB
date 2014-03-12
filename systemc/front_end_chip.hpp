@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.hpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 12, 2014
  *
  * @brief
  *
@@ -20,7 +20,7 @@
 
 #include <systemc.h>
 
-#include "../lib/systemc_helpers/sc_map/sc_map_linear.hpp"
+#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "TT_configuration.hpp"
 #include "stub.hpp"

@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_top.cpp
  * @author Christian Amstutz
- * @date Feb 20, 2014
+ * @date Mar 12, 2014
  *
  * @brief
  */
@@ -16,8 +16,7 @@
 
 #include <systemc.h>
 
-#include "../lib/systemc_helpers/sc_map/sc_map_4d.hpp"
-#include "../lib/systemc_helpers/sc_map/sc_map_cube.hpp"
+#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "TT_configuration.hpp"
 #include "hit_generator.hpp"
