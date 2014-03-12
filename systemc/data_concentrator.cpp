@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 12, 2014
  *
  * @brief
  */
@@ -26,7 +26,7 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
         rst("rst"),
-        fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in"),
+        fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in", 1, 1),
         dc_out("dc_out"),
         empty_slot( (false, sc_bv<19>(0)) )
 {

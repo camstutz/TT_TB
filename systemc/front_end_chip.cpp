@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.cpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 12, 2014
  *
  * @brief
  */
@@ -27,7 +27,7 @@ front_end_chip::front_end_chip(const sc_module_name _name) :
         clk("clk"),
         en("en"),
         stub_input("stub_in"),
-        hit_outputs(MAX_HITS_PER_FE_CHIP, "hit_out"),
+        hit_outputs(MAX_HITS_PER_FE_CHIP, "hit_out", 1),
         selected_stubs("sel_stubs", MAX_HITS_PER_FE_CHIP)
 {
     // ----- Process registration ----------------------------------------------
@@ -86,7 +86,7 @@ void front_end_chip::write_hits()
             fe_out_data hit_to_write;
             hit_to_write.set_dv(true);
             hit_to_write.set_data(selected_stubs.read());
-            hit_outputs.at(i).write(hit_to_write);
+            hit_outputs.at(i+1).write(hit_to_write);
         }
 
         wait(clk.posedge_event());

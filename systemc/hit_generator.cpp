@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date Feb 20, 2014
+ * @date Mar 12, 2014
  *
  * @brief
  */
@@ -23,7 +23,7 @@
 hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
         sc_module(_name),
         hit_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_PHI,
-                NR_FE_CHIP_PER_MODULE, "hit_output")
+                NR_FE_CHIP_PER_MODULE, "hit_output", 1, 1, 1, 1)
 {
   // ----- Process registration ------------------------------------------------
   SC_THREAD(schedule_hits);

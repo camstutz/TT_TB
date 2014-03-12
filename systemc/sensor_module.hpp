@@ -35,7 +35,6 @@ public:
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_map_linear<sc_fifo_in<stub> > stub_inputs;
-    //! todo: think about the data type of dc_out, generic ?
     sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
