@@ -71,7 +71,7 @@ template<typename object_type>
 template<typename signal_type>
 bool sc_map_linear<object_type>::bind(sc_map_linear<signal_type>& signals_map)
 {
-    if (this->size() !=  signals_map.size())
+    if (sc_map_base<object_type>::size() !=  signals_map.size())
     {
         std::cout << "Error: Binding of port with signal of different dimension."
                 << std::endl;
