@@ -16,8 +16,6 @@
 
 /*!
  * @class sensor_module
- *
- * The module is sensitive to ....
  */
 
 sensor_module::sensor_module(const sc_module_name _name) :
