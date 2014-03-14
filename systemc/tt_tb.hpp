@@ -17,7 +17,7 @@
 #include "TT_configuration.hpp"
 #include "hit_generator.hpp"
 #include "sensor_module.hpp"
-//#include "data_organizer.hpp"
+#include "data_organizer.hpp"
 
 /*!
  * @brief
@@ -30,8 +30,10 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_clock LHC_clock;
+    sc_signal<bool> true_sig;
     sc_map_4d<sc_fifo<stub> > hit_fifos;
     sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_signals;
+    sc_map_linear<sc_signal<do_out_data> > do_stubs;
 
     // ----- Process Declarations ----------------------------------------------
 
@@ -40,6 +42,7 @@ public:
     // ----- Module Instantiations ---------------------------------------------
     hit_generator hitGenerator;
     sc_map_cube<sensor_module> sensor_modules;
+    data_organizer dataOrganizer;
 
     // ----- Constructor -------------------------------------------------------
     /*!

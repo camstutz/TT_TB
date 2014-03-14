@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date Mar 13, 2014
  *
  * @brief
  *
@@ -40,6 +40,7 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     //! todo: change width to generic
     sc_signal<sc_uint<3> > clock_phase;
+    sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
 
     // ----- Process Declarations ----------------------------------------------
     void advance_clock_phase();
@@ -59,7 +60,6 @@ private:
     typedef sc_bv<20> long_stub;
     const long_stub empty_slot;
     std::vector<long_stub> stub_buffer;
-    sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
 
     void create_output_buffer();
 };

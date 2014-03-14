@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_tb.hpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 13, 2014
  *
  * @brief
  *
@@ -18,7 +18,7 @@
 
 #include "systemc.h"
 
-#include "../lib/systemc_helpers/sc_map/sc_map_square.hpp"
+#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/data_organizer.hpp"
@@ -36,12 +36,14 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> rst;
-    sc_map_linear<sc_signal<do_out_data> > fe_signals;
-    sc_signal<sc_bv<DC_OUTPUT_WIDTH> > dc_output;
+    sc_map_linear<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_streams;
+    sc_map_linear<sc_signal<do_out_data> > do_output;
 
     // ----- Process Declarations ----------------------------------------------
     void write_stream();
     void print_output();
+
+    void test_proc();
 
     // ----- Other Method Declarations -----------------------------------------
 
@@ -56,7 +58,6 @@ public:
     data_organizer_tb(sc_module_name _name);
     SC_HAS_PROCESS(data_organizer_tb);
     ~data_organizer_tb();
-    void end_of_elaboration();
 
 private:
     std::ostringstream log_buffer;
