@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date Mar 14, 2014
+ * @date Mar 17, 2014
  *
  * @brief
  */
@@ -36,7 +36,7 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
     SC_THREAD(read_input);
         sensitive << clk.pos();
     SC_THREAD(sort_stubs);
-        sensitive << clk.pos();
+        sensitive << input_buffer.default_event();
     SC_THREAD(write_stubs);
         sensitive << clk.pos();
 
@@ -89,66 +89,48 @@ void data_organizer::read_input()
     {
         wait();
 
-        //sc_bv<DC_OUTPUT_WIDTH> input_word = stream_in.at(0).read();
-        //input_buffer.write(input_word);
+        sc_bv<DC_OUTPUT_WIDTH> input_word = stream_in.at(0).read();
+        input_buffer.write(input_word(DC_OUTPUT_WIDTH-2-1,0));
     }
 }
 
 // *****************************************************************************
 void data_organizer::sort_stubs()
 {
-    const unsigned int word_width = DC_OUTPUT_WIDTH-2;
+    sc_bv<DC_OUTPUT_WIDTH+16> concat_buffer;
 
-    sc_bv<word_width> old_word, new_word;
-    unsigned int new_word_pos = 0;
-    unsigned int old_word_pos = word_width;
+    concat_buffer = 0;
+    unsigned int cc_buf_write_ptr = 0;
 
     while (1)
     {
         wait();
-
-        new_word = stream_in[0].read();
-        new_word_pos = 0;
 
         if (stub_table_sel.event()) {
             for(auto& stub_vector : stub_table[stub_table_sel.read()] )
             {
                 stub_vector.clear();
             }
-            old_word_pos = 0;
+            cc_buf_write_ptr = 0;
         }
 
-        sc_bv<20> process_stub = 0;
+
+        concat_buffer(cc_buf_write_ptr+(DC_OUTPUT_WIDTH-2)-1, cc_buf_write_ptr) = input_buffer.read();
+        cc_buf_write_ptr = cc_buf_write_ptr+(DC_OUTPUT_WIDTH-2);
+
         do
         {
-            if (old_word_pos < word_width )
-            {
-                unsigned int bits_from_old = word_width-old_word_pos;
-
-                process_stub(bits_from_old-1,0) = old_word(word_width-1,old_word_pos);
-                process_stub(19,bits_from_old) = new_word(19-bits_from_old,0);
-
-                // todo: next line only correct if just one value is read from old_word
-                old_word_pos = word_width;
-                new_word_pos = 19-bits_from_old+1;
-            }
-            else
-            {
-                process_stub = new_word(new_word_pos+20-1,new_word_pos);
-
-                new_word_pos = new_word_pos+20;
-            }
-
+            sc_bv<20> process_stub = concat_buffer(19,0);
             if (process_stub[19] == true)
             {
                 unsigned int time_stamp = process_stub(18,16).to_uint();
                 stub_table[stub_table_sel.read()][time_stamp].push_back(process_stub(15,0));
             }
 
-        } while (new_word_pos+20 <= word_width );
+            concat_buffer = concat_buffer(DC_OUTPUT_WIDTH+16-1,20);
+            cc_buf_write_ptr = cc_buf_write_ptr - 20;
 
-        old_word = new_word;
-        old_word_pos = new_word_pos;
+        } while (cc_buf_write_ptr >= 20);
     }
 
 }
@@ -159,16 +141,6 @@ void data_organizer::write_stubs()
     while(1)
     {
         wait();
-
-        unsigned int read_table = stub_table_sel.read();
-        if (read_table == 0)
-        {
-            read_table = 1;
-        }
-        else
-        {
-            read_table = 0;
-        }
 
         // Reset all outputs
         stub_ext empty_stub;
@@ -185,7 +157,7 @@ void data_organizer::write_stubs()
         }
 
         unsigned int i=0;
-        for (auto table_stub : stub_table[stub_table_sel.read()][clock_phase.read().to_uint()])
+        for (auto table_stub : stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()])
         {
             do_out_data output_data;
 
@@ -215,7 +187,19 @@ void data_organizer::print_table()
         unsigned int j = 0;
         for (auto line : stub_table[0])
         {
-            std::cout << sc_time_stamp() << ": [" << j << "]";
+            std::cout << sc_time_stamp() << ": [0][" << j << "]";
+            for (unsigned int i=0; i < line.size(); ++i)
+            {
+                std::cout << line[i] << ",";
+            }
+            std::cout << std::endl;
+
+            ++j;
+        }
+        j = 0;
+        for (auto line : stub_table[1])
+        {
+            std::cout << sc_time_stamp() << ": [1][" << j << "]";
             for (unsigned int i=0; i < line.size(); ++i)
             {
                 std::cout << line[i] << ",";

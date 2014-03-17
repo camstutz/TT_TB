@@ -80,7 +80,7 @@ int sc_main(int argc, char *agv[])
 
     std::cout << std::endl << "Start test bench ..." << std::endl << std::endl;
 
-    sc_start(1000, SC_NS);
+    sc_start(600, SC_NS);
 
     sc_close_vcd_trace_file(trace_file);
     std::cout << std::endl << "Test bench ended." << std::endl;

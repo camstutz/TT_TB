@@ -64,13 +64,13 @@ void data_organizer_tb::write_stream()
 {
     sc_bv<DC_OUTPUT_WIDTH> test_value;
 
-    wait(50, SC_NS);
-    test_value = ( (sc_bv<2>(2), sc_bv<30>(0x0008FFFF)) );
+    wait();
+    wait();
+    test_value = ( (sc_bv<2>(2), sc_bv<30>(0x8008FFFF)) );
     fe_streams[0].write(test_value);
 
     wait();
-    test_value = ( (sc_bv<2>(0), sc_bv<30>(0x0)) );
-    //test_value = ( (sc_bv<2>(0), sc_bv<30>(0x09FFFF80)) );
+    test_value = ( (sc_bv<2>(0), sc_bv<30>(0x00000200)) );
     fe_streams[0].write(test_value);
 
     wait();

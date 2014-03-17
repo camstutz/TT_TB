@@ -40,7 +40,7 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<sc_uint<3> > clock_phase;
     sc_signal<unsigned int> stub_table_sel;
-    //sc_fifo<sc_bv<DC_OUTPUT_WIDTH> > input_buffer;
+    sc_buffer<sc_bv<DC_OUTPUT_WIDTH-2> > input_buffer;
 
     // ----- Storage Declarations ----------------------------------------------
     std::array<stub_table_type, 2> stub_table;

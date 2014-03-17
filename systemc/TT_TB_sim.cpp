@@ -35,7 +35,8 @@ int sc_main(int argc, char *agv[])
     sc_trace_file *trace_file;
     trace_file=sc_create_vcd_trace_file("TT_TB");
 
-    //sc_trace(trace_file, LHC_clock, "LHC_clk");
+    sc_trace(trace_file, testbench.LHC_clock, "LHC_clk");
+    sc_trace(trace_file, testbench.dataOrganizer.stub_out, "stub_out");
 
     // ----- Start simulation --------------------------------------------------
 
@@ -44,7 +45,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(1000, SC_NS);
+    sc_start(1500, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);
