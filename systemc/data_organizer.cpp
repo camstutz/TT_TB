@@ -17,7 +17,7 @@
 /*!
  * @class data_organizer
  *
- * The module is sensitive to ....
+ * The module is sensitive to clk.pos and the change of the input_buffer.
  */
 
 data_organizer::data_organizer(sc_module_name _name, unsigned int phi,

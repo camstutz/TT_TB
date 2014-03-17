@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date Mar 17, 2014
  *
  * @brief
  */
@@ -10,19 +10,13 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-// *****************************************************************************
-
 #include "hit_generator.hpp"
 
 // *****************************************************************************
 
-/*!
- * @class hit_generator
- */
-
 hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
         sc_module(_name),
-        hit_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_PHI,
+        hit_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
                 NR_FE_CHIP_PER_MODULE, "hit_output", 1, 1, 1, 1)
 {
   // ----- Process registration ------------------------------------------------
@@ -31,7 +25,6 @@ hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
   // ----- Module variable initialization --------------------------------------
 
   // ----- Module instance / channel binding -----------------------------------
-
 
   readFile(hitFileName);
 
@@ -92,9 +85,12 @@ int hit_generator::readFile(const std::string &hit_file) {
 
         std::string fileLine;
         HitEvent hit;
+
         // clear the event queue
         std::queue<HitEvent> empty;
         std::swap(hit_queue, empty);
+
+        // read hits
         while (std::getline(hitFile, fileLine))
         {
             std::stringstream fileLineStream(fileLine);
@@ -106,7 +102,7 @@ int hit_generator::readFile(const std::string &hit_file) {
                            >> hit.stubAddress
                            >> hit.stubBend;
 
-            //! Assumption hits are in the correct order in the file.
+            /** Assumption: hits are in the correct order in the file. */
             hit_queue.push(hit);
 
             #ifdef DEBUG
@@ -131,7 +127,6 @@ int hit_generator::readFile(const std::string &hit_file) {
     {
         std::cout << "File with hits could not be read: " << hit_file << std::endl;
         return (1);
-        // @todo: Add exception handling in case file cannot be opened
     }
 
     return (0);
