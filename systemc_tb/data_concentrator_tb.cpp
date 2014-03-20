@@ -125,7 +125,7 @@ void data_concentrator_tb::write_fe( const unsigned int fe_chip,
 {
     fe_out_data fe_data;
     fe_data.set_dv(true);
-    fe_data.set_data(stub(address, bend));
+    fe_data.set_data(stub_sb(address, bend));
     fe_signals.at(fe_chip, hit_nr).write(fe_data);
 
     unsigned int output = (address << 5) | bend;

@@ -1,7 +1,7 @@
 /*!
  * @file do_out_data.cpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 18, 2014
  *
  * @brief
  *
@@ -14,10 +14,19 @@
 #include "do_out_data.hpp"
 
 // *****************************************************************************
-do_out_data::do_out_data()
+do_out_data::do_out_data(data_valid_t dv) :
+    dv(dv)
 {
-    dv = false;
+    data = do_stub_t();
 
+    return;
+}
+
+// *****************************************************************************
+do_out_data::do_out_data(data_valid_t dv, do_stub_t data) :
+        dv(dv),
+        data(data)
+{
     return;
 }
 
@@ -36,7 +45,7 @@ do_out_data::data_valid_t do_out_data::get_dv() const
 }
 
 // *****************************************************************************
-void do_out_data::set_data(const stub_ext data)
+void do_out_data::set_data(const do_stub_t data)
 {
     this->data = data;
 
@@ -44,7 +53,7 @@ void do_out_data::set_data(const stub_ext data)
 }
 
 // *****************************************************************************
-stub_ext do_out_data::get_data() const
+do_out_data::do_stub_t do_out_data::get_data() const
 {
     return (data);
 }

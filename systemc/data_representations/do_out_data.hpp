@@ -1,7 +1,7 @@
 /*!
  * @do_out_data.hpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 18, 2014
  *
  * @brief
  *
@@ -18,7 +18,8 @@
 
 #include <systemc.h>
 
-#include "stub_ext.hpp"
+#include "../TT_configuration.hpp"
+#include "stub_pzfs.hpp"
 
 /*!
  * @brief
@@ -27,10 +28,15 @@ class do_out_data
 {
 public:
     typedef bool data_valid_t;
+    typedef stub_pzfs<DO_STUB_PHI_BITS, DO_STUB_Z_BITS, DO_STUB_FECHIP_BITS, DO_STUB_STRIP_BITS> do_stub_t;
 
-    /** Constructor. The default value for the data valid bit is set to false.
+    /** Constructor: The default value for the data valid bit is set to false.
      *  */
-    do_out_data();
+    do_out_data(data_valid_t dv = false);
+
+    /** Constructor: The default value for the data valid bit is set to false.
+     *  */
+    do_out_data(data_valid_t dv, do_stub_t data);
 
     /** Setter function for the data valid bit */
     void set_dv(const data_valid_t dv_bit);
@@ -39,10 +45,10 @@ public:
     data_valid_t get_dv() const;
 
     /** Setter function for the extended stub */
-    void set_data(const stub_ext new_stub);
+    void set_data(const do_stub_t new_stub);
 
     /** Getter function for the extended stub */
-    stub_ext get_data() const;
+    do_stub_t get_data() const;
 
     /** Comparison of two do_out_data objects */
     bool operator == (const do_out_data &rhs) const;
@@ -62,5 +68,5 @@ private:
     data_valid_t dv;
 
     /** contains an extended stub */
-    stub_ext data;
+    do_stub_t data;
 };

@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date Mar 17, 2014
+ * @date Mar 20, 2014
  *
  * @brief
  */
@@ -143,14 +143,7 @@ void data_organizer::write_stubs()
         wait();
 
         // Reset all outputs
-        stub_ext empty_stub;
-        empty_stub.set_z_coord(0);
-        empty_stub.set_phi_coord(0);
-        empty_stub.set_fechip_nr(0);
-        empty_stub.set_strip_nr(0);
-        do_out_data empty_output;
-        empty_output.set_dv(false);
-        empty_output.set_data(empty_stub);
+        do_out_data empty_output = do_out_data();
         for(auto& out : stub_out)
         {
             out.write(empty_output);
@@ -159,17 +152,8 @@ void data_organizer::write_stubs()
         unsigned int i=0;
         for (auto table_stub : stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()])
         {
-            do_out_data output_data;
-
-            output_data.set_dv(true);
-
-            stub_ext output_stub;
-            output_stub.set_phi_coord(phi);
-            output_stub.set_z_coord(z);
-            output_stub.set_fechip_nr(table_stub(15,13));
-            output_stub.set_strip_nr(table_stub(12,8));
-            output_data.set_data(output_stub);
-
+            do_out_data::do_stub_t output_stub = do_out_data::do_stub_t(phi, z, table_stub(15,13), table_stub(12,8) );
+            do_out_data output_data = do_out_data(true, output_stub);
             stub_out[i].write(output_data);
 
             ++i;

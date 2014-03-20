@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.hpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date Mar 18, 2014
  *
  * @brief
  *
@@ -13,18 +13,12 @@
 
 #pragma once
 
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <array>
-
 #include <systemc.h>
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "TT_configuration.hpp"
-#include "stub.hpp"
-#include "fe_out_data.hpp"
+#include "data_representations/fe_out_data.hpp"
 
 /*!
  * @brief
@@ -33,24 +27,25 @@
 class front_end_chip : public sc_module
 {
 public:
-    // ----- Port Declarations -------------------------------------------------
+
+// ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> en;
-    sc_fifo_in<stub> stub_input;
+    sc_fifo_in<fe_out_data::fe_stub_t> stub_input;
     sc_map_linear<sc_out<fe_out_data> > hit_outputs;
 
-    // ----- Local Channel Declarations ----------------------------------------
-    sc_fifo<stub> selected_stubs;
+// ----- Local Channel Declarations --------------------------------------------
+    sc_fifo<fe_out_data::fe_stub_t> selected_stubs;
 
-    // ----- Process Declarations ----------------------------------------------
+// ----- Process Declarations --------------------------------------------------
     void prioritize_hits();
     void write_hits();
 
-    // ----- Other Method Declarations -----------------------------------------
+// ----- Other Method Declarations ---------------------------------------------
 
-    // ----- Module Instantiations ---------------------------------------------
+// ----- Module Instantiations -------------------------------------------------
 
-    // ----- Constructor -------------------------------------------------------
+// ----- Constructor -----------------------------------------------------------
     /*!
      * Constructor:
      */

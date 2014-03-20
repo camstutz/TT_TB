@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <iostream>
+//#include <iostream>
 
 #include <systemc.h>
 
@@ -21,8 +21,7 @@
 
 #include "TT_configuration.hpp"
 #include "nbits.hpp"
-#include "stub.hpp"
-#include "fe_out_data.hpp"
+#include "data_representations/fe_out_data.hpp"
 
 /*!
  * @brief

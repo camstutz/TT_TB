@@ -20,7 +20,7 @@
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "TT_configuration.hpp"
-#include "do_out_data.hpp"
+#include "data_representations/do_out_data.hpp"
 
 /*!
  * @brief SystemC module to split up the serial data from the detector into the

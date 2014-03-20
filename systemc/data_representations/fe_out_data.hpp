@@ -1,7 +1,7 @@
 /*!
  * @fe_out_data.hpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date Mar 18, 2014
  *
  * @brief
  *
@@ -18,15 +18,17 @@
 
 #include <systemc.h>
 
-#include "stub.hpp"
+#include "../TT_configuration.hpp"
+#include "stub_sb.hpp"
 
 /*!
- * @brief
+ * @brief Representation of the front end chip output data
  */
 class fe_out_data
 {
 public:
     typedef bool data_valid_t;
+    typedef stub_sb<FE_STUB_STRIP_BITS, FE_STUB_BEND_BITS> fe_stub_t;
 
     /** Constructor. The default value for the data valid bit is set to false.
      *  */
@@ -39,10 +41,10 @@ public:
     data_valid_t get_dv() const;
 
     /** Setter function for the  stub */
-    void set_data(const stub new_stub);
+    void set_data(const fe_stub_t new_stub);
 
     /** Getter function for the stub */
-    stub get_data() const;
+    fe_stub_t get_data() const;
 
     /** Comparison of two fe_out_data objects */
     bool operator == (const fe_out_data &rhs) const;
@@ -62,5 +64,5 @@ private:
     data_valid_t dv;
 
     /** contains a stub */
-    stub data;
+    fe_stub_t data;
 };

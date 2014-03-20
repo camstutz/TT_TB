@@ -22,7 +22,7 @@
 
 #include "TT_configuration.hpp"
 #include "HitEvent.hpp"
-#include "stub.hpp"
+#include "data_representations/stub_sb.hpp"
 
 /*!
  * @brief SystemC module that reads hits from a file.
@@ -30,13 +30,14 @@
 class hit_generator : public sc_module
 {
 public:
+    typedef stub_sb<FE_STUB_STRIP_BITS, FE_STUB_BEND_BITS> hitgen_stub;
 
 // ----- Port Declarations -----------------------------------------------------
     /** 4-dimensional sc_map for the outputs of the stubs. The dimensions are
      * according to the detector structure in the following order: layer, phi,
      * z and front end chip number. The output format is a stub as defined in
      * stub.hpp */
-    sc_map_4d<sc_fifo_out<stub> > hit_outputs;
+    sc_map_4d<sc_fifo_out<hitgen_stub> > hit_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
 

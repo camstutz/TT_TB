@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip.cpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date Mar 18, 2014
  *
  * @brief
  */
@@ -59,7 +59,7 @@ void front_end_chip::prioritize_hits()
             wait(clk.posedge_event());
         }
 
-        stub act_stub;
+        fe_out_data::fe_stub_t act_stub;
         for(int i=0;
                 i <= std::min(stub_input.num_available(), MAX_HITS_PER_FE_CHIP);
                 i++)
@@ -94,7 +94,7 @@ void front_end_chip::write_hits()
         //* todo: write parallel to all ports when implemented in map
         fe_out_data hit_to_write;
         hit_to_write.set_dv(false);
-        hit_to_write.set_data(stub(0,0));
+        hit_to_write.set_data(fe_out_data::fe_stub_t(0,0));
         hit_outputs.write_all(hit_to_write);
     }
 

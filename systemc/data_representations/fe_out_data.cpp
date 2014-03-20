@@ -1,7 +1,7 @@
 /*!
  * @file fe_out_data.cpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 18, 2014
  *
  * @brief
  *
@@ -17,6 +17,7 @@
 fe_out_data::fe_out_data()
 {
     dv = false;
+    data = fe_stub_t(0,0);
 
     return;
 }
@@ -36,7 +37,7 @@ fe_out_data::data_valid_t fe_out_data::get_dv() const
 }
 
 // *****************************************************************************
-void fe_out_data::set_data(const stub data)
+void fe_out_data::set_data(const fe_stub_t new_stub)
 {
     this->data = data;
 
@@ -44,7 +45,7 @@ void fe_out_data::set_data(const stub data)
 }
 
 // *****************************************************************************
-stub fe_out_data::get_data() const
+fe_out_data::fe_stub_t fe_out_data::get_data() const
 {
     return (data);
 }
@@ -67,16 +68,16 @@ fe_out_data& fe_out_data::operator = (const fe_out_data& rhs)
 // *****************************************************************************
 ostream& operator << (ostream &os, fe_out_data const &v)
 {
-  os << "[" << v.dv << v.data << "]";
+    os << "[" << v.dv << v.data << "]";
 
-  return (os);
+    return (os);
 }
 
 // *****************************************************************************
 void sc_trace(sc_trace_file *tf, const fe_out_data &v, const std::string &name)
 {
-  sc_trace(tf, v.dv, name + ".dv");
-  sc_trace(tf, v.data, name + ".data");
+    sc_trace(tf, v.dv, name + ".dv");
+    sc_trace(tf, v.data, name + ".data");
 
-  return;
+    return;
 }

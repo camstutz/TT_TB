@@ -31,7 +31,7 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_clock LHC_clock;
     sc_signal<bool> true_sig;
-    sc_map_4d<sc_fifo<stub> > hit_fifos;
+    sc_map_4d<sc_fifo<hit_generator::hitgen_stub> > hit_fifos;
     sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_signals;
     sc_map_linear<sc_signal<do_out_data> > do_stubs;
 

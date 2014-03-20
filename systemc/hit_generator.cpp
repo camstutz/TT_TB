@@ -38,7 +38,7 @@ void hit_generator::schedule_hits()
     {
         sc_time wait_time;
         HitEvent hit;
-        stub processed_stub;
+        hitgen_stub processed_stub;
 
         hit = hit_queue.front();
         hit_queue.pop();
@@ -49,8 +49,8 @@ void hit_generator::schedule_hits()
 
         //! todo: check for validity of data and adapt to given range if possible
 
-        processed_stub.setAddress(hit.stubAddress);
-        processed_stub.setBend(hit.stubBend);
+        processed_stub.set_strip(hit.stubAddress);
+        processed_stub.set_bend(hit.stubBend);
         hit_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
                 hit.frontEndChipNr).write(processed_stub);
 
@@ -61,8 +61,8 @@ void hit_generator::schedule_hits()
                 << "Z" << hit.zCoordinate
                 << "FE" << hit.frontEndChipNr
                 << " Stub --> 0x"
-                << processed_stub.getAddress() << "/0x"
-                << processed_stub.getBend() << std::endl;
+                << processed_stub.get_strip() << "/0x"
+                << processed_stub.get_bend() << std::endl;
         #endif
     }
 

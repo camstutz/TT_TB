@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date Mar 18, 2014
  *
  * @brief
  */

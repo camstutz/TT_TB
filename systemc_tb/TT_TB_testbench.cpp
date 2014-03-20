@@ -19,6 +19,8 @@
 #include "data_concentrator_tb.hpp"
 #include "data_organizer_tb.hpp"
 
+#include "stub.hpp"
+
 int sc_main(int argc, char *agv[])
 {
     // ----- Channel declarations ----------------------------------------------

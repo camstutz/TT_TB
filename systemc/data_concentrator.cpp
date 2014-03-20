@@ -63,7 +63,7 @@ void data_concentrator::read_FE_chips()
                 std::pair<bool, sc_map_square<sc_in<fe_out_data> >::full_key_type> signal_key;
                 signal_key = fe_stub_in.get_key(fe_in);
                 sc_bv<20> data_word;
-                data_word = ( (true, sc_bv<3>(clock_phase.read()), sc_bv<3>(signal_key.second.Y_dim), fe_data.get_data().getBitVector()) );
+                data_word = ( (true, sc_bv<3>(clock_phase.read()), sc_bv<3>(signal_key.second.Y_dim), fe_data.get_data().get_bit_vector()) );
                 stub_buffer.push_back(data_word);
             }
         }
