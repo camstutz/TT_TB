@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Mar 13, 2014
+ * @date Mar 20, 2014
  *
  * @brief
  *
@@ -13,14 +13,12 @@
 
 #pragma once
 
-//#include <iostream>
-
 #include <systemc.h>
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../lib/systemc_helpers/nbits.hpp"
 
 #include "TT_configuration.hpp"
-#include "nbits.hpp"
 #include "data_representations/fe_out_data.hpp"
 
 /*!
