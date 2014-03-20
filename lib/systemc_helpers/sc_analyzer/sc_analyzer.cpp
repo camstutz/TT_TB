@@ -59,7 +59,9 @@ void sc_analyzer::print_report()
     setup_time = setup_end_time - setup_start_time;
     simulation_time = simulation_end_time - simulation_start_time;
 
-    std::cout << "SystemC Analysis Report" << std::endl;
+    std::cout << std::dec << std::endl;
+    std::cout << "************************************\n";
+    std::cout << "SystemC Analysis Report\n";
     std::cout << "************************************" << std::endl;
     std::cout << "Time to create model : " << setup_time.count()   << "s" << std::endl;
     std::cout << "Time to simulate     : " << simulation_time.count() << "s" << std::endl;
