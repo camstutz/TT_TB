@@ -21,6 +21,9 @@
 //* Number of bits to represent the bend of a stub at the front end chip output
 #define FE_STUB_BEND_BITS 5
 
+#define DC_WORD_TIME_BITS 3
+#define DC_WORD_FE_BITS 3
+
 #define DO_STUB_PHI_BITS 4
 #define DO_STUB_Z_BITS 4
 #define DO_STUB_FECHIP_BITS 3

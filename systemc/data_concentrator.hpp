@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Mar 20, 2014
+ * @date Mar 24, 2014
  *
  * @brief
  *
@@ -20,6 +20,7 @@
 
 #include "TT_configuration.hpp"
 #include "data_representations/fe_out_data.hpp"
+#include "data_representations/dc_out_word.hpp"
 
 /*!
  * @brief
@@ -53,10 +54,7 @@ public:
     SC_HAS_PROCESS(data_concentrator);
 
 private:
-    //! todo: make long_stub generic, probably an object
-    typedef sc_bv<20> long_stub;
-    const long_stub empty_slot;
-    std::vector<long_stub> stub_buffer;
+    std::vector<dc_out_word> stub_buffer;
 
     void create_output_buffer();
 };

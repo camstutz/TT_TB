@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date Mar 24, 2014
  *
  * @brief
  */
@@ -27,8 +27,7 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         clk("clk"),
         rst("rst"),
         fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in", 1, 1),
-        dc_out("dc_out"),
-        empty_slot( (false, sc_bv<19>(0)) )
+        dc_out("dc_out")
 {
     // ----- Process registration ------------------------------------------------
     SC_THREAD(advance_clock_phase);
@@ -60,10 +59,15 @@ void data_concentrator::read_FE_chips()
             fe_out_data fe_data = fe_in.read();
             if (fe_data.get_dv() == true)
             {
-                std::pair<bool, sc_map_square<sc_in<fe_out_data> >::full_key_type> signal_key;
-                signal_key = fe_stub_in.get_key(fe_in);
-                sc_bv<20> data_word;
-                data_word = ( (true, sc_bv<3>(clock_phase.read()), sc_bv<3>(signal_key.second.Y_dim), fe_data.get_data().get_bit_vector()) );
+                dc_out_word::dc_stub_t stub;
+                stub.set_timestamp(sc_bv<3>(clock_phase.read()));
+                auto signal_key = fe_stub_in.get_key(fe_in);
+                stub.set_fechip(sc_bv<3>(signal_key.second.Y_dim));
+                stub.set_strip(fe_data.get_data().get_strip());
+                stub.set_bend(fe_data.get_data().get_bend());
+
+                dc_out_word data_word = dc_out_word(true, stub);
+
                 stub_buffer.push_back(data_word);
             }
         }
@@ -134,12 +138,13 @@ void data_concentrator::create_output_buffer()
     {
         std::cout << "data_concentrator: Stub buffer overflow!" << std::endl;
     }
-    stub_buffer.resize(NR_DC_OUT_STUBS, empty_slot);
+    stub_buffer.resize(NR_DC_OUT_STUBS, dc_out_word());
 
     for(unsigned short i; i<NR_DC_OUT_STUBS; i++)
     {
         //! todo: change stub length to constant
-        output_buffer( (i+1)*20-1, i*20) = stub_buffer[i];
+        output_buffer( (i+1)*dc_out_word::width-1, i*dc_out_word::width) =
+                stub_buffer[i].get_bit_vector();
     }
 
     stub_buffer.clear();

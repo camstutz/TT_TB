@@ -92,7 +92,7 @@ public:
     /** Getter function for the strip number */
     strip_t  get_strip() const;
 
-    /** Getter function for the whole extended stub as a bit vector */
+    /** Getter function for the whole stub as a bit vector */
     sc_bv<total_width> get_bit_vector() const;
 
     /** Comparison of two extended stub objects */
