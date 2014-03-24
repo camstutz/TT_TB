@@ -142,7 +142,6 @@ void data_concentrator::create_output_buffer()
 
     for(unsigned short i; i<NR_DC_OUT_STUBS; i++)
     {
-        //! todo: change stub length to constant
         output_buffer( (i+1)*dc_out_word::width-1, i*dc_out_word::width) =
                 stub_buffer[i].get_bit_vector();
     }

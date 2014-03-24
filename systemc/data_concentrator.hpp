@@ -28,16 +28,16 @@
 class data_concentrator : public sc_module
 {
 public:
+    typedef sc_bv<DC_OUTPUT_WIDTH> dc_out_t;
+
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> rst;
     sc_map_square<sc_in<fe_out_data> > fe_stub_in;
-    //! todo: think about the data type of dc_out, generic ?
-    sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
+    sc_out<dc_out_t> dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
-    //! todo: change width to generic
-    sc_signal<sc_uint<3> > clock_phase;
+    sc_signal<sc_uint<NBITS(NR_DC_WINDOW_CYCLES-1)> > clock_phase;
     sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
 
     // ----- Process Declarations ----------------------------------------------

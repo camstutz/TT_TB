@@ -91,7 +91,6 @@ void front_end_chip::write_hits()
 
         wait(clk.posedge_event());
 
-        //* todo: write parallel to all ports when implemented in map
         fe_out_data hit_to_write;
         hit_to_write.set_dv(false);
         hit_to_write.set_data(fe_out_data::fe_stub_t(0,0));

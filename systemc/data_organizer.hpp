@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date Mar 14, 2014
+ * @date Mar 24, 2014
  *
  * @brief
  *
@@ -18,6 +18,7 @@
 
 #include <systemc.h>
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../lib/systemc_helpers/nbits.hpp"
 
 #include "TT_configuration.hpp"
 #include "data_representations/do_out_data.hpp"
@@ -55,7 +56,6 @@ public:
 
 // ----- Local Channel Declarations --------------------------------------------
     /** Control signal showing the actual time step of within the time window */
-    /** todo: change the value to generic */
     sc_signal<sc_uint<3> > clock_phase;
 
     /** Control signal that switches between the two re-order tables */
