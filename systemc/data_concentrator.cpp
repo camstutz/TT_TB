@@ -27,10 +27,12 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         clk("clk"),
         rst("rst"),
         fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in", 1, 1),
-        dc_out("dc_out")
+        dc_out("dc_out"),
+        clock_phase(0),
+        stub_table_write_sel(0)
 {
     // ----- Process registration ------------------------------------------------
-    SC_THREAD(advance_clock_phase);
+    SC_THREAD(controller);
         sensitive << clk.pos();
     SC_THREAD(read_FE_chips);
         sensitive << clk.pos();
@@ -38,7 +40,6 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         sensitive << clk.pos();
 
     // ----- Module variable initialization --------------------------------------
-    clock_phase = 0;
 
     // ----- Module instance / channel binding -----------------------------------
 
@@ -75,8 +76,32 @@ void data_concentrator::read_FE_chips()
 
 }
 
+//// *****************************************************************************
+//void data_concentrator::advance_clock_phase()
+//{
+//    while (1)
+//    {
+//        wait();
+//
+//        if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
+//        {
+//            clock_phase.write(0);
+//        }
+//        else
+//        {
+//            clock_phase.write(clock_phase.read()+1);
+//        }
+//
+//        if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
+//        {
+//            create_output_buffer();
+//        }
+//    }
+//
+//}
+
 // *****************************************************************************
-void data_concentrator::advance_clock_phase()
+void data_concentrator::controller()
 {
     while (1)
     {
@@ -84,16 +109,20 @@ void data_concentrator::advance_clock_phase()
 
         if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
         {
+            create_output_buffer();
             clock_phase.write(0);
+            if(stub_table_write_sel.read() == 0)
+            {
+                stub_table_write_sel.write(1);
+            }
+            else
+            {
+                stub_table_write_sel.write(0);
+            }
         }
         else
         {
             clock_phase.write(clock_phase.read()+1);
-        }
-
-        if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
-        {
-            create_output_buffer();
         }
     }
 

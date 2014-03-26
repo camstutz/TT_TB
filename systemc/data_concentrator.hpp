@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Mar 24, 2014
+ * @date Mar 25, 2014
  *
  * @brief
  *
@@ -12,6 +12,8 @@
  */
 
 #pragma once
+
+#include <array>
 
 #include <systemc.h>
 
@@ -39,9 +41,13 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<sc_uint<NBITS(NR_DC_WINDOW_CYCLES-1)> > clock_phase;
     sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
+    std::array<std::vector<dc_out_word>, 2> stub_buffer;
+
+    /** Control signal that switches between the two stub tables */
+    sc_signal<unsigned int> stub_table_write_sel;
 
     // ----- Process Declarations ----------------------------------------------
-    void advance_clock_phase();
+    void controller();
     void read_FE_chips();
     void write_output();
 
@@ -54,7 +60,5 @@ public:
     SC_HAS_PROCESS(data_concentrator);
 
 private:
-    std::vector<dc_out_word> stub_buffer;
-
     void create_output_buffer();
 };
