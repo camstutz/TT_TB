@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_test.hpp
  * @author Christian
- * @date Feb 21, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  *
@@ -22,7 +22,6 @@
 
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/hit_generator.hpp"
-#include "../systemc/stub.hpp"
 
 /*!
  * @brief
@@ -33,7 +32,7 @@ public:
     // ----- Port Declarations ---------------------------------------------------
 
     // ----- Local Channel Declarations ------------------------------------------
-    sc_map_4d<sc_fifo<stub> > hit_signals;
+    sc_map_4d<sc_fifo<hit_generator::hitgen_stub_t> > hit_signals;
 
     // ----- Process Declarations ------------------------------------------------
     void check_output();

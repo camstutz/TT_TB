@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Mar 25, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  *
@@ -44,7 +44,8 @@ public:
     std::array<std::vector<dc_out_word>, 2> stub_buffer;
 
     /** Control signal that switches between the two stub tables */
-    sc_signal<unsigned int> stub_table_write_sel;
+    sc_signal<unsigned int> stub_buffer_write_sel;
+    sc_signal<unsigned int> stub_buffer_read_sel;
 
     // ----- Process Declarations ----------------------------------------------
     void controller();

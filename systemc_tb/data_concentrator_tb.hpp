@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_tb.hpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  *
@@ -22,6 +22,7 @@
 
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/data_concentrator.hpp"
+#include "../systemc/data_representations/fe_out_data.hpp"
 
 /*!
  * @brief
@@ -50,7 +51,7 @@ public:
     sc_clock LHC_clock;
     data_concentrator dut_data_concentrator;
 
-    // ----- Constructor ---------------------------------------------------------
+    // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
@@ -61,5 +62,4 @@ public:
 
 private:
     std::ostringstream log_buffer;
-
 };

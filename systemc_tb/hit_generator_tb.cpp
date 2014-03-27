@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_tb.cpp
  * @author Christian Amstutz
- * @date Jan 21, 2014
+ * @date Mar 27, 2014
  */
 
 /*
@@ -63,9 +63,9 @@ void hit_generator_tb::check_output()
 
       for (auto& hit_signal: hit_signals)
       {
-          stub read_stub;
+          hit_generator::hitgen_stub_t read_stub;
           while (hit_signal.nb_read(read_stub)) {
-              std::pair<bool, sc_map_4d<sc_fifo<stub>>::full_key_type> signal_key;
+              std::pair<bool, sc_map_4d<sc_fifo<hit_generator::hitgen_stub_t>>::full_key_type> signal_key;
               signal_key = hit_signals.get_key(hit_signal);
               log_buffer << sc_time_stamp () << " @ hit_generator."
                          << "L" << signal_key.second.W_dim
@@ -73,8 +73,8 @@ void hit_generator_tb::check_output()
                          << "Z" << signal_key.second.Y_dim
                          << "FE" << signal_key.second.X_dim
                          << " : " << std::hex
-                         << "0x" << read_stub.getAddress() << " - "
-                         << "0x" << read_stub.getBend() << std::endl;
+                         << "0x" << read_stub.get_strip() << " - "
+                         << "0x" << read_stub.get_bend() << std::endl;
           }
       }
 

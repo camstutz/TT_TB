@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date Mar 17, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  */
@@ -38,7 +38,7 @@ void hit_generator::schedule_hits()
     {
         sc_time wait_time;
         HitEvent hit;
-        hitgen_stub processed_stub;
+        hitgen_stub_t processed_stub;
 
         hit = hit_queue.front();
         hit_queue.pop();

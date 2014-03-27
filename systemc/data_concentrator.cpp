@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date Mar 24, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  */
@@ -29,7 +29,8 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in", 1, 1),
         dc_out("dc_out"),
         clock_phase(0),
-        stub_table_write_sel(0)
+        stub_buffer_write_sel(0),
+        stub_buffer_read_sel(0)
 {
     // ----- Process registration ------------------------------------------------
     SC_THREAD(controller);
@@ -69,36 +70,12 @@ void data_concentrator::read_FE_chips()
 
                 dc_out_word data_word = dc_out_word(true, stub);
 
-                stub_buffer.push_back(data_word);
+                stub_buffer[stub_buffer_write_sel].push_back(data_word);
             }
         }
     }
 
 }
-
-//// *****************************************************************************
-//void data_concentrator::advance_clock_phase()
-//{
-//    while (1)
-//    {
-//        wait();
-//
-//        if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
-//        {
-//            clock_phase.write(0);
-//        }
-//        else
-//        {
-//            clock_phase.write(clock_phase.read()+1);
-//        }
-//
-//        if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
-//        {
-//            create_output_buffer();
-//        }
-//    }
-//
-//}
 
 // *****************************************************************************
 void data_concentrator::controller()
@@ -109,15 +86,16 @@ void data_concentrator::controller()
 
         if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
         {
-            create_output_buffer();
             clock_phase.write(0);
-            if(stub_table_write_sel.read() == 0)
+            if(stub_buffer_write_sel.read() == 0)
             {
-                stub_table_write_sel.write(1);
+                stub_buffer_write_sel.write(1);
+                stub_buffer_read_sel.write(0);
             }
             else
             {
-                stub_table_write_sel.write(0);
+                stub_buffer_write_sel.write(0);
+                stub_buffer_read_sel.write(1);
             }
         }
         else
@@ -129,12 +107,17 @@ void data_concentrator::controller()
 }
 
 // *****************************************************************************
-void data_concentrator::write_output() {
-
+void data_concentrator::write_output()
+{
     //! todo: change constants numbers to parameter
     while(1)
     {
         wait();
+
+        if (clock_phase.read() == 0)
+        {
+            create_output_buffer();
+        }
 
         sc_bv<DC_OUTPUT_WIDTH> output_val;
         unsigned int high_buffer = (clock_phase.read()+1)*(DC_OUTPUT_WIDTH-2)-1;
@@ -163,19 +146,19 @@ void data_concentrator::create_output_buffer()
     output_buffer = sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES>(0);
 
     // Buffer size is maximal NR_DC_OUT_STUBS in real system
-    if (stub_buffer.size() > NR_DC_OUT_STUBS)
+    if (stub_buffer[stub_buffer_read_sel].size() > NR_DC_OUT_STUBS)
     {
         std::cout << "data_concentrator: Stub buffer overflow!" << std::endl;
     }
-    stub_buffer.resize(NR_DC_OUT_STUBS, dc_out_word());
+    stub_buffer[stub_buffer_read_sel].resize(NR_DC_OUT_STUBS, dc_out_word());
 
     for(unsigned short i; i<NR_DC_OUT_STUBS; i++)
     {
         output_buffer( (i+1)*dc_out_word::width-1, i*dc_out_word::width) =
-                stub_buffer[i].get_bit_vector();
+                stub_buffer[stub_buffer_read_sel][i].get_bit_vector();
     }
 
-    stub_buffer.clear();
+    stub_buffer[stub_buffer_read_sel].clear();
 
     return;
 }

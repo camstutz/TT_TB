@@ -1,7 +1,7 @@
 /*!
  * @file fe_out_data.cpp
  * @author Christian Amstutz
- * @date Mar 18, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  *
@@ -39,7 +39,7 @@ fe_out_data::data_valid_t fe_out_data::get_dv() const
 // *****************************************************************************
 void fe_out_data::set_data(const fe_stub_t new_stub)
 {
-    this->data = data;
+    this->data = new_stub;
 
     return;
 }

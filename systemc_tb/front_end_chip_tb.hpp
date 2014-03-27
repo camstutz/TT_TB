@@ -1,7 +1,7 @@
 /*!
  * @file front_end_chip_tb.hpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  *
@@ -21,9 +21,9 @@
 #include "../lib/systemc_helpers/sc_map/sc_map_linear.hpp"
 
 #include "../systemc/TT_configuration.hpp"
+#include "../systemc/hit_generator.hpp"
 #include "../systemc/front_end_chip.hpp"
-#include "../systemc/stub.hpp"
-#include "../systemc/fe_out_data.hpp"
+#include "../systemc/data_representations/fe_out_data.hpp"
 
 /*!
  * @brief
@@ -35,7 +35,7 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> en_sig;
-    sc_fifo<stub> stub_input_sig;
+    sc_fifo<hit_generator::hitgen_stub_t> stub_input_sig;
     sc_map_linear<sc_signal<fe_out_data> > fe_out_signals;
 
     // ----- Process Declarations ----------------------------------------------

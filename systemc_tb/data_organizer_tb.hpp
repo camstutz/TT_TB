@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_tb.hpp
  * @author Christian Amstutz
- * @date Mar 13, 2014
+ * @date Mar 27, 2014
  *
  * @brief
  *
@@ -22,8 +22,7 @@
 
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/data_organizer.hpp"
-#include "../systemc/stub_ext.hpp"
-#include "../systemc/do_out_data.hpp"
+#include "../systemc/data_representations/do_out_data.hpp"
 
 /*!
  * @brief
