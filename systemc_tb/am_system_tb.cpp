@@ -21,12 +21,13 @@
 
 am_system_tb::am_system_tb(sc_module_name _name) :
         sc_module(_name),
-        rst("rst"),
+        reset("reset"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        input_fifos(6, "input_fifo"),
-        fifo_fsms(6, "fifo_fsm")
+        input_fifos(1, "input_fifo"),
+        fifo_fsms(1, "fifo_fsm")
 {
     // ----- Creation and binding of signals -----------------------------------
+    reset.write(false);
 
     // ----- Process registration ----------------------------------------------
     SC_THREAD(create_input);
@@ -38,9 +39,9 @@ am_system_tb::am_system_tb(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
-  log_buffer << std::endl
-             << "Simulation Output of AM system TB:" << std::endl
-             << "***************************************" << std::endl;
+    log_buffer << std::endl
+            << "Simulation Output of AM system TB:" << std::endl
+            << "***************************************" << std::endl;
 
   return;
 }

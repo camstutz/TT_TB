@@ -23,6 +23,7 @@
 //#include "../systemc/TT_configuration.hpp"
 #include "../systemc/stub_fifo.hpp"
 #include "../systemc/fifo_fsm.hpp"
+#include "../systemc/am_board.hpp"
 
 /*!
  * @brief
@@ -34,7 +35,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<bool> rst;
+    sc_signal<bool> reset;
 
     // ----- Process Declarations ----------------------------------------------
     void create_input();
