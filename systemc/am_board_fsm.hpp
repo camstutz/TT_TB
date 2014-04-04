@@ -1,7 +1,7 @@
 /*!
  * @file am_board_fsm.hpp
  * @author Christian Amstutz
- * @date Apr 3, 2014
+ * @date Apr 4, 2014
  *
  * @brief
  *
@@ -24,8 +24,8 @@ class am_board_fsm : public sc_module
 {
 public:
     typedef enum fsm_states {
-        IDLE = 0x01,
-        RX_HIT = 0x02,
+        IDLE    = 0x01,
+        RX_HIT  = 0x02,
         LD_ROAD = 0x03,
         TX_WAIT = 0x04,
         TX_ROAD = 0x05,
@@ -59,6 +59,6 @@ public:
     /*!
      * Constructor:
      */
-    fifo_fsm(sc_module_name _name);
-    SC_HAS_PROCESS(fifo_fsm);
+    am_board_fsm(sc_module_name _name);
+    SC_HAS_PROCESS(am_board_fsm);
 };

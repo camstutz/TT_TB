@@ -18,6 +18,7 @@
 
 #include <systemc.h>
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../lib/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 
 #include "TT_configuration.hpp"
 
@@ -46,6 +47,7 @@ public:
     sc_out<road_addr_t> road_output;
 
 // ----- Local Channel Declarations --------------------------------------------
+    sc_signal<road_addr_t> output_road_no_delay;
 
 // ----- Local Storage Declarations --------------------------------------------
     std::vector<std::array<bool, NR_DETECTOR_LAYERS> > match_table;
@@ -60,6 +62,7 @@ public:
     void initialize_patterns();
 
 // ----- Module Instantiations -------------------------------------------------
+    sc_delay_signal<road_addr_t, 4> latency_corrector;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

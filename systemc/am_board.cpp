@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date Apr 3, 2014
+ * @date Apr 4, 2014
  *
  * @brief
  */
@@ -28,7 +28,8 @@ am_board::am_board(sc_module_name _name) :
         write_en(NR_DETECTOR_LAYERS, "write_en"),
         pattern_inputs(NR_DETECTOR_LAYERS, "pattern_input"),
         data_ready("data_ready"),
-        road_output("road_output")
+        road_output("road_output"),
+        latency_corrector("latency_corrector")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_stubs);
@@ -39,7 +40,8 @@ am_board::am_board(sc_module_name _name) :
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-
+    latency_corrector.input(output_road_no_delay);
+    latency_corrector.delayed(road_output);
 
     initialize_patterns();
 

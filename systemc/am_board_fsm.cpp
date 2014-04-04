@@ -24,10 +24,11 @@ am_board_fsm::am_board_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
-        fifo_empty("fifo_empty"),
-        pop("pop"),
-        fifo_read_en("fifo_read_en"),
-        reg_en("reg_en")
+        write_en("write_en"),
+        scan_arrray("scan_array"),
+        road_ld("road_ld"),
+        road_tx("road_tx"),
+        output_reg_init("output_reg_init")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(fsm);
@@ -42,7 +43,7 @@ am_board_fsm::am_board_fsm(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void fifo_fsm::fsm()
+void am_board_fsm::fsm()
 {
     while (1)
     {
