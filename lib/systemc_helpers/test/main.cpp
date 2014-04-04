@@ -10,6 +10,8 @@
 #include "sink.hpp"
 #include "bind_tester.hpp"
 
+#include "sc_delay_tb.hpp"
+
 
 int sc_main(int argc, char *agv[])
 {
@@ -146,11 +148,19 @@ int sc_main(int argc, char *agv[])
     fp=sc_create_vcd_trace_file("wave");
     fp->set_time_unit(1, SC_NS);
 
-    sc_trace(fp, signals1, "signal1");
-    sc_trace(fp, signals2, "signal2");
-    sc_trace(fp, signals3, "signal3");
-    sc_trace(fp, signals4, "signal4");
-    sc_trace(fp, bind_signals, "b_signal");
+//    sc_trace(fp, signals1, "signal1");
+//    sc_trace(fp, signals2, "signal2");
+//    sc_trace(fp, signals3, "signal3");
+//    sc_trace(fp, signals4, "signal4");
+//    sc_trace(fp, bind_signals, "b_signal");
+
+    sc_delay_tb delay_testbench("delay_testbench");
+    sc_trace(fp, delay_testbench.clock, "clock");
+    sc_trace(fp, delay_testbench.in_signal, "in");
+    sc_trace(fp, delay_testbench.out_signal, "delayed");
+    sc_trace(fp, delay_testbench.delay_element.read_ptr, "read_ptr");
+    sc_trace(fp, delay_testbench.delay_element.write_ptr, "write_ptr");
+    sc_trace(fp, delay_testbench.delay_element.signal_received, "received");
 
     std::cout << "\n--- Simulation starts ---\n" << std::endl;
 
