@@ -69,6 +69,9 @@ private:
 template <typename signal_t, unsigned int delay_cycles>
 sc_delay_signal<signal_t, delay_cycles>::sc_delay_signal(sc_module_name _name) :
         sc_module(_name),
+        clk("clk"),
+        input("input"),
+        delayed("delayed"),
         input_signal("input_singal"),
         signal_received("signal_received"),
         read_ptr("read_ptr"),
