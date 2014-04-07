@@ -1,7 +1,7 @@
 /*!
  * @file am_board_fsm.cpp
  * @author Christian Amstutz
- * @date Apr 3, 2014
+ * @date Apr 7, 2014
  *
  * @brief
  */
@@ -24,11 +24,8 @@ am_board_fsm::am_board_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
-        write_en("write_en"),
-        scan_arrray("scan_array"),
-        road_ld("road_ld"),
-        road_tx("road_tx"),
-        output_reg_init("output_reg_init")
+        write_en(NR_DETECTOR_LAYERS, "write_en")
+        // todo: add missing
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(fsm);
@@ -52,31 +49,73 @@ void am_board_fsm::fsm()
         switch (state)
         {
         case IDLE:
-            fifo_read_en.write(fifo_empty.read());
-            reg_en.write(false);
-            if (fifo_empty.read())
+            next_pattern_ready = true;
+            process_roads = false;
+            write_roads = false;
+            if (one_write_en_active())
             {
-                state = RX_DATA;
+                state = IDLE;
+            }
+            else
+            {
+                state = RX_HIT;
             }
             break;
 
-        case RX_DATA:
-            fifo_read_en.write(pop.read() & fifo_empty.read());
-            reg_en.write(pop.read());
-            if (!pop.read())
+        case RX_HIT:
+            next_pattern_ready = false;
+            process_roads = false;
+            write_roads = false;
+            if (one_write_en_active())
             {
-                state = STDBY;
+                state = PROCESS_ROAD;
+            }
+            else
+            {
+                state = RX_HIT;
             }
             break;
 
-        case STDBY:
-            fifo_read_en.write(false);
-            reg_en.write(false);
-            if (pop.read() & fifo_empty.read())
+        case PROCESS_ROAD:
+            next_pattern_ready = false;
+            process_roads = true;
+            write_roads = false;
+            state = WRITE_ROAD;
+            break;
+
+        case WRITE_ROAD:
+            next_pattern_ready = false;
+            process_roads = false;
+            write_roads = true;
+            if (road_buffer_empty)
             {
-                state = RX_DATA;
+                state = IDLE;
             }
+            else
+            {
+                state = WRITE_ROAD;
+            }
+            break;
+
+        default:
+            state = IDLE;
+        }
+    }
+}
+
+// *****************************************************************************
+bool am_board_fsm::one_write_en_active()
+{
+    bool write_en_active = false;
+
+    for (auto wren_single : write_en)
+    {
+        if (wren_single == true)
+        {
+            write_en_active = true;
             break;
         }
     }
+
+    return (write_en_active);
 }

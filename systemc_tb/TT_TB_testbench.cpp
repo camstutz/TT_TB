@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date Apr 7, 2014
  *
  * @brief
  */
@@ -18,7 +18,9 @@
 #include "front_end_chip_tb.hpp"
 #include "data_concentrator_tb.hpp"
 #include "data_organizer_tb.hpp"
+#include "am_board_tb.hpp"
 #include "am_system_tb.hpp"
+
 
 int sc_main(int argc, char *agv[])
 {
@@ -32,7 +34,8 @@ int sc_main(int argc, char *agv[])
     //front_end_chip_tb front_end_chip_tb("Front_End_Chip_TB");
     //data_concentrator_tb data_concentrator_tb("Data_Concentrator_TB");
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
-    am_system_tb am_system_tb("AM_System");
+    //am_system_tb am_system_tb("AM_System");
+    am_board_tb am_board_tb("AM_board_TB");
 
     // ----- Time unit / resolution setup --------------------------------------
 
@@ -48,6 +51,13 @@ int sc_main(int argc, char *agv[])
 //    sc_trace(trace_file, data_concentrator_tb.fe_signals.at(0,1), "FE_0-1");
 //    sc_trace(trace_file, data_concentrator_tb.fe_signals.at(1,0), "FE_1-0");
 //    sc_trace(trace_file, data_concentrator_tb.fe_signals.at(1,1), "FE_1-1");
+
+    sc_trace(trace_file, am_board_tb.LHC_clock, "clock");
+    sc_trace(trace_file, am_board_tb.write_en, "write_en");
+    sc_trace(trace_file, am_board_tb.patterns, "pattern");
+    sc_trace(trace_file, am_board_tb.road_ready, "road_ready");
+    sc_trace(trace_file, am_board_tb.road, "road");
+
 
     // ----- Start simulation --------------------------------------------------
 

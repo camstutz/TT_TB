@@ -1,7 +1,7 @@
 /*!
  * @file am_board_fsm.hpp
  * @author Christian Amstutz
- * @date Apr 4, 2014
+ * @date Apr 7, 2014
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <systemc.h>
+#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "TT_configuration.hpp"
 
@@ -24,11 +25,10 @@ class am_board_fsm : public sc_module
 {
 public:
     typedef enum fsm_states {
-        IDLE    = 0x01,
-        RX_HIT  = 0x02,
-        LD_ROAD = 0x03,
-        TX_WAIT = 0x04,
-        TX_ROAD = 0x05,
+        IDLE = 0x01,
+        RX_HIT = 0x02,
+        PROCESS_ROAD = 0x03,
+        WRITE_ROAD = 0x04,
     } fsm_states;
 
 // ----- Port Declarations -----------------------------------------------------
@@ -38,12 +38,14 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
-    sc_in<sc_bv<NR_DETECTOR_LAYERS> > write_en;
+    sc_map_linear<sc_in<bool> > write_en;
+    sc_in<bool> road_buffer_empty;
 
-    sc_out<bool> scan_arrray;
-    sc_out<bool> road_ld;
-    sc_out<bool> road_tx;
-    sc_out<bool> output_reg_init;
+    sc_out<bool> next_pattern_ready;
+    sc_out<bool> process_roads;
+    sc_out<bool> write_roads;
+
+
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<fsm_states> state;
@@ -61,4 +63,9 @@ public:
      */
     am_board_fsm(sc_module_name _name);
     SC_HAS_PROCESS(am_board_fsm);
+
+private:
+    bool one_write_en_active();
 };
+
+

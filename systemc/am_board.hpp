@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date Apr 3, 2014
+ * @date Apr 7, 2014
  *
  * @brief
  */
@@ -21,6 +21,7 @@
 #include "../lib/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 
 #include "TT_configuration.hpp"
+#include "am_board_fsm.hpp"
 
 /*!
  * @brief
@@ -43,11 +44,14 @@ public:
     sc_in<sc_bv<3> > init_ev;
     sc_map_linear<sc_in<bool> > write_en;
     sc_map_linear<sc_in<pattern_t> > pattern_inputs;
+    sc_out<bool> ready_to_process;
     sc_out<bool> data_ready;
     sc_out<road_addr_t> road_output;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<road_addr_t> output_road_no_delay;
+    sc_map_linear<sc_signal<bool> > write_en_sig;
+    sc_signal<bool> detected_roads_buffer_empty;
 
 // ----- Local Storage Declarations --------------------------------------------
     std::vector<std::array<bool, NR_DETECTOR_LAYERS> > match_table;
@@ -57,11 +61,13 @@ public:
     void process_incoming_stubs();
     void detect_roads();
     void write_roads();
+    void check_detected_road_buffer();
 
 // ----- Other Method Declarations ---------------------------------------------
     void initialize_patterns();
 
 // ----- Module Instantiations -------------------------------------------------
+    am_board_fsm fsm;
     sc_delay_signal<road_addr_t, 4> latency_corrector;
 
 // ----- Constructor -----------------------------------------------------------
