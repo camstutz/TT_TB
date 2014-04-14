@@ -1,7 +1,7 @@
 /*!
- * @file am_board_fsm.hpp
+ * @file hit_ctrl_single_line.hpp
  * @author Christian Amstutz
- * @date Apr 7, 2014
+ * @date Apr 15, 2014
  *
  * @brief
  *
@@ -14,44 +14,34 @@
 #pragma once
 
 #include <systemc.h>
-#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "TT_configuration.hpp"
+//#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
+
+//#include "../../TT_configuration.hpp"
+#include "../../data_representations/do_out_data.hpp"
 
 /*!
  * @brief
  */
-class am_board_fsm : public sc_module
+class hit_ctrl_single_line : public sc_module
 {
 public:
-    typedef enum fsm_states {
-        IDLE = 0x01,
-        RX_HIT = 0x02,
-        PROCESS_ROAD = 0x03,
-        WRITE_ROAD = 0x04,
-    } fsm_states;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
+    sc_in<bool> new_hit;
+    sc_in<bool> wr_hit_lamb;
+    sc_in<sc_bv<3> > init_event;
+    sc_in<do_out_data> stub_input;
 
-    /** Input port for the reset signal (currently not used) */
-    sc_in<bool> rst;
-
-    sc_map_linear<sc_in<bool> > write_en;
-    sc_in<bool> road_buffer_empty;
-
-    sc_out<bool> next_pattern_ready;
-    sc_out<bool> process_roads;
-    sc_out<bool> write_roads;
-
-
+    sc_out<bool> hee_reg;
+    sc_in<bool> write_en;
+    sc_out<sc_bv<18> >  stub_output;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<fsm_states> state;
 
 // ----- Process Declarations --------------------------------------------------
-    void fsm();
 
 // ----- Other Method Declarations ---------------------------------------------
 
@@ -61,11 +51,6 @@ public:
     /*!
      * Constructor:
      */
-    am_board_fsm(sc_module_name _name);
-    SC_HAS_PROCESS(am_board_fsm);
-
-private:
-    bool one_write_en_active();
+    hit_ctrl_single_line(sc_module_name _name);
+    SC_HAS_PROCESS(hit_ctrl_single_line);
 };
-
-

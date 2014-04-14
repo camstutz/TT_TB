@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date Apr 7, 2014
+ * @date Apr 15, 2014
  *
  * @brief
  */
@@ -34,8 +34,8 @@ int sc_main(int argc, char *agv[])
     //front_end_chip_tb front_end_chip_tb("Front_End_Chip_TB");
     //data_concentrator_tb data_concentrator_tb("Data_Concentrator_TB");
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
-    //am_system_tb am_system_tb("AM_System");
-    am_board_tb am_board_tb("AM_board_TB");
+    am_system_tb am_system_tb("AM_System");
+    //am_board_tb am_board_tb("AM_board_TB");
 
     // ----- Time unit / resolution setup --------------------------------------
 
@@ -52,18 +52,29 @@ int sc_main(int argc, char *agv[])
 //    sc_trace(trace_file, data_concentrator_tb.fe_signals.at(1,0), "FE_1-0");
 //    sc_trace(trace_file, data_concentrator_tb.fe_signals.at(1,1), "FE_1-1");
 
-    sc_trace(trace_file, am_board_tb.LHC_clock, "clock");
-    sc_trace(trace_file, am_board_tb.write_en, "write_en");
-    sc_trace(trace_file, am_board_tb.patterns, "pattern");
-    sc_trace(trace_file, am_board_tb.road_ready, "road_ready");
-    sc_trace(trace_file, am_board_tb.road, "road");
+//    sc_trace(trace_file, am_board_tb.LHC_clock, "clock");
+//    sc_trace(trace_file, am_board_tb.write_en, "");
+//    sc_trace(trace_file, am_board_tb.DUT.write_en, "");
+//    sc_trace(trace_file, am_board_tb.patterns, "");
+//    sc_trace(trace_file, am_board_tb.road_ready, "road_ready");
+//    sc_trace(trace_file, am_board_tb.road, "road");
+//    sc_trace(trace_file, am_board_tb.DUT.fsm.state, "FSM_state");
+//    sc_trace(trace_file, am_board_tb.DUT.detected_roads_buffer_empty, "Buffer_empty");
 
+    sc_trace(trace_file, am_system_tb.LHC_clock, "clock");
+    sc_trace(trace_file, am_system_tb.am_ctrl.fifo_not_empty[0], "FIFO_not_empty_0");
+    sc_trace(trace_file, am_system_tb.am_ctrl.fifo_read_en[0], "FIFO_read_en_0");
+    sc_trace(trace_file, am_system_tb.am_ctrl.fifo_fsm_array[0].state, "FIFO_FSM_0.state");
+    sc_trace(trace_file, am_system_tb.input_fifos[0].stub_out, "FIFO_0.out");
+
+    sc_trace(trace_file, am_system_tb.am_ctrl.main_am_fsm.state, "main_FSM.state");
 
     // ----- Start simulation --------------------------------------------------
 
     std::cout << std::endl << "Start test bench ..." << std::endl << std::endl;
 
-    sc_start(600, SC_NS);
+    //sc_report_handler::set_actions (SC_ID_MORE_THAN_ONE_SIGNAL_DRIVER_, SC_DO_NOTHING);
+    sc_start(800, SC_NS);
 
     sc_close_vcd_trace_file(trace_file);
     std::cout << std::endl << "Test bench ended." << std::endl;

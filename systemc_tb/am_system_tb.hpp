@@ -1,7 +1,7 @@
 /*!
  * @file am_system_tb.hpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date Apr 14, 2014
  *
  * @brief
  *
@@ -20,10 +20,11 @@
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-//#include "../systemc/TT_configuration.hpp"
+#include "../systemc/TT_configuration.hpp"
+#include "../systemc/data_representations/do_out_data.hpp"
 #include "../systemc/stub_fifo.hpp"
-#include "../systemc/fifo_fsm.hpp"
-#include "../systemc/am_board.hpp"
+#include "../systemc/modules/am_controller/am_controller.hpp"
+#include "../systemc/modules/am_board/am_board.hpp"
 
 /*!
  * @brief
@@ -36,17 +37,32 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> reset;
+    sc_map_linear<sc_signal<do_out_data> > input_stubs;
+    sc_map_linear<sc_signal<bool> > fifo_not_empty;
+    sc_map_linear<sc_signal<bool> > fifo_read_en;
+    sc_map_linear<sc_signal<do_out_data> > fifo_stubs;
+    sc_signal<sc_bv<3> > init_event;
+    sc_map_linear<sc_signal<bool> > am_write_en;
+    sc_map_linear<sc_signal<sc_bv<18> > > am_stubs;
+    sc_signal<bool> am_data_ready;
+    sc_signal<sc_bv<21> > am_road;
+    sc_signal<sc_bv<21> > output_road;
+
+    sc_signal<bool> road_write_en_dead;
+    sc_signal<bool> ready_to_process_dead;
+
 
     // ----- Process Declarations ----------------------------------------------
     void create_input();
-    void print_output();
+    void detect_roads();
 
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
     sc_map_linear<stub_fifo<12> > input_fifos;
-    sc_map_linear<fifo_fsm> fifo_fsms;
+    am_controller am_ctrl;
+    am_board pattern_reco_board;
 
     // ----- Constructor -------------------------------------------------------
     /*!

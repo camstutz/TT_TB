@@ -90,8 +90,8 @@ object_type* sc_map_linear<object_type>::creator::operator() (
 {
     // todo: only remove if there is number in the end of name
     std::string full_name(name);
-    std::size_t id_pos = full_name.find_first_of('_');
-    full_name = full_name.substr(0, id_pos);
+    //std::size_t id_pos = full_name.find_first_of('_');
+    //full_name = full_name.substr(0, id_pos);
     full_name = full_name + "_" + std::to_string(id);
 
     return (new object_type(full_name.c_str()) );

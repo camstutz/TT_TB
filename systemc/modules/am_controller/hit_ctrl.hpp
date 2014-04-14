@@ -1,7 +1,7 @@
 /*!
- * @file fifo_fsm.hpp
+ * @file hit_ctrl.hpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date Apr 15, 2014
  *
  * @brief
  *
@@ -15,45 +15,44 @@
 
 #include <systemc.h>
 
+#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
+
+#include "../../TT_configuration.hpp"
+#include "../../data_representations/do_out_data.hpp"
+#include "hit_ctrl_single_line.hpp"
+
 /*!
  * @brief
  */
-class fifo_fsm : public sc_module
+class hit_ctrl : public sc_module
 {
 public:
-    typedef enum fsm_states {
-        IDLE = 0x01,
-        RX_DATA = 0x02,
-        STDBY = 0x03
-    } fsm_states;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
+    sc_map_linear<sc_in<bool> > new_hit;
+    sc_map_linear<sc_in<bool> > wr_hit_lamb;
+    sc_in<sc_bv<3> > init_event;
+    sc_map_linear<sc_in<do_out_data>> stub_inputs;
 
-    /** Input port for the reset signal (currently not used) */
-    sc_in<bool> rst;
-
-    sc_in<bool> fifo_empty;
-    sc_in<bool> pop;
-
-    sc_out<bool> fifo_read_en;
-    sc_out<bool> reg_en;
+    sc_map_linear<sc_out<bool> > hee_reg;
+    sc_map_linear<sc_in<bool> > write_en;
+    sc_map_linear<sc_out<sc_bv<18> > > stub_output;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<fsm_states> state;
 
 // ----- Process Declarations --------------------------------------------------
-    void fsm();
 
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
+    sc_map_linear<hit_ctrl_single_line> hit_controllers;
 
 // ----- Constructor -----------------------------------------------------------
     /*!
      * Constructor:
      */
-    fifo_fsm(sc_module_name _name);
-    SC_HAS_PROCESS(fifo_fsm);
+    hit_ctrl(sc_module_name _name);
+    SC_HAS_PROCESS(hit_ctrl);
 };

@@ -14,6 +14,13 @@
 
 // *****************************************************************************
 
+const am_board_fsm::fsm_states am_board_fsm::IDLE = 0x01;
+const am_board_fsm::fsm_states am_board_fsm::RX_HIT = 0x02;
+const am_board_fsm::fsm_states am_board_fsm::PROCESS_ROAD = 0x03;
+const am_board_fsm::fsm_states am_board_fsm::WRITE_ROAD = 0x04;
+
+// *****************************************************************************
+
 /*!
  * @class fifo_fsm
  *
@@ -24,8 +31,11 @@ am_board_fsm::am_board_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
-        write_en(NR_DETECTOR_LAYERS, "write_en")
-        // todo: add missing
+        write_en(NR_DETECTOR_LAYERS, "write_en"),
+        road_buffer_empty("road_buffer_empty"),
+        next_pattern_ready("next_pattern_ready"),
+        process_roads("process_roads"),
+        write_roads("write_roads")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(fsm);
@@ -54,11 +64,11 @@ void am_board_fsm::fsm()
             write_roads = false;
             if (one_write_en_active())
             {
-                state = IDLE;
+                state = RX_HIT;
             }
             else
             {
-                state = RX_HIT;
+                state = IDLE;
             }
             break;
 
@@ -68,11 +78,11 @@ void am_board_fsm::fsm()
             write_roads = false;
             if (one_write_en_active())
             {
-                state = PROCESS_ROAD;
+                state = RX_HIT;
             }
             else
             {
-                state = RX_HIT;
+                state = PROCESS_ROAD;
             }
             break;
 
@@ -108,7 +118,7 @@ bool am_board_fsm::one_write_en_active()
 {
     bool write_en_active = false;
 
-    for (auto wren_single : write_en)
+    for (auto& wren_single : write_en)
     {
         if (wren_single == true)
         {

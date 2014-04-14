@@ -1,7 +1,7 @@
 /*!
  * @file stub_fifo.hpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date Apr 15, 2014
  *
  * @brief
  *
@@ -30,7 +30,7 @@ public:
     sc_in<bool> rst;
 
     sc_in<bool> read_en;
-    sc_out<bool> empty;
+    sc_out<bool> not_empty;
 
     sc_in<do_out_data> stub_in;
     sc_out<do_out_data> stub_out;
@@ -69,12 +69,12 @@ stub_fifo<depth>::stub_fifo(sc_module_name _name) :
         clk("clk"),
         rst("rst"),
         read_en("read_en"),
-        empty("empty"),
+        not_empty("not_empty"),
         stub_in("stub_in"),
         stub_out("stub_out"),
         fifo("fifo", depth)
 {
-    // ----- Process registration ------------------------------------------------
+    // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
         sensitive << clk.pos();
     SC_THREAD(write_output);
@@ -82,11 +82,9 @@ stub_fifo<depth>::stub_fifo(sc_module_name _name) :
     SC_THREAD(update_empty);
         sensitive << fifo.data_read_event() << fifo.data_written_event();
 
-    // ----- Module variable initialization --------------------------------------
+    // ----- Module variable initialization ------------------------------------
 
-    // ----- Module instance / channel binding -----------------------------------
-
-    // Create and name the input ports
+    // ----- Module instance / channel binding ---------------------------------
 
     return;
 }
@@ -98,6 +96,7 @@ void stub_fifo<depth>::read_input()
     while(1)
     {
         wait();
+
         auto input = stub_in.read();
         if (input.get_dv() == true)
         {
@@ -115,9 +114,14 @@ void stub_fifo<depth>::write_output()
     {
         wait();
 
-        if (read_en && !empty)
+        if (read_en && not_empty)
         {
-            stub_out.write(fifo.read());
+            auto fifo_value = fifo.read();
+            stub_out.write(fifo_value);
+        }
+        else
+        {
+            stub_out.write(do_out_data());
         }
     }
 }
@@ -128,16 +132,16 @@ void stub_fifo<depth>::update_empty()
 {
     while (1)
     {
-        wait();
-
         if (fifo.num_available() == 0)
         {
-            empty.write(true);
+            not_empty.write(false);
         }
         else
         {
-            empty.write(false);
+            not_empty.write(true);
         }
+
+        wait();
     }
 
 }

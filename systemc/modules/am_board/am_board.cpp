@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date Apr 7, 2014
+ * @date Apr 10, 2014
  *
  * @brief
  */
@@ -27,28 +27,43 @@ am_board::am_board(sc_module_name _name) :
         init_ev("init_ev"),
         write_en(NR_DETECTOR_LAYERS, "write-en"),
         pattern_inputs(NR_DETECTOR_LAYERS, "pattern_input"),
+        ready_to_process("ready_to_process"),
         data_ready("data_ready"),
         road_output("road_output"),
-        write_en_sig(NR_DETECTOR_LAYERS, "write_en_sig"),
         fsm("FSM"),
-        latency_corrector("latency_corrector")
+        latency_cor_data_ready("latency_correct_data_ready"),
+        latency_cor_road("latency_correct_road")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_stubs);
         sensitive << clk.pos();
     SC_THREAD(detect_roads);
+        sensitive << process_roads.posedge_event();
     SC_THREAD(write_roads);
-        sensitive << clk.pos();
+        sensitive << clk.pos() << write_roads_sig.posedge_event();
     SC_THREAD(check_detected_road_buffer);
-        sensitive << clk.pos();
+        sensitive << detected_roads_buffer.data_written_event()
+                << detected_roads_buffer.data_read_event();
 
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-    write_en.bind(write_en_sig);
-    fsm.write_en.bind(write_en_sig);
-    latency_corrector.input(output_road_no_delay);
-    latency_corrector.delayed(road_output);
+
+    fsm.clk(clk);
+    fsm.rst(rst);
+    fsm.write_en.bind(write_en);
+    fsm.road_buffer_empty(detected_roads_buffer_empty);
+    fsm.next_pattern_ready(ready_to_process);
+    fsm.process_roads(process_roads);
+    fsm.write_roads(write_roads_sig);
+
+    latency_cor_data_ready.clk(clk);
+    latency_cor_data_ready.input(output_data_ready_no_delay);
+    latency_cor_data_ready.delayed(data_ready);
+
+    latency_cor_road.clk(clk);
+    latency_cor_road.input(output_road_no_delay);
+    latency_cor_road.delayed(road_output);
 
     initialize_patterns();
 
@@ -66,15 +81,25 @@ void am_board::process_incoming_stubs()
         {
             if (write_en[layer])
             {
+                // toroad_buffer_emptydo: delete
+                std::cout << sc_time_stamp() << ": Layer " << layer << std::endl;
                 pattern_t pattern = pattern_inputs[layer].read();
                 auto road_addresses = pattern_bank[layer].equal_range(pattern.to_uint());
                 auto road_addr_it = road_addresses.first;
+                // todo: delete
+                std::cout << sc_time_stamp() << ": ";
                 while (road_addr_it != road_addresses.second)
                 {
+                    // todo: delete
+                    std::cout << "|";
                     auto road_addr = road_addr_it->second.to_uint();
+                    // todo: delete
+                    std::cout << "(" << road_addr << "),";
                     match_table[road_addr][layer] = true;
                     ++road_addr_it;
                 }
+                // todo: delete
+                std::cout << std::endl;
             }
         }
     }
@@ -84,26 +109,56 @@ void am_board::process_incoming_stubs()
 // *****************************************************************************
 void am_board::detect_roads()
 {
-    // Prepare the pattern which represents a detected road in the match_table
-    std::array<bool, NR_DETECTOR_LAYERS> road_detect_pattern;
-    for(auto& position : road_detect_pattern)
-    {
-        position = true;
-    }
-
     while (1)
     {
         wait();
-        if (fsm.process_roads)
+
+        //todo: delete or DEBUG
+        std::cout << "Match Table:" << std::endl;
+        for (auto match_line : match_table)
         {
-            unsigned road_nr = 0;
+            for (bool element : match_line)
+            {
+                if (element)
+                {
+                    std::cout << "*,";
+                }
+                else
+                {
+                    std::cout << " ,";
+                }
+            }
+            std::cout << std::endl;
+        }
+
+        if (process_roads)
+        {
+            unsigned int road_nr = 0;
             for (auto match_line : match_table)
             {
-                if(match_line == road_detect_pattern)
+                unsigned int road_hits = 0;
+                for (bool match_position : match_line)
+                {
+                    if (match_position)
+                    {
+                        ++road_hits;
+                    }
+                }
+
+                if (road_hits == NR_DETECTOR_LAYERS)
                 {
                     detected_roads_buffer.write(road_addr_t(road_nr));
+                    std::cout << "road detected: " << road_nr << std::endl;
                 }
+
                 ++road_nr;
+            }
+        }
+        for (auto& match_line : match_table)
+        {
+            for (bool& match_position : match_line)
+            {
+                match_position = false;
             }
         }
     }
@@ -117,14 +172,17 @@ void am_board::write_roads()
     {
         wait();
 
-        if (fsm.write_roads)
+        output_data_ready_no_delay.write(false);
+
+        if (write_roads_sig)
         {
             // todo: change this probably to use the detected_road_buffer_empty
             road_addr_t road;
             bool road_available = detected_roads_buffer.nb_read(road);
             if (road_available)
             {
-                road_output.write(road);
+                output_data_ready_no_delay.write(true);
+                output_road_no_delay.write(road);
             }
         }
     }
@@ -136,12 +194,16 @@ void am_board::check_detected_road_buffer()
 {
     while (1)
     {
-        wait();
-
         if (detected_roads_buffer.num_available() == 0)
         {
-            detected_roads_buffer_empty = true;
+            detected_roads_buffer_empty.write(true);
         }
+        else
+        {
+            detected_roads_buffer_empty.write(false);
+        }
+
+        wait();
     }
 }
 
@@ -157,4 +219,15 @@ void am_board::initialize_patterns()
             pattern_bank_layer.emplace(pattern.to_uint(), pat_nr);
         }
     }
+
+//    std::cout << "Pattern Banks:" << std::endl;
+//    for (auto pattern_bank_layer : pattern_bank)
+//    {
+//        for (auto pattern : pattern_bank_layer)
+//        {
+//            std::cout << pattern.first << ",";
+//        }
+//        std::cout << std::endl;
+//    }
+
 }

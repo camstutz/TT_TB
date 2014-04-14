@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date Apr 7, 2014
+ * @date Apr 15, 2014
  *
  * @brief
  */
@@ -17,10 +17,10 @@
 #include <map>
 
 #include <systemc.h>
-#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
-#include "../lib/systemc_helpers/sc_delay/sc_delay_signal.hpp"
+#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../lib/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 
-#include "TT_configuration.hpp"
+#include "../../TT_configuration.hpp"
 #include "am_board_fsm.hpp"
 
 /*!
@@ -30,9 +30,10 @@ class am_board : public sc_module
 {
 public:
     typedef sc_bv<18> pattern_t;
-    typedef sc_bv<8> road_addr_t;
+    typedef sc_bv<21> road_addr_t;
 
-    static const unsigned int nr_pattern = 256;
+    // todo: pattern number needs to be generic
+    static const unsigned int nr_pattern = 16;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -49,12 +50,15 @@ public:
     sc_out<road_addr_t> road_output;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<road_addr_t> output_road_no_delay;
-    sc_map_linear<sc_signal<bool> > write_en_sig;
     sc_signal<bool> detected_roads_buffer_empty;
+    sc_signal<bool> process_roads;
+    sc_signal<bool> write_roads_sig;
+    sc_signal<bool> output_data_ready_no_delay;
+    sc_signal<road_addr_t> output_road_no_delay;
 
 // ----- Local Storage Declarations --------------------------------------------
-    std::vector<std::array<bool, NR_DETECTOR_LAYERS> > match_table;
+    // todo: pattern number needs to be generic
+    std::array<std::array<bool, NR_DETECTOR_LAYERS>, 16> match_table;
     sc_fifo<road_addr_t> detected_roads_buffer;
 
 // ----- Process Declarations --------------------------------------------------
@@ -68,7 +72,8 @@ public:
 
 // ----- Module Instantiations -------------------------------------------------
     am_board_fsm fsm;
-    sc_delay_signal<road_addr_t, 4> latency_corrector;
+    sc_delay_signal<bool, 3> latency_cor_data_ready;
+    sc_delay_signal<road_addr_t, 3> latency_cor_road;
 
 // ----- Constructor -----------------------------------------------------------
     /*!
