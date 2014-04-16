@@ -47,3 +47,5 @@
 #define NR_FE_CHIP_PER_MODULE      8  // Number of front-end chips per sensor module
 
 #define NR_SENSOR_MODULES NR_DETECTOR_LAYERS*NR_DETECTOR_PHI*NR_DETECTOR_Z // Total number of sensor modules of a detector
+
+#define STUB_FIFO_DEPTH            32

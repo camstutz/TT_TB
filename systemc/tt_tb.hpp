@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  */
@@ -18,6 +18,10 @@
 #include "hit_generator.hpp"
 #include "sensor_module.hpp"
 #include "data_organizer.hpp"
+#include "stub_fifo.hpp"
+#include "modules/am_controller/am_controller.hpp"
+#include "modules/am_board/am_board.hpp"
+#include "data_representations/do_out_data.hpp"
 
 /*!
  * @brief
@@ -35,6 +39,12 @@ public:
     sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_signals;
     sc_map_linear<sc_signal<do_out_data> > do_stubs;
 
+    sc_map_linear<sc_signal<bool>> fifo_not_empty;
+    sc_map_linear<sc_signal<bool>> fifo_write_en;
+    sc_map_linear<sc_signal<do_out_data>> fifo_stub_in;
+    sc_map_linear<sc_signal<bool>> fifo_read_en;
+    sc_map_linear<sc_signal<do_out_data>> fifo_stub_out;
+
     // ----- Process Declarations ----------------------------------------------
 
     // ----- Other Method Declarations -----------------------------------------
@@ -43,6 +53,9 @@ public:
     hit_generator hitGenerator;
     sc_map_cube<sensor_module> sensor_modules;
     data_organizer dataOrganizer;
+    sc_map_linear<stub_fifo<STUB_FIFO_DEPTH>> stub_fifos;
+    am_controller amController;
+    am_board amBoard;
 
     // ----- Constructor -------------------------------------------------------
     /*!
