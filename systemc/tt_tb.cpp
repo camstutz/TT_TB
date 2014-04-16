@@ -30,6 +30,13 @@ tt_tb::tt_tb(const sc_module_name _name) :
         fifo_stub_in(NR_DETECTOR_LAYERS, "fifo_stub_in", 1),
         fifo_read_en(NR_DETECTOR_LAYERS,  "fifo_read_en", 1),
         fifo_stub_out(NR_DETECTOR_LAYERS, "fifo_stub_out", 1),
+        am_init_ev("init_ev"),
+        am_write_en(NR_DETECTOR_LAYERS, "am_write_en", 1),
+        am_stubs_in(NR_DETECTOR_LAYERS, "am_stubs_in", 1),
+        am_data_ready("am_data_ready"),
+        am_road("am_road"),
+        result_write_en("result_write_en"),
+        result_road("result_road"),
         hitGenerator("Hit_Generator", "hits.txt"),
         sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor-module", 1, 1, 1),
         dataOrganizer("data_organizer",1, 1),
@@ -60,15 +67,28 @@ tt_tb::tt_tb(const sc_module_name _name) :
     unsigned int id = 1;
     for(auto& single_stub_fifo : stub_fifos)
     {
-        single_stub_fifo.clk(LHC_clock);
-        single_stub_fifo.not_empty(fifo_not_empty[id]);
-        single_stub_fifo.write_en(fifo_write_en[id]);
-        single_stub_fifo.stub_in(fifo_stub_in[id]);
-        single_stub_fifo.write_en(fifo_read_en[id]);
-        single_stub_fifo.stub_out(fifo_stub_out[id]);
+        single_stub_fifo.clk.bind(LHC_clock);
+        single_stub_fifo.not_empty.bind(fifo_not_empty[id]);
+        single_stub_fifo.write_en.bind(fifo_write_en[id]);
+        single_stub_fifo.stub_in.bind(fifo_stub_in[id]);
+        single_stub_fifo.write_en.bind(fifo_read_en[id]);
+        single_stub_fifo.stub_out.bind(fifo_stub_out[id]);
 
         ++id;
     }
+
+    amController.clk.bind(LHC_clock);
+    amController.init.bind(true_sig);
+    amController.fifo_not_empty.bind(fifo_not_empty);
+    amController.fifo_read_en.bind(fifo_read_en);
+    amController.stub_inputs.bind(fifo_stub_out);
+    amController.init_ev.bind(am_init_ev);
+    amController.am_write_en.bind(am_write_en);
+    amController.am_stub_outputs.bind(am_stubs_in);
+    amController.data_ready.bind(am_data_ready);
+    amController.road_in.bind(am_road);
+    amController.road_write_en.bind(result_write_en);
+    amController.road_output.bind(result_road);
 
     return;
 }

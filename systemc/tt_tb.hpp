@@ -45,6 +45,14 @@ public:
     sc_map_linear<sc_signal<bool>> fifo_read_en;
     sc_map_linear<sc_signal<do_out_data>> fifo_stub_out;
 
+    sc_signal<sc_bv<3>> am_init_ev;
+    sc_map_linear<sc_signal<bool>> am_write_en;
+    sc_map_linear<sc_signal<sc_bv<18>>> am_stubs_in;
+    sc_signal<bool> am_data_ready;
+    sc_signal<sc_bv<21>> am_road;
+    sc_signal<bool> result_write_en;
+    sc_signal<sc_bv<21>> result_road;
+
     // ----- Process Declarations ----------------------------------------------
 
     // ----- Other Method Declarations -----------------------------------------
