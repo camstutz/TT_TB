@@ -36,12 +36,16 @@ public:
     sc_in<do_out_data> stub_input;
 
     sc_out<bool> hee_reg;
-    sc_in<bool> write_en;
+    sc_out<bool> write_en;
     sc_out<sc_bv<18> >  stub_output;
 
 // ----- Local Channel Declarations --------------------------------------------
+    sc_signal<do_out_data> stub_read;
 
 // ----- Process Declarations --------------------------------------------------
+    void read_input_stub();
+    void write_AM_stub();
+    void update_hee_reg();
 
 // ----- Other Method Declarations ---------------------------------------------
 

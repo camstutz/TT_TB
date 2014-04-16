@@ -1,7 +1,7 @@
 /*!
  * @file am_controller.hpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  *
@@ -54,9 +54,6 @@ public:
     sc_map_linear<sc_signal<bool> > hee_reg_sig;
     sc_map_linear<sc_signal<bool> > hit_ctrl_en;
     sc_signal<bool> road_ctrl_finish_road;
-    sc_signal<bool> select_iam_sig;
-
-    sc_signal<sc_bv<3> > init_ev_dead;
 
     // ----- Process Declarations ----------------------------------------------
 

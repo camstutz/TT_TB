@@ -25,7 +25,7 @@
 class main_fsm : public sc_module
 {
 public:
-    static const unsigned int am_latency = 4;
+    static const unsigned int am_latency;
 
     typedef unsigned int fsm_states;
     static const fsm_states RESET;
@@ -45,14 +45,17 @@ public:
 
     sc_map_linear<sc_out<bool> > pop;
     sc_map_linear<sc_out<bool> > en;
-    sc_out<bool> select_iam;
     sc_out<sc_bv<3> > init_ev;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<fsm_states> state;
+    sc_signal<fsm_states> current_state;
+    sc_signal<fsm_states> next_state;
+
+    sc_signal<unsigned int> AM_latency_cnt;
 
 // ----- Process Declarations --------------------------------------------------
-    void fsm();
+    void state_logic();
+    void combinatorial();
 
 // ----- Other Method Declarations ---------------------------------------------
 

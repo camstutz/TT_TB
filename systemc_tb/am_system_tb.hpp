@@ -1,7 +1,7 @@
 /*!
  * @file am_system_tb.hpp
  * @author Christian Amstutz
- * @date Apr 14, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  *
@@ -37,6 +37,7 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> reset;
+    sc_map_linear<sc_signal<bool> > write_en;
     sc_map_linear<sc_signal<do_out_data> > input_stubs;
     sc_map_linear<sc_signal<bool> > fifo_not_empty;
     sc_map_linear<sc_signal<bool> > fifo_read_en;
@@ -46,11 +47,8 @@ public:
     sc_map_linear<sc_signal<sc_bv<18> > > am_stubs;
     sc_signal<bool> am_data_ready;
     sc_signal<sc_bv<21> > am_road;
+    sc_signal<bool> road_write_en;
     sc_signal<sc_bv<21> > output_road;
-
-    sc_signal<bool> road_write_en_dead;
-    sc_signal<bool> ready_to_process_dead;
-
 
     // ----- Process Declarations ----------------------------------------------
     void create_input();

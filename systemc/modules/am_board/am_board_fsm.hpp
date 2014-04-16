@@ -1,7 +1,7 @@
 /*!
  * @file am_board_fsm.hpp
  * @author Christian Amstutz
- * @date Apr 10, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  *
@@ -41,7 +41,6 @@ public:
     sc_map_linear<sc_in<bool> > write_en;
     sc_in<bool> road_buffer_empty;
 
-    sc_out<bool> next_pattern_ready;
     sc_out<bool> process_roads;
     sc_out<bool> write_roads;
 

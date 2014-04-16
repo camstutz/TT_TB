@@ -25,7 +25,6 @@ am_board_tb::am_board_tb(sc_module_name _name) :
         init_event("init_event"),
         write_en(NR_DETECTOR_LAYERS, "write_enable"),
         patterns(NR_DETECTOR_LAYERS, "pattern"),
-        ready_to_process("ready_to_process"),
         road_ready("road_ready"),
         road("road"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
@@ -39,7 +38,6 @@ am_board_tb::am_board_tb(sc_module_name _name) :
     DUT.init_ev(init_event);
     DUT.write_en.bind(write_en);
     DUT.pattern_inputs.bind(patterns);
-    DUT.ready_to_process(ready_to_process);
     DUT.data_ready(road_ready);
     DUT.road_output(road);
 

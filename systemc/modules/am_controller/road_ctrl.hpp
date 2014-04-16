@@ -1,7 +1,7 @@
 /*!
  * @file road_ctrl.hpp
  * @author Christian Amstutz
- * @date Apr 14, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  *
@@ -26,7 +26,6 @@ public:
     /** Input port for the clock signal */
     sc_in<bool> clk;
     sc_in<bool> init;
-    sc_in<bool> sel_word;
     sc_in<bool> data_ready_road;
     sc_in<sc_bv<21> > road_in;
 
@@ -35,8 +34,12 @@ public:
     sc_out<sc_bv<21> > road_out;
 
 // ----- Local Channel Declarations --------------------------------------------
+    sc_signal<bool> write_en_sig;
+    sc_signal<sc_bv<21> > road_sig;
 
 // ----- Process Declarations --------------------------------------------------
+    void transfer_roads();
+    void generate_finish_road();
 
 // ----- Other Method Declarations ---------------------------------------------
 

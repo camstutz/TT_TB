@@ -1,7 +1,7 @@
 /*!
  * @file am_system_tb.cpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 16, 2014
  */
 
 /*
@@ -22,6 +22,7 @@
 am_system_tb::am_system_tb(sc_module_name _name) :
         sc_module(_name),
         reset("reset"),
+        write_en(NR_DETECTOR_LAYERS, "write_en"),
         input_stubs(NR_DETECTOR_LAYERS, "input_stub"),
         fifo_not_empty(NR_DETECTOR_LAYERS, "FIFO_not_empty"),
         fifo_read_en(NR_DETECTOR_LAYERS, "FIFO_read_en"),
@@ -44,6 +45,7 @@ am_system_tb::am_system_tb(sc_module_name _name) :
     {
         input_fifo.clk.bind(LHC_clock);
         input_fifo.rst.bind(reset);
+        input_fifo.write_en.bind(write_en[id]);
         input_fifo.read_en.bind(fifo_read_en[id]);
         input_fifo.not_empty.bind(fifo_not_empty[id]);
         input_fifo.stub_in.bind(input_stubs[id]);
@@ -62,7 +64,7 @@ am_system_tb::am_system_tb(sc_module_name _name) :
     am_ctrl.fifo_read_en.bind(fifo_read_en);
     am_ctrl.am_write_en.bind(am_write_en);
     am_ctrl.am_stub_outputs.bind(am_stubs);
-    am_ctrl.road_write_en.bind(road_write_en_dead);
+    am_ctrl.road_write_en.bind(road_write_en);
     am_ctrl.road_output.bind(output_road);
 
     pattern_reco_board.clk.bind(LHC_clock);
@@ -70,7 +72,6 @@ am_system_tb::am_system_tb(sc_module_name _name) :
     pattern_reco_board.init_ev.bind(init_event);
     pattern_reco_board.write_en.bind(am_write_en);
     pattern_reco_board.pattern_inputs.bind(am_stubs);
-    pattern_reco_board.ready_to_process.bind(ready_to_process_dead);
     pattern_reco_board.data_ready.bind(am_data_ready);
     pattern_reco_board.road_output.bind(am_road);
 
@@ -78,7 +79,7 @@ am_system_tb::am_system_tb(sc_module_name _name) :
     SC_THREAD(create_input);
         sensitive << LHC_clock.posedge_event();
     SC_THREAD(detect_roads);
-        sensitive << output_road;
+        sensitive << output_road << road_write_en;
 
     // ----- Module variable initialization ------------------------------------
 
@@ -104,15 +105,58 @@ am_system_tb::~am_system_tb() {
 void am_system_tb::create_input()
 {
     wait(100, SC_NS);
-
-    input_stubs[0].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[1].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[2].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[3].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[4].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[5].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,5)));
+    write_en.write_all(true);
+    input_stubs[0].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
+    input_stubs[1].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
+    input_stubs[2].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
+    input_stubs[3].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
+    input_stubs[4].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
+    input_stubs[5].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
 
     wait(25, SC_NS);
+    input_stubs[0].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
+    input_stubs[1].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
+    input_stubs[2].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
+    input_stubs[3].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
+    input_stubs[4].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
+    input_stubs[5].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
+
+    wait(25, SC_NS);
+    input_stubs[0].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
+    input_stubs[1].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
+    input_stubs[2].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
+    input_stubs[3].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
+    input_stubs[4].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
+    input_stubs[5].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
+
+    wait(25, SC_NS);
+    write_en.write_all(false);
+    input_stubs[0].write(do_out_data());
+    input_stubs[1].write(do_out_data());
+    input_stubs[2].write(do_out_data());
+    input_stubs[3].write(do_out_data());
+    input_stubs[4].write(do_out_data());
+    input_stubs[5].write(do_out_data());
+
+    wait(50, SC_NS);
+    write_en.write_all(true);
+    input_stubs[0].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
+    input_stubs[1].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
+    input_stubs[2].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
+    input_stubs[3].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
+    input_stubs[4].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
+    input_stubs[5].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
+
+    wait(25, SC_NS);
+    input_stubs[0].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
+    input_stubs[1].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
+    input_stubs[2].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
+    input_stubs[3].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
+    input_stubs[4].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
+    input_stubs[5].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
+
+    wait(25, SC_NS);
+    write_en.write_all(false);
     input_stubs[0].write(do_out_data());
     input_stubs[1].write(do_out_data());
     input_stubs[2].write(do_out_data());
@@ -130,7 +174,9 @@ void am_system_tb::detect_roads()
     {
         wait();
 
-        log_buffer << sc_time_stamp() << ": " << output_road << std::endl;
+        log_buffer << sc_time_stamp() << ": ";
+        log_buffer << road_write_en.read() << " - ";
+        log_buffer << output_road.read() << std::endl;
     }
 
 }

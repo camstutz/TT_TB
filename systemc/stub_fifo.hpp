@@ -29,6 +29,7 @@ public:
     sc_in<bool> clk;
     sc_in<bool> rst;
 
+    sc_in<bool> write_en;
     sc_in<bool> read_en;
     sc_out<bool> not_empty;
 
@@ -41,7 +42,7 @@ public:
 // ----- Process Declarations --------------------------------------------------
     void read_input();
     void write_output();
-    void update_empty();
+    void update_not_empty();
 
 // ----- Other Method Declarations ---------------------------------------------
 
@@ -79,7 +80,7 @@ stub_fifo<depth>::stub_fifo(sc_module_name _name) :
         sensitive << clk.pos();
     SC_THREAD(write_output);
         sensitive << clk.pos();
-    SC_THREAD(update_empty);
+    SC_THREAD(update_not_empty);
         sensitive << fifo.data_read_event() << fifo.data_written_event();
 
     // ----- Module variable initialization ------------------------------------
@@ -98,7 +99,7 @@ void stub_fifo<depth>::read_input()
         wait();
 
         auto input = stub_in.read();
-        if (input.get_dv() == true)
+        if (write_en.read() == true)
         {
             fifo.write(input);
         }
@@ -128,7 +129,7 @@ void stub_fifo<depth>::write_output()
 
 // *****************************************************************************
 template <unsigned int depth>
-void stub_fifo<depth>::update_empty()
+void stub_fifo<depth>::update_not_empty()
 {
     while (1)
     {

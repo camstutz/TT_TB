@@ -1,0 +1,99 @@
+[*]
+[*] GTKWave Analyzer v3.3.49 (w)1999-2013 BSI
+[*] Wed Apr 16 13:45:21 2014
+[*]
+[dumpfile] "/home/amstutz/eclipse_workspace/TT_TB/systemc_tb/TT_TB_testbench.vcd"
+[dumpfile_mtime] "Wed Apr 16 13:44:34 2014"
+[dumpfile_size] 7877
+[savefile] "/home/amstutz/eclipse_workspace/TT_TB/systemc_tb/am_control_waveforms.gtkw"
+[timestart] 0
+[size] 1920 1150
+[pos] -1 -1
+*-18.000000 596000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 348
+[signals_width] 570
+[sst_expanded] 1
+[sst_vpaned_height] 149
+@28
+SystemC.clock
+@200
+-
+@28
+[color] 3
+SystemC.\FIFO_0.out.dv
+@24
+[color] 3
+SystemC.\FIFO_0.out.data.strip[4:0]
+@200
+-
+@24
+[color] 1
+SystemC.\FIFO_FSM_0.current_state[31:0]
+[color] 1
+SystemC.\FIFO_FSM_0.next_state[31:0]
+@28
+[color] 1
+SystemC.\FIFO_FSM_0.fifo_not_empty
+[color] 1
+SystemC.\FIFO_FSM_0.pop
+[color] 1
+SystemC.\FIFO_FSM_0.fifo_read_en
+[color] 1
+SystemC.\FIFO_FSM_0.pok
+[color] 1
+SystemC.\FIFO_FSM_0.reg_en
+@200
+-
+@24
+[color] 5
+SystemC.\main_FSM.current_state[31:0]
+[color] 5
+SystemC.\main_FSM.next_state[31:0]
+[color] 5
+SystemC.\main_FSM.latency_count[31:0]
+@28
+[color] 5
+SystemC.\main_FSM.pok.AM_System.AM_controller.main_fsm.pok_0_0
+[color] 5
+SystemC.\main_FSM.hee_reg.AM_System.AM_controller.main_fsm.hee_reg_0_0
+[color] 5
+SystemC.\main_FSM.finish_road
+[color] 5
+SystemC.\main_FSM.pop.AM_System.AM_controller.main_fsm.pop_0_0
+[color] 5
+SystemC.\main_FSM.en.AM_System.AM_controller.main_fsm.en_0_0
+[color] 5
+SystemC.\main_FSM.init_ev[2:0]
+@200
+-
+@28
+SystemC.\hit_ctrl_0.new_hit
+SystemC.\hit_ctrl_0.wr_hit_lamb
+SystemC.\hit_ctrl_0.init_event[2:0]
+SystemC.\hit_ctrl_0.hee_reg
+SystemC.\hit_ctrl_0.write_en
+@25
+SystemC.\hit_ctrl_0.stub_output[17:0]
+@28
+SystemC.\hit_ctrl_0.stub_read.dv
+@24
+SystemC.\hit_ctrl_0.stub_read.data.strip[4:0]
+@200
+-
+@28
+[color] 2
+SystemC.\road_ctrl.data_ready
+@24
+[color] 2
+SystemC.\road_ctrl.road_in[20:0]
+@28
+[color] 2
+SystemC.\road_ctrl.write_en
+@24
+[color] 2
+SystemC.\road_ctrl.road_out[20:0]
+@28
+[color] 2
+SystemC.\road_ctrl.finish_road
+[pattern_trace] 1
+[pattern_trace] 0

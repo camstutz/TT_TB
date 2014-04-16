@@ -1,7 +1,7 @@
 /*!
  * @file hit_ctrl.cpp
  * @author Christian Amstutz
- * @date Apr 14, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  */
@@ -37,6 +37,20 @@ hit_ctrl::hit_ctrl(sc_module_name _name) :
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
+    unsigned int id = 0;
+    for (auto& hit_controller : hit_controllers)
+    {
+        hit_controller.clk.bind(clk);
+        hit_controller.new_hit.bind(new_hit[id]);
+        hit_controller.wr_hit_lamb.bind(wr_hit_lamb[id]);
+        hit_controller.init_event.bind(init_event);
+        hit_controller.stub_input.bind(stub_inputs[id]);
+        hit_controller.hee_reg.bind(hee_reg[id]);
+        hit_controller.write_en.bind(write_en[id]);
+        hit_controller.stub_output.bind(stub_output[id]);
+
+        ++id;
+    }
 
     return;
 }

@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  */
@@ -33,7 +33,7 @@ public:
     typedef sc_bv<21> road_addr_t;
 
     // todo: pattern number needs to be generic
-    static const unsigned int nr_pattern = 16;
+    static const unsigned int nr_pattern = 255;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -45,7 +45,6 @@ public:
     sc_in<sc_bv<3> > init_ev;
     sc_map_linear<sc_in<bool> > write_en;
     sc_map_linear<sc_in<pattern_t> > pattern_inputs;
-    sc_out<bool> ready_to_process;
     sc_out<bool> data_ready;
     sc_out<road_addr_t> road_output;
 
@@ -58,7 +57,7 @@ public:
 
 // ----- Local Storage Declarations --------------------------------------------
     // todo: pattern number needs to be generic
-    std::array<std::array<bool, NR_DETECTOR_LAYERS>, 16> match_table;
+    std::array<std::array<bool, NR_DETECTOR_LAYERS>, nr_pattern> match_table;
     sc_fifo<road_addr_t> detected_roads_buffer;
 
 // ----- Process Declarations --------------------------------------------------

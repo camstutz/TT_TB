@@ -1,7 +1,7 @@
 /*!
  * @file fifo_fsm.hpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  *
@@ -41,10 +41,15 @@ public:
     sc_out<bool> reg_en;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<fsm_states> state;
+    sc_signal<fsm_states> current_state;
+    sc_signal<fsm_states> next_state;
+
+    sc_signal<bool> fifo_read_en_d1;
 
 // ----- Process Declarations --------------------------------------------------
-    void fsm();
+    void state_logic();
+    void combinatorial();
+    void delay_pok();
 
 // ----- Other Method Declarations ---------------------------------------------
 

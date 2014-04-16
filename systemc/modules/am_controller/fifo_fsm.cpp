@@ -1,7 +1,7 @@
 /*!
  * @file fifo_fsm.cpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  */
@@ -37,11 +37,16 @@ fifo_fsm::fifo_fsm(sc_module_name _name) :
         reg_en("reg_en")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(fsm);
+    SC_THREAD(state_logic);
+        sensitive << clk.pos();
+    SC_THREAD(combinatorial);
+        sensitive << current_state << fifo_not_empty << pop;
+    SC_THREAD(delay_pok)
         sensitive << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
-    state = IDLE;
+    current_state = IDLE;
+    next_state = IDLE;
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -49,20 +54,32 @@ fifo_fsm::fifo_fsm(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void fifo_fsm::fsm()
+void fifo_fsm::state_logic()
 {
     while (1)
     {
         wait();
 
-        switch (state)
+        current_state.write(next_state.read());
+    }
+
+}
+
+// *****************************************************************************
+void fifo_fsm::combinatorial()
+{
+    while (1)
+    {
+        wait();
+
+        switch (current_state)
         {
         case IDLE:
             fifo_read_en.write(fifo_not_empty.read());
             reg_en.write(false);
             if (fifo_not_empty.read() == true)
             {
-                state = RX_DATA;
+                next_state = RX_DATA;
             }
             break;
 
@@ -71,7 +88,7 @@ void fifo_fsm::fsm()
             reg_en.write(pop.read());
             if (pop.read() == false)
             {
-                state = STDBY;
+                next_state = STDBY;
             }
             break;
 
@@ -80,12 +97,25 @@ void fifo_fsm::fsm()
             reg_en.write(false);
             if (pop.read() & fifo_not_empty.read())
             {
-                state = RX_DATA;
+                next_state = RX_DATA;
             }
             break;
 
         default:
-            state = IDLE;
+            next_state = IDLE;
         }
     }
+}
+
+// *****************************************************************************
+void fifo_fsm::delay_pok()
+{
+    while (1)
+    {
+        wait();
+
+        fifo_read_en_d1.write(fifo_read_en.read());
+        pok.write(fifo_read_en_d1.read());
+    }
+
 }

@@ -1,7 +1,7 @@
 /*!
  * @file am_controller.cpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 16, 2014
  *
  * @brief
  */
@@ -38,7 +38,6 @@ am_controller::am_controller(const sc_module_name _name) :
         hee_reg_sig(NR_DETECTOR_LAYERS, "hee_reg_sig"),
         hit_ctrl_en(NR_DETECTOR_LAYERS, "hit_ctrl_en"),
         road_ctrl_finish_road("road_ctrl_finish_road"),
-        select_iam_sig("select_iam_sig"),
         main_am_fsm("main_fsm"),
         fifo_fsm_array(NR_DETECTOR_LAYERS, "FIFO_FSM"),
         hit_controller("hit_ctrl"),
@@ -52,7 +51,6 @@ am_controller::am_controller(const sc_module_name _name) :
     main_am_fsm.hee_reg.bind(hee_reg_sig);
     main_am_fsm.en.bind(hit_ctrl_en);
     main_am_fsm.finish_road.bind(road_ctrl_finish_road);
-    main_am_fsm.select_iam.bind(select_iam_sig);
     main_am_fsm.init_ev.bind(init_ev);
 
     unsigned int id = 0;
@@ -72,7 +70,7 @@ am_controller::am_controller(const sc_module_name _name) :
     hit_controller.clk.bind(clk);
     hit_controller.new_hit.bind(hit_ctrl_reg_en);
     hit_controller.wr_hit_lamb.bind(hit_ctrl_en);
-    hit_controller.init_event.bind(init_ev_dead);
+    hit_controller.init_event.bind(init_ev);
     hit_controller.hee_reg.bind(hee_reg_sig);
     hit_controller.stub_inputs.bind(stub_inputs);
     hit_controller.write_en.bind(am_write_en);
@@ -80,7 +78,6 @@ am_controller::am_controller(const sc_module_name _name) :
 
     road_controller.clk.bind(clk);
     road_controller.init.bind(init);
-    road_controller.sel_word.bind(select_iam_sig);
     road_controller.data_ready_road.bind(data_ready);
     road_controller.road_in.bind(road_in);
     road_controller.finish_road.bind(road_ctrl_finish_road);
