@@ -68,10 +68,11 @@ tt_tb::tt_tb(const sc_module_name _name) :
     for(auto& single_stub_fifo : stub_fifos)
     {
         single_stub_fifo.clk.bind(LHC_clock);
+        single_stub_fifo.rst(true_sig);
         single_stub_fifo.not_empty.bind(fifo_not_empty[id]);
         single_stub_fifo.write_en.bind(fifo_write_en[id]);
         single_stub_fifo.stub_in.bind(fifo_stub_in[id]);
-        single_stub_fifo.write_en.bind(fifo_read_en[id]);
+        single_stub_fifo.read_en.bind(fifo_read_en[id]);
         single_stub_fifo.stub_out.bind(fifo_stub_out[id]);
 
         ++id;
@@ -89,6 +90,14 @@ tt_tb::tt_tb(const sc_module_name _name) :
     amController.road_in.bind(am_road);
     amController.road_write_en.bind(result_write_en);
     amController.road_output.bind(result_road);
+
+    amBoard.clk.bind(LHC_clock);
+    amBoard.rst.bind(true_sig);
+    amBoard.init_ev.bind(am_init_ev);
+    amBoard.write_en.bind(am_write_en);
+    amBoard.pattern_inputs.bind(am_stubs_in);
+    amBoard.data_ready.bind(am_data_ready);
+    amBoard.road_output.bind(am_road);
 
     return;
 }
