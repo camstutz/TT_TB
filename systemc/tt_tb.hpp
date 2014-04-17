@@ -29,7 +29,6 @@
 class tt_tb : public sc_module
 {
 public:
-
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
@@ -37,7 +36,6 @@ public:
     sc_signal<bool> true_sig;
     sc_map_4d<sc_fifo<hit_generator::hitgen_stub_t> > hit_fifos;
     sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_signals;
-    sc_map_linear<sc_signal<do_out_data> > do_stubs;
 
     sc_map_linear<sc_signal<bool>> fifo_not_empty;
     sc_map_linear<sc_buffer<do_out_data>> fifo_stub_in;

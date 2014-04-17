@@ -29,7 +29,7 @@ am_controller::am_controller(const sc_module_name _name) :
         init_ev("init_ev"),
         fifo_read_en(NR_DETECTOR_LAYERS, "fifo_read_en"),
         am_write_en(NR_DETECTOR_LAYERS, "am_write_en"),
-        am_stub_outputs(NR_DETECTOR_LAYERS, "am_stub_en"),
+        am_stub_outputs(NR_DETECTOR_LAYERS, "am_stub"),
         road_write_en("road_write_en"),
         road_output("road_output"),
         pop_sig(NR_DETECTOR_LAYERS, "pop_sig"),

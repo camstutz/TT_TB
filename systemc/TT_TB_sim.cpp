@@ -34,9 +34,18 @@ int sc_main(int argc, char *agv[])
 
     sc_trace_file *trace_file;
     trace_file=sc_create_vcd_trace_file("TT_TB");
+    //trace_file->delta_cycles(true);
 
     sc_trace(trace_file, testbench.LHC_clock, "LHC_clk");
-    sc_trace(trace_file, testbench.dataOrganizer.stub_out, "stub_out");
+    sc_trace(trace_file, testbench.dataOrganizer.stub_out, "DO_stub_out");
+
+    sc_trace(trace_file, testbench.fe_signals, "serial_link");
+
+    sc_trace(trace_file, testbench.amController.fifo_not_empty, "FIFO_not_empty");
+    sc_trace(trace_file, testbench.amController.stub_inputs[0], "AM_stub_in_0");
+    sc_trace(trace_file, testbench.amController.am_stub_outputs[0], "AM_stub_out_0");
+    sc_trace(trace_file, testbench.amController.main_am_fsm.current_state,"AM_current_state");
+    sc_trace(trace_file, testbench.amController.fifo_fsm_array[0].current_state, "FIFO_current_state");
 
     // ----- Start simulation --------------------------------------------------
 
@@ -45,7 +54,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(1500, SC_NS);
+    sc_start(1000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);

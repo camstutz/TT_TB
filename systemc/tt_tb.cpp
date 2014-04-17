@@ -24,7 +24,6 @@ tt_tb::tt_tb(const sc_module_name _name) :
         true_sig("TRUE"),
         hit_fifos(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo", 1, 1, 1, 1),
         fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals", 1, 1, 1),
-        do_stubs(NR_DO_OUT_STUBS, "do_stubs"),
         fifo_not_empty(NR_DETECTOR_LAYERS, "fifo_not_empty", 1),
         fifo_stub_in(NR_DETECTOR_LAYERS, "fifo_stub_in", 1),
         fifo_read_en(NR_DETECTOR_LAYERS,  "fifo_read_en", 1),
@@ -61,7 +60,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
     dataOrganizer.rst(true_sig);
     auto fe_it = fe_signals.begin();
     dataOrganizer.stream_in.bind_by_iter(fe_it);
-    dataOrganizer.stub_out.bind(do_stubs);
+    dataOrganizer.stub_out.bind(fifo_stub_in);
 
     unsigned int id = 1;
     for(auto& single_stub_fifo : stub_fifos)

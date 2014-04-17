@@ -42,8 +42,9 @@ front_end_chip::front_end_chip(const sc_module_name _name) :
 // *****************************************************************************
 void front_end_chip::end_of_elaboration()
 {
+    //* todo: move that to constructor
     SC_THREAD(prioritize_hits);
-        sensitive << stub_input.data_written_event();
+        sensitive << clk.pos();
     SC_THREAD(write_hits);
         sensitive << selected_stubs.data_written_event();
 }
@@ -51,24 +52,26 @@ void front_end_chip::end_of_elaboration()
 // *****************************************************************************
 void front_end_chip::prioritize_hits()
 {
-    while(1)
+    while (1)
     {
         wait();
-        if(!clk.posedge())
-        {
-            wait(clk.posedge_event());
-        }
 
         fe_out_data::fe_stub_t act_stub;
-        for(int i=0;
-                i <= std::min(stub_input.num_available(), MAX_HITS_PER_FE_CHIP);
-                i++)
+        for (int i=0;
+                i < std::min(stub_input.num_available(), MAX_HITS_PER_FE_CHIP);
+                ++i)
         {
-            stub_input.nb_read(act_stub);
-            selected_stubs.nb_write(act_stub);
+std::cout << sc_time_stamp() << ": %" << std::endl;
+            stub_input.read(act_stub);
+            selected_stubs.write(act_stub);
         }
-        while(stub_input.nb_read(act_stub))
-        {};
+
+        if (stub_input.num_available() >0)
+        {
+            std::cout << "Warning: Front End Chip received more than 3 hits" << std::endl;
+            while(stub_input.nb_read(act_stub))
+            {};
+        }
     }
 
 }

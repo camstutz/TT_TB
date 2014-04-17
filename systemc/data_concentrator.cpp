@@ -61,6 +61,7 @@ void data_concentrator::read_FE_chips()
             fe_out_data fe_data = fe_in.read();
             if (fe_data.get_dv() == true)
             {
+std::cout << sc_time_stamp() << ": DO - hit detected" << std::endl;
                 dc_out_word::dc_stub_t stub;
                 stub.set_timestamp(sc_bv<3>(clock_phase.read()));
                 auto signal_key = fe_stub_in.get_key(fe_in);

@@ -48,4 +48,4 @@
 
 #define NR_SENSOR_MODULES NR_DETECTOR_LAYERS*NR_DETECTOR_PHI*NR_DETECTOR_Z // Total number of sensor modules of a detector
 
-#define STUB_FIFO_DEPTH            32
+#define STUB_FIFO_DEPTH            50

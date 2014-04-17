@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date Mar 24, 2014
+ * @date Apr 17, 2014
  *
  * @brief
  *
@@ -18,10 +18,11 @@
 
 #include <systemc.h>
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
-#include "../lib/systemc_helpers/nbits.hpp"
+//#include "../lib/systemc_helpers/nbits.hpp"
 
 #include "TT_configuration.hpp"
 #include "data_representations/do_out_data.hpp"
+#include "data_organizer_one_layer.hpp"
 
 /*!
  * @brief SystemC module to split up the serial data from the detector into the
@@ -31,14 +32,11 @@
  * system probably by the Glib transmission system) and rearranges the data, so
  * the data at the output is again sorted by stubs. The stubs are also reordered
  * according to their time stamp, thereby the whole system has a constant
- * latency.\n
- * So far it works only for layer 1.
+ * latency.
  */
 class data_organizer : public sc_module
 {
 public:
-    typedef typename std::array<std::vector<sc_bv<16> >, NR_DC_WINDOW_CYCLES >
-            stub_table_type;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -61,27 +59,19 @@ public:
     /** Control signal that switches between the two re-order tables */
     sc_signal<unsigned int> stub_table_sel;
 
-    /** Intermediate buffer for the incoming data */
-    sc_buffer<sc_bv<DC_OUTPUT_WIDTH-2> > input_buffer;
+    sc_signal<unsigned int> phi_sig;
+    sc_signal<unsigned int> z_sig;
+
 
 // ----- Local Storage Declarations --------------------------------------------
-    /** Two tables for the re-arranged stubs. Each table can contain a defined
-     * number of stubs for each time step of the time window of the data
-     * transmission. */
-    std::array<stub_table_type, 2> stub_table;
-
 
 // ----- Process Declarations --------------------------------------------------
     void controller();
-    void read_input();
-    void sort_stubs();
-    void write_stubs();
-
-    void print_table();
 
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
+    sc_map_linear<data_organizer_one_layer> do_one_layer_map;
 
 // ----- Constructor -----------------------------------------------------------
     /*!
