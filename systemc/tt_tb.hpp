@@ -40,8 +40,7 @@ public:
     sc_map_linear<sc_signal<do_out_data> > do_stubs;
 
     sc_map_linear<sc_signal<bool>> fifo_not_empty;
-    sc_map_linear<sc_signal<bool>> fifo_write_en;
-    sc_map_linear<sc_signal<do_out_data>> fifo_stub_in;
+    sc_map_linear<sc_buffer<do_out_data>> fifo_stub_in;
     sc_map_linear<sc_signal<bool>> fifo_read_en;
     sc_map_linear<sc_signal<do_out_data>> fifo_stub_out;
 

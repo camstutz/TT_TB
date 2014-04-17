@@ -26,7 +26,6 @@ tt_tb::tt_tb(const sc_module_name _name) :
         fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals", 1, 1, 1),
         do_stubs(NR_DO_OUT_STUBS, "do_stubs"),
         fifo_not_empty(NR_DETECTOR_LAYERS, "fifo_not_empty", 1),
-        fifo_write_en(NR_DETECTOR_LAYERS, "fifo_write_en", 1),
         fifo_stub_in(NR_DETECTOR_LAYERS, "fifo_stub_in", 1),
         fifo_read_en(NR_DETECTOR_LAYERS,  "fifo_read_en", 1),
         fifo_stub_out(NR_DETECTOR_LAYERS, "fifo_stub_out", 1),
@@ -70,7 +69,6 @@ tt_tb::tt_tb(const sc_module_name _name) :
         single_stub_fifo.clk.bind(LHC_clock);
         single_stub_fifo.rst(true_sig);
         single_stub_fifo.not_empty.bind(fifo_not_empty[id]);
-        single_stub_fifo.write_en.bind(fifo_write_en[id]);
         single_stub_fifo.stub_in.bind(fifo_stub_in[id]);
         single_stub_fifo.read_en.bind(fifo_read_en[id]);
         single_stub_fifo.stub_out.bind(fifo_stub_out[id]);

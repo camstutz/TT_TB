@@ -29,7 +29,6 @@ public:
     sc_in<bool> clk;
     sc_in<bool> rst;
 
-    sc_in<bool> write_en;
     sc_in<bool> read_en;
     sc_out<bool> not_empty;
 
@@ -77,7 +76,7 @@ stub_fifo<depth>::stub_fifo(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
-        sensitive << clk.pos();
+        sensitive << stub_in;
     SC_THREAD(write_output);
         sensitive << clk.pos();
     SC_THREAD(update_not_empty);
@@ -98,11 +97,7 @@ void stub_fifo<depth>::read_input()
     {
         wait();
 
-        auto input = stub_in.read();
-        if (write_en.read() == true)
-        {
-            fifo.write(input);
-        }
+        fifo.write(stub_in.read());
     }
 
 }
