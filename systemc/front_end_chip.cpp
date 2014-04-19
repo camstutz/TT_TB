@@ -61,7 +61,8 @@ void front_end_chip::prioritize_hits()
                 i < std::min(stub_input.num_available(), MAX_HITS_PER_FE_CHIP);
                 ++i)
         {
-std::cout << sc_time_stamp() << ": %" << std::endl;
+        	//* todo: why does negative edges appear
+            //std::cout << sc_time_stamp() << ": %" << std::endl;
             stub_input.read(act_stub);
             selected_stubs.write(act_stub);
         }

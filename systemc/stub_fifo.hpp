@@ -98,8 +98,6 @@ void stub_fifo<depth>::read_input()
         wait();
 
         fifo.write(stub_in.read());
-
-        std::cout << sc_time_stamp() << ": fifo value - " << stub_in.read() << std::endl;
     }
 
 }
@@ -117,11 +115,8 @@ void stub_fifo<depth>::write_output()
             auto fifo_value = fifo.read();
             stub_out.write(fifo_value);
         }
-        else
-        {
-            stub_out.write(do_out_data());
-        }
     }
+
 }
 
 // *****************************************************************************

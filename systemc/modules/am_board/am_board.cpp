@@ -202,7 +202,7 @@ void am_board::initialize_patterns()
         for (unsigned int pat_nr=0; pat_nr<nr_pattern; ++pat_nr)
         {
             pattern_t pattern;
-            pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr)) );
+            pattern = ( (sc_bv<2>(0), sc_bv<4>(1), sc_bv<4>(1), sc_bv<8>(pat_nr)) );
             pattern_bank_layer.emplace(pattern.to_uint(), pat_nr);
         }
     }

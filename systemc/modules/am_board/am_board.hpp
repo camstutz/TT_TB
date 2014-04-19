@@ -71,8 +71,8 @@ public:
 
 // ----- Module Instantiations -------------------------------------------------
     am_board_fsm fsm;
-    sc_delay_signal<bool, 2> latency_cor_data_ready;
-    sc_delay_signal<road_addr_t, 2> latency_cor_road;
+    sc_delay_signal<bool, 6> latency_cor_data_ready;
+    sc_delay_signal<road_addr_t, 6> latency_cor_road;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

@@ -78,7 +78,6 @@ void data_organizer_one_layer::sort_stubs()
             cc_buf_write_ptr = 0;
         }
 
-
         concat_buffer(cc_buf_write_ptr+(DC_OUTPUT_WIDTH-2)-1, cc_buf_write_ptr) = input_buffer.read();
         cc_buf_write_ptr = cc_buf_write_ptr+(DC_OUTPUT_WIDTH-2);
 
@@ -110,24 +109,25 @@ void data_organizer_one_layer::write_stubs()
         //stub_out.write(do_out_data());
 
         std::vector<sc_bv<16>> stub_vector = stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()];
-        while (stub_vector.size() != 0)
-        {
-std::cout << sc_time_stamp() << " " << stub_vector.size() << std::endl;
 
-            sc_bv<16> actual_stub = stub_vector.back();
-            stub_vector.pop_back();
-            do_out_data::do_stub_t output_stub = do_out_data::do_stub_t(phi.read(), z.read(), actual_stub(15,13), actual_stub(12,8) );
-            do_out_data output_data;
-            if (stub_vector.size() == 0)
-            {
-                output_data = do_out_data(true, output_stub);
-            }
-            else
-            {
-                output_data = do_out_data(false, output_stub);
-            }
-            stub_out.write(output_data);
-            wait(SC_ZERO_TIME);
+        do_out_data::do_stub_t output_stub;
+        do_out_data output_data;
+
+        if (stub_vector.size() != 0)
+        {
+        	while (stub_vector.size() != 0)
+        	{
+            	sc_bv<16> actual_stub = stub_vector.back();
+            	stub_vector.pop_back();
+            	output_stub = do_out_data::do_stub_t(phi.read(), z.read(), actual_stub(15,13), actual_stub(12,8) );
+            	output_data = do_out_data(false, output_stub);
+            	stub_out.write(output_data);
+            	wait(SC_ZERO_TIME);
+        	}
+
+        	output_stub = do_out_data::do_stub_t(7,7,7,7);
+        	output_data = do_out_data(true, output_stub);
+        	stub_out.write(output_data);
         }
     }
 }
