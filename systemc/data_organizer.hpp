@@ -59,9 +59,9 @@ public:
     /** Control signal that switches between the two re-order tables */
     sc_signal<unsigned int> stub_table_sel;
 
+    sc_signal<unsigned int> time_stamp;
     sc_signal<unsigned int> phi_sig;
     sc_signal<unsigned int> z_sig;
-
 
 // ----- Local Storage Declarations --------------------------------------------
 

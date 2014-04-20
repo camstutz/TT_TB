@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer.cpp
  * @author Christian Amstutz
- * @date Apr 17, 2014
+ * @date Apr 20, 2014
  *
  * @brief
  */
@@ -24,6 +24,7 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
+        time_stamp("time_stamp"),
         clock_phase("clock_phase"),
         stub_table_sel("stub_table_sel"),
         stream_in("stream_in"),
@@ -105,31 +106,32 @@ void data_organizer_one_layer::write_stubs()
     {
         wait();
 
-        // Reset all outputs
-        //stub_out.write(do_out_data());
-
-        std::vector<sc_bv<16>> stub_vector = stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()];
-
         do_out_data::do_stub_t output_stub;
         do_out_data output_data;
+
+        auto stub_vector = stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()];
 
         if (stub_vector.size() != 0)
         {
         	while (stub_vector.size() != 0)
         	{
-            	sc_bv<16> actual_stub = stub_vector.back();
+            	do_out_data::payload_t actual_stub = stub_vector.back();
             	stub_vector.pop_back();
-            	output_stub = do_out_data::do_stub_t(phi.read(), z.read(), actual_stub(15,13), actual_stub(12,8) );
-            	output_data = do_out_data(false, output_stub);
+            	sc_bv<3> fe_chip = actual_stub(15,13);
+            	sc_bv<5> superstrip = actual_stub(12,8);
+            	output_stub = do_out_data::do_stub_t(phi.read(), z.read(), fe_chip, superstrip);
+            	output_data = do_out_data(output_stub);
             	stub_out.write(output_data);
             	wait(SC_ZERO_TIME);
         	}
 
-        	output_stub = do_out_data::do_stub_t(7,7,7,7);
-        	output_data = do_out_data(true, output_stub);
-        	stub_out.write(output_data);
+        	// write as last data word the time stamp
+        	do_out_data::time_stamp_t time_stamp_bv;
+        	time_stamp_bv = time_stamp.read();
+        	stub_out.write(do_out_data(time_stamp_bv));
         }
     }
+
 }
 
 //// *****************************************************************************

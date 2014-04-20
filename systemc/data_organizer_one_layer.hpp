@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer.hpp
  * @author Christian Amstutz
- * @date Apr 17, 2014
+ * @date Apr 20, 2014
  *
  * @brief
  *
@@ -39,6 +39,8 @@ public:
 
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
+
+    sc_in<unsigned int> time_stamp;
 
     /** Control signal showing the actual time step of within the time window */
     sc_in<sc_uint<3> > clock_phase;

@@ -1,7 +1,7 @@
 /*!
  * @do_out_data.hpp
  * @author Christian Amstutz
- * @date Mar 18, 2014
+ * @date Apr 20, 2014
  *
  * @brief
  *
@@ -27,28 +27,38 @@
 class do_out_data
 {
 public:
-    typedef bool data_valid_t;
+    typedef bool time_stamp_flag_t;
     typedef stub_pzfs<DO_STUB_PHI_BITS, DO_STUB_Z_BITS, DO_STUB_FECHIP_BITS, DO_STUB_STRIP_BITS> do_stub_t;
+    typedef sc_bv<16> payload_t;
+    typedef payload_t time_stamp_t;
+    typedef sc_bv<18> data_t;
 
-    /** Constructor: The default value for the data valid bit is set to false.
-     *  */
-    do_out_data(data_valid_t dv = false);
+    static const unsigned int time_stamp_flag_pos = 16;
 
-    /** Constructor: The default value for the data valid bit is set to false.
-     *  */
-    do_out_data(data_valid_t dv, do_stub_t data);
+    /** Constructor: */
+    do_out_data();
 
-    /** Setter function for the data valid bit */
-    void set_dv(const data_valid_t dv_bit);
+    /** Constructor: */
+    do_out_data(const do_stub_t stub_data);
 
-    /** Getter function for the data valid bit */
-    data_valid_t get_dv() const;
+    /** Constructor: */
+    do_out_data(const time_stamp_t time_stamp);
+
+    time_stamp_flag_t get_time_stamp_flag() const;
 
     /** Setter function for the extended stub */
-    void set_data(const do_stub_t new_stub);
+    void set_data_stub(const do_stub_t new_stub);
 
-    /** Getter function for the extended stub */
-    do_stub_t get_data() const;
+    /** Setter function for the time_stamp */
+    void set_data_time_stamp(const time_stamp_t new_time_stamp);
+
+    data_t get_data() const;
+
+    /** Getter function for the stub */
+    do_stub_t get_data_stub() const;
+
+    /** Getter function for the time_stamp */
+    time_stamp_t get_data_time_stamp() const;
 
     /** Comparison of two do_out_data objects */
     bool operator == (const do_out_data &rhs) const;
@@ -57,16 +67,16 @@ public:
     do_out_data& operator = (const do_out_data & rhs);
 
     /** Output function to print the data of the signal. The format is
-     * [dv,[phi,z,fechip,strip]] */
+     * [last_word,[phi,z,fechip,superstrip]] */
     friend ostream& operator << (ostream &os, do_out_data const &v);
 
     /** Function for tracing support in SystemC */
     friend void sc_trace(sc_trace_file *tf, const do_out_data &v, const std::string &name);
 
 private:
-    /** A bit that show if the data is valid in the actual clock cycle */
-    data_valid_t dv;
+    data_t data;
 
-    /** contains an extended stub */
-    do_stub_t data;
+    /** Setter function for the data valid bit */
+    void set_time_stamp_flag(const time_stamp_flag_t time_stamp_flag);
+
 };

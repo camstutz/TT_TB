@@ -15,9 +15,6 @@
 
 #include <systemc.h>
 
-//#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
-
-//#include "../../TT_configuration.hpp"
 #include "../../data_representations/do_out_data.hpp"
 
 /*!

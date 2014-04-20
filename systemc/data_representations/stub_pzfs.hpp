@@ -1,7 +1,7 @@
 /*!
  * @file stub_pzfs.hpp
  * @author Christian Amstutz
- * @date Mar 20, 2014
+ * @date Apr 20, 2014
  *
  * @brief
  *
@@ -64,9 +64,12 @@ public:
     typedef sc_bv<z_bits> z_t;
     typedef sc_bv<phi_bits> phi_t;
 
-    /** Constructor: All member variables are set to 0. */
+    /** Constructor: All member variables are by default set to 0. */
     stub_pzfs(const phi_t phi=0, const z_t z=0, const fechip_t fechip=0,
             const strip_t strip=0);
+
+    /** Constructor: Creates the stub out of a bit vector */
+    stub_pzfs(const sc_bv<total_width> bit_vector);
 
     /** Setter function for the phi coordinate */
     void set_phi(const phi_t phi);
@@ -137,6 +140,20 @@ stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::stub_pzfs(const phi_t phi,
         strip(strip)
 {
     return;
+}
+
+// *****************************************************************************
+template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
+        unsigned int strip_bits>
+stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::stub_pzfs(
+		const sc_bv<total_width> bit_vector)
+{
+	set_phi(bit_vector(total_width,phi_start));
+	set_z(bit_vector(phi_start-1, z_start));
+	set_fechip(bit_vector(z_start-1, fechip_start));
+	set_strip(bit_vector(fechip_start-1, strip_start));
+
+	return;
 }
 
 // *****************************************************************************

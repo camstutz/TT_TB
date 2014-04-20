@@ -29,6 +29,7 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
         stub_out(NR_DETECTOR_LAYERS, "stub_out"),
         clock_phase("clock_phase"),
         stub_table_sel("stub_table_sel"),
+        time_stamp("time_stamp"),
         phi_sig("phi_sig"),
         z_sig("z_sig"),
         do_one_layer_map(NR_DETECTOR_LAYERS, "data_organizer_one_layer"),
@@ -40,8 +41,6 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
         sensitive << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
-    clock_phase.write(0);
-    stub_table_sel.write(0);
     phi_sig.write(phi);
     z_sig.write(z);
 
@@ -51,6 +50,7 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
     {
         one_do.clk(clk);
         one_do.rst(rst);
+        one_do.time_stamp(time_stamp);
         one_do.clock_phase(clock_phase);
         one_do.stub_table_sel(stub_table_sel);
         one_do.stream_in(stream_in[id]);
@@ -67,9 +67,15 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
 // *****************************************************************************
 void data_organizer::controller()
 {
+	time_stamp.write(0);
+	clock_phase.write(0);
+    stub_table_sel.write(0);
+
     while (1)
     {
         wait();
+
+        time_stamp.write(time_stamp.read()+1);
 
         sc_bv<DC_OUTPUT_WIDTH> new_word = stream_in[0].read();
 

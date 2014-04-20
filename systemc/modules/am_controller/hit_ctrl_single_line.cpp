@@ -1,7 +1,7 @@
 /*!
  * @file hit_ctrl_single_line.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 20, 2014
  *
  * @brief
  */
@@ -61,7 +61,7 @@ void hit_ctrl_single_line::read_input_stub()
 
         if (init_event.read() == 7)
         {
-            stub_read.write(do_out_data());
+            stub_read.write(do_out_data(do_out_data::do_stub_t()));
         }
     }
 
@@ -76,13 +76,7 @@ void hit_ctrl_single_line::write_AM_stub()
 
         if (wr_hit_lamb.read() == true)
         {
-            auto stub_data = stub_read.read().get_data();
-            auto stub_data_bit_vec = stub_data.get_bit_vector();
-            sc_bv<18> stub_bit_pattern;
-            stub_bit_pattern[17] = 0;
-            stub_bit_pattern[16] = stub_read.read().get_dv();
-            stub_bit_pattern(15,0) = stub_data_bit_vec;
-            stub_output.write(stub_bit_pattern);
+            stub_output.write(stub_read.read().get_data());
         }
         write_en.write(wr_hit_lamb.read());
     }
@@ -94,7 +88,7 @@ void hit_ctrl_single_line::update_hee_reg()
 {
     while (1)
     {
-        hee_reg.write(stub_read.read().get_dv());
+        hee_reg.write(stub_read.read().get_time_stamp_flag());
 
         wait();
     }
