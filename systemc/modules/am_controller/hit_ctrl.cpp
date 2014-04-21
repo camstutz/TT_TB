@@ -1,7 +1,7 @@
 /*!
  * @file hit_ctrl.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 20, 2014
  *
  * @brief
  */
@@ -30,7 +30,10 @@ hit_ctrl::hit_ctrl(sc_module_name _name) :
         hee_reg(NR_DETECTOR_LAYERS, "hee_reg"),
         write_en(NR_DETECTOR_LAYERS, "write_en"),
         stub_output(NR_DETECTOR_LAYERS, "stub_output"),
+        event_tag("event_tag"),
+        tag_signals(NR_DETECTOR_LAYERS-1, "tag_signals"),
         hit_controllers(NR_DETECTOR_LAYERS, "hit_controller")
+
 {
     // ----- Process registration ----------------------------------------------
 
@@ -48,6 +51,15 @@ hit_ctrl::hit_ctrl(sc_module_name _name) :
         hit_controller.hee_reg.bind(hee_reg[id]);
         hit_controller.write_en.bind(write_en[id]);
         hit_controller.stub_output.bind(stub_output[id]);
+
+        if (id == 0)
+        {
+        	hit_controller.stub_tag.bind(event_tag);
+        }
+        else
+        {
+        	hit_controller.stub_tag.bind(tag_signals[id-1]);
+        }
 
         ++id;
     }

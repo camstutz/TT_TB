@@ -38,6 +38,7 @@ am_controller::am_controller(const sc_module_name _name) :
         hee_reg_sig(NR_DETECTOR_LAYERS, "hee_reg_sig"),
         hit_ctrl_en(NR_DETECTOR_LAYERS, "hit_ctrl_en"),
         road_ctrl_finish_road("road_ctrl_finish_road"),
+        event_tag_sig("event_tag_sig"),
         main_am_fsm("main_fsm"),
         fifo_fsm_array(NR_DETECTOR_LAYERS, "FIFO_FSM"),
         hit_controller("hit_ctrl"),
@@ -75,10 +76,12 @@ am_controller::am_controller(const sc_module_name _name) :
     hit_controller.stub_inputs.bind(stub_inputs);
     hit_controller.write_en.bind(am_write_en);
     hit_controller.stub_output.bind(am_stub_outputs);
+    hit_controller.event_tag.bind(event_tag_sig);
 
     road_controller.clk.bind(clk);
     road_controller.init.bind(init);
     road_controller.data_ready_road.bind(data_ready);
+    road_controller.event_tag.bind(event_tag_sig);
     road_controller.road_in.bind(road_in);
     road_controller.finish_road.bind(road_ctrl_finish_road);
     road_controller.write_en_road.bind(road_write_en);

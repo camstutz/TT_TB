@@ -40,7 +40,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
         dataOrganizer("data_organizer",1, 1),
         stub_fifos(NR_DETECTOR_LAYERS, "stub_fifo", 1),
         amController("AM_controller"),
-        amBoard("AM_board")
+        amBoard("AM_board"),
+        roadAnalyzer("road_analyzer")
 {
     true_sig.write(true);
 
@@ -95,6 +96,10 @@ tt_tb::tt_tb(const sc_module_name _name) :
     amBoard.pattern_inputs.bind(am_stubs_in);
     amBoard.data_ready.bind(am_data_ready);
     amBoard.road_output.bind(am_road);
+
+    roadAnalyzer.clk(LHC_clock);
+    roadAnalyzer.write_en(result_write_en);
+    roadAnalyzer.road_in(result_road);
 
     return;
 }

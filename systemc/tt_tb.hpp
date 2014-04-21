@@ -14,6 +14,8 @@
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
+#include "data_representations/do_out_data.hpp"
+
 #include "TT_configuration.hpp"
 #include "hit_generator.hpp"
 #include "sensor_module.hpp"
@@ -21,7 +23,8 @@
 #include "stub_fifo.hpp"
 #include "modules/am_controller/am_controller.hpp"
 #include "modules/am_board/am_board.hpp"
-#include "data_representations/do_out_data.hpp"
+#include "road_analyzer.hpp"
+
 
 /*!
  * @brief
@@ -61,6 +64,8 @@ public:
     sc_map_linear<stub_fifo<STUB_FIFO_DEPTH>> stub_fifos;
     am_controller amController;
     am_board amBoard;
+    road_analyzer roadAnalyzer;
+
 
     // ----- Constructor -------------------------------------------------------
     /*!

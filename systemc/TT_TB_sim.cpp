@@ -42,14 +42,16 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.fe_signals, "serial_link");
 
     sc_trace(trace_file, testbench.amController.fifo_not_empty, "FIFO_not_empty");
+    sc_trace(trace_file, testbench.amController.fifo_read_en[0], "AM_FIFO_read_en_0");
     sc_trace(trace_file, testbench.amController.stub_inputs[0], "AM_stub_in_0");
     sc_trace(trace_file, testbench.amController.am_write_en[0], "AM_write_en_0");
     sc_trace(trace_file, testbench.amController.am_stub_outputs[0], "AM_stub_out_0");
     sc_trace(trace_file, testbench.amController.main_am_fsm.current_state,"AM_current_state");
     sc_trace(trace_file, testbench.amController.hit_controller.hit_controllers[0].stub_read,"stub_read_0");
+    sc_trace(trace_file, testbench.amController.pop_sig[0],"pop_0");
     sc_trace(trace_file, testbench.amController.hee_reg_sig[0],"hee_reg_sig_0");
+    sc_trace(trace_file, testbench.amController.event_tag_sig,"event_tag_sig");
     sc_trace(trace_file, testbench.amController.hit_controller.new_hit[0],"new_hit_0");
-    sc_trace(trace_file, testbench.amController.main_am_fsm.pop[0],"pop_0");
     sc_trace(trace_file, testbench.amController.main_am_fsm.finish_road,"finish_road");
     sc_trace(trace_file, testbench.amController.fifo_fsm_array[0].current_state, "FIFO_current_state");
 

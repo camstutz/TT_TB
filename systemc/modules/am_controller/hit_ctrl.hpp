@@ -1,7 +1,7 @@
 /*!
  * @file hit_ctrl.hpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 20, 2014
  *
  * @brief
  *
@@ -36,11 +36,13 @@ public:
     sc_in<sc_bv<3> > init_event;
     sc_map_linear<sc_in<do_out_data>> stub_inputs;
 
-    sc_map_linear<sc_out<bool> > hee_reg;
-    sc_map_linear<sc_out<bool> > write_en;
-    sc_map_linear<sc_out<sc_bv<18> > > stub_output;
+    sc_map_linear<sc_out<bool>> hee_reg;
+    sc_map_linear<sc_out<bool>> write_en;
+    sc_map_linear<sc_out<sc_bv<18>>> stub_output;
+    sc_out<sc_bv<16>> event_tag;
 
 // ----- Local Channel Declarations --------------------------------------------
+    sc_map_linear<sc_signal<sc_bv<16>>> tag_signals;
 
 // ----- Process Declarations --------------------------------------------------
 

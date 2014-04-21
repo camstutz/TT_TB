@@ -1,7 +1,7 @@
 /*!
  * @file road_ctrl.hpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 21, 2014
  *
  * @brief
  *
@@ -27,7 +27,8 @@ public:
     sc_in<bool> clk;
     sc_in<bool> init;
     sc_in<bool> data_ready_road;
-    sc_in<sc_bv<21> > road_in;
+    sc_in<sc_bv<16>> event_tag;
+    sc_in<sc_bv<21>> road_in;
 
     sc_out<bool> finish_road;
     sc_out<bool> write_en_road;
@@ -36,10 +37,10 @@ public:
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<bool> write_en_sig;
     sc_signal<sc_bv<21> > road_sig;
+	sc_signal<bool> data_ready_last;
 
 // ----- Process Declarations --------------------------------------------------
     void transfer_roads();
-    void generate_finish_road();
 
 // ----- Other Method Declarations ---------------------------------------------
 

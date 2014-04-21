@@ -14,12 +14,12 @@
 
 // *****************************************************************************
 
-road_analyzer::road_analyzer(sc_module_name _name , std::string hitFileName) :
+road_analyzer::road_analyzer(sc_module_name _name) :
         sc_module(_name)
 {
     // ----- Process registration ------------------------------------------------
 	SC_THREAD(detect_roads);
-		sensitive << write_en;
+		sensitive << clk.pos();
 
     // ----- Module variable initialization --------------------------------------
 
@@ -34,7 +34,10 @@ void road_analyzer::detect_roads()
 	while (1)
 	{
 		wait();
-		std::cout << sc_time_stamp() << ": " << road_in.read().to_uint() << std::endl;
+		if (write_en.read() == true)
+		{
+			std::cout << sc_time_stamp() << ": Road detected - " << std::hex << road_in.read().to_uint() << std::endl;
+		}
 	}
 
 }
