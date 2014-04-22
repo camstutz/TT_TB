@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.hpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 22, 2014
  *
  * @brief
  */
@@ -14,6 +14,7 @@
 
 #include <string>
 #include <sstream>
+#include <fstream>
 
 #include <systemc.h>
 
@@ -25,6 +26,7 @@
 class road_analyzer : public sc_module
 {
 public:
+    static const std::string filename;
 
 // ----- Port Declarations -----------------------------------------------------
 	sc_in<bool> clk;
@@ -46,7 +48,8 @@ public:
      */
 	road_analyzer(sc_module_name _name);
     SC_HAS_PROCESS(road_analyzer);
+    ~road_analyzer();
 
 private:
-
+    ofstream road_file;
 };

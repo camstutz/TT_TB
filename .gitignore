@@ -229,3 +229,9 @@ documentation/
 
 # Folder to hide modules temporarily
 exclude/
+
+##########################
+## Simulation Framework
+#########################
+
+roads.txt
