@@ -13,7 +13,7 @@
 #include "main_fsm.hpp"
 
 // *****************************************************************************
-const unsigned int main_fsm::am_latency = 8;
+const unsigned int main_fsm::am_latency = 9;
 const main_fsm::fsm_states main_fsm::RESET = 0x01;
 const main_fsm::fsm_states main_fsm::RX_HIT = 0x02;
 const main_fsm::fsm_states main_fsm::WAIT_T0 = 0x03;
@@ -145,7 +145,7 @@ void main_fsm::combinatorial()
             en.write_all(false);
             init_ev = 0;
 
-            if (finish_road == true)
+            if (finish_road == false)
             {
                 next_state = SEND_INIT_EVENT;
             }

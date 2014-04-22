@@ -54,15 +54,14 @@ void road_ctrl::transfer_roads()
     {
         wait();
 
-        finish_road.write(false);
+        finish_road.write(data_ready_road.read());
 
         write_en_road.write(data_ready_road.read());
         road_out.write(road_in.read());
 
         if ((data_ready_last.read() == true) & (data_ready_road.read() == false))
         {
-        	finish_road.write(true);
-            write_en_road.write(true);
+        	write_en_road.write(true);
             road_out.write(event_tag.read());
         }
 
