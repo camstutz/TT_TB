@@ -24,6 +24,7 @@ public:
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
     static const fsm_states RX_DATA;
+    static const fsm_states WAIT;
     static const fsm_states STDBY;
 
 // ----- Port Declarations -----------------------------------------------------
@@ -36,6 +37,7 @@ public:
     sc_in<bool> fifo_not_empty;
     sc_in<bool> pop;
     sc_out<bool> pok;
+    sc_in<bool> hee_reg_before;
 
     sc_out<bool> fifo_read_en;
     sc_out<bool> reg_en;

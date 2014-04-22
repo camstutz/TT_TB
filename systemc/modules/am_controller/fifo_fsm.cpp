@@ -16,7 +16,8 @@
 
 const fifo_fsm::fsm_states fifo_fsm::IDLE = 0x01;
 const fifo_fsm::fsm_states fifo_fsm::RX_DATA = 0x02;
-const fifo_fsm::fsm_states fifo_fsm::STDBY = 0x03;
+const fifo_fsm::fsm_states fifo_fsm::WAIT = 0x03;
+const fifo_fsm::fsm_states fifo_fsm::STDBY = 0x04;
 
 // *****************************************************************************
 
@@ -40,7 +41,7 @@ fifo_fsm::fifo_fsm(sc_module_name _name) :
     SC_THREAD(state_logic);
         sensitive << clk.pos();
     SC_THREAD(combinatorial);
-        sensitive << current_state << fifo_not_empty << pop;
+        sensitive << current_state << fifo_not_empty << pop << hee_reg_before;
     SC_THREAD(delay_pok)
         sensitive << clk.pos();
 
@@ -81,6 +82,10 @@ void fifo_fsm::combinatorial()
             {
                 next_state = RX_DATA;
             }
+            else
+            {
+                next_state = IDLE;
+            }
             break;
 
         case RX_DATA:
@@ -90,6 +95,10 @@ void fifo_fsm::combinatorial()
             {
                 next_state = STDBY;
             }
+            else
+            {
+                next_state = RX_DATA;
+            }
             break;
 
         case STDBY:
@@ -97,7 +106,11 @@ void fifo_fsm::combinatorial()
             reg_en.write(false);
             if (pop.read() & fifo_not_empty.read())
             {
-                next_state = RX_DATA;
+                next_state = IDLE;
+            }
+            else
+            {
+                next_state = STDBY;
             }
             break;
 

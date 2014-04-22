@@ -34,6 +34,7 @@ main_fsm::main_fsm(sc_module_name _name) :
         init("init"),
         pok(NR_DETECTOR_LAYERS, "pok"),
         hee_reg(NR_DETECTOR_LAYERS, "hee_reg"),
+        hee_reg_before(NR_DETECTOR_LAYERS, "hee_reg_before"),
         finish_road("finish_road"),
         pop(NR_DETECTOR_LAYERS, "pop"),
         en(NR_DETECTOR_LAYERS, "en"),

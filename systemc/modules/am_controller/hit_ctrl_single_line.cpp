@@ -38,7 +38,7 @@ hit_ctrl_single_line::hit_ctrl_single_line(sc_module_name _name) :
     SC_THREAD(write_AM_stub);
         sensitive << clk.pos();
     SC_THREAD(update_hee_reg)
-        sensitive << stub_read;
+        sensitive << stub_read << stub_input;
     SC_THREAD(update_tag);
     	sensitive << clk.pos();
 
@@ -91,6 +91,7 @@ void hit_ctrl_single_line::update_hee_reg()
 {
     while (1)
     {
+        hee_reg_before.write(stub_input.read().get_time_stamp_flag());
         hee_reg.write(stub_read.read().get_time_stamp_flag());
 
         wait();

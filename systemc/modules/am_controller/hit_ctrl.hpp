@@ -36,6 +36,7 @@ public:
     sc_in<sc_bv<3> > init_event;
     sc_map_linear<sc_in<do_out_data>> stub_inputs;
 
+    sc_map_linear<sc_out<bool>> hee_reg_before;
     sc_map_linear<sc_out<bool>> hee_reg;
     sc_map_linear<sc_out<bool>> write_en;
     sc_map_linear<sc_out<sc_bv<18>>> stub_output;

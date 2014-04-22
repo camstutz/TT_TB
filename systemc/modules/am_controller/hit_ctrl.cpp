@@ -27,6 +27,7 @@ hit_ctrl::hit_ctrl(sc_module_name _name) :
         wr_hit_lamb(NR_DETECTOR_LAYERS, "wr_hit_lamb"),
         init_event("init_ev"),
         stub_inputs(NR_DETECTOR_LAYERS, "stub_input"),
+        hee_reg_before(NR_DETECTOR_LAYERS, "hee_reg_before"),
         hee_reg(NR_DETECTOR_LAYERS, "hee_reg"),
         write_en(NR_DETECTOR_LAYERS, "write_en"),
         stub_output(NR_DETECTOR_LAYERS, "stub_output"),
@@ -48,6 +49,7 @@ hit_ctrl::hit_ctrl(sc_module_name _name) :
         hit_controller.wr_hit_lamb.bind(wr_hit_lamb[id]);
         hit_controller.init_event.bind(init_event);
         hit_controller.stub_input.bind(stub_inputs[id]);
+        hit_controller.hee_reg_before.bind(hee_reg_before[id]);
         hit_controller.hee_reg.bind(hee_reg[id]);
         hit_controller.write_en.bind(write_en[id]);
         hit_controller.stub_output.bind(stub_output[id]);

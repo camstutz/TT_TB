@@ -41,6 +41,7 @@ public:
     sc_in<bool> init;
     sc_map_linear<sc_in<bool> > pok;
     sc_map_linear<sc_in<bool> > hee_reg;
+    sc_map_linear<sc_in<bool> > hee_reg_before;
     sc_in<bool> finish_road;
 
     sc_map_linear<sc_out<bool> > pop;

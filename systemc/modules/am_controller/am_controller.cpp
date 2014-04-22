@@ -36,6 +36,7 @@ am_controller::am_controller(const sc_module_name _name) :
         pok_sig(NR_DETECTOR_LAYERS, "pok_sig"),
         hit_ctrl_reg_en(NR_DETECTOR_LAYERS, "hit_ctrl_reg_en"),
         hee_reg_sig(NR_DETECTOR_LAYERS, "hee_reg_sig"),
+        hee_reg_before_sig(NR_DETECTOR_LAYERS, "hee_reg_before_sig"),
         hit_ctrl_en(NR_DETECTOR_LAYERS, "hit_ctrl_en"),
         road_ctrl_finish_road("road_ctrl_finish_road"),
         event_tag_sig("event_tag_sig"),
@@ -50,6 +51,7 @@ am_controller::am_controller(const sc_module_name _name) :
     main_am_fsm.pop.bind(pop_sig);
     main_am_fsm.pok.bind(pok_sig);
     main_am_fsm.hee_reg.bind(hee_reg_sig);
+    main_am_fsm.hee_reg_before.bind(hee_reg_before_sig);
     main_am_fsm.en.bind(hit_ctrl_en);
     main_am_fsm.finish_road.bind(road_ctrl_finish_road);
     main_am_fsm.init_ev.bind(init_ev);
@@ -61,6 +63,7 @@ am_controller::am_controller(const sc_module_name _name) :
         fifo_fsm.rst.bind(init);
         fifo_fsm.fifo_not_empty.bind(fifo_not_empty[id]);
         fifo_fsm.fifo_read_en.bind(fifo_read_en[id]);
+        fifo_fsm.hee_reg_before.bind(hee_reg_before_sig[id]);
         fifo_fsm.pop.bind(pop_sig[id]);
         fifo_fsm.pok.bind(pok_sig[id]);
         fifo_fsm.reg_en.bind(hit_ctrl_reg_en[id]);
@@ -73,6 +76,7 @@ am_controller::am_controller(const sc_module_name _name) :
     hit_controller.wr_hit_lamb.bind(hit_ctrl_en);
     hit_controller.init_event.bind(init_ev);
     hit_controller.hee_reg.bind(hee_reg_sig);
+    hit_controller.hee_reg_before.bind(hee_reg_before_sig);
     hit_controller.stub_inputs.bind(stub_inputs);
     hit_controller.write_en.bind(am_write_en);
     hit_controller.stub_output.bind(am_stub_outputs);

@@ -32,6 +32,7 @@ public:
     sc_in<sc_bv<3>> init_event;
     sc_in<do_out_data> stub_input;
 
+    sc_out<bool> hee_reg_before;
     sc_out<bool> hee_reg;
     sc_out<bool> write_en;
     sc_out<sc_bv<18>> stub_output;

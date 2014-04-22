@@ -52,6 +52,7 @@ public:
     sc_map_linear<sc_signal<bool> > pok_sig;
     sc_map_linear<sc_signal<bool> > hit_ctrl_reg_en;
     sc_map_linear<sc_signal<bool> > hee_reg_sig;
+    sc_map_linear<sc_signal<bool> > hee_reg_before_sig;
     sc_map_linear<sc_signal<bool> > hit_ctrl_en;
     sc_signal<bool> road_ctrl_finish_road;
     sc_signal<sc_bv<16>> event_tag_sig;

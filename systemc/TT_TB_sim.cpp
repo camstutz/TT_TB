@@ -49,6 +49,7 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.amController.main_am_fsm.current_state,"AM_current_state");
     sc_trace(trace_file, testbench.amController.hit_controller.hit_controllers[0].stub_read,"stub_read_0");
     sc_trace(trace_file, testbench.amController.pop_sig[0],"pop_0");
+    sc_trace(trace_file, testbench.amController.hee_reg_before_sig[0],"hee_reg_before_sig_0");
     sc_trace(trace_file, testbench.amController.hee_reg_sig[0],"hee_reg_sig_0");
     sc_trace(trace_file, testbench.amController.event_tag_sig,"event_tag_sig");
     sc_trace(trace_file, testbench.amController.hit_controller.new_hit[0],"new_hit_0");
@@ -68,7 +69,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(2500, SC_NS);
+    sc_start(3000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);
