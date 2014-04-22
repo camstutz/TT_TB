@@ -57,8 +57,9 @@ void front_end_chip::prioritize_hits()
         wait();
 
         fe_out_data::fe_stub_t act_stub;
+        int stub_cnt = stub_input.num_available();
         for (int i=0;
-                i < std::min(stub_input.num_available(), MAX_HITS_PER_FE_CHIP);
+                i < std::min(stub_cnt, MAX_HITS_PER_FE_CHIP);
                 ++i)
         {
         	//* todo: why does negative edges appear
