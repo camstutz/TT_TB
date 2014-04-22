@@ -17,7 +17,7 @@
 hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
         sc_module(_name),
         hit_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                NR_FE_CHIP_PER_MODULE, "hit_output", 1, 1, 1, 1),
+                NR_FE_CHIP_PER_MODULE, "hit_output", 0, 0, 0, 0),
         hit_cnt("hit_cnt")
 {
     // ----- Process registration ----------------------------------------------

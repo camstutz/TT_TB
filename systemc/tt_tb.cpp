@@ -22,24 +22,24 @@
 tt_tb::tt_tb(const sc_module_name _name) :
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("TRUE"),
-        hit_fifos(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo", 1, 1, 1, 1),
-        fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals", 1, 1, 1),
-        fifo_not_empty(NR_DETECTOR_LAYERS, "fifo_not_empty", 1),
-        fifo_stub_in(NR_DETECTOR_LAYERS, "fifo_stub_in", 1),
-        fifo_read_en(NR_DETECTOR_LAYERS,  "fifo_read_en", 1),
-        fifo_stub_out(NR_DETECTOR_LAYERS, "fifo_stub_out", 1),
+        hit_fifos(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo"),
+        fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals"),
+        fifo_not_empty(NR_DETECTOR_LAYERS, "fifo_not_empty"),
+        fifo_stub_in(NR_DETECTOR_LAYERS, "fifo_stub_in"),
+        fifo_read_en(NR_DETECTOR_LAYERS,  "fifo_read_en"),
+        fifo_stub_out(NR_DETECTOR_LAYERS, "fifo_stub_out"),
         am_init_ev("init_ev"),
-        am_write_en(NR_DETECTOR_LAYERS, "am_write_en", 1),
-        am_stubs_in(NR_DETECTOR_LAYERS, "am_stubs_in", 1),
+        am_write_en(NR_DETECTOR_LAYERS, "am_write_en"),
+        am_stubs_in(NR_DETECTOR_LAYERS, "am_stubs_in"),
         am_data_ready("am_data_ready"),
         am_road("am_road"),
         result_write_en("result_write_en"),
         result_road("result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", "hits.txt"),
-        sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor-module", 1, 1, 1),
-        dataOrganizer("data_organizer",1, 1),
-        stub_fifos(NR_DETECTOR_LAYERS, "stub_fifo", 1),
+        sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor-module"),
+        dataOrganizer("data_organizer",0, 0),
+        stub_fifos(NR_DETECTOR_LAYERS, "stub_fifo"),
         amController("AM_controller"),
         amBoard("AM_board"),
         roadAnalyzer("road_analyzer")
@@ -65,7 +65,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
     dataOrganizer.stream_in.bind_by_iter(fe_it);
     dataOrganizer.stub_out.bind(fifo_stub_in);
 
-    unsigned int id = 1;
+    unsigned int id = 0;
     for(auto& single_stub_fifo : stub_fifos)
     {
         single_stub_fifo.clk.bind(LHC_clock);

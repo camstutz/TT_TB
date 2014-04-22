@@ -68,7 +68,7 @@ void front_end_chip::prioritize_hits()
             selected_stubs.write(act_stub);
         }
 
-        if (stub_input.num_available() >0)
+        if (stub_input.num_available() > 0)
         {
             std::cout << "Warning: Front End Chip received more than 3 hits" << std::endl;
             while(stub_input.nb_read(act_stub))
