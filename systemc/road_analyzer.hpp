@@ -37,6 +37,7 @@ public:
 
 // ----- Process Declarations --------------------------------------------------
 	void detect_roads();
+	void detect_road_end();
 
 // ----- Other Method Declarations ---------------------------------------------
 
@@ -52,4 +53,5 @@ public:
 
 private:
     ofstream road_file;
+    unsigned int road_cnt;
 };
