@@ -1,7 +1,7 @@
 /*!
  * @file fifo_fsm.hpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 22, 2014
  *
  * @brief
  *
@@ -24,7 +24,6 @@ public:
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
     static const fsm_states RX_DATA;
-    static const fsm_states WAIT;
     static const fsm_states STDBY;
 
 // ----- Port Declarations -----------------------------------------------------

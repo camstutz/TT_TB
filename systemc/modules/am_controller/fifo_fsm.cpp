@@ -1,7 +1,7 @@
 /*!
  * @file fifo_fsm.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 22, 2014
  *
  * @brief
  */
@@ -16,7 +16,6 @@
 
 const fifo_fsm::fsm_states fifo_fsm::IDLE = 0x01;
 const fifo_fsm::fsm_states fifo_fsm::RX_DATA = 0x02;
-const fifo_fsm::fsm_states fifo_fsm::WAIT = 0x03;
 const fifo_fsm::fsm_states fifo_fsm::STDBY = 0x04;
 
 // *****************************************************************************
@@ -89,7 +88,7 @@ void fifo_fsm::combinatorial()
             break;
 
         case RX_DATA:
-            fifo_read_en.write(pop.read() & fifo_not_empty.read());
+            fifo_read_en.write(pop.read() & fifo_not_empty.read() & !hee_reg_before.read());
             reg_en.write(pop.read());
             if (pop.read() == false)
             {
