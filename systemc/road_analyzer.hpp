@@ -31,6 +31,8 @@ public:
 // ----- Port Declarations -----------------------------------------------------
 	sc_in<bool> clk;
 	sc_in<bool> write_en;
+
+	sc_in<unsigned int> hit_cnt;
 	sc_in<sc_bv<21>> road_in;
 
 // ----- Local Channel Declarations --------------------------------------------
@@ -38,6 +40,7 @@ public:
 // ----- Process Declarations --------------------------------------------------
 	void detect_roads();
 	void detect_road_end();
+	void update_hit_cnt();
 
 // ----- Other Method Declarations ---------------------------------------------
 
@@ -53,5 +56,6 @@ public:
 
 private:
     ofstream road_file;
+    unsigned int hit_counter;
     unsigned int road_cnt;
 };

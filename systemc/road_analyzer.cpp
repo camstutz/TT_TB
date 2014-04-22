@@ -21,6 +21,7 @@ road_analyzer::road_analyzer(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         write_en("write_en"),
+        hit_cnt("hit_cnt"),
         road_in("road_in"),
         road_cnt(0)
 {
@@ -29,6 +30,8 @@ road_analyzer::road_analyzer(sc_module_name _name) :
 		sensitive << clk.pos();
 	SC_THREAD(detect_road_end);
 	    sensitive << write_en;
+	SC_THREAD(update_hit_cnt)
+	    sensitive << hit_cnt;
 
     // ----- Module variable initialization ------------------------------------
 
@@ -45,6 +48,7 @@ road_analyzer::~road_analyzer()
     road_file.close();
 
     std::cout << std::endl;
+    std::cout << hit_counter << " hits analyzed" << std::endl;
     std::cout << road_cnt << " roads written to " << filename << std::endl;
 
     return;
@@ -79,5 +83,16 @@ void road_analyzer::detect_road_end()
         {
             --road_cnt;
         }
+    }
+}
+
+// *****************************************************************************
+void road_analyzer::update_hit_cnt()
+{
+    while (1)
+    {
+        wait();
+
+        hit_counter = hit_cnt.read();
     }
 }

@@ -17,23 +17,26 @@
 hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
         sc_module(_name),
         hit_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                NR_FE_CHIP_PER_MODULE, "hit_output", 1, 1, 1, 1)
+                NR_FE_CHIP_PER_MODULE, "hit_output", 1, 1, 1, 1),
+        hit_cnt("hit_cnt")
 {
-  // ----- Process registration ------------------------------------------------
-  SC_THREAD(schedule_hits);
+    // ----- Process registration ----------------------------------------------
+    SC_THREAD(schedule_hits);
 
-  // ----- Module variable initialization --------------------------------------
+    // ----- Module variable initialization ------------------------------------
 
-  // ----- Module instance / channel binding -----------------------------------
+    // ----- Module instance / channel binding ---------------------------------
 
-  readFile(hitFileName);
+    readFile(hitFileName);
 
-  return;
+    return;
 }
 
 // *****************************************************************************
 void hit_generator::schedule_hits()
 {
+    hit_cnt.write(0);
+
     while (!hit_queue.empty())
     {
         sc_time wait_time;
@@ -53,6 +56,7 @@ void hit_generator::schedule_hits()
         processed_stub.set_bend(hit.stubBend);
         hit_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
                 hit.frontEndChipNr).write(processed_stub);
+        hit_cnt.write(hit_cnt.read()+1);
 
         #ifdef DEBUG
         std::cout << std::hex << sc_time_stamp() << " hit_generator @ "

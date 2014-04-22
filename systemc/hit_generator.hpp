@@ -39,6 +39,8 @@ public:
      * stub.hpp */
     sc_map_4d<sc_fifo_out<hitgen_stub_t> > hit_outputs;
 
+    sc_out<unsigned int> hit_cnt;
+
 // ----- Local Channel Declarations --------------------------------------------
 
 // ----- Process Declarations --------------------------------------------------

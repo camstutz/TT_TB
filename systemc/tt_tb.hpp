@@ -53,6 +53,8 @@ public:
     sc_signal<bool> result_write_en;
     sc_signal<sc_bv<21>> result_road;
 
+    sc_signal<unsigned int> hit_cnt_sig;
+
     // ----- Process Declarations ----------------------------------------------
 
     // ----- Other Method Declarations -----------------------------------------

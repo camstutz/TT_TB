@@ -35,6 +35,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         am_road("am_road"),
         result_write_en("result_write_en"),
         result_road("result_road"),
+        hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", "hits.txt"),
         sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor-module", 1, 1, 1),
         dataOrganizer("data_organizer",1, 1),
@@ -46,6 +47,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
     true_sig.write(true);
 
     hitGenerator.hit_outputs.bind(hit_fifos);
+    hitGenerator.hit_cnt(hit_cnt_sig);
 
     for (auto& sens_module : sensor_modules)
     {
@@ -99,6 +101,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
 
     roadAnalyzer.clk(LHC_clock);
     roadAnalyzer.write_en(result_write_en);
+    roadAnalyzer.hit_cnt(hit_cnt_sig);
     roadAnalyzer.road_in(result_road);
 
     return;
