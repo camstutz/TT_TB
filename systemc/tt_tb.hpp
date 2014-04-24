@@ -20,7 +20,7 @@
 #include "modules/hit_generator/hit_generator.hpp"
 #include "modules/sensor_module_ss/sensor_module_ss.hpp"
 #include "modules/data_organizer/data_organizer.hpp"
-#include "stub_fifo.hpp"
+#include "modules/stub_fifo/stub_fifo.hpp"
 #include "modules/am_controller/am_controller.hpp"
 #include "modules/am_board/am_board.hpp"
 #include "modules/road_analyzer/road_analyzer.hpp"

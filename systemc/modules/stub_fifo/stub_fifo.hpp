@@ -15,8 +15,8 @@
 
 #include <systemc.h>
 
-#include "TT_configuration.hpp"
-#include "data_representations/do_out_data.hpp"
+#include "../../TT_configuration.hpp"
+#include "../../data_representations/do_out_data.hpp"
 
 /*!
  * @brief
