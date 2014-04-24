@@ -17,11 +17,11 @@
 #include <vector>
 
 #include <systemc.h>
-#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
-//#include "../lib/systemc_helpers/nbits.hpp"
+#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "TT_configuration.hpp"
-#include "data_representations/do_out_data.hpp"
+#include "../../TT_configuration.hpp"
+#include "../../data_representations/do_out_data.hpp"
+
 #include "data_organizer_one_layer.hpp"
 
 /*!

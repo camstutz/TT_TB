@@ -19,7 +19,7 @@
 #include "TT_configuration.hpp"
 #include "hit_generator.hpp"
 #include "modules/sensor_module_ss/sensor_module_ss.hpp"
-#include "data_organizer.hpp"
+#include "modules/data_organizer/data_organizer.hpp"
 #include "stub_fifo.hpp"
 #include "modules/am_controller/am_controller.hpp"
 #include "modules/am_board/am_board.hpp"
