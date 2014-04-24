@@ -17,7 +17,7 @@
 #include "data_representations/do_out_data.hpp"
 
 #include "TT_configuration.hpp"
-#include "hit_generator.hpp"
+#include "modules/hit_generator/hit_generator.hpp"
 #include "modules/sensor_module_ss/sensor_module_ss.hpp"
 #include "modules/data_organizer/data_organizer.hpp"
 #include "stub_fifo.hpp"

@@ -18,11 +18,11 @@
 
 #include <systemc.h>
 
-#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "TT_configuration.hpp"
-#include "HitEvent.hpp"
-#include "data_representations/stub_sb.hpp"
+#include "../../TT_configuration.hpp"
+#include "../../HitEvent.hpp"
+#include "../../data_representations/stub_sb.hpp"
 
 /*!
  * @brief SystemC module that reads hits from a file.
