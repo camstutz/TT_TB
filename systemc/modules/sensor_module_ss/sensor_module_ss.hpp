@@ -1,7 +1,7 @@
 /*!
- * @file sensor_module.hpp
+ * @file sensor_module_ss.hpp
  * @author Christian Amstutz
- * @date Mar 18, 2014
+ * @date Apr 24, 2014
  *
  * @brief
  *
@@ -15,10 +15,11 @@
 
 #include <systemc.h>
 
-#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "data_representations/stub_sb.hpp"
-#include "TT_configuration.hpp"
+#include "../../data_representations/stub_sb.hpp"
+#include "../../TT_configuration.hpp"
+
 #include "front_end_chip.hpp"
 #include "data_concentrator.hpp"
 
@@ -26,7 +27,7 @@
  * @brief SystemC which represents one sensor module of the detector.
  * Combines the front end chips and the data concentrator.
  */
-class sensor_module : public sc_module
+class sensor_module_ss : public sc_module
 {
 public:
 
@@ -51,7 +52,7 @@ public:
     /*!
      * Constructor:
      */
-    sensor_module(const sc_module_name _name);
-    SC_HAS_PROCESS(sensor_module);
+    sensor_module_ss(const sc_module_name _name);
+    SC_HAS_PROCESS(sensor_module_ss);
 
 };

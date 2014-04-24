@@ -17,12 +17,12 @@
 
 #include <systemc.h>
 
-#include "../lib/systemc_helpers/sc_map/sc_map.hpp"
-#include "../lib/systemc_helpers/nbits.hpp"
+#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../lib/systemc_helpers/nbits.hpp"
 
-#include "TT_configuration.hpp"
-#include "data_representations/fe_out_data.hpp"
-#include "data_representations/dc_out_word.hpp"
+#include "../../TT_configuration.hpp"
+#include "../../data_representations/fe_out_data.hpp"
+#include "../../data_representations/dc_out_word.hpp"
 
 /*!
  * @brief

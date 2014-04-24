@@ -18,7 +18,7 @@
 
 #include "TT_configuration.hpp"
 #include "hit_generator.hpp"
-#include "sensor_module.hpp"
+#include "modules/sensor_module_ss/sensor_module_ss.hpp"
 #include "data_organizer.hpp"
 #include "stub_fifo.hpp"
 #include "modules/am_controller/am_controller.hpp"
@@ -61,7 +61,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     hit_generator hitGenerator;
-    sc_map_cube<sensor_module> sensor_modules;
+    sc_map_cube<sensor_module_ss> sensor_modules;
     data_organizer dataOrganizer;
     sc_map_linear<stub_fifo<STUB_FIFO_DEPTH>> stub_fifos;
     am_controller amController;

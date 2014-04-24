@@ -10,7 +10,7 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "sensor_module.hpp"
+#include "sensor_module_ss.hpp"
 
 // *****************************************************************************
 
@@ -18,7 +18,7 @@
  * @class sensor_module
  */
 
-sensor_module::sensor_module(const sc_module_name _name) :
+sensor_module_ss::sensor_module_ss(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         stub_inputs(NR_FE_CHIP_PER_MODULE, "stub_in", 0),
