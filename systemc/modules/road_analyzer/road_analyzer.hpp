@@ -18,7 +18,7 @@
 
 #include <systemc.h>
 
-#include "TT_configuration.hpp"
+#include "../../TT_configuration.hpp"
 
 /*!
  * @brief

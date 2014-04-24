@@ -23,7 +23,7 @@
 #include "stub_fifo.hpp"
 #include "modules/am_controller/am_controller.hpp"
 #include "modules/am_board/am_board.hpp"
-#include "road_analyzer.hpp"
+#include "modules/road_analyzer/road_analyzer.hpp"
 
 
 /*!
