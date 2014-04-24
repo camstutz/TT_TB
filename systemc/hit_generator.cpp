@@ -54,8 +54,6 @@ void hit_generator::schedule_hits()
             wait(wait_time);
         }
 
-        //! todo: check for validity of data and adapt to given range if possible
-
         processed_stub.set_strip(hit.stubAddress);
         processed_stub.set_bend(hit.stubBend);
         hit_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
@@ -82,7 +80,7 @@ void hit_generator::schedule_hits()
 // *****************************************************************************
 int hit_generator::readFile(const std::string &hit_file) {
 
-    //! todo: check that input file fits to detector architecture
+    //! todo: check that input file fits to detector architecture, check for validity of data and adapt to given range if possible
 
     std::ifstream hitFile;
 

@@ -23,7 +23,6 @@
 /*!
  * @brief
  */
-//* todo: If data is written at the clock cycle it will be lost
 class front_end_chip : public sc_module
 {
 public:
