@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.cpp
  * @author Christian Amstutz
- * @date Apr 22, 2014
+ * @date Apr 24, 2014
  *
  * @brief
  */
@@ -28,8 +28,6 @@ road_analyzer::road_analyzer(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
 	SC_THREAD(detect_roads);
 		sensitive << clk.pos();
-	SC_THREAD(detect_road_end);
-	    sensitive << write_en;
 	SC_THREAD(update_hit_cnt)
 	    sensitive << hit_cnt;
 
@@ -66,24 +64,14 @@ void road_analyzer::detect_roads()
 			std::cout << sc_time_stamp() << ": Road detected - "
 			        << std::hex << road_in.read().to_uint() << std::endl;
 			road_file << std::hex <<road_in.read().to_uint() << std::endl;
-			++road_cnt;
+
+			if (road_in.read()(29,28) == 0x1)
+			{
+			    ++road_cnt;
+			}
 		}
 	}
 
-}
-
-// *****************************************************************************
-void road_analyzer::detect_road_end()
-{
-    while (1)
-    {
-        wait();
-
-        if (write_en.negedge())
-        {
-            --road_cnt;
-        }
-    }
 }
 
 // *****************************************************************************

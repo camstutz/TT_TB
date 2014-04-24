@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.hpp
  * @author Christian Amstutz
- * @date Apr 22, 2014
+ * @date Apr 24, 2014
  *
  * @brief
  */
@@ -33,13 +33,12 @@ public:
 	sc_in<bool> write_en;
 
 	sc_in<unsigned int> hit_cnt;
-	sc_in<sc_bv<21>> road_in;
+	sc_in<sc_bv<30>> road_in;
 
 // ----- Local Channel Declarations --------------------------------------------
 
 // ----- Process Declarations --------------------------------------------------
 	void detect_roads();
-	void detect_road_end();
 	void update_hit_cnt();
 
 // ----- Other Method Declarations ---------------------------------------------

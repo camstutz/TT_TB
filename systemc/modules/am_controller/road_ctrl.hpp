@@ -1,7 +1,7 @@
 /*!
  * @file road_ctrl.hpp
  * @author Christian Amstutz
- * @date Apr 21, 2014
+ * @date Apr 24, 2014
  *
  * @brief
  *
@@ -32,7 +32,7 @@ public:
 
     sc_out<bool> finish_road;
     sc_out<bool> write_en_road;
-    sc_out<sc_bv<21> > road_out;
+    sc_out<sc_bv<30> > road_out;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<bool> write_en_sig;

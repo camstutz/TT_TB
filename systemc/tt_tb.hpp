@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 24, 2014
  *
  * @brief
  */
@@ -51,7 +51,7 @@ public:
     sc_signal<bool> am_data_ready;
     sc_signal<sc_bv<21>> am_road;
     sc_signal<bool> result_write_en;
-    sc_signal<sc_bv<21>> result_road;
+    sc_signal<sc_bv<30>> result_road;
 
     sc_signal<unsigned int> hit_cnt_sig;
 

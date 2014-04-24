@@ -1,7 +1,7 @@
 /*!
  * @file am_controller.hpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 24, 2014
  *
  * @brief
  *
@@ -45,7 +45,7 @@ public:
     sc_map_linear<sc_out<bool> > am_write_en;
     sc_map_linear<sc_out<sc_bv<18> > > am_stub_outputs;
     sc_out<bool> road_write_en;
-    sc_out<sc_bv<21> > road_output;
+    sc_out<sc_bv<30> > road_output;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_linear<sc_signal<bool> > pop_sig;
