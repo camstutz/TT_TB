@@ -61,6 +61,7 @@ public:
 
 private:
     std::queue<HitEvent> hit_queue;
+    unsigned int hit_counter;
 
     /** Reads the hit_file and stores them in the hit_queue where the
      * schedule_hits process reads it from. This function is called from the

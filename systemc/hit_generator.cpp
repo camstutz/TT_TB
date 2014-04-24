@@ -18,7 +18,8 @@ hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
         sc_module(_name),
         hit_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
                 NR_FE_CHIP_PER_MODULE, "hit_output", 0, 0, 0, 0),
-        hit_cnt("hit_cnt")
+        hit_cnt("hit_cnt"),
+        hit_counter(0)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(schedule_hits);
@@ -48,7 +49,10 @@ void hit_generator::schedule_hits()
 
         wait_time = (hit.timeStamp * sc_time(LHC_CLOCK_PERIOD_NS, SC_NS));
         wait_time = wait_time - sc_time_stamp();
-        wait(wait_time);
+        if (wait_time > sc_time(0,SC_PS))
+        {
+            wait(wait_time);
+        }
 
         //! todo: check for validity of data and adapt to given range if possible
 
@@ -56,7 +60,9 @@ void hit_generator::schedule_hits()
         processed_stub.set_bend(hit.stubBend);
         hit_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
                 hit.frontEndChipNr).write(processed_stub);
-        hit_cnt.write(hit_cnt.read()+1);
+
+        ++hit_counter;
+        hit_cnt.write(hit_counter);
 
         #ifdef DEBUG
         std::cout << std::hex << sc_time_stamp() << " hit_generator @ "

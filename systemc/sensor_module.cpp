@@ -21,12 +21,12 @@
 sensor_module::sensor_module(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        stub_inputs(NR_FE_CHIP_PER_MODULE, "stub_in", 1),
+        stub_inputs(NR_FE_CHIP_PER_MODULE, "stub_in", 0),
         dc_out("dc_out"),
         fe_out_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP,
-                "fe_out_sig", 1, 1),
+                "fe_out_sig", 0, 0),
         true_sig("true"),
-        front_end_chips(NR_FE_CHIP_PER_MODULE, "front_end_chip", 1),
+        front_end_chips(NR_FE_CHIP_PER_MODULE, "front_end_chip", 0),
         dataConcentrator("DC")
 {
     // ----- Module / Port / Signal - creation and naming ----------------------
@@ -37,7 +37,7 @@ sensor_module::sensor_module(const sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
-    unsigned int fe_cnt = 1;
+    unsigned int fe_cnt = 0;
     for (auto& fe_chip: front_end_chips) {
         fe_chip.clk(clk);
         //! todo: use the enable port

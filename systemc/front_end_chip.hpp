@@ -51,7 +51,6 @@ public:
      */
     front_end_chip(const sc_module_name _name);
     SC_HAS_PROCESS(front_end_chip);
-    void end_of_elaboration();
 
 private:
 

@@ -61,6 +61,10 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.amController.road_write_en, "road_write_en");
     sc_trace(trace_file, testbench.amController.road_output, "road_output");
 
+    sc_trace(trace_file, testbench.sensor_modules.at(0,0,0).front_end_chips[0].clk,"FE_clk");
+    sc_trace(trace_file, testbench.sensor_modules.at(0,0,0).front_end_chips[0].hit_outputs[0],"FE0_hit0");
+    sc_trace(trace_file, testbench.sensor_modules.at(0,0,0).front_end_chips[1].hit_outputs[0],"FE1_hit0");
+    sc_trace(trace_file, testbench.sensor_modules.at(0,0,0).front_end_chips[2].hit_outputs[0],"FE2_hit0");
 
     // ----- Start simulation --------------------------------------------------
 
