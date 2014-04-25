@@ -22,7 +22,7 @@
 
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/data_representations/do_out_data.hpp"
-#include "../systemc/stub_fifo.hpp"
+#include "../systemc/modules/stub_fifo/stub_fifo.hpp"
 #include "../systemc/modules/am_controller/am_controller.hpp"
 #include "../systemc/modules/am_board/am_board.hpp"
 

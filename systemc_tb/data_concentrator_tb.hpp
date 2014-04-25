@@ -21,7 +21,7 @@
 #include "../lib/systemc_helpers/sc_map/sc_map_square.hpp"
 
 #include "../systemc/TT_configuration.hpp"
-#include "../systemc/data_concentrator.hpp"
+#include "../systemc/modules/sensor_module_ss/data_concentrator.hpp"
 #include "../systemc/data_representations/fe_out_data.hpp"
 
 /*!
