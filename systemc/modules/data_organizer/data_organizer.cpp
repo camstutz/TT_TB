@@ -26,7 +26,7 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
         clk("clk"),
         rst("rst"),
         stream_in(NR_DETECTOR_LAYERS, "stream_in"),
-        stub_out(NR_DETECTOR_LAYERS, "stub_out"),
+        stub_out(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "stub_out"),
         clock_phase("clock_phase"),
         stub_table_sel("stub_table_sel"),
         time_stamp("time_stamp"),
@@ -45,20 +45,21 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
     z_sig.write(z);
 
     // ----- Module instance / channel binding ---------------------------------
-    unsigned int id = 0;
+    unsigned int layer = 0;
     for (auto& one_do : do_one_layer_map)
     {
-        one_do.clk(clk);
-        one_do.rst(rst);
-        one_do.time_stamp(time_stamp);
-        one_do.clock_phase(clock_phase);
-        one_do.stub_table_sel(stub_table_sel);
-        one_do.stream_in(stream_in[id]);
-        one_do.stub_out(stub_out[id]);
-        one_do.phi(phi_sig);
-        one_do.z(z_sig);
+        one_do.clk.bind(clk);
+        one_do.rst.bind(rst);
+        one_do.time_stamp.bind(time_stamp);
+        one_do.clock_phase.bind(clock_phase);
+        one_do.stub_table_sel.bind(stub_table_sel);
+        one_do.stream_in.bind(stream_in[layer]);
+        auto output_iter = stub_out.begin_partial(layer, false, 0, true);
+        one_do.stub_out.bind_by_iter(output_iter);
+        one_do.phi.bind(phi_sig);
+        one_do.z.bind(z_sig);
 
-        ++id;
+        ++layer;
     }
 
     return;

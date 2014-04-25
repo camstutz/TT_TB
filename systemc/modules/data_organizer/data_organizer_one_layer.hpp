@@ -48,12 +48,10 @@ public:
     /** Control signal that switches between the two re-order tables */
     sc_in<unsigned int> stub_table_sel;
 
-    /** Linear sc_map for the stream inputs. There exist a seperate input for
-      * ever layer of the detector */
     sc_in<sc_bv<DC_OUTPUT_WIDTH>>stream_in;
 
     /** Linear sc_map for the re-arranged, re-timed stubs. */
-    sc_out<do_out_data> stub_out;
+    sc_map_linear<sc_out<do_out_data>> stub_out;
 
     // todo: put these values to constructor
     sc_in<unsigned int> phi;

@@ -50,7 +50,7 @@ public:
     sc_map_linear<sc_in<sc_bv<DC_OUTPUT_WIDTH> > >stream_in;
 
     /** Linear sc_map for the re-arranged, re-timed stubs. */
-    sc_map_linear<sc_out<do_out_data> > stub_out;
+    sc_map_square<sc_out<do_out_data> > stub_out;
 
 // ----- Local Channel Declarations --------------------------------------------
     /** Control signal showing the actual time step of within the time window */
