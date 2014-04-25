@@ -21,7 +21,7 @@
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../systemc/TT_configuration.hpp"
-#include "../systemc/data_organizer.hpp"
+#include "../systemc/modules/data_organizer/data_organizer.hpp"
 #include "../systemc/data_representations/do_out_data.hpp"
 
 /*!

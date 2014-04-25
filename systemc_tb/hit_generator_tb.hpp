@@ -21,7 +21,7 @@
 #include "../lib/systemc_helpers/sc_map/sc_map_4d.hpp"
 
 #include "../systemc/TT_configuration.hpp"
-#include "../systemc/hit_generator.hpp"
+#include "../systemc/modules/hit_generator/hit_generator.hpp"
 
 /*!
  * @brief

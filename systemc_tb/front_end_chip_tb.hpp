@@ -21,8 +21,8 @@
 #include "../lib/systemc_helpers/sc_map/sc_map_linear.hpp"
 
 #include "../systemc/TT_configuration.hpp"
-#include "../systemc/hit_generator.hpp"
-#include "../systemc/front_end_chip.hpp"
+#include "../systemc/modules/hit_generator/hit_generator.hpp"
+#include "../systemc/modules/sensor_module_ss/front_end_chip.hpp"
 #include "../systemc/data_representations/fe_out_data.hpp"
 
 /*!
