@@ -1,7 +1,7 @@
 /*!
  * @file am_controller.hpp
  * @author Christian Amstutz
- * @date Apr 24, 2014
+ * @date Apr 25, 2014
  *
  * @brief
  *
@@ -18,7 +18,7 @@
 #include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../TT_configuration.hpp"
-#include "../../data_representations/do_out_data.hpp"
+#include "../../data_representations/fm_out_data.hpp"
 #include "main_fsm.hpp"
 #include "fifo_fsm.hpp"
 #include "hit_ctrl.hpp"
@@ -36,7 +36,7 @@ public:
     sc_in<bool> clk;
     sc_in<bool> init;
     sc_map_linear<sc_in<bool> > fifo_not_empty;
-    sc_map_linear<sc_in<do_out_data> > stub_inputs;
+    sc_map_linear<sc_in<fm_out_data> > stub_inputs;
     sc_in<bool> data_ready;
     sc_in<sc_bv<21> > road_in;
 

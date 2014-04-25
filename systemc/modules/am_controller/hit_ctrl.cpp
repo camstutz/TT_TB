@@ -1,7 +1,7 @@
 /*!
  * @file hit_ctrl.cpp
  * @author Christian Amstutz
- * @date Apr 20, 2014
+ * @date Apr 25, 2014
  *
  * @brief
  */

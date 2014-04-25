@@ -24,7 +24,19 @@ fm_out_data::fm_out_data()
 // *****************************************************************************
 fm_out_data::fm_out_data(const fm_stub_t stub_data)
 {
+    //todo: combine with next constructor
+    set_data_valid_flag(true);
 	set_data_stub(stub_data);
+
+    return;
+}
+
+// *****************************************************************************
+fm_out_data::fm_out_data(const data_valid_flag_t data_valid,
+        const fm_stub_t stub_data)
+{
+    set_data_valid_flag(data_valid);
+    set_data_stub(stub_data);
 
     return;
 }
@@ -38,9 +50,16 @@ fm_out_data::fm_out_data(const time_stamp_t time_stamp)
 }
 
 // *****************************************************************************
+void fm_out_data::set_data_valid_flag(const data_valid_flag_t new_data_valid)
+{
+    data[data_valid_pos] = new_data_valid;
+
+    return;
+}
+
+// *****************************************************************************
 void fm_out_data::set_data_stub(const fm_stub_t new_stub)
 {
-    set_data_valid_flag(true);
 	set_time_stamp_flag(false);
     data(time_stamp_flag_pos-1,0) = new_stub.get_bit_vector();
 
@@ -110,7 +129,7 @@ ostream& operator << (ostream &os, fm_out_data const &v)
 	}
 	else
 	{
-		os << "[" << v.get_data_valid_flag() >> ","
+		os << "[" << v.get_data_valid_flag() << ","
 		        << "ts=" << v.get_data_time_stamp().to_uint();
 	}
 

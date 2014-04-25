@@ -45,6 +45,9 @@ public:
     fm_out_data(const fm_stub_t stub_data);
 
     /** Constructor: */
+    fm_out_data(const data_valid_flag_t data_valid, const fm_stub_t stub_data);
+
+    /** Constructor: */
     fm_out_data(const time_stamp_t time_stamp);
 
     /** Setter function for the time_stamp */

@@ -15,7 +15,7 @@
 
 #include <systemc.h>
 
-#include "../../data_representations/do_out_data.hpp"
+#include "../../data_representations/fm_out_data.hpp"
 
 /*!
  * @brief
@@ -30,7 +30,7 @@ public:
     sc_in<bool> new_hit;
     sc_in<bool> wr_hit_lamb;
     sc_in<sc_bv<3>> init_event;
-    sc_in<do_out_data> stub_input;
+    sc_in<fm_out_data> stub_input;
 
     sc_out<bool> hee_reg_before;
     sc_out<bool> hee_reg;
@@ -39,7 +39,7 @@ public:
     sc_out<sc_bv<16>> stub_tag;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<do_out_data> stub_read;
+    sc_signal<fm_out_data> stub_read;
 
 // ----- Process Declarations --------------------------------------------------
     void read_input_stub();

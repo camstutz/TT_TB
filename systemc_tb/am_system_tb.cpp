@@ -45,7 +45,6 @@ am_system_tb::am_system_tb(sc_module_name _name) :
     {
         input_fifo.clk.bind(LHC_clock);
         input_fifo.rst.bind(reset);
-        input_fifo.write_en.bind(write_en[id]);
         input_fifo.read_en.bind(fifo_read_en[id]);
         input_fifo.not_empty.bind(fifo_not_empty[id]);
         input_fifo.stub_in.bind(input_stubs[id]);
@@ -106,63 +105,63 @@ void am_system_tb::create_input()
 {
     wait(100, SC_NS);
     write_en.write_all(true);
-    input_stubs[0].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[1].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[2].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[3].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[4].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
-    input_stubs[5].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,5)));
+    input_stubs[0].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,5)));
+    input_stubs[1].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,5)));
+    input_stubs[2].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,5)));
+    input_stubs[3].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,5)));
+    input_stubs[4].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,5)));
+    input_stubs[5].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,5)));
 
     wait(25, SC_NS);
-    input_stubs[0].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
-    input_stubs[1].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
-    input_stubs[2].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
-    input_stubs[3].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
-    input_stubs[4].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
-    input_stubs[5].write(do_out_data(false, do_out_data::do_stub_t(0,0,0,15)));
+    input_stubs[0].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,15)));
+    input_stubs[1].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,15)));
+    input_stubs[2].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,15)));
+    input_stubs[3].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,15)));
+    input_stubs[4].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,15)));
+    input_stubs[5].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,0,15)));
 
     wait(25, SC_NS);
-    input_stubs[0].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
-    input_stubs[1].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
-    input_stubs[2].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
-    input_stubs[3].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
-    input_stubs[4].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
-    input_stubs[5].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,7)));
+    input_stubs[0].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,7)));
+    input_stubs[1].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,7)));
+    input_stubs[2].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,7)));
+    input_stubs[3].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,7)));
+    input_stubs[4].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,7)));
+    input_stubs[5].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,7)));
 
     wait(25, SC_NS);
     write_en.write_all(false);
-    input_stubs[0].write(do_out_data());
-    input_stubs[1].write(do_out_data());
-    input_stubs[2].write(do_out_data());
-    input_stubs[3].write(do_out_data());
-    input_stubs[4].write(do_out_data());
-    input_stubs[5].write(do_out_data());
+    input_stubs[0].write(fm_out_data());
+    input_stubs[1].write(fm_out_data());
+    input_stubs[2].write(fm_out_data());
+    input_stubs[3].write(fm_out_data());
+    input_stubs[4].write(fm_out_data());
+    input_stubs[5].write(fm_out_data());
 
     wait(50, SC_NS);
     write_en.write_all(true);
-    input_stubs[0].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
-    input_stubs[1].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
-    input_stubs[2].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
-    input_stubs[3].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
-    input_stubs[4].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
-    input_stubs[5].write(do_out_data(false, do_out_data::do_stub_t(0,0,3,4)));
+    input_stubs[0].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,3,4)));
+    input_stubs[1].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,3,4)));
+    input_stubs[2].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,3,4)));
+    input_stubs[3].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,3,4)));
+    input_stubs[4].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,3,4)));
+    input_stubs[5].write(fm_out_data(false, fm_out_data::fm_stub_t(0,0,3,4)));
 
     wait(25, SC_NS);
-    input_stubs[0].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
-    input_stubs[1].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
-    input_stubs[2].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
-    input_stubs[3].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
-    input_stubs[4].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
-    input_stubs[5].write(do_out_data(true, do_out_data::do_stub_t(0,0,0,2)));
+    input_stubs[0].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,2)));
+    input_stubs[1].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,2)));
+    input_stubs[2].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,2)));
+    input_stubs[3].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,2)));
+    input_stubs[4].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,2)));
+    input_stubs[5].write(fm_out_data(true, fm_out_data::fm_stub_t(0,0,0,2)));
 
     wait(25, SC_NS);
     write_en.write_all(false);
-    input_stubs[0].write(do_out_data());
-    input_stubs[1].write(do_out_data());
-    input_stubs[2].write(do_out_data());
-    input_stubs[3].write(do_out_data());
-    input_stubs[4].write(do_out_data());
-    input_stubs[5].write(do_out_data());
+    input_stubs[0].write(fm_out_data());
+    input_stubs[1].write(fm_out_data());
+    input_stubs[2].write(fm_out_data());
+    input_stubs[3].write(fm_out_data());
+    input_stubs[4].write(fm_out_data());
+    input_stubs[5].write(fm_out_data());
 
     return;
 }

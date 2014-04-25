@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date Apr 25, 2014
  *
  * @brief
  */
@@ -25,9 +25,9 @@ tt_tb::tt_tb(const sc_module_name _name) :
         hit_fifos(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo"),
         fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals"),
         fifo_not_empty(NR_DETECTOR_LAYERS, "fifo_not_empty"),
-        fifo_stub_in(NR_DETECTOR_LAYERS, "fifo_stub_in"),
+        fifo_stub_in(NR_AM_BOARDS, NR_DETECTOR_LAYERS, "fifo_stub_in"),
         fifo_read_en(NR_DETECTOR_LAYERS,  "fifo_read_en"),
-        fifo_stub_out(NR_DETECTOR_LAYERS, "fifo_stub_out"),
+        fifo_stub_out(NR_AM_BOARDS, NR_DETECTOR_LAYERS, "fifo_stub_out"),
         am_init_ev("init_ev"),
         am_write_en(NR_DETECTOR_LAYERS, "am_write_en"),
         am_stubs_in(NR_DETECTOR_LAYERS, "am_stubs_in"),
@@ -39,6 +39,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         hitGenerator("Hit_Generator", "hits.txt"),
         sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor-module"),
         dataOrganizer("data_organizer",0, 0),
+        fifoManager("FIFO_manager"),
         stub_fifos(NR_DETECTOR_LAYERS, "stub_fifo"),
         amController("AM_controller"),
         amBoard("AM_board"),

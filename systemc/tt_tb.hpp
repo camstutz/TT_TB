@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date Apr 24, 2014
+ * @date Apr 25, 2014
  *
  * @brief
  */
@@ -14,12 +14,13 @@
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "data_representations/do_out_data.hpp"
+#include "data_representations/fm_out_data.hpp"
 
 #include "TT_configuration.hpp"
 #include "modules/hit_generator/hit_generator.hpp"
 #include "modules/sensor_module_ss/sensor_module_ss.hpp"
 #include "modules/data_organizer/data_organizer.hpp"
+#include "modules/fifo_manager/fifo_manager.hpp"
 #include "modules/stub_fifo/stub_fifo.hpp"
 #include "modules/am_controller/am_controller.hpp"
 #include "modules/am_board/am_board.hpp"
@@ -41,9 +42,9 @@ public:
     sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_signals;
 
     sc_map_linear<sc_signal<bool>> fifo_not_empty;
-    sc_map_linear<sc_buffer<do_out_data>> fifo_stub_in;
+    sc_map_square<sc_buffer<fm_out_data>> fifo_stub_in;
     sc_map_linear<sc_signal<bool>> fifo_read_en;
-    sc_map_linear<sc_signal<do_out_data>> fifo_stub_out;
+    sc_map_square<sc_signal<fm_out_data>> fifo_stub_out;
 
     sc_signal<sc_bv<3>> am_init_ev;
     sc_map_linear<sc_signal<bool>> am_write_en;
@@ -63,6 +64,7 @@ public:
     hit_generator hitGenerator;
     sc_map_cube<sensor_module_ss> sensor_modules;
     data_organizer dataOrganizer;
+    fifo_manager fifoManager;
     sc_map_linear<stub_fifo<STUB_FIFO_DEPTH>> stub_fifos;
     am_controller amController;
     am_board amBoard;

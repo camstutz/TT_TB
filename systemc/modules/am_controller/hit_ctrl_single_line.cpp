@@ -64,7 +64,7 @@ void hit_ctrl_single_line::read_input_stub()
 
         if (init_event.read() == 7)
         {
-            stub_read.write(do_out_data(do_out_data::do_stub_t()));
+            stub_read.write(fm_out_data(fm_out_data::fm_stub_t()));
         }
     }
 

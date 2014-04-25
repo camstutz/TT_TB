@@ -18,7 +18,7 @@
 #include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../TT_configuration.hpp"
-#include "../../data_representations/do_out_data.hpp"
+#include "../../data_representations/fm_out_data.hpp"
 #include "hit_ctrl_single_line.hpp"
 
 /*!
@@ -34,7 +34,7 @@ public:
     sc_map_linear<sc_in<bool> > new_hit;
     sc_map_linear<sc_in<bool> > wr_hit_lamb;
     sc_in<sc_bv<3> > init_event;
-    sc_map_linear<sc_in<do_out_data>> stub_inputs;
+    sc_map_linear<sc_in<fm_out_data>> stub_inputs;
 
     sc_map_linear<sc_out<bool>> hee_reg_before;
     sc_map_linear<sc_out<bool>> hee_reg;
