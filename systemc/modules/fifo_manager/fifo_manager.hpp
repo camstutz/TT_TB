@@ -19,6 +19,7 @@
 #include "../../TT_configuration.hpp"
 #include "../../data_representations/do_out_data.hpp"
 
+#include "fifo_manager_controller.hpp"
 #include "fifo_manager_datapath.hpp"
 
 /*!
@@ -35,13 +36,14 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
-    sc_map_square<sc_in<bool>> stub_valid;
     sc_map_square<sc_in<do_out_data>> stub_in;
 
-    sc_map_square<sc_out<bool>> stub_write_en;
-    sc_map_square<sc_out<do_out_data>> stub_out;
+    sc_map_square<sc_out<do_out_data>> fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
+    sc_map_linear<sc_signal<bool>> buf_write_en_sig;
+    sc_map_linear<sc_signal<unsigned int>> buf_read_en_sig;
+    sc_signal<unsigned int> time_stamp_sig;
 
 // ----- Local Storage Declarations --------------------------------------------
 
@@ -50,7 +52,8 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
-    //sc_map_linear<data_organizer_one_layer> do_one_layer_map;
+    fifo_manager_controller controller;
+    sc_map_linear<fifo_manager_datapath> datapaths;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

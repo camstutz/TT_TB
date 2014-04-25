@@ -24,7 +24,11 @@ fifo_manager_datapath::fifo_manager_datapath(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
-        time_stamp("time_stamp")
+        buffer_write_en(NR_AM_BOARDS, "buffer_write_en"),
+        buffer_read_en(NR_AM_BOARDS, "buffer_read_en"),
+        time_stamp("time_stamp"),
+        stub_in(NR_DO_OUT_STUBS, "stub_in"),
+        fifo_out(NR_AM_BOARDS, "fifo_out")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_stubs);

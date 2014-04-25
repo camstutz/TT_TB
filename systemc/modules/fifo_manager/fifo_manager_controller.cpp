@@ -1,5 +1,5 @@
 /*!
- * @file fifo_controller.cpp
+ * @file fifo_manager_controller.cpp
  * @author Christian Amstutz
  * @date Apr 25, 2014
  *
@@ -10,7 +10,7 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "fifo_controller.hpp"
+#include "fifo_manager_controller.hpp"
 
 // *****************************************************************************
 
@@ -26,10 +26,15 @@
  * The module is sensitive to ...
  */
 
-fifo_controller::fifo_controller(sc_module_name _name) :
+fifo_manager_controller::fifo_manager_controller(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst")
+        rst("rst"),
+        buffer_write_en(NR_AM_BOARDS, "buffer_write_en"),
+        buffer_read_en(NR_AM_BOARDS, "buffer_read_en"),
+        time_stamp("time_stamp"),
+        current_state("current_state"),
+        next_state("next_state")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(state_logic);
@@ -49,7 +54,7 @@ fifo_controller::fifo_controller(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void fifo_controller::state_logic()
+void fifo_manager_controller::state_logic()
 {
     while (1)
     {
@@ -61,7 +66,7 @@ void fifo_controller::state_logic()
 }
 
 // *****************************************************************************
-void fifo_controller::fsm_logic()
+void fifo_manager_controller::fsm_logic()
 {
     while (1)
     {
@@ -80,7 +85,7 @@ void fifo_controller::fsm_logic()
 }
 
 // *****************************************************************************
-void fifo_controller::update_timestamp()
+void fifo_manager_controller::update_timestamp()
 {
     while (1)
     {

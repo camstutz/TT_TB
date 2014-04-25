@@ -35,10 +35,12 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
+    sc_map_linear<sc_in<bool>> buffer_write_en;
+    sc_map_linear<sc_in<unsigned int>> buffer_read_en;
     sc_in<unsigned int> time_stamp;
 
-    sc_in<sc_bv<DC_OUTPUT_WIDTH>>stream_in;
-    sc_out<do_out_data> stub_out;
+    sc_map_linear<sc_in<do_out_data>> stub_in;
+    sc_map_linear<sc_out<do_out_data>> fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
 

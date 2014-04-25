@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 25, 2014
  *
  * @brief
  */
@@ -19,7 +19,8 @@
 #include "data_concentrator_tb.hpp"
 #include "data_organizer_tb.hpp"
 #include "am_board_tb.hpp"
-#include "am_system_tb.hpp"
+//#include "am_system_tb.hpp"
+#include "fifo_manager_tb.hpp"
 
 
 int sc_main(int argc, char *agv[])
@@ -36,6 +37,7 @@ int sc_main(int argc, char *agv[])
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
     //am_system_tb am_system_tb("AM_System");
     //am_board_tb am_board_tb("AM_board_TB");
+    fifo_manager_tb("FIFO_Manager_TB");
 
     // ----- Time unit / resolution setup --------------------------------------
 

@@ -41,6 +41,8 @@
 #define NR_DC_OUT_STUBS           ((DC_OUTPUT_WIDTH-2)*NR_DC_WINDOW_CYCLES)/(1+DC_WORD_TIME_BITS+DC_WORD_FE_BITS+FE_STUB_STRIP_BITS+FE_STUB_BEND_BITS)
 #define NR_DO_OUT_STUBS           12
 
+#define NR_AM_BOARDS               4
+
 #define NR_DETECTOR_LAYERS         6  // Number of detector sensor modules existing at the detector
 #define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector
 #define NR_DETECTOR_Z              1  // Number of sensors on length of the detector
