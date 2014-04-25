@@ -23,6 +23,7 @@
 #include "../systemc/TT_configuration.hpp"
 #include "../systemc/modules/fifo_manager/fifo_manager.hpp"
 #include "../systemc/data_representations/do_out_data.hpp"
+#include "../systemc/data_representations/fm_out_data.hpp"
 
 /*!
  * @brief
@@ -35,6 +36,9 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> rst;
+
+    sc_map_square<sc_signal<do_out_data>> stub_inputs;
+    sc_map_square<sc_signal<fm_out_data>> fifo_outputs;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_input();

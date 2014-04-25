@@ -81,7 +81,7 @@ void sc_map_base<object_type>::make_sensitive(
     // todo: make it possible to react on other than pos
     // todo: make it not to use the reference, but const
     for (auto& sens_object : objects) {
-        sensitive_list << sens_object.pos();
+        sensitive_list << sens_object;
     }
 
     return;

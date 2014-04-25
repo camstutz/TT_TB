@@ -22,17 +22,21 @@
 fifo_manager_tb::fifo_manager_tb(sc_module_name _name) :
         sc_module(_name),
         rst("rst"),
+        stub_inputs(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "stub_input"),
+        fifo_outputs(NR_AM_BOARDS, NR_DETECTOR_LAYERS, "fifo_output"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         dut_fifo_manager("FIFO_Manager_DUT")
 {
     // ----- Creation and binding of signals -----------------------------------
-    dut_fifo_manager.clk(LHC_clock);
-    dut_fifo_manager.rst(rst);
+    dut_fifo_manager.clk.bind(LHC_clock);
+    dut_fifo_manager.rst.bind(rst);
+    dut_fifo_manager.stub_in.bind(stub_inputs);
+    dut_fifo_manager.fifo_out.bind(fifo_outputs);
 
     // ----- Process registration ----------------------------------------------
     SC_THREAD(generate_input);
     SC_THREAD(print_output);
-//        sensitive << dc_output;
+        fifo_outputs.make_sensitive(sensitive);
 
     // ----- Module variable initialization ------------------------------------
 
@@ -57,6 +61,11 @@ fifo_manager_tb::~fifo_manager_tb()
 void fifo_manager_tb::generate_input()
 {
     wait(50, SC_NS);
+
+    std::cout << sc_time_stamp() << ": here" << std::endl;
+
+    do_out_data stub = do_out_data(true, do_out_data::do_stub_t(0,0,0,0));
+    stub_inputs.at(0,0).write(stub);
 
     return;
 }

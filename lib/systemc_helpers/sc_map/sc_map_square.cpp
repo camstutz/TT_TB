@@ -59,7 +59,8 @@ template<typename object_type>
 object_type& sc_map_square<object_type>::at(const key_type key_Y,
         const key_type key_X)
 {
-    object_type& ret_object = this->objects[get_vect_pos(key_Y, key_X)];
+    auto position = get_vect_pos(key_Y, key_X);
+    object_type& ret_object = this->objects[position];
     return (ret_object);
 }
 
@@ -161,7 +162,8 @@ typename sc_map_square<object_type>::size_type
         sc_map_square<object_type>::get_vect_pos(key_type pos_Y, key_type pos_X)
 {
     // todo: at exception handling for out of range accesses
-    size_type vector_pos = objects_map.at(pos_Y).at(pos_X);
+    auto X_row = objects_map.at(pos_Y);
+    size_type vector_pos = X_row.at(pos_X);
 
     return (vector_pos);
 }

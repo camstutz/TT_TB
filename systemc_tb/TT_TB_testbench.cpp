@@ -35,7 +35,7 @@ int sc_main(int argc, char *agv[])
     //front_end_chip_tb front_end_chip_tb("Front_End_Chip_TB");
     //data_concentrator_tb data_concentrator_tb("Data_Concentrator_TB");
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
-    am_system_tb am_system_tb("AM_System");
+    //am_system_tb am_system_tb("AM_System");
     //am_board_tb am_board_tb("AM_board_TB");
     fifo_manager_tb("FIFO_Manager_TB");
 
