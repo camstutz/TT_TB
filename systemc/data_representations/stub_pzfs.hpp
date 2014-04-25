@@ -148,7 +148,7 @@ template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
 stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::stub_pzfs(
 		const sc_bv<total_width> bit_vector)
 {
-	set_phi(bit_vector(total_width,phi_start));
+	set_phi(bit_vector(total_width-1,phi_start));
 	set_z(bit_vector(phi_start-1, z_start));
 	set_fechip(bit_vector(z_start-1, fechip_start));
 	set_strip(bit_vector(fechip_start-1, strip_start));

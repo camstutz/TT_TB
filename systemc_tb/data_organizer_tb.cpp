@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_tb.cpp
  * @author Christian Amstutz
- * @date Mar 14, 2014
+ * @date Apr 25, 2014
  */
 
 /*
@@ -23,7 +23,7 @@ data_organizer_tb::data_organizer_tb(sc_module_name _name) :
         sc_module(_name),
         rst("rst"),
         fe_streams(NR_DETECTOR_LAYERS, "fe_streams"),
-        do_output(NR_DO_OUT_STUBS, "do_output"),
+        do_output(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "do_output"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         dut_data_organizer("Data_Organizer_DUT", 1, 1)
 {
@@ -37,7 +37,7 @@ data_organizer_tb::data_organizer_tb(sc_module_name _name) :
     SC_THREAD(write_stream);
         sensitive << LHC_clock.posedge_event();
     SC_THREAD(print_output);
-        sensitive << do_output[0];
+        do_output.make_sensitive(sensitive);
 
     // ----- Module variable initialization ------------------------------------
 
@@ -72,6 +72,14 @@ void data_organizer_tb::write_stream()
     wait();
     test_value = ( (sc_bv<2>(0), sc_bv<30>(0x00000200)) );
     fe_streams[0].write(test_value);
+    test_value = ( (sc_bv<2>(2), sc_bv<30>(0x8008FFFF)) );
+    fe_streams[1].write(test_value);
+
+    wait();
+    test_value = ( (sc_bv<2>(0), sc_bv<30>(0x0)) );
+    fe_streams[0].write(test_value);
+    test_value = ( (sc_bv<2>(0), sc_bv<30>(0x00000200)) );
+    fe_streams[1].write(test_value);
 
     wait();
     test_value = ( (sc_bv<2>(0), sc_bv<30>(0x0)) );
@@ -92,42 +100,6 @@ void data_organizer_tb::write_stream()
     wait();
     test_value = ( (sc_bv<2>(0), sc_bv<30>(0x0)) );
     fe_streams[0].write(test_value);
-
-    wait();
-    test_value = ( (sc_bv<2>(0), sc_bv<30>(0x0)) );
-    fe_streams[0].write(test_value);
-
-//    wait();
-//    test_value = ( (sc_bv<2>(2), sc_bv<30>(255)) );
-//    fe_streams[0].write(test_value);
-//
-//    wait();
-//    test_value = ( (sc_bv<2>(0), sc_bv<30>(512)) );
-//    fe_streams[0].write(test_value);
-//
-//    wait();
-//    test_value = ( (sc_bv<2>(0), sc_bv<30>(1023)) );
-//    fe_streams[0].write(test_value);
-//
-//    wait();
-//    test_value = ( (sc_bv<2>(0), sc_bv<30>(64)) );
-//    fe_streams[0].write(test_value);
-//
-//    wait();
-//    test_value = ( (sc_bv<2>(0), sc_bv<30>(12)) );
-//    fe_streams[0].write(test_value);
-//
-//    wait();
-//    test_value = ( (sc_bv<2>(0), sc_bv<30>(2047)) );
-//    fe_streams[0].write(test_value);
-//
-//    wait();
-//    test_value = ( (sc_bv<2>(0), sc_bv<30>(12)) );
-//    fe_streams[0].write(test_value);
-//
-//    wait();
-//    test_value = ( (sc_bv<2>(0), sc_bv<30>(2047)) );
-//    fe_streams[0].write(test_value);
 
     return;
 }
@@ -135,16 +107,23 @@ void data_organizer_tb::write_stream()
 // *****************************************************************************
 void data_organizer_tb::print_output()
 {
-  while(1)
-  {
-    wait();
+    while(1)
+    {
+        wait();
 
-    log_buffer << sc_time_stamp() << ": " << do_output[0].read() << std::endl;
-    log_buffer << "        " << do_output[1].read() << std::endl;
-    log_buffer << "        " << do_output[2].read() << std::endl;
-    log_buffer << "        " << do_output[3].read() << std::endl;
-    log_buffer << "        " << do_output[4].read() << std::endl;
-    log_buffer << "        " << do_output[5].read() << std::endl;
-  }
+        for (auto& outport : do_output)
+        {
+            auto output_data = outport.read();
+            if (output_data.get_dv())
+            {
+                auto key = do_output.get_key(outport);
+                unsigned int layer = key.second.Y_dim;
+                unsigned int port = key.second.X_dim;
+                log_buffer << sc_time_stamp()
+                    << " (Layer=" << layer << ",Port=" << port  <<"): "
+                    << output_data << std::endl;
+            }
+        }
+    }
 
 }

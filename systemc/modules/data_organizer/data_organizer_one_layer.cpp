@@ -111,9 +111,18 @@ void data_organizer_one_layer::write_stubs()
         unsigned int output_cnt = 0;
       	while (stub_vector.size() != 0)
         {
-           	do_out_data::do_stub_t actual_stub = stub_vector.back();
-           	stub_vector.pop_back();
-           	do_out_data output_data = do_out_data(true, actual_stub);
+            do_out_data::do_stub_t output_stub;
+           	auto actual_stub = stub_vector.back();
+            stub_vector.pop_back();
+            sc_bv<3> fe_chip = actual_stub(15,13);
+            sc_bv<5> superstrip = actual_stub(12,8);
+           	output_stub.set_phi(phi.read());
+           	output_stub.set_z(z.read());
+           	output_stub.set_fechip(fe_chip);
+           	output_stub.set_strip(superstrip);
+           	do_out_data output_data;
+           	output_data.set_dv(true);
+           	output_data.set_data(actual_stub);
             stub_out[output_cnt].write(output_data);
 
             ++output_cnt;

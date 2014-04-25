@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_tb.hpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date Apr 25, 2014
  *
  * @brief
  *
@@ -36,7 +36,7 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> rst;
     sc_map_linear<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_streams;
-    sc_map_linear<sc_signal<do_out_data> > do_output;
+    sc_map_square<sc_signal<do_out_data> > do_output;
 
     // ----- Process Declarations ----------------------------------------------
     void write_stream();
