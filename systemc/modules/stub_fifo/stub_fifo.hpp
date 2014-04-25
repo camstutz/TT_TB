@@ -1,7 +1,7 @@
 /*!
  * @file stub_fifo.hpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date Apr 25, 2014
  *
  * @brief
  *
@@ -16,7 +16,7 @@
 #include <systemc.h>
 
 #include "../../TT_configuration.hpp"
-#include "../../data_representations/do_out_data.hpp"
+#include "../../data_representations/fm_out_data.hpp"
 
 /*!
  * @brief
@@ -32,11 +32,11 @@ public:
     sc_in<bool> read_en;
     sc_out<bool> not_empty;
 
-    sc_in<do_out_data> stub_in;
-    sc_out<do_out_data> stub_out;
+    sc_in<fm_out_data> stub_in;
+    sc_out<fm_out_data> stub_out;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_fifo<do_out_data> fifo;
+    sc_fifo<fm_out_data> fifo;
 
 // ----- Process Declarations --------------------------------------------------
     void read_input();
@@ -97,7 +97,11 @@ void stub_fifo<depth>::read_input()
     {
         wait();
 
-        fifo.write(stub_in.read());
+        auto input_value = stub_in.read();
+        if (input_value.get_data_valid_flag())
+        {
+            fifo.write(input_value);
+        }
     }
 
 }
