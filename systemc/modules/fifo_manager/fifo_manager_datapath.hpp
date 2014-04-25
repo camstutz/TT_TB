@@ -19,6 +19,7 @@
 
 #include "../../TT_configuration.hpp"
 #include "../../data_representations/do_out_data.hpp"
+#include "../../data_representations/fm_out_data.hpp"
 
 /*!
  * @brief
@@ -40,7 +41,7 @@ public:
     sc_in<unsigned int> time_stamp;
 
     sc_map_linear<sc_in<do_out_data>> stub_in;
-    sc_map_linear<sc_out<do_out_data>> fifo_out;
+    sc_map_linear<sc_out<fm_out_data>> fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
 

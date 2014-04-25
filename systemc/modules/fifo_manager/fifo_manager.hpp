@@ -18,6 +18,7 @@
 
 #include "../../TT_configuration.hpp"
 #include "../../data_representations/do_out_data.hpp"
+#include "../../data_representations/fm_out_data.hpp"
 
 #include "fifo_manager_controller.hpp"
 #include "fifo_manager_datapath.hpp"
@@ -38,7 +39,7 @@ public:
 
     sc_map_square<sc_in<do_out_data>> stub_in;
 
-    sc_map_square<sc_out<do_out_data>> fifo_out;
+    sc_map_square<sc_out<fm_out_data>> fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_map_linear<sc_signal<bool>> buf_write_en_sig;
