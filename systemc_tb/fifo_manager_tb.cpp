@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_tb.cpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date Apr 28, 2014
  */
 
 /*
@@ -60,12 +60,59 @@ fifo_manager_tb::~fifo_manager_tb()
 // *****************************************************************************
 void fifo_manager_tb::generate_input()
 {
-    wait(50, SC_NS);
+    do_out_data stub;
 
-    std::cout << sc_time_stamp() << ": here" << std::endl;
-
-    do_out_data stub = do_out_data(true, do_out_data::do_stub_t(0,0,0,0));
+    wait(25, SC_NS);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,1));
     stub_inputs.at(0,0).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,2));
+    stub_inputs.at(0,1).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,3));
+    stub_inputs.at(0,2).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,4));
+    stub_inputs.at(0,3).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,5));
+    stub_inputs.at(0,4).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,6));
+    stub_inputs.at(0,5).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,7));
+    stub_inputs.at(0,6).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,8));
+    stub_inputs.at(0,7).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,9));
+    stub_inputs.at(0,8).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,10));
+    stub_inputs.at(0,9).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,11));
+    stub_inputs.at(0,10).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(0,0,1,12));
+    stub_inputs.at(0,11).write(stub);
+
+    wait(100, SC_NS);
+    stub = do_out_data(false, do_out_data::do_stub_t(0,0,0,0));
+    stub_inputs.write_all(stub);
+
+    wait(100, SC_NS);
+    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,1));
+    stub_inputs.at(0,0).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,2));
+    stub_inputs.at(0,1).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,3));
+    stub_inputs.at(0,2).write(stub);
+    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,4));
+    stub_inputs.at(0,3).write(stub);
+
+    wait(100, SC_NS);
+    stub = do_out_data(false, do_out_data::do_stub_t(0,0,0,0));
+    stub_inputs.write_all(stub);
+
+    wait(100, SC_NS);
+    stub = do_out_data(true, do_out_data::do_stub_t(2,2,0,20));
+    stub_inputs.at(0,0).write(stub);
+
+    wait(100, SC_NS);
+    stub = do_out_data(false, do_out_data::do_stub_t(0,0,0,0));
+    stub_inputs.write_all(stub);
 
     return;
 }
@@ -76,6 +123,28 @@ void fifo_manager_tb::print_output()
     while(1)
     {
          wait();
-         log_buffer << sc_time_stamp() << ": " << std::endl;
+
+         for (auto& single_out : fifo_outputs)
+         {
+             fm_out_data value = single_out.read();
+             if (value.get_data_valid_flag())
+             {
+                 auto out_key = fifo_outputs.get_key(single_out);
+                 auto lane = out_key.second.Y_dim;
+                 auto layer = out_key.second.X_dim;
+
+                 if (value.get_time_stamp_flag() == true)
+                 {
+                     log_buffer << sc_time_stamp() << "(" << lane << "," << layer << "):";
+                     log_buffer << " TS=" << value.get_data_time_stamp() << std::endl;
+                 }
+                 else
+                 {
+                     log_buffer << sc_time_stamp() << "(" << lane << "," << layer << "):";
+                     log_buffer << value.get_data_stub() << std::endl;
+                 }
+             }
+         }
     }
+
 }

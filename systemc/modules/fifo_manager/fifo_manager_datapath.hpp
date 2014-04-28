@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.hpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date Apr 28, 2014
  *
  * @brief
  *
@@ -12,6 +12,9 @@
  */
 
 #pragma once
+
+#include <queue>
+#include <array>
 
 #include <systemc.h>
 #include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
@@ -37,7 +40,7 @@ public:
     sc_in<bool> rst;
 
     sc_map_linear<sc_in<bool>> buffer_write_en;
-    sc_map_linear<sc_in<unsigned int>> buffer_read_en;
+    sc_map_linear<sc_in<bool>> buffer_read_en;
     sc_in<unsigned int> time_stamp;
 
     sc_map_linear<sc_in<do_out_data>> stub_in;
@@ -65,4 +68,5 @@ public:
 
 private:
 
+    std::array<std::queue<fm_out_data>, NR_AM_BOARDS> stub_buffer;
 };

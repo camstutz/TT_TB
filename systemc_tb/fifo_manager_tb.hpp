@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_tb.hpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date Apr 28, 2014
  *
  * @brief
  *

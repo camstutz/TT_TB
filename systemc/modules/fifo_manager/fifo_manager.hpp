@@ -43,7 +43,7 @@ public:
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_map_linear<sc_signal<bool>> buf_write_en_sig;
-    sc_map_linear<sc_signal<unsigned int>> buf_read_en_sig;
+    sc_map_linear<sc_signal<bool>> buf_read_en_sig;
     sc_signal<unsigned int> time_stamp_sig;
 
 // ----- Local Storage Declarations --------------------------------------------
