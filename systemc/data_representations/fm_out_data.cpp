@@ -1,7 +1,7 @@
 /*!
  * @file fm_out_data.cpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date Apr 28, 2014
  *
  * @brief
  *
@@ -130,7 +130,7 @@ ostream& operator << (ostream &os, fm_out_data const &v)
 	else
 	{
 		os << "[" << v.get_data_valid_flag() << ","
-		        << "ts=" << v.get_data_time_stamp().to_uint();
+		        << "ts=" << v.get_data_time_stamp().to_uint() << "]";
 	}
 
 	return (os);
