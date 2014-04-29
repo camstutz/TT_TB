@@ -17,10 +17,10 @@
 #include <map>
 
 #include <systemc.h>
-#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
-#include "../../../lib/systemc_helpers/sc_delay/sc_delay_signal.hpp"
+#include "../../../../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../../lib/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 
-#include "../../TT_configuration.hpp"
+#include "../../../TT_configuration.hpp"
 #include "am_board_fsm.hpp"
 
 /*!
@@ -71,8 +71,8 @@ public:
 
 // ----- Module Instantiations -------------------------------------------------
     am_board_fsm fsm;
-    sc_delay_signal<bool, 6> latency_cor_data_ready;
-    sc_delay_signal<road_addr_t, 6> latency_cor_road;
+    sc_delay_signal<bool, 15> latency_cor_data_ready;
+    sc_delay_signal<road_addr_t, 15> latency_cor_road;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

@@ -15,10 +15,10 @@
 
 #include <systemc.h>
 
-#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../../TT_configuration.hpp"
-#include "../../data_representations/fm_out_data.hpp"
+#include "../../../TT_configuration.hpp"
+#include "../../../data_representations/fm_out_data.hpp"
 #include "hit_ctrl_single_line.hpp"
 
 /*!

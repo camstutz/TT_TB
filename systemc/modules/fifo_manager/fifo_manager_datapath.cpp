@@ -92,7 +92,6 @@ void fifo_manager_datapath::write_fifos()
                 fm_out_data output_data = stub_buffer[AM_lane].front();
                 stub_buffer[AM_lane].pop();
                 fifo_out[AM_lane].write(output_data);
-                std::cout << output_data << std::endl;
             }
             else
             {

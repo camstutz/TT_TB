@@ -17,6 +17,7 @@
 #include <fstream>
 
 #include <systemc.h>
+#include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../TT_configuration.hpp"
 
@@ -30,10 +31,10 @@ public:
 
 // ----- Port Declarations -----------------------------------------------------
 	sc_in<bool> clk;
-	sc_in<bool> write_en;
+	sc_map_linear<sc_in<bool>> write_en;
 
 	sc_in<unsigned int> hit_cnt;
-	sc_in<sc_bv<30>> road_in;
+	sc_map_linear<sc_in<sc_bv<30>>> road_in;
 
 // ----- Local Channel Declarations --------------------------------------------
 

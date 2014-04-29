@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date Apr 28, 2014
  *
  * @brief
  */
@@ -21,28 +21,21 @@
 
 tt_tb::tt_tb(const sc_module_name _name) :
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+        LHCx4_clock("LHCx4_clock", 6.25, SC_NS, 0.5, 25, SC_NS, true),
+        AM_clock("AM_clock", 10, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("TRUE"),
         hit_fifos(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo"),
         fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals"),
-        fifo_not_empty(NR_DETECTOR_LAYERS, "fifo_not_empty"),
+        do_stub_out_sig(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "do_stub_out_sig"),
         fifo_stub_in(NR_AM_BOARDS, NR_DETECTOR_LAYERS, "fifo_stub_in"),
-        fifo_read_en(NR_DETECTOR_LAYERS,  "fifo_read_en"),
-        fifo_stub_out(NR_AM_BOARDS, NR_DETECTOR_LAYERS, "fifo_stub_out"),
-        am_init_ev("init_ev"),
-        am_write_en(NR_DETECTOR_LAYERS, "am_write_en"),
-        am_stubs_in(NR_DETECTOR_LAYERS, "am_stubs_in"),
-        am_data_ready("am_data_ready"),
-        am_road("am_road"),
-        result_write_en("result_write_en"),
-        result_road("result_road"),
+        result_write_en(NR_AM_BOARDS, "result_write_en"),
+        result_road(NR_AM_BOARDS, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", "hits.txt"),
         sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor-module"),
-        dataOrganizer("data_organizer",0, 0),
+        dataOrganizer("data_organizer", 0, 0),
         fifoManager("FIFO_manager"),
-        stub_fifos(NR_DETECTOR_LAYERS, "stub_fifo"),
-        amController("AM_controller"),
-        amBoard("AM_board"),
+        am_lane_array(NR_AM_BOARDS, "am_lane"),
         roadAnalyzer("road_analyzer")
 {
     true_sig.write(true);
@@ -60,50 +53,34 @@ tt_tb::tt_tb(const sc_module_name _name) :
         sens_module.dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
     }
 
-    dataOrganizer.clk(LHC_clock);
-    dataOrganizer.rst(true_sig);
+    dataOrganizer.clk.bind(LHC_clock);
+    dataOrganizer.rst.bind(true_sig);
     auto fe_it = fe_signals.begin();
     dataOrganizer.stream_in.bind_by_iter(fe_it);
-    dataOrganizer.stub_out.bind(fifo_stub_in);
+    dataOrganizer.stub_out.bind(do_stub_out_sig);
 
-    unsigned int id = 0;
-    for(auto& single_stub_fifo : stub_fifos)
+    fifoManager.clk.bind(LHCx4_clock);
+    fifoManager.rst.bind(true_sig);
+    fifoManager.stub_in.bind(do_stub_out_sig);
+    fifoManager.fifo_out.bind(fifo_stub_in);
+
+    unsigned int lane_nr = 0;
+    for(auto& single_am_lane : am_lane_array)
     {
-        single_stub_fifo.clk.bind(LHC_clock);
-        single_stub_fifo.rst(true_sig);
-        single_stub_fifo.not_empty.bind(fifo_not_empty[id]);
-        single_stub_fifo.stub_in.bind(fifo_stub_in[id]);
-        single_stub_fifo.read_en.bind(fifo_read_en[id]);
-        single_stub_fifo.stub_out.bind(fifo_stub_out[id]);
+        single_am_lane.clk.bind(AM_clock);
+        single_am_lane.rst.bind(true_sig);
+        auto fifo_stub_it = fifo_stub_in.begin_partial(lane_nr, false, 0, true);
+        single_am_lane.fifo_inputs.bind_by_iter(fifo_stub_it);
+        single_am_lane.road_write_en.bind(result_write_en[lane_nr]);
+        single_am_lane.road_output.bind(result_road[lane_nr]);
 
-        ++id;
+        ++lane_nr;
     }
 
-    amController.clk.bind(LHC_clock);
-    amController.init.bind(true_sig);
-    amController.fifo_not_empty.bind(fifo_not_empty);
-    amController.fifo_read_en.bind(fifo_read_en);
-    amController.stub_inputs.bind(fifo_stub_out);
-    amController.init_ev.bind(am_init_ev);
-    amController.am_write_en.bind(am_write_en);
-    amController.am_stub_outputs.bind(am_stubs_in);
-    amController.data_ready.bind(am_data_ready);
-    amController.road_in.bind(am_road);
-    amController.road_write_en.bind(result_write_en);
-    amController.road_output.bind(result_road);
-
-    amBoard.clk.bind(LHC_clock);
-    amBoard.rst.bind(true_sig);
-    amBoard.init_ev.bind(am_init_ev);
-    amBoard.write_en.bind(am_write_en);
-    amBoard.pattern_inputs.bind(am_stubs_in);
-    amBoard.data_ready.bind(am_data_ready);
-    amBoard.road_output.bind(am_road);
-
-    roadAnalyzer.clk(LHC_clock);
-    roadAnalyzer.write_en(result_write_en);
-    roadAnalyzer.hit_cnt(hit_cnt_sig);
-    roadAnalyzer.road_in(result_road);
+    roadAnalyzer.clk.bind(AM_clock);
+    roadAnalyzer.write_en.bind(result_write_en);
+    roadAnalyzer.hit_cnt.bind(hit_cnt_sig);
+    roadAnalyzer.road_in.bind(result_road);
 
     return;
 }

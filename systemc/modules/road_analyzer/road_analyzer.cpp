@@ -20,9 +20,10 @@ const std::string road_analyzer::filename = "roads.txt";
 road_analyzer::road_analyzer(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        write_en("write_en"),
+        write_en(NR_AM_BOARDS, "write_en"),
         hit_cnt("hit_cnt"),
-        road_in("road_in"),
+        road_in(NR_AM_BOARDS, "road_in"),
+        hit_counter(0),
         road_cnt(0)
 {
     // ----- Process registration ----------------------------------------------
@@ -59,16 +60,19 @@ void road_analyzer::detect_roads()
 	{
 		wait();
 
-		if (write_en.read() == true)
+		for (unsigned int am_id = 0; am_id < NR_AM_BOARDS; ++am_id)
 		{
-			std::cout << sc_time_stamp() << ": Road detected - "
-			        << std::hex << road_in.read().to_uint() << std::endl;
-			road_file << std::hex <<road_in.read().to_uint() << std::endl;
+            if (write_en[am_id].read() == true)
+            {
+                std::cout << sc_time_stamp() << ": Road detected - "
+                        << std::hex << road_in[am_id].read().to_uint() << std::endl;
+                road_file << std::hex << road_in[am_id].read().to_uint() << std::endl;
 
-			if (road_in.read()(29,28) == 0x1)
-			{
-			    ++road_cnt;
-			}
+                if (road_in[am_id].read()(29,28) == 0x1)
+                {
+                    ++road_cnt;
+                }
+            }
 		}
 	}
 

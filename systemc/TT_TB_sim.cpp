@@ -36,30 +36,34 @@ int sc_main(int argc, char *agv[])
     trace_file=sc_create_vcd_trace_file("TT_TB");
     //trace_file->delta_cycles(true);
 
-    sc_trace(trace_file, testbench.LHC_clock, "LHC_clk");
+    sc_trace(trace_file, testbench.LHC_clock, "LHC_clock");
+    sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
+    sc_trace(trace_file, testbench.AM_clock, "AM_clock");
     sc_trace(trace_file, testbench.dataOrganizer.stub_out, "DO_stub_out");
 
     sc_trace(trace_file, testbench.fe_signals, "serial_link");
 
-    sc_trace(trace_file, testbench.amController.fifo_not_empty, "FIFO_not_empty");
-    sc_trace(trace_file, testbench.amController.fifo_read_en[0], "AM_FIFO_read_en_0");
-    sc_trace(trace_file, testbench.amController.stub_inputs[0], "AM_stub_in_0");
-    sc_trace(trace_file, testbench.amController.am_write_en[0], "AM_write_en_0");
-    sc_trace(trace_file, testbench.amController.am_stub_outputs[0], "AM_stub_out_0");
-    sc_trace(trace_file, testbench.amController.main_am_fsm.current_state,"AM_current_state");
-    sc_trace(trace_file, testbench.amController.hit_controller.hit_controllers[0].stub_read,"stub_read_0");
-    sc_trace(trace_file, testbench.amController.pop_sig[0],"pop_0");
-    sc_trace(trace_file, testbench.amController.hee_reg_before_sig[0],"hee_reg_before_sig_0");
-    sc_trace(trace_file, testbench.amController.hee_reg_sig[0],"hee_reg_sig_0");
-    sc_trace(trace_file, testbench.amController.event_tag_sig,"event_tag_sig");
-    sc_trace(trace_file, testbench.amController.hit_controller.new_hit[0],"new_hit_0");
-    sc_trace(trace_file, testbench.amController.main_am_fsm.finish_road,"finish_road");
-    sc_trace(trace_file, testbench.amController.fifo_fsm_array[0].current_state, "FIFO_current_state");
+    sc_trace(trace_file, testbench.fifo_stub_in, "fifo_stub_in");
+    sc_trace(trace_file, testbench.am_lane_array[0].fifo_stub_out_sig[0], "fifo_stub_out_sig_0-0");
+    sc_trace(trace_file, testbench.am_lane_array[1].fifo_stub_out_sig[0], "fifo_stub_out_sig_1-0");
+    sc_trace(trace_file, testbench.am_lane_array[2].fifo_stub_out_sig[0], "fifo_stub_out_sig_2-0");
+    sc_trace(trace_file, testbench.am_lane_array[3].fifo_stub_out_sig[0], "fifo_stub_out_sig_3-0");
+    sc_trace(trace_file, testbench.am_lane_array[1].init_ev_sig, "init_ev_sig");
+    sc_trace(trace_file, testbench.am_lane_array[1].am_write_en_sig, "am_write_en_sig");
+    sc_trace(trace_file, testbench.am_lane_array[1].AMboard.fsm.state, "AM_board_state");
+    sc_trace(trace_file, testbench.am_lane_array[0].am_pattern_sig, "am_pattern");
+    sc_trace(trace_file, testbench.am_lane_array[1].am_pattern_sig, "am_pattern");
+    sc_trace(trace_file, testbench.am_lane_array[2].am_pattern_sig, "am_pattern");
+    sc_trace(trace_file, testbench.am_lane_array[3].am_pattern_sig, "am_pattern");
+    sc_trace(trace_file, testbench.am_lane_array[0].am_road_sig, "am_road_0");
+    sc_trace(trace_file, testbench.am_lane_array[1].am_road_sig, "am_road_1");
+    sc_trace(trace_file, testbench.am_lane_array[2].am_road_sig, "am_road_2");
+    sc_trace(trace_file, testbench.am_lane_array[3].am_road_sig, "am_road_3");
+    sc_trace(trace_file, testbench.am_lane_array[0].road_output, "road_out_0");
+    sc_trace(trace_file, testbench.am_lane_array[1].road_output, "road_out_1");
+    sc_trace(trace_file, testbench.am_lane_array[2].road_output, "road_out_2");
+    sc_trace(trace_file, testbench.am_lane_array[3].road_output, "road_out_3");
 
-    sc_trace(trace_file, testbench.amController.data_ready, "road_data_ready");
-    sc_trace(trace_file, testbench.amController.road_in, "road_in");
-    sc_trace(trace_file, testbench.amController.road_write_en, "road_write_en");
-    sc_trace(trace_file, testbench.amController.road_output, "road_output");
 
     // ----- Start simulation --------------------------------------------------
 

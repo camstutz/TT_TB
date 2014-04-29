@@ -71,7 +71,8 @@ void data_organizer_one_layer::sort_stubs()
     {
         wait();
 
-        if (stub_table_sel.event()) {
+        if (stub_table_sel.event())
+        {
             for(auto& stub_vector : stub_table[stub_table_sel.read()] )
             {
                 stub_vector.clear();
@@ -109,24 +110,30 @@ void data_organizer_one_layer::write_stubs()
         auto stub_vector = stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()];
 
         unsigned int output_cnt = 0;
-      	while (stub_vector.size() != 0)
+        while (stub_vector.size() != 0)
         {
             do_out_data::do_stub_t output_stub;
-           	auto actual_stub = stub_vector.back();
+            auto actual_stub = stub_vector.back();
             stub_vector.pop_back();
             sc_bv<3> fe_chip = actual_stub(15,13);
             sc_bv<5> superstrip = actual_stub(12,8);
-           	output_stub.set_phi(phi.read());
-           	output_stub.set_z(z.read());
-           	output_stub.set_fechip(fe_chip);
-           	output_stub.set_strip(superstrip);
-           	do_out_data output_data;
-           	output_data.set_dv(true);
-           	output_data.set_data(actual_stub);
+            output_stub.set_phi(phi.read());
+            output_stub.set_z(z.read());
+            output_stub.set_fechip(fe_chip);
+            output_stub.set_strip(superstrip);
+            do_out_data output_data;
+            output_data.set_dv(true);
+            output_data.set_data(output_stub);
             stub_out[output_cnt].write(output_data);
 
             ++output_cnt;
-         }
+        }
+
+        while (output_cnt < NR_DO_OUT_STUBS)
+        {
+            stub_out[output_cnt].write(do_out_data());
+            ++output_cnt;
+        }
     }
 
 }

@@ -26,7 +26,7 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
         rst("rst"),
-        fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in", 1, 1),
+        fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in"),
         dc_out("dc_out"),
         clock_phase(0),
         stub_buffer_write_sel(0),

@@ -15,7 +15,7 @@
 
 #include <systemc.h>
 
-#include "../../data_representations/fm_out_data.hpp"
+#include "../../../data_representations/fm_out_data.hpp"
 
 /*!
  * @brief

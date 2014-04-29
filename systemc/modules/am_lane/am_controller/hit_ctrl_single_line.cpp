@@ -79,7 +79,7 @@ void hit_ctrl_single_line::write_AM_stub()
 
         if (wr_hit_lamb.read() == true)
         {
-            stub_output.write(stub_read.read().get_data());
+            stub_output.write(stub_read.read().get_data()(15,0));
         }
         write_en.write(wr_hit_lamb.read());
     }
