@@ -50,7 +50,7 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.am_lane_array[3].fifo_stub_out_sig[0], "fifo_stub_out_sig_3-0");
     sc_trace(trace_file, testbench.am_lane_array[1].init_ev_sig, "init_ev_sig");
     sc_trace(trace_file, testbench.am_lane_array[1].am_write_en_sig, "am_write_en_sig");
-    sc_trace(trace_file, testbench.am_lane_array[1].AMboard.fsm.state, "AM_board_state");
+    sc_trace(trace_file, testbench.am_lane_array[1].AMboard.fsm.current_state, "AM_board.current_state");
     sc_trace(trace_file, testbench.am_lane_array[0].am_pattern_sig, "am_pattern");
     sc_trace(trace_file, testbench.am_lane_array[1].am_pattern_sig, "am_pattern");
     sc_trace(trace_file, testbench.am_lane_array[2].am_pattern_sig, "am_pattern");

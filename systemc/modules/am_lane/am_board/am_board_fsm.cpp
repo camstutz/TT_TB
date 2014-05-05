@@ -36,11 +36,15 @@ am_board_fsm::am_board_fsm(sc_module_name _name) :
         write_roads("write_roads")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(fsm);
+    SC_THREAD(state_logic);
         sensitive << clk.pos();
+    SC_THREAD(combinatorial);
+        sensitive << current_state << road_buffer_empty;
+        write_en.make_sensitive(sensitive);
 
     // ----- Module channel/variable initialization ----------------------------
-    state = IDLE;
+    current_state = IDLE;
+    next_state = IDLE;
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -48,24 +52,36 @@ am_board_fsm::am_board_fsm(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void am_board_fsm::fsm()
+void am_board_fsm::state_logic()
 {
     while (1)
     {
         wait();
 
-        switch (state)
+        current_state.write(next_state.read());
+    }
+
+}
+
+// *****************************************************************************
+void am_board_fsm::combinatorial()
+{
+    while (1)
+    {
+        wait();
+
+        switch (current_state)
         {
         case IDLE:
             process_roads = false;
             write_roads = false;
             if (one_write_en_active())
             {
-                state = RX_HIT;
+                next_state = RX_HIT;
             }
             else
             {
-                state = IDLE;
+                next_state = IDLE;
             }
             break;
 
@@ -74,18 +90,18 @@ void am_board_fsm::fsm()
             write_roads = false;
             if (one_write_en_active())
             {
-                state = RX_HIT;
+                next_state = RX_HIT;
             }
             else
             {
-                state = PROCESS_ROAD;
+                next_state = PROCESS_ROAD;
             }
             break;
 
         case PROCESS_ROAD:
             process_roads = true;
             write_roads = false;
-            state = WRITE_ROAD;
+            next_state = WRITE_ROAD;
             break;
 
         case WRITE_ROAD:
@@ -93,16 +109,16 @@ void am_board_fsm::fsm()
             write_roads = true;
             if (road_buffer_empty)
             {
-                state = IDLE;
+                next_state = IDLE;
             }
             else
             {
-                state = WRITE_ROAD;
+                next_state = WRITE_ROAD;
             }
             break;
 
         default:
-            state = IDLE;
+            next_state = IDLE;
         }
     }
 }

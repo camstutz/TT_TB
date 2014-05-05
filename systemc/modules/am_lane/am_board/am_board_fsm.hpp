@@ -60,13 +60,13 @@ public:
     sc_out<bool> process_roads;
     sc_out<bool> write_roads;
 
-
-
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<fsm_states> state;
+    sc_signal<fsm_states> current_state;
+    sc_signal<fsm_states> next_state;
 
 // ----- Process Declarations --------------------------------------------------
-    void fsm();
+    void state_logic();
+    void combinatorial();
 
 // ----- Other Method Declarations ---------------------------------------------
 
