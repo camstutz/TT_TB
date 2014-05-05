@@ -52,6 +52,7 @@
 
 #define STUB_FIFO_DEPTH            50
 
+#define AM_HITS_PER_ROAD_THRESHOLD  6
 #define AM_BOARD_LATENCY           18
 #define AM_BOARD_PATTERN_WIDTH     18
 #define AM_BOARD_ROAD_WIDTH        21

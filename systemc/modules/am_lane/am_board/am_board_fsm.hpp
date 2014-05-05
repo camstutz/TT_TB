@@ -3,7 +3,7 @@
  * @author Christian Amstutz
  * @date May 5, 2014
  *
- * @brief File contains the declaration of the AM board FSM.
+ * @brief File contains the definition of the AM board FSM.
  */
 
 /*
@@ -74,9 +74,9 @@ public:
      */
     sc_in<bool> clk;
 
-    /** @brief Reset
+    /** @brief Reset (not used)
      *
-     * Input port for the reset signal (currently not used).
+     * Input port for the reset signal.
      */
     sc_in<bool> rst;
 
