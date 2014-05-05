@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date May 2, 2014
  *
  * @brief
  */
@@ -24,28 +24,58 @@
 #include "am_board_fsm.hpp"
 
 /*!
- * @brief
+ * @brief Associative Memory Module
+ *
+ * This SystemC module takes the hits on the different
  */
 class am_board : public sc_module
 {
 public:
-    typedef sc_bv<18> pattern_t;
-    typedef sc_bv<21> road_addr_t;
+    typedef sc_bv<AM_BOARD_PATTERN_WIDTH> pattern_t;
+    typedef sc_bv<AM_BOARD_ROAD_WIDTH> road_addr_t;
 
-    // todo: pattern number needs to be generic
-    static const unsigned int nr_pattern = 255;
+    static const unsigned int nr_pattern = AM_BOARD_PATTERN_NR;
+    static const unsigned int additonal_latency = AM_BOARD_LATENCY - 3;
 
 // ----- Port Declarations -----------------------------------------------------
-    /** Input port for the clock signal */
+    /** @brief Clock
+     *
+     *  Input port for the clock signal */
     sc_in<bool> clk;
 
-    /** Input port for the reset signal (currently not used) */
+    /** @brief Reset (not used)
+     *
+     * Input port for the reset signal.*/
     sc_in<bool> rst;
 
+    /** @brief Initialize Event
+     *
+     * Input port for signaling the start of an event */
     sc_in<sc_bv<3> > init_ev;
+
+    /** @brief Pattern write enable
+     *
+     * Linear array of input ports for the write enable signals of the
+     * patterns. One input for each layer. */
     sc_map_linear<sc_in<bool> > write_en;
+
+    /** @brief Input Pattern
+     *
+     * Linear array of input ports for the hit patterns. One input for each
+     * layer. The width of this port is defined by the macro
+     * AM_BOARD_PATTERN_WIDTH. */
     sc_map_linear<sc_in<pattern_t> > pattern_inputs;
+
+    /** @brief Road Ready
+     *
+     * Output port to signal that the signal at the road output is valid. */
     sc_out<bool> data_ready;
+
+    /** @brief Output Road Address
+     *
+     * Output port for the detected roads. The address of the
+     * content-addressable memory cell is output The width of this port is
+     * defined by the macro AM_BOARD_ROAD_WIDTH. */
     sc_out<road_addr_t> road_output;
 
 // ----- Local Channel Declarations --------------------------------------------
@@ -56,7 +86,6 @@ public:
     sc_signal<road_addr_t> output_road_no_delay;
 
 // ----- Local Storage Declarations --------------------------------------------
-    // todo: pattern number needs to be generic
     std::array<std::array<bool, NR_DETECTOR_LAYERS>, nr_pattern> match_table;
     sc_fifo<road_addr_t> detected_roads_buffer;
 
@@ -68,11 +97,20 @@ public:
 
 // ----- Other Method Declarations ---------------------------------------------
     void initialize_patterns();
+    void print_pattern_bank();
+    void print_match_table();
 
 // ----- Module Instantiations -------------------------------------------------
+    /** The FSM module controls the AM board. */
     am_board_fsm fsm;
-    sc_delay_signal<bool, 15> latency_cor_data_ready;
-    sc_delay_signal<road_addr_t, 15> latency_cor_road;
+
+    /** Additional delay for the data ready signal to correct the low latency of
+     * the quite high level implementation of the AM board. */
+    sc_delay_signal<bool, additonal_latency> latency_correction_data_ready;
+
+    /** Additional delay for the road signal to correct the low latency of
+     * the quite high level implementation of the AM board. */
+    sc_delay_signal<road_addr_t, additonal_latency> latency_correction_road;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

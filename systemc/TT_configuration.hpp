@@ -51,3 +51,8 @@
 #define NR_SENSOR_MODULES NR_DETECTOR_LAYERS*NR_DETECTOR_PHI*NR_DETECTOR_Z // Total number of sensor modules of a detector
 
 #define STUB_FIFO_DEPTH            50
+
+#define AM_BOARD_LATENCY           18
+#define AM_BOARD_PATTERN_WIDTH     18
+#define AM_BOARD_ROAD_WIDTH        21
+#define AM_BOARD_PATTERN_NR        256

@@ -22,9 +22,8 @@ const am_board_fsm::fsm_states am_board_fsm::WRITE_ROAD = 0x04;
 // *****************************************************************************
 
 /*!
- * @class fifo_fsm
+ * @class am_board_fsm
  *
- * The module is sensitive to clk.pos().
  */
 
 am_board_fsm::am_board_fsm(sc_module_name _name) :

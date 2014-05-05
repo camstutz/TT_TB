@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date May 2, 2014
  *
  * @brief
  */
@@ -30,8 +30,8 @@ am_board::am_board(sc_module_name _name) :
         data_ready("data_ready"),
         road_output("road_output"),
         fsm("FSM"),
-        latency_cor_data_ready("latency_correct_data_ready"),
-        latency_cor_road("latency_correct_road")
+        latency_correction_data_ready("latency_correction_data_ready"),
+        latency_correction_road("latency_correction_road")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_stubs);
@@ -55,13 +55,13 @@ am_board::am_board(sc_module_name _name) :
     fsm.process_roads(process_roads);
     fsm.write_roads(write_roads_sig);
 
-    latency_cor_data_ready.clk(clk);
-    latency_cor_data_ready.input(output_data_ready_no_delay);
-    latency_cor_data_ready.delayed(data_ready);
+    latency_correction_data_ready.clk(clk);
+    latency_correction_data_ready.input(output_data_ready_no_delay);
+    latency_correction_data_ready.delayed(data_ready);
 
-    latency_cor_road.clk(clk);
-    latency_cor_road.input(output_road_no_delay);
-    latency_cor_road.delayed(road_output);
+    latency_correction_road.clk(clk);
+    latency_correction_road.input(output_road_no_delay);
+    latency_correction_road.delayed(road_output);
 
     initialize_patterns();
 
@@ -101,23 +101,6 @@ void am_board::detect_roads()
     while (1)
     {
         wait();
-
-//        std::cout << "Match Table:" << std::endl;
-//        for (auto match_line : match_table)
-//        {
-//            for (bool element : match_line)
-//            {
-//                if (element)
-//                {
-//                    std::cout << "*,";
-//                }
-//                else
-//                {
-//                    std::cout << " ,";
-//                }
-//            }
-//            std::cout << std::endl;
-//        }
 
         if (process_roads)
         {
@@ -207,14 +190,41 @@ void am_board::initialize_patterns()
         }
     }
 
-//    std::cout << "Pattern Banks:" << std::endl;
-//    for (auto pattern_bank_layer : pattern_bank)
-//    {
-//        for (auto pattern : pattern_bank_layer)
-//        {
-//            std::cout << pattern.first << ",";
-//        }
-//        std::cout << std::endl;
-//    }
+    return;
+}
 
+// *****************************************************************************
+void am_board::print_pattern_bank()
+{
+	std::cout << "Pattern Banks:\n";
+	for (auto pattern_bank_layer : pattern_bank)
+	{
+		for (auto pattern : pattern_bank_layer)
+		{
+			std::cout << pattern.first << ",";
+		}
+		std::cout << "\n";
+	}
+}
+
+// *****************************************************************************
+void am_board::print_match_table()
+{
+	std::cout << "Match Table:\n";
+    for (auto match_line : match_table)
+    {
+    	for (bool hit_bit : match_line)
+    	{
+    		if (hit_bit)
+          	{
+    			std::cout << "*,";
+            }
+            else
+            {
+            	std::cout << " ,";
+            }
+
+            std::cout << "\n";
+        }
+	}
 }

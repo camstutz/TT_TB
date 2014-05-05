@@ -20,13 +20,29 @@
 
 /*!
  * @brief
+ *
+ * \dot
+   digraph finite_state_machine {
+     size = "8,5"
+     node [shape = doublecircle];
+     IDLE;
+     node [shape = circle];
+     IDLE -> IDLE;
+     IDLE -> RX_HIT [label="one_write_en_active"];
+     RX_HIT -> RX_HIT [label="one_write_en_active"];
+     RX_HIT -> PROCESS_ROAD;
+     PROCESS_ROAD -> WRITE_ROAD;
+     WRITE_ROAD -> WRITE_ROAD;
+     WRITE_ROAD -> IDLE [label="road_buffer_empty"];
+   }
+ * \enddot
  */
 
 class am_board_fsm : public sc_module
 {
 public:
     typedef unsigned int fsm_states;
-    static const fsm_states IDLE;
+    static const unsigned int IDLE;
     static const fsm_states RX_HIT;
     static const fsm_states PROCESS_ROAD;
     static const fsm_states WRITE_ROAD;
