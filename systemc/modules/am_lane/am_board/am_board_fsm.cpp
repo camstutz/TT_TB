@@ -1,9 +1,9 @@
 /*!
  * @file am_board_fsm.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date May 5, 2014
  *
- * @brief
+ * @brief File contains the implementation of the AM board FSM.
  */
 
 /*
