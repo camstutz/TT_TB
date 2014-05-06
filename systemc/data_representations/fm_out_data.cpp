@@ -1,7 +1,7 @@
 /*!
  * @file fm_out_data.cpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date May 6, 2014
  *
  * @brief
  *
@@ -12,24 +12,6 @@
  */
 
 #include "fm_out_data.hpp"
-
-// *****************************************************************************
-fm_out_data::fm_out_data()
-{
-	set_data_stub(fm_stub_t());
-
-    return;
-}
-
-// *****************************************************************************
-fm_out_data::fm_out_data(const fm_stub_t stub_data)
-{
-    //todo: combine with next constructor
-    set_data_valid_flag(true);
-	set_data_stub(stub_data);
-
-    return;
-}
 
 // *****************************************************************************
 fm_out_data::fm_out_data(const data_valid_flag_t data_valid,

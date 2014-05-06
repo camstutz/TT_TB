@@ -1,7 +1,7 @@
 /*!
  * @fm_out_data.hpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date May 6, 2014
  *
  * @brief
  *
@@ -38,11 +38,10 @@ public:
     static const unsigned int time_stamp_flag_pos = 16;
 
     /** Constructor: */
-    //* todo: use C++11 feature of delegating constructor
-    fm_out_data();
+    fm_out_data() : fm_out_data(false, fm_stub_t()) {};
 
     /** Constructor: */
-    fm_out_data(const fm_stub_t stub_data);
+    fm_out_data(const fm_stub_t stub_data) : fm_out_data(true, stub_data) {};
 
     /** Constructor: */
     fm_out_data(const data_valid_flag_t data_valid, const fm_stub_t stub_data);
