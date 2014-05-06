@@ -31,6 +31,10 @@ class data_concentrator : public sc_module
 {
 public:
     typedef sc_bv<DC_OUTPUT_WIDTH> dc_out_t;
+    static const unsigned int dc_output_data_width = DC_OUTPUT_WIDTH - 2;
+    static const unsigned int dc_output_data_upper = dc_output_data_width - 1;
+    static const unsigned int dc_output_debug_pos = DC_OUTPUT_WIDTH - 2;
+    static const unsigned int dc_output_valid_pos = DC_OUTPUT_WIDTH - 1;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;

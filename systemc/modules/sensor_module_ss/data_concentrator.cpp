@@ -109,7 +109,6 @@ void data_concentrator::controller()
 // *****************************************************************************
 void data_concentrator::write_output()
 {
-    //! todo: change constants numbers to parameter
     while(1)
     {
         wait();
@@ -119,20 +118,20 @@ void data_concentrator::write_output()
             create_output_buffer();
         }
 
-        sc_bv<DC_OUTPUT_WIDTH> output_val;
-        unsigned int high_buffer = (clock_phase.read()+1)*(DC_OUTPUT_WIDTH-2)-1;
-        unsigned int low_buffer = clock_phase.read()*(DC_OUTPUT_WIDTH-2);
-        output_val(DC_OUTPUT_WIDTH-3,0) = output_buffer(high_buffer, low_buffer);
-        output_val[DC_OUTPUT_WIDTH-2] = 0;
+        dc_out_t output_val;
+        unsigned int high_buffer = (clock_phase.read()+1)*(dc_output_data_width)-1;
+        unsigned int low_buffer = clock_phase.read()*(dc_output_data_width);
+        output_val(dc_output_data_upper,0) = output_buffer(high_buffer, low_buffer);
+        output_val[dc_output_debug_pos] = 0;
 
         // Indicate the beginning of a window by the first bit of a data word
         if (clock_phase.read() == 0)
         {
-            output_val[DC_OUTPUT_WIDTH-1] = 1;
+            output_val[dc_output_valid_pos] = 1;
         }
         else
         {
-            output_val[DC_OUTPUT_WIDTH-1] = 0;
+            output_val[dc_output_valid_pos] = 0;
         }
 
         dc_out.write(output_val);

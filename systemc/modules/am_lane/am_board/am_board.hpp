@@ -28,11 +28,16 @@
  *
  * This SystemC module takes the hits on the inputs coming from each layer and
  * analyzes them for roads. The detected roads are written out of the AM board.
+ *
+ * todo: describe algorithm in detail
  */
 class am_board : public sc_module
 {
 public:
+    /** @brief Data type of the pattern at the input on each layer */
     typedef sc_bv<AM_BOARD_PATTERN_WIDTH> pattern_t;
+
+    /** @brief Data type of the road at the output of the AM board */
     typedef sc_bv<AM_BOARD_ROAD_WIDTH> road_addr_t;
 
     /** @brief configures the number of pattern that the AM board contains. */
