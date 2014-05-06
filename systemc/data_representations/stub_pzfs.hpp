@@ -1,7 +1,7 @@
 /*!
  * @file stub_pzfs.hpp
  * @author Christian Amstutz
- * @date Apr 20, 2014
+ * @date May 6, 2014
  *
  * @brief
  *
@@ -44,9 +44,16 @@ template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
         unsigned int strip_bits>
 class stub_pzfs
 {
-public:
-    // todo: check for the correct range of template parameters, must be larger than 0
+    static_assert (phi_bits > 0,
+            "phi_bits must be at least 1 bit wide.");
+    static_assert (z_bits > 0,
+            "z_bits must be at least 1 bit wide.");
+    static_assert (fechip_bits > 0,
+            "fechip_bits must be at least 1 bit wide.");
+    static_assert (strip_bits > 0,
+            "strip_bits must be at least 1 bit wide.");
 
+public:
     static constexpr unsigned int strip_width = strip_bits;
     static constexpr unsigned int fechip_width = fechip_bits;
     static constexpr unsigned int z_width = z_bits;

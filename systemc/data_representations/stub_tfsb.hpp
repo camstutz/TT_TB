@@ -1,7 +1,7 @@
 /*!
  * @file stub_tfsb.hpp
  * @author Christian Amstutz
- * @date Mar 24, 2014
+ * @date May 6, 2014
  *
  * @brief
  *
@@ -44,9 +44,16 @@ template<unsigned int timestamp_bits, unsigned int fechip_bits,
         unsigned int strip_bits, unsigned int bend_bits>
 class stub_tfsb
 {
-public:
-    // todo: check for the correct range of template parameters, must be larger than 0
+    static_assert (timestamp_bits > 0,
+            "timestamp_bits must be at least 1 bit wide.");
+    static_assert (fechip_bits > 0,
+            "fechip_bits must be at least 1 bit wide.");
+    static_assert (strip_bits > 0,
+            "strip_bits must be at least 1 bit wide.");
+    static_assert (bend_bits > 0,
+            "bend_bits must be at least 1 bit wide.");
 
+public:
     static constexpr unsigned int bend_width = bend_bits;
     static constexpr unsigned int strip_width = strip_bits;
     static constexpr unsigned int fechip_width = fechip_bits;
