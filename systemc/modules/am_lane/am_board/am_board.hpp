@@ -14,7 +14,7 @@
 
 #include <array>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include <systemc.h>
 #include "../../../../lib/systemc_helpers/sc_map/sc_map.hpp"
@@ -205,7 +205,8 @@ public:
     sc_delay_signal<bool, additonal_latency> latency_correction_data_ready;
 
     /** Additional delay for the road signal to correct the low latency of
-     * the quite high level implementation of tpattern bankhe AM board. */
+     * the quite high level implementation of the AM board.
+     */
     sc_delay_signal<road_addr_t, additonal_latency> latency_correction_road;
 
 // ----- Constructor -----------------------------------------------------------
@@ -221,9 +222,8 @@ public:
     SC_HAS_PROCESS(am_board);
 
 private:
-    // todo: increase performance by using unordered list
-    // todo: try to use pattern_t as key of multimap
-    typedef std::multimap<unsigned int, road_addr_t> lay_pattern_bank_t;
+    // todo: try to use pattern_t as key of unordered_multimap
+    typedef std::unordered_multimap<unsigned int, road_addr_t> lay_pattern_bank_t;
     std::array<lay_pattern_bank_t, NR_DETECTOR_LAYERS> pattern_bank;
 
     /** @brief Initializes pattern banks
