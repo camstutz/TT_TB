@@ -66,11 +66,19 @@ am_board::am_board(sc_module_name _name) :
     initialize_patterns();
     clear_match_table();
 
+<<<<<<< HEAD
     match_table.resize(nr_pattern);
     std::vector<std::vector<bool> >::iterator match_table_it = match_table.begin();
     for(; match_table_it != match_table.end(); ++match_table_it)
     {
         match_table_it->resize(NR_DETECTOR_LAYERS);
+=======
+    match_table.resize(NR_DETECTOR_LAYERS);
+    std::vector<std::vector<bool> >::iterator match_table_it = match_table.begin();
+    for(; match_table_it != match_table.end(); ++match_table_it)
+    {
+        match_table_it->resize(nr_pattern);
+>>>>>>> 0fb2b27c618aa1d70845f45332c35cc567c748ca
     }
 
     return;
