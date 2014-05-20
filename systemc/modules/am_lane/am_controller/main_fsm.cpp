@@ -87,6 +87,7 @@ void main_fsm::combinatorial()
     {
         unsigned int id;
         bool all_hee_reg;
+        sc_map_linear<sc_in<bool> >::iterator hee_reg_it = hee_reg.begin();
 
         switch (current_state)
         {
@@ -99,17 +100,19 @@ void main_fsm::combinatorial()
             init_ev = 0;
 
             id = 0;
-            for (auto& hee_reg_single : hee_reg)
+            hee_reg_it = hee_reg.begin();
+            for (; hee_reg_it != hee_reg.end(); ++hee_reg_it)
             {
-                pop[id] = !hee_reg_single.read();
-                en[id] = !hee_reg_single.read() & pok[id].read();
+                pop[id] = !hee_reg_it->read();
+                en[id] = !hee_reg_it->read() & pok[id].read();
                 ++id;
             }
 
             all_hee_reg = true;
-            for (auto& hee_reg_single : hee_reg)
+            hee_reg_it = hee_reg.begin();
+            for (; hee_reg_it != hee_reg.end(); ++hee_reg_it)
             {
-                if (hee_reg_single.read() == false)
+                if (hee_reg_it->read() == false)
                 {
                     all_hee_reg = false;
                 }

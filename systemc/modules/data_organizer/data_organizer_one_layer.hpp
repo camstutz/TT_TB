@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer.hpp
  * @author Christian Amstutz
- * @date Apr 20, 2014
+ * @date May 20, 2014
  *
  * @brief
  *
@@ -14,7 +14,6 @@
 #pragma once
 
 #include <sstream>
-#include <array>
 #include <vector>
 
 #include <systemc.h>
@@ -30,8 +29,7 @@
 class data_organizer_one_layer : public sc_module
 {
 public:
-    typedef typename std::array<std::vector<sc_bv<16> >, NR_DC_WINDOW_CYCLES >
-            stub_table_type;
+    typedef typename std::vector<std::vector<sc_bv<16> > > stub_table_type;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -48,10 +46,10 @@ public:
     /** Control signal that switches between the two re-order tables */
     sc_in<unsigned int> stub_table_sel;
 
-    sc_in<sc_bv<DC_OUTPUT_WIDTH>>stream_in;
+    sc_in<sc_bv<DC_OUTPUT_WIDTH> > stream_in;
 
     /** Linear sc_map for the re-arranged, re-timed stubs. */
-    sc_map_linear<sc_out<do_out_data>> stub_out;
+    sc_map_linear<sc_out<do_out_data> > stub_out;
 
     // todo: put these values to constructor
     sc_in<unsigned int> phi;
@@ -66,7 +64,7 @@ public:
     /** Two tables for the re-arranged stubs. Each table can contain a defined
      * number of stubs for each time step of the time window of the data
      * transmission. */
-    std::array<stub_table_type, 2> stub_table;
+    std::vector<stub_table_type> stub_table;
 
 
 // ----- Process Declarations --------------------------------------------------

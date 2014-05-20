@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.cpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date May 20, 2014
  *
  * @brief
  */
@@ -40,6 +40,8 @@ fifo_manager_datapath::fifo_manager_datapath(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
+    stub_buffer.resize(NR_AM_BOARDS);
+
     return;
 }
 
@@ -54,9 +56,10 @@ void fifo_manager_datapath::read_stubs()
         {
             if (buffer_write_en[AM_lane].read())
             {
-                for (auto& single_in : stub_in)
+                sc_map_linear<sc_in<do_out_data> >::iterator input_it = stub_in.begin();
+                for (; input_it != stub_in.end(); ++input_it)
                 {
-                    auto input_value = single_in.read();
+                    do_out_data input_value = input_it->read();
                     if (input_value.get_dv())
                     {
                         fm_out_data buffer_value;
@@ -86,7 +89,7 @@ void fifo_manager_datapath::write_fifos()
 
         for (unsigned int AM_lane = 0; AM_lane < NR_AM_BOARDS; ++AM_lane)
         {
-            auto read_this_lane = buffer_read_en[AM_lane].read();
+            bool read_this_lane = buffer_read_en[AM_lane].read();
             if (read_this_lane & !stub_buffer[AM_lane].empty())
             {
                 fm_out_data output_data = stub_buffer[AM_lane].front();

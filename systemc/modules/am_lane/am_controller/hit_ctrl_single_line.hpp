@@ -29,14 +29,14 @@ public:
     sc_in<bool> clk;
     sc_in<bool> new_hit;
     sc_in<bool> wr_hit_lamb;
-    sc_in<sc_bv<3>> init_event;
+    sc_in<sc_bv<3> > init_event;
     sc_in<fm_out_data> stub_input;
 
     sc_out<bool> hee_reg_before;
     sc_out<bool> hee_reg;
     sc_out<bool> write_en;
-    sc_out<sc_bv<18>> stub_output;
-    sc_out<sc_bv<16>> stub_tag;
+    sc_out<sc_bv<18> > stub_output;
+    sc_out<sc_bv<16> > stub_tag;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<fm_out_data> stub_read;

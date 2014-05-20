@@ -39,14 +39,15 @@ am_lane::am_lane(const sc_module_name _name) :
 {
     // ----- Module instance / channel binding ---------------------------------
     unsigned int layer = 0;
-    for (auto& single_fifo : stub_fifo_array)
+    sc_map_linear<stub_fifo<STUB_FIFO_DEPTH> >::iterator fifo_it = stub_fifo_array.begin();
+    for (; fifo_it != stub_fifo_array.end(); ++fifo_it)
     {
-        single_fifo.clk.bind(clk);
-        single_fifo.rst.bind(rst);
-        single_fifo.stub_in.bind(fifo_inputs[layer]);
-        single_fifo.not_empty.bind(fifo_not_empty_sig[layer]);
-        single_fifo.read_en.bind(fifo_read_en_sig[layer]);
-        single_fifo.stub_out.bind(fifo_stub_out_sig[layer]);
+        fifo_it->clk.bind(clk);
+        fifo_it->rst.bind(rst);
+        fifo_it->stub_in.bind(fifo_inputs[layer]);
+        fifo_it->not_empty.bind(fifo_not_empty_sig[layer]);
+        fifo_it->read_en.bind(fifo_read_en_sig[layer]);
+        fifo_it->stub_out.bind(fifo_stub_out_sig[layer]);
 
         ++layer;
     }

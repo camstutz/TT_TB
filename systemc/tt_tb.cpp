@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date May 20, 2014
  *
  * @brief
  */
@@ -43,19 +43,21 @@ tt_tb::tt_tb(const sc_module_name _name) :
     hitGenerator.hit_outputs.bind(hit_fifos);
     hitGenerator.hit_cnt(hit_cnt_sig);
 
-    for (auto& sens_module : sensor_modules)
+    sc_map_cube<sensor_module_ss>::iterator sensor_module_it = sensor_modules.begin();
+    for (; sensor_module_it != sensor_modules.end(); ++sensor_module_it)
     {
-        auto full_key = sensor_modules.get_key(sens_module);
+        std::pair<bool, sc_map_cube<sensor_module_ss>::full_key_type> full_key;
+        full_key = sensor_modules.get_key(*sensor_module_it);
 
-        sens_module.clk(LHC_clock);
-        auto fifo_it  = hit_fifos.begin_partial(full_key.second.Z_dim, false, full_key.second.Y_dim, false, full_key.second.X_dim, false, 0, true);
-        sens_module.stub_inputs.bind_by_iter(fifo_it);
-        sens_module.dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
+        sensor_module_it->clk.bind(LHC_clock);
+        sc_map_4d<sc_fifo<hit_generator::hitgen_stub_t> >::_4d_iterator fifo_it  = hit_fifos.begin_partial(full_key.second.Z_dim, false, full_key.second.Y_dim, false, full_key.second.X_dim, false, 0, true);
+        sensor_module_it->stub_inputs.bind_by_iter(fifo_it);
+        sensor_module_it->dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
     }
 
     dataOrganizer.clk.bind(LHC_clock);
     dataOrganizer.rst.bind(true_sig);
-    auto fe_it = fe_signals.begin();
+    sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > >::iterator fe_it = fe_signals.begin();
     dataOrganizer.stream_in.bind_by_iter(fe_it);
     dataOrganizer.stub_out.bind(do_stub_out_sig);
 
@@ -65,14 +67,15 @@ tt_tb::tt_tb(const sc_module_name _name) :
     fifoManager.fifo_out.bind(fifo_stub_in);
 
     unsigned int lane_nr = 0;
-    for(auto& single_am_lane : am_lane_array)
+    sc_map_linear<am_lane>::iterator am_lane_it = am_lane_array.begin();
+    for(; am_lane_it != am_lane_array.end(); ++am_lane_it)
     {
-        single_am_lane.clk.bind(AM_clock);
-        single_am_lane.rst.bind(true_sig);
-        auto fifo_stub_it = fifo_stub_in.begin_partial(lane_nr, false, 0, true);
-        single_am_lane.fifo_inputs.bind_by_iter(fifo_stub_it);
-        single_am_lane.road_write_en.bind(result_write_en[lane_nr]);
-        single_am_lane.road_output.bind(result_road[lane_nr]);
+        am_lane_it->clk.bind(AM_clock);
+        am_lane_it->rst.bind(true_sig);
+        sc_map_square<sc_signal<fm_out_data> >::square_iterator fifo_stub_it = fifo_stub_in.begin_partial(lane_nr, false, 0, true);
+        am_lane_it->fifo_inputs.bind_by_iter(fifo_stub_it);
+        am_lane_it->road_write_en.bind(result_write_en[lane_nr]);
+        am_lane_it->road_output.bind(result_road[lane_nr]);
 
         ++lane_nr;
     }

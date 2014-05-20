@@ -30,7 +30,8 @@ class sc_map_base
 {
 public:
     typedef sc_vector<object_type> container_type;
-    typedef typename container_type::const_iterator container_iterator;
+    typedef typename container_type::iterator container_iterator;
+    typedef typename container_type::const_iterator const_container_iterator;
     typedef int key_type;
     typedef sc_map_iter_sequential<object_type> iterator;
     typedef ptrdiff_t difference_type;
@@ -137,7 +138,7 @@ void sc_map_base<object_type>::make_sensitive(
     // todo: change it to a traditional way of sensitivity lists
     // todo: make it possible to react on other than pos
     // todo: make it not to use the reference, but const
-    container_iterator object_it = objects.begin();
+    const_container_iterator object_it = objects.begin();
     for (; object_it != objects.end(); ++object_it)
     {
         sensitive_list << *object_it;

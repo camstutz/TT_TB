@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date May 20, 2014
  *
  * @brief
  */
@@ -9,6 +9,8 @@
 /*
  *  Copyright (c) 2014 by Christian Amstutz
  */
+
+#include <utility>
 
 #include <systemc.h>
 
@@ -41,11 +43,11 @@ public:
     sc_map_4d<sc_fifo<hit_generator::hitgen_stub_t> > hit_fifos;
     sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_signals;
 
-    sc_map_square<sc_signal<do_out_data>> do_stub_out_sig;
+    sc_map_square<sc_signal<do_out_data> > do_stub_out_sig;
 
-    sc_map_square<sc_signal<fm_out_data>> fifo_stub_in;
-    sc_map_linear<sc_signal<bool>> result_write_en;
-    sc_map_linear<sc_signal<sc_bv<30>>> result_road;
+    sc_map_square<sc_signal<fm_out_data> > fifo_stub_in;
+    sc_map_linear<sc_signal<bool> > result_write_en;
+    sc_map_linear<sc_signal<sc_bv<30> > > result_road;
 
     sc_signal<unsigned int> hit_cnt_sig;
 

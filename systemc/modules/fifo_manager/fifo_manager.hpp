@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager.hpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -37,13 +37,13 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
-    sc_map_square<sc_in<do_out_data>> stub_in;
+    sc_map_square<sc_in<do_out_data> > stub_in;
 
-    sc_map_square<sc_out<fm_out_data>> fifo_out;
+    sc_map_square<sc_out<fm_out_data> > fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_map_linear<sc_signal<bool>> buf_write_en_sig;
-    sc_map_linear<sc_signal<bool>> buf_read_en_sig;
+    sc_map_linear<sc_signal<bool> > buf_write_en_sig;
+    sc_map_linear<sc_signal<bool> > buf_read_en_sig;
     sc_signal<unsigned int> time_stamp_sig;
 
 // ----- Local Storage Declarations --------------------------------------------

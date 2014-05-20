@@ -97,7 +97,7 @@ void stub_fifo<depth>::read_input()
     {
         wait();
 
-        auto input_value = stub_in.read();
+        fm_out_data input_value = stub_in.read();
         if (input_value.get_data_valid_flag())
         {
             fifo.write(input_value);
@@ -116,7 +116,7 @@ void stub_fifo<depth>::write_output()
 
         if (read_en && not_empty)
         {
-            auto fifo_value = fifo.read();
+            fm_out_data fifo_value = fifo.read();
             stub_out.write(fifo_value);
         }
     }
