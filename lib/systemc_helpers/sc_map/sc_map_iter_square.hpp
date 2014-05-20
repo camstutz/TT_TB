@@ -55,14 +55,14 @@ template<typename object_type>
 sc_map_iter_square<object_type>&
         sc_map_iter_square<object_type>::operator++ ()
 {
-    sc_map_square<object_type>& sc_map_sq = dynamic_cast<sc_map_square<object_type>& >(this->sc_map);
+    sc_map_square<object_type>* sc_map_sq = dynamic_cast<sc_map_square<object_type>* >(this->sc_map);
 
     if (iterate_X)
     {
         ++X_pos;
         if(X_pos <= X_iter_stop)
         {
-            this->set_vect_pos(sc_map_sq.get_vect_pos(Y_pos, X_pos));
+            this->set_vect_pos(sc_map_sq->get_vect_pos(Y_pos, X_pos));
             return (*this);
         }
     }
@@ -70,19 +70,19 @@ sc_map_iter_square<object_type>&
     ++Y_pos;
     if (Y_pos > Y_iter_stop)
     {
-        this->set_vect_pos(sc_map_sq.size());
+        this->set_vect_pos(sc_map_sq->size());
         return (*this);
     }
 
     if (iterate_Y)
     {
         X_pos = X_iter_start;
-        this->set_vect_pos(sc_map_sq.get_vect_pos(Y_pos, X_pos));
+        this->set_vect_pos(sc_map_sq->get_vect_pos(Y_pos, X_pos));
         return (*this);
     }
     else
     {
-        this->set_vect_pos(sc_map_sq.size());
+        this->set_vect_pos(sc_map_sq->size());
         return (*this);
     }
 }
@@ -104,7 +104,7 @@ sc_map_iter_square<object_type>::sc_map_iter_square(
         iterate_X(iterate_X)
 {
     sc_map_square<object_type>* sc_map_sq =
-            dynamic_cast<sc_map_square<object_type>* >(&this->sc_map);
+            dynamic_cast<sc_map_square<object_type>* >(this->sc_map);
 
     if ( (sc_map_sq->start_id_Y+sc_map_sq->size_Y() <= Y_pos) ||
             (sc_map_sq->start_id_X+sc_map_sq->size_X() <= X_pos) )

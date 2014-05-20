@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.hpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date May 20, 2014
  *
  * @brief
  *
@@ -14,7 +14,7 @@
 #pragma once
 
 #include <queue>
-#include <array>
+#include <vector>
 
 #include <systemc.h>
 #include "../../../lib/systemc_helpers/sc_map/sc_map.hpp"
@@ -39,12 +39,12 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
-    sc_map_linear<sc_in<bool>> buffer_write_en;
-    sc_map_linear<sc_in<bool>> buffer_read_en;
+    sc_map_linear<sc_in<bool> > buffer_write_en;
+    sc_map_linear<sc_in<bool> > buffer_read_en;
     sc_in<unsigned int> time_stamp;
 
-    sc_map_linear<sc_in<do_out_data>> stub_in;
-    sc_map_linear<sc_out<fm_out_data>> fifo_out;
+    sc_map_linear<sc_in<do_out_data> > stub_in;
+    sc_map_linear<sc_out<fm_out_data> > fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
 
@@ -68,5 +68,5 @@ public:
 
 private:
 
-    std::array<std::queue<fm_out_data>, NR_AM_BOARDS> stub_buffer;
+    std::vector<std::queue<fm_out_data> > stub_buffer;
 };

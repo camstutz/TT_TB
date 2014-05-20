@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer.cpp
  * @author Christian Amstutz
- * @date Apr 20, 2014
+ * @date May 20, 2014
  *
  * @brief
  */
@@ -44,6 +44,13 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
+    stub_table.resize(2);
+    std::vector<stub_table_type>::iterator stub_table_it = stub_table.begin();
+    for (; stub_table_it != stub_table.end(); ++stub_table_it)
+    {
+        stub_table_it->resize(NR_DC_WINDOW_CYCLES);
+    }
+
     return;
 }
 
@@ -73,9 +80,10 @@ void data_organizer_one_layer::sort_stubs()
 
         if (stub_table_sel.event())
         {
-            for(auto& stub_vector : stub_table[stub_table_sel.read()] )
+            std::vector<std::vector<sc_bv<16> > >::iterator stub_vector_it = stub_table[stub_table_sel.read()].begin();
+            for(; stub_vector_it != stub_table[stub_table_sel.read()].end(); ++stub_vector_it)
             {
-                stub_vector.clear();
+                stub_vector_it->clear();
             }
             cc_buf_write_ptr = 0;
         }
@@ -107,13 +115,15 @@ void data_organizer_one_layer::write_stubs()
     {
         wait();
 
-        auto stub_vector = stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()];
+        // TODO: change constants to text
+        std::vector<sc_bv<16> > stub_vector;
+        stub_vector = stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()];
 
         unsigned int output_cnt = 0;
         while (stub_vector.size() != 0)
         {
             do_out_data::do_stub_t output_stub;
-            auto actual_stub = stub_vector.back();
+            sc_bv<16> actual_stub = stub_vector.back();
             stub_vector.pop_back();
             sc_bv<3> fe_chip = actual_stub(15,13);
             sc_bv<5> superstrip = actual_stub(12,8);

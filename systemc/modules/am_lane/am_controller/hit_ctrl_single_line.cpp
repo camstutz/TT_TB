@@ -58,7 +58,7 @@ void hit_ctrl_single_line::read_input_stub()
 
         if (new_hit.read() == true)
         {
-            auto stub = stub_input.read();
+            fm_out_data stub = stub_input.read();
             stub_read.write(stub);
         }
 

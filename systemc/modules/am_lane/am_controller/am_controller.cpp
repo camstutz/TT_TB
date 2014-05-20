@@ -1,7 +1,7 @@
 /*!
  * @file am_controller.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date May 20, 2014
  *
  * @brief
  */
@@ -57,16 +57,17 @@ am_controller::am_controller(const sc_module_name _name) :
     main_am_fsm.init_ev.bind(init_ev);
 
     unsigned int id = 0;
-    for (auto& fifo_fsm: fifo_fsm_array)
+    sc_map_linear<fifo_fsm>::iterator fifo_fsm_it = fifo_fsm_array.begin();
+    for (; fifo_fsm_it != fifo_fsm_array.end(); ++fifo_fsm_it)
     {
-        fifo_fsm.clk.bind(clk);
-        fifo_fsm.rst.bind(init);
-        fifo_fsm.fifo_not_empty.bind(fifo_not_empty[id]);
-        fifo_fsm.fifo_read_en.bind(fifo_read_en[id]);
-        fifo_fsm.hee_reg_before.bind(hee_reg_before_sig[id]);
-        fifo_fsm.pop.bind(pop_sig[id]);
-        fifo_fsm.pok.bind(pok_sig[id]);
-        fifo_fsm.reg_en.bind(hit_ctrl_reg_en[id]);
+        fifo_fsm_it->clk.bind(clk);
+        fifo_fsm_it->rst.bind(init);
+        fifo_fsm_it->fifo_not_empty.bind(fifo_not_empty[id]);
+        fifo_fsm_it->fifo_read_en.bind(fifo_read_en[id]);
+        fifo_fsm_it->hee_reg_before.bind(hee_reg_before_sig[id]);
+        fifo_fsm_it->pop.bind(pop_sig[id]);
+        fifo_fsm_it->pok.bind(pok_sig[id]);
+        fifo_fsm_it->reg_en.bind(hit_ctrl_reg_en[id]);
 
         ++id;
     }

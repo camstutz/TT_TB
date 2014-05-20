@@ -65,15 +65,15 @@ template<typename object_type>
 sc_map_iter_4d<object_type>&
         sc_map_iter_4d<object_type>::operator++ ()
 {
-    sc_map_4d<object_type>& sc_map_4 =
-            dynamic_cast<sc_map_4d<object_type>& >(this->sc_map);
+    sc_map_4d<object_type>* sc_map_4 =
+            dynamic_cast<sc_map_4d<object_type>* >(this->sc_map);
 
     if (iterate_X)
     {
         ++X_pos;
         if(X_pos <= X_iter_stop)
         {
-            this->set_vect_pos(sc_map_4.get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
+            this->set_vect_pos(sc_map_4->get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
             return (*this);
         }
     }
@@ -84,7 +84,7 @@ sc_map_iter_4d<object_type>&
         ++Y_pos;
         if(Y_pos <= Y_iter_stop)
         {
-            this->set_vect_pos(sc_map_4.get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
+            this->set_vect_pos(sc_map_4->get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
             return (*this);
         }
     }
@@ -95,7 +95,7 @@ sc_map_iter_4d<object_type>&
         ++Z_pos;
         if(Z_pos <= Z_iter_stop)
         {
-            this->set_vect_pos(sc_map_4.get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
+            this->set_vect_pos(sc_map_4->get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
             return (*this);
         }
     }
@@ -104,18 +104,18 @@ sc_map_iter_4d<object_type>&
     ++W_pos;
     if (W_pos > W_iter_stop)
     {
-        this->set_vect_pos(sc_map_4.size());
+        this->set_vect_pos(sc_map_4->size());
         return (*this);
     }
 
     if (iterate_W)
     {
-        this->set_vect_pos(sc_map_4.get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
+        this->set_vect_pos(sc_map_4->get_vect_pos(W_pos, Z_pos, Y_pos, X_pos));
         return (*this);
     }
     else
     {
-        this->set_vect_pos(sc_map_4.size());
+        this->set_vect_pos(sc_map_4->size());
         return (*this);
     }
 }
@@ -147,7 +147,7 @@ sc_map_iter_4d<object_type>::sc_map_iter_4d(
         iterate_X(iterate_X)
 {
     sc_map_4d<object_type>* sc_map_4 =
-            dynamic_cast<sc_map_4d<object_type>* >(&this->sc_map);
+            dynamic_cast<sc_map_4d<object_type>* >(this->sc_map);
 
     if ( (sc_map_4->start_id_W+sc_map_4->size_W() <= W_pos) ||
             (sc_map_4->start_id_Z+sc_map_4->size_Z() <= Z_pos) ||

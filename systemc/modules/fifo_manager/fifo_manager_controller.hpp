@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_controller.hpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -49,8 +49,8 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
-    sc_map_linear<sc_out<bool>> buffer_write_en;
-    sc_map_linear<sc_out<bool>> buffer_read_en;
+    sc_map_linear<sc_out<bool> > buffer_write_en;
+    sc_map_linear<sc_out<bool> > buffer_read_en;
     sc_out<unsigned int> time_stamp;
 
 // ----- Local Channel Declarations --------------------------------------------

@@ -42,25 +42,26 @@ hit_ctrl::hit_ctrl(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
     unsigned int id = 0;
-    for (auto& hit_controller : hit_controllers)
+    sc_map_linear<hit_ctrl_single_line>::iterator hit_controller_it = hit_controllers.begin();
+    for (; hit_controller_it != hit_controllers.end(); ++hit_controller_it)
     {
-        hit_controller.clk.bind(clk);
-        hit_controller.new_hit.bind(new_hit[id]);
-        hit_controller.wr_hit_lamb.bind(wr_hit_lamb[id]);
-        hit_controller.init_event.bind(init_event);
-        hit_controller.stub_input.bind(stub_inputs[id]);
-        hit_controller.hee_reg_before.bind(hee_reg_before[id]);
-        hit_controller.hee_reg.bind(hee_reg[id]);
-        hit_controller.write_en.bind(write_en[id]);
-        hit_controller.stub_output.bind(stub_output[id]);
+        hit_controller_it->clk.bind(clk);
+        hit_controller_it->new_hit.bind(new_hit[id]);
+        hit_controller_it->wr_hit_lamb.bind(wr_hit_lamb[id]);
+        hit_controller_it->init_event.bind(init_event);
+        hit_controller_it->stub_input.bind(stub_inputs[id]);
+        hit_controller_it->hee_reg_before.bind(hee_reg_before[id]);
+        hit_controller_it->hee_reg.bind(hee_reg[id]);
+        hit_controller_it->write_en.bind(write_en[id]);
+        hit_controller_it->stub_output.bind(stub_output[id]);
 
         if (id == 0)
         {
-        	hit_controller.stub_tag.bind(event_tag);
+        	hit_controller_it->stub_tag.bind(event_tag);
         }
         else
         {
-        	hit_controller.stub_tag.bind(tag_signals[id-1]);
+            hit_controller_it->stub_tag.bind(tag_signals[id-1]);
         }
 
         ++id;

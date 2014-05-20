@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date May 5, 2014
+ * @date May 20, 2014
  *
  * @brief File containing the implementation of the AM board.
  */
@@ -66,6 +66,13 @@ am_board::am_board(sc_module_name _name) :
     initialize_patterns();
     clear_match_table();
 
+    match_table.resize(NR_DETECTOR_LAYERS);
+    std::vector<std::vector<bool> >::iterator match_table_it = match_table.begin();
+    for(; match_table_it != match_table.end(); ++match_table_it)
+    {
+        match_table_it->resize(nr_pattern);
+    }
+
     return;
 }
 
@@ -81,12 +88,12 @@ void am_board::process_incoming_hits()
             if (write_en[layer])
             {
                 pattern_t pattern = pattern_inputs[layer].read();
-                auto road_addresses = pattern_bank[layer].equal_range(pattern.to_uint());
-                auto road_addr_it = road_addresses.first;
+                std::pair<lay_pattern_bank_t::iterator, lay_pattern_bank_t::iterator> road_addresses = pattern_bank[layer].equal_range(pattern.to_uint());
+                lay_pattern_bank_t::iterator road_addr_it = road_addresses.first;
 
                 while (road_addr_it != road_addresses.second)
                 {
-                    auto road_addr = road_addr_it->second.to_uint();
+                    unsigned int road_addr = road_addr_it->second.to_uint();
                     match_table[road_addr][layer] = true;
                     ++road_addr_it;
                 }
@@ -104,12 +111,15 @@ void am_board::detect_roads()
         wait();
 
         unsigned int road_nr = 0;
-        for (auto match_line : match_table)
+
+        std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
+        for (; match_line_it != match_table.end(); ++match_line_it)
         {
             unsigned int road_hits = 0;
-            for (bool match_position : match_line)
+            std::vector<bool>::iterator match_position_it = match_line_it->begin();
+            for (; match_position_it != match_line_it->end(); ++match_position_it)
             {
-                if (match_position)
+                if (*match_position_it)
                 {
                     ++road_hits;
                 }
@@ -172,11 +182,14 @@ void am_board::check_detected_road_buffer()
 void am_board::print_pattern_bank()
 {
 	std::cout << "Pattern Banks:\n";
-	for (auto pattern_bank_layer : pattern_bank)
-	{
-		for (auto pattern : pattern_bank_layer)
+
+    std::vector<lay_pattern_bank_t>::iterator layer_it = pattern_bank.begin();
+    for (; layer_it != pattern_bank.end(); ++layer_it)
+    {
+        std::multimap<unsigned int, road_addr_t>::iterator pattern_it = layer_it->begin();
+		for (; pattern_it != layer_it->end(); ++pattern_it)
 		{
-			std::cout << pattern.first << ",";
+			std::cout << pattern_it->first << ",";
 		}
 		std::cout << "\n";
 	}
@@ -186,11 +199,14 @@ void am_board::print_pattern_bank()
 void am_board::print_match_table()
 {
 	std::cout << "Match Table:\n";
-    for (auto match_line : match_table)
+
+    std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
+    for (; match_line_it != match_table.end(); ++match_line_it)
     {
-    	for (bool hit_bit : match_line)
+        std::vector<bool>::iterator match_position_it = match_line_it->begin();
+        for (; match_position_it != match_line_it->end(); ++match_position_it)
     	{
-    		if (hit_bit)
+    		if (*match_position_it)
           	{
     			std::cout << "*,";
             }
@@ -207,13 +223,16 @@ void am_board::print_match_table()
 // *****************************************************************************
 void am_board::initialize_patterns()
 {
-    for (auto& pattern_bank_layer: pattern_bank)
+    pattern_bank.resize(NR_DETECTOR_LAYERS);
+
+    std::vector<lay_pattern_bank_t>::iterator layer_it = pattern_bank.begin();
+    for (; layer_it != pattern_bank.end(); ++layer_it)
     {
         for (unsigned int pat_nr=0; pat_nr<nr_pattern; ++pat_nr)
         {
             pattern_t pattern;
             pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr)) );
-            pattern_bank_layer.emplace(pattern.to_uint(), pat_nr);
+            layer_it->insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
         }
     }
 
@@ -223,11 +242,13 @@ void am_board::initialize_patterns()
 // *****************************************************************************
 void am_board::clear_match_table()
 {
-    for (auto& match_line : match_table)
+    std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
+    for (; match_line_it != match_table.end(); ++match_line_it)
     {
-        for (bool& match_position : match_line)
+        std::vector<bool>::iterator match_position_it = match_line_it->begin();
+        for (; match_position_it != match_line_it->end(); ++match_position_it)
         {
-            match_position = false;
+            *match_position_it = false;
         }
     }
 

@@ -44,7 +44,7 @@ protected:
     size_type get_vect_pos();
     void set_vect_pos(size_type vect_pos);
 
-    sc_map_base<object_type>& sc_map;
+    sc_map_base<object_type>* sc_map;
 
 private:
     size_type vect_pos;
@@ -55,7 +55,7 @@ template<typename object_type>
 bool sc_map_iterator<object_type>::operator==(const sc_map_iterator& other)
         const
 {
-    return (&sc_map.objects[vect_pos] == &other.sc_map.objects[other.vect_pos]);
+    return (&sc_map->objects[vect_pos] == &other.sc_map->objects[other.vect_pos]);
 }
 
 //******************************************************************************
@@ -71,21 +71,21 @@ template<typename object_type>
 object_type& sc_map_iterator<object_type>::operator* ()
 {
     // todo: ensure that out of range is not accessed (end iterator)
-    return (sc_map.objects[vect_pos]);
+    return (sc_map->objects[vect_pos]);
 }
 
 //******************************************************************************
 template<typename object_type>
 object_type* sc_map_iterator<object_type>::operator-> ()
 {
-    return (&sc_map.objects[vect_pos]);
+    return (&sc_map->objects[vect_pos]);
 }
 
 //******************************************************************************
 template<typename object_type>
 sc_map_iterator<object_type>::sc_map_iterator(sc_map_base<object_type>& sc_map,
         size_type vect_pos) :
-        sc_map(sc_map),
+        sc_map(&sc_map),
         vect_pos(vect_pos)
 {}
 

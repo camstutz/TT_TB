@@ -36,7 +36,7 @@ road_analyzer::road_analyzer(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
-    road_file.open(filename);
+    road_file.open(filename.c_str());
 
   return;
 }

@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date May 5, 2014
+ * @date May 20, 2014
  *
  * @brief File containing the definition of the AM board.
  */
@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include <array>
 #include <vector>
-#include <unordered_map>
+#include <map>
+#include <utility>
 
 #include <systemc.h>
 #include "../../../../lib/systemc_helpers/sc_map/sc_map.hpp"
@@ -128,7 +128,7 @@ public:
     sc_signal<road_addr_t> output_road_no_delay;
 
 // ----- Local Storage Declarations --------------------------------------------
-    std::array<std::array<bool, NR_DETECTOR_LAYERS>, nr_pattern> match_table;
+    std::vector<std::vector<bool> > match_table;
     sc_fifo<road_addr_t> detected_roads_buffer;
 
 // ----- Process Declarations --------------------------------------------------
@@ -222,9 +222,9 @@ public:
     SC_HAS_PROCESS(am_board);
 
 private:
-    // todo: try to use pattern_t as key of unordered_multimap
-    typedef std::unordered_multimap<unsigned int, road_addr_t> lay_pattern_bank_t;
-    std::array<lay_pattern_bank_t, NR_DETECTOR_LAYERS> pattern_bank;
+    // todo: try to use pattern_t as key of multimap
+    typedef std::multimap<unsigned int, road_addr_t> lay_pattern_bank_t;
+    std::vector<lay_pattern_bank_t> pattern_bank;
 
     /** @brief Initializes pattern banks
      *

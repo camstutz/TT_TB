@@ -128,9 +128,10 @@ bool am_board_fsm::one_write_en_active()
 {
     bool write_en_active = false;
 
-    for (auto& wren_single : write_en)
+    sc_map_linear<sc_in<bool> >::iterator wr_en_sig_it = write_en.begin();
+    for (; wr_en_sig_it != write_en.end(); ++wr_en_sig_it)
     {
-        if (wren_single == true)
+        if (*wr_en_sig_it == true)
         {
             write_en_active = true;
             break;

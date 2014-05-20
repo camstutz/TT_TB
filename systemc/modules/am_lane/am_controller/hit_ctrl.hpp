@@ -34,16 +34,16 @@ public:
     sc_map_linear<sc_in<bool> > new_hit;
     sc_map_linear<sc_in<bool> > wr_hit_lamb;
     sc_in<sc_bv<3> > init_event;
-    sc_map_linear<sc_in<fm_out_data>> stub_inputs;
+    sc_map_linear<sc_in<fm_out_data> > stub_inputs;
 
-    sc_map_linear<sc_out<bool>> hee_reg_before;
-    sc_map_linear<sc_out<bool>> hee_reg;
-    sc_map_linear<sc_out<bool>> write_en;
-    sc_map_linear<sc_out<sc_bv<18>>> stub_output;
-    sc_out<sc_bv<16>> event_tag;
+    sc_map_linear<sc_out<bool> > hee_reg_before;
+    sc_map_linear<sc_out<bool> > hee_reg;
+    sc_map_linear<sc_out<bool> > write_en;
+    sc_map_linear<sc_out<sc_bv<18> > > stub_output;
+    sc_out<sc_bv<16> > event_tag;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_map_linear<sc_signal<sc_bv<16>>> tag_signals;
+    sc_map_linear<sc_signal<sc_bv<16> > > tag_signals;
 
 // ----- Process Declarations --------------------------------------------------
 
