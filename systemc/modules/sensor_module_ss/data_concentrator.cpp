@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date May 19, 2014
  *
  * @brief
  */
@@ -44,7 +44,7 @@ data_concentrator::data_concentrator(sc_module_name _name) :
 
     // ----- Module instance / channel binding -----------------------------------
 
-    // Create and name the input ports
+    stub_buffer.resize(2, stub_buffer_type());
 
     return;
 }
@@ -56,14 +56,15 @@ void data_concentrator::read_FE_chips()
     {
         wait();
 
-        for(auto& fe_in : fe_stub_in)
+        sc_map_square<sc_in<fe_out_data> >::iterator fe_in_it = fe_stub_in.begin();
+        for (; fe_in_it != fe_stub_in.end(); ++fe_in_it)
         {
-            fe_out_data fe_data = fe_in.read();
+            fe_out_data fe_data = fe_in_it->read();
             if (fe_data.get_dv() == true)
             {
                 dc_out_word::dc_stub_t stub;
                 stub.set_timestamp(sc_bv<3>(clock_phase.read()));
-                auto signal_key = fe_stub_in.get_key(fe_in);
+                std::pair<bool, sc_map_square<sc_in<fe_out_data> >::full_key_type> signal_key = fe_stub_in.get_key(*fe_in_it);
                 stub.set_fechip(sc_bv<3>(signal_key.second.Y_dim));
                 stub.set_strip(fe_data.get_data().get_strip());
                 stub.set_bend(fe_data.get_data().get_bend());

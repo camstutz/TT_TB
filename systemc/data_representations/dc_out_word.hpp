@@ -1,7 +1,7 @@
 /*!
  * @dc_out_word.hpp
  * @author Christian Amstutz
- * @date Mar 24, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -21,6 +21,10 @@
 #include "../TT_configuration.hpp"
 #include "stub_tfsb.hpp"
 
+// *****************************************************************************
+
+#define DC_OUT_WORD_WIDTH dc_out_word::dc_stub_t::total_width + 1
+
 /*!
  * @brief
  */
@@ -30,7 +34,7 @@ public:
     typedef bool data_valid_t;
     typedef stub_tfsb<DC_WORD_TIME_BITS, DC_WORD_FE_BITS, FE_STUB_STRIP_BITS, FE_STUB_BEND_BITS> dc_stub_t;
 
-    static constexpr unsigned int width = dc_stub_t::total_width + 1;
+    static const unsigned int width;
 
     /** Constructor: The default value for the data valid bit is set to false.
      *  */
@@ -53,7 +57,7 @@ public:
     dc_stub_t get_data() const;
 
     /** Getter function for the whole dc_out_word as a bit vector */
-    sc_bv<width> get_bit_vector() const;
+    sc_bv<DC_OUT_WORD_WIDTH> get_bit_vector() const;
 
     /** Comparison of two dc_out_word objects */
     bool operator == (const dc_out_word &rhs) const;

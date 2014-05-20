@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -13,7 +13,8 @@
 
 #pragma once
 
-#include <array>
+#include <vector>
+#include <utility>
 
 #include <systemc.h>
 
@@ -31,6 +32,8 @@ class data_concentrator : public sc_module
 {
 public:
     typedef sc_bv<DC_OUTPUT_WIDTH> dc_out_t;
+    typedef std::vector<dc_out_word> stub_buffer_type;
+
     static const unsigned int dc_output_data_width = DC_OUTPUT_WIDTH - 2;
     static const unsigned int dc_output_data_upper = dc_output_data_width - 1;
     static const unsigned int dc_output_debug_pos = DC_OUTPUT_WIDTH - 2;
@@ -45,7 +48,7 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<sc_uint<NBITS(NR_DC_WINDOW_CYCLES-1)> > clock_phase;
     sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
-    std::array<std::vector<dc_out_word>, 2> stub_buffer;
+    std::vector<stub_buffer_type> stub_buffer;
 
     /** Control signal that switches between the two stub tables */
     sc_signal<unsigned int> stub_buffer_write_sel;

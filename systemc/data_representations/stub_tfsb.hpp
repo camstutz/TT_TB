@@ -1,7 +1,7 @@
 /*!
  * @file stub_tfsb.hpp
  * @author Christian Amstutz
- * @date May 6, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -44,27 +44,19 @@ template<unsigned int timestamp_bits, unsigned int fechip_bits,
         unsigned int strip_bits, unsigned int bend_bits>
 class stub_tfsb
 {
-    static_assert (timestamp_bits > 0,
-            "timestamp_bits must be at least 1 bit wide.");
-    static_assert (fechip_bits > 0,
-            "fechip_bits must be at least 1 bit wide.");
-    static_assert (strip_bits > 0,
-            "strip_bits must be at least 1 bit wide.");
-    static_assert (bend_bits > 0,
-            "bend_bits must be at least 1 bit wide.");
 
 public:
-    static constexpr unsigned int bend_width = bend_bits;
-    static constexpr unsigned int strip_width = strip_bits;
-    static constexpr unsigned int fechip_width = fechip_bits;
-    static constexpr unsigned int timestamp_width = timestamp_bits;
-    static constexpr unsigned int total_width = timestamp_bits + fechip_bits +
+    static const unsigned int bend_width = bend_bits;
+    static const unsigned int strip_width = strip_bits;
+    static const unsigned int fechip_width = fechip_bits;
+    static const unsigned int timestamp_width = timestamp_bits;
+    static const unsigned int total_width = timestamp_bits + fechip_bits +
             strip_bits + bend_bits;
 
-    static constexpr unsigned int bend_start = 0;
-    static constexpr unsigned int strip_start = bend_start + bend_bits;
-    static constexpr unsigned int fechip_start = strip_start + strip_bits;
-    static constexpr unsigned int timestamp_start = fechip_start + fechip_bits;
+    static const unsigned int bend_start = 0;
+    static const unsigned int strip_start = bend_start + bend_bits;
+    static const unsigned int fechip_start = strip_start + strip_bits;
+    static const unsigned int timestamp_start = fechip_start + fechip_bits;
 
     typedef sc_bv<bend_bits> bend_t;
     typedef sc_bv<strip_bits> strip_t;

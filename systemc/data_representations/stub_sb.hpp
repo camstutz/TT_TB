@@ -1,7 +1,7 @@
 /*!
  * @file stub_sb.hpp
  * @author Christian Amstutz
- * @date May 6, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -38,18 +38,14 @@ ostream& operator << (ostream &os, stub_sb<strip_bits, bend_bits> const &v);
 template<unsigned int strip_bits, unsigned int bend_bits>
 class stub_sb
 {
-    static_assert (strip_bits > 0,
-            "strip_bits must be at least 1 bit wide.");
-    static_assert (bend_bits > 0,
-            "bend_bits must be at least 1 bit wide.");
 
 public:
-    static constexpr unsigned int bend_width = bend_bits;
-    static constexpr unsigned int strip_width = strip_bits;
-    static constexpr unsigned int total_width = strip_bits + bend_bits;
+    static const unsigned int bend_width = bend_bits;
+    static const unsigned int strip_width = strip_bits;
+    static const unsigned int total_width = strip_bits + bend_bits;
 
-    static constexpr unsigned int bend_start = 0;
-    static constexpr unsigned int strip_start = bend_bits;
+    static const unsigned int bend_start = 0;
+    static const unsigned int strip_start = bend_bits;
 
     typedef sc_bv<strip_bits> strip_t;
     typedef sc_bv<bend_bits> bend_t;

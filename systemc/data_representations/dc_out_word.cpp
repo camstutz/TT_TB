@@ -1,7 +1,7 @@
 /*!
  * @file do_out_data.cpp
  * @author Christian Amstutz
- * @date Mar 24, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -12,6 +12,9 @@
  */
 
 #include "dc_out_word.hpp"
+
+// *****************************************************************************
+const unsigned int dc_out_word::width = DC_OUT_WORD_WIDTH;
 
 // *****************************************************************************
 dc_out_word::dc_out_word(data_valid_t dv) :
@@ -59,7 +62,7 @@ dc_out_word::dc_stub_t dc_out_word::get_data() const
 }
 
 // *****************************************************************************
-sc_bv<dc_out_word::width> dc_out_word::get_bit_vector() const
+sc_bv<DC_OUT_WORD_WIDTH> dc_out_word::get_bit_vector() const
 {
     return ( ( (get_dv(), get_data().get_bit_vector()) ) );
 }
