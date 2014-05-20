@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_linear.hpp
  * @author Christian Amstutz
- * @date Feb 21, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <map>
 #include <utility>
 
@@ -21,6 +22,7 @@
 
 #include "sc_map_base.hpp"
 
+//******************************************************************************
 template<typename object_type>
 class sc_map_linear : public sc_map_base<object_type>
 {
@@ -31,6 +33,7 @@ public:
         key_type X_dim;
     } full_key_type;
     typedef typename sc_map_base<object_type>::size_type size_type;
+    typedef typename std::map<key_type, object_type*> map_type;
 
     static const int default_start_id = 0;
 
@@ -47,14 +50,101 @@ public:
 
 private:
     key_type start_id;
-    std::map<key_type, object_type*> objects_map;
+    map_type objects_map;
 
     class creator
     {
     public:
         creator() {};
-        object_type* operator() (const sc_module_name name, sc_map_linear<object_type>::key_type id);
+        object_type* operator() (const sc_module_name name,
+                sc_map_linear<object_type>::key_type id);
     };
 };
 
-#include "sc_map_linear.cpp"
+//******************************************************************************
+
+//******************************************************************************
+template<typename object_type>
+sc_map_linear<object_type>::sc_map_linear(const size_type element_count,
+        const sc_module_name name, const key_type start_id) :
+        sc_map_base<object_type>(name) {
+
+    this->start_id = start_id;
+    this->objects.init(element_count, creator());
+
+    for (size_type i = 0; i<element_count; ++i) {
+        objects_map[start_id+i] = &this->objects[i];
+    }
+
+    return;
+}
+
+//******************************************************************************
+template<typename object_type>
+object_type& sc_map_linear<object_type>::at(const key_type key)
+{
+    // todo: at exception handling for out range accesses
+    return (*objects_map.at(key));
+}
+
+//******************************************************************************
+template<typename object_type>
+object_type& sc_map_linear<object_type>::operator[] (const key_type key)
+{
+    return (at(key));
+}
+
+//******************************************************************************
+template<typename object_type>
+std::pair<bool, typename sc_map_linear<object_type>::full_key_type>
+        sc_map_linear<object_type>::get_key(object_type& object) const
+{
+    std::pair<bool, full_key_type> full_key;
+    full_key.first = false;
+
+    typename map_type::const_iterator object_it = objects_map.begin();
+    for (; object_it != objects_map.end(); ++object_it)
+    {
+        if (object_it->second == &object)
+        {
+            full_key.first = true;
+            full_key.second.X_dim = object_it->first;
+            break;
+        }
+    }
+
+    return (full_key);
+}
+
+//******************************************************************************
+template<typename object_type>
+template<typename signal_type>
+bool sc_map_linear<object_type>::bind(sc_map_linear<signal_type>& signals_map)
+{
+    if (sc_map_base<object_type>::size() !=  signals_map.size())
+    {
+        std::cout << "Error: Binding of port with signal of different dimension."
+                << std::endl;
+        return(false);
+    }
+
+    this->objects.bind(signals_map.objects);
+
+    return (true);
+}
+
+//******************************************************************************
+template<typename object_type>
+object_type* sc_map_linear<object_type>::creator::operator() (
+        const sc_module_name name, sc_map_linear<object_type>::key_type id)
+{
+    // todo: only remove if there is number in the end of name
+//    std::string cut_name(name);
+//    std::size_t id_pos = cut_name.find_last_of('_');
+//    std::stringstream full_name(cut_name.substr(0, id_pos) );
+    std::stringstream full_name;
+    full_name << name;
+    full_name << "_" << id;
+
+    return (new object_type(full_name.str().c_str()) );
+}

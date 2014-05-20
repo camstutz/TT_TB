@@ -1,7 +1,7 @@
 /*!
  * @file sc_delay_signal.hpp
  * @author Christian Amstutz
- * @date Apr 4, 2014
+ * @date May 19, 2014
  *
  * @brief
  *
@@ -12,6 +12,8 @@
  */
 
 #pragma once
+
+#include <vector>
 
 #include <systemc.h>
 
@@ -36,8 +38,8 @@ public:
     sc_signal<unsigned int> read_ptr;
     sc_signal<unsigned int> write_ptr;
 
-    std::array<bool, delay_cycles> data_valid_buffer;
-    std::array<signal_t, delay_cycles> value_buffer;
+    std::vector<bool> data_valid_buffer;
+    std::vector<signal_t> value_buffer;
 
 // ----- Process Declarations --------------------------------------------------
     void read_input();
@@ -87,12 +89,16 @@ sc_delay_signal<signal_t, delay_cycles>::sc_delay_signal(sc_module_name _name) :
     read_ptr.write(1);
     write_ptr.write(0);
 
-    for (auto& data_valid_element : data_valid_buffer)
+    std::vector<bool>::iterator buffer_it = data_valid_buffer.begin();
+    for (; buffer_it != data_valid_buffer.end(); ++buffer_it)
     {
-        data_valid_element = false;
+        *buffer_it = false;
     }
 
     // ----- Module instance / channel binding ---------------------------------
+
+    data_valid_buffer.resize(delay_cycles, false);
+    value_buffer.resize(delay_cycles, signal_t());
 
     return;
 }
@@ -101,13 +107,15 @@ sc_delay_signal<signal_t, delay_cycles>::sc_delay_signal(sc_module_name _name) :
 template <typename signal_t, unsigned int delay_cycles>
 void sc_delay_signal<signal_t, delay_cycles>::read_input()
 {
+    signal_received.write(false);
+
     while (true)
     {
         wait();
 
         if (clk.posedge())
         {
-            if (!signal_received)
+            if (!signal_received.read())
             {
                 data_valid_buffer[write_ptr.read()] = false;
             }
@@ -118,13 +126,13 @@ void sc_delay_signal<signal_t, delay_cycles>::read_input()
             }
 
             increase_ptr(write_ptr);
-            signal_received = false;
+            signal_received.write(false);
         }
 
         if (input.event())
         {
             input_signal.write(input.read());
-            signal_received = true;
+            signal_received.write(true);
         }
     }
 

@@ -15,9 +15,9 @@
 
 int sc_main(int argc, char *agv[])
 {
-    sc_analyzer myAnalyzer;
+    //sc_analyzer myAnalyzer;
 
-    myAnalyzer.register_model_setup_start();
+    //myAnalyzer.register_model_setup_start();
 
     source src1("source1");
     source_square src2("source2");
@@ -59,9 +59,10 @@ int sc_main(int argc, char *agv[])
     snk4.input.bind(signals4);
 
     // Testing get_key()
-    for (auto& this_sig : signals1)
+    sc_map_linear<sc_signal<bool> >::iterator signal_it = signals1.begin();
+    for (;signal_it != signals1.end(); ++signal_it)
     {
-        std::pair<bool, sc_map_linear<sc_signal<bool> >::full_key_type> the_key = signals1.get_key(this_sig);
+        std::pair<bool, sc_map_linear<sc_signal<bool> >::full_key_type> the_key = signals1.get_key(*signal_it);
         std::cout << "Key: " << the_key.first << " - " << the_key.second.X_dim << std::endl;
     }
 
@@ -104,8 +105,8 @@ int sc_main(int argc, char *agv[])
         std::cout << (*sig_iter3).name() << std::endl;
     }
 
-    auto port_it3 = src3.output.begin_partial(2,true, 1,false, 1,false);
-    auto port_it3_end = src3.output.end();
+    sc_map_cube<sc_out<bool> >::cube_iterator port_it3 = src3.output.begin_partial(2,true, 1,false, 1,false);
+    sc_map_cube<sc_out<bool> >::iterator port_it3_end = src3.output.end();
     std::cout << std::endl;
     for( ; port_it3 != port_it3_end; ++port_it3)
     {
@@ -122,7 +123,7 @@ int sc_main(int argc, char *agv[])
     std::cout << std::endl;
 
     // Test multi-dimensional partial binding
-    sc_map_linear<sc_signal<bool>> bind_signals(10, "bsigs");
+    sc_map_linear<sc_signal<bool> > bind_signals(10, "bsigs");
     bind_tester btest1("btest1");
 //    auto iter2 = bind_signals.begin();
 //    bool result = btest1.output.bind(0,2,false, 0,1,true, iter2);
@@ -136,8 +137,8 @@ int sc_main(int argc, char *agv[])
 
     //bind_signals.write_all(true);
 
-    auto p_iter = btest1.output.begin_partial(0,1,true, 0,1,true);
-    auto s_iter = bind_signals.begin();
+    sc_map_square<sc_out<bool> >::square_iterator p_iter = btest1.output.begin_partial(0,1,true, 0,1,true);
+    sc_map_linear<sc_signal<bool> >::iterator s_iter = bind_signals.begin();
     btest1.output.bind_by_iter(p_iter, s_iter);
 
     btest1.output.at(2,0).bind(bind_signals.at(8));
@@ -164,18 +165,18 @@ int sc_main(int argc, char *agv[])
 
     std::cout << "\n--- Simulation starts ---\n" << std::endl;
 
-    myAnalyzer.register_model_setup_end();
-    myAnalyzer.register_simulation_start();
+    //myAnalyzer.register_model_setup_end();
+    //myAnalyzer.register_simulation_start();
 
     sc_start(1000, SC_NS);
 
-    myAnalyzer.register_simulation_end();
+    //myAnalyzer.register_simulation_end();
 
     std::cout << "\n--- Simulation ended ---\n" << std::endl;
 
     sc_close_vcd_trace_file(fp);
 
-    myAnalyzer.print_report();
+    //myAnalyzer.print_report();
 
     return(0);
 }
