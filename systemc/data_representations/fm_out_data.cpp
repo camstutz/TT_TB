@@ -1,7 +1,7 @@
 /*!
  * @file fm_out_data.cpp
  * @author Christian Amstutz
- * @date May 6, 2014
+ * @date May 21, 2014
  *
  * @brief
  *
@@ -14,11 +14,26 @@
 #include "fm_out_data.hpp"
 
 // *****************************************************************************
+fm_out_data::fm_out_data()
+{
+    initialize_stub(false, fm_stub_t());
+
+    return;
+}
+
+// *****************************************************************************
+fm_out_data::fm_out_data(const fm_stub_t stub_data)
+{
+    initialize_stub(true, stub_data);
+
+    return;
+}
+
+// *****************************************************************************
 fm_out_data::fm_out_data(const data_valid_flag_t data_valid,
         const fm_stub_t stub_data)
 {
-    set_data_valid_flag(data_valid);
-    set_data_stub(stub_data);
+    initialize_stub(data_valid, stub_data);
 
     return;
 }
@@ -124,6 +139,16 @@ void sc_trace(sc_trace_file *tf, const fm_out_data &v, const std::string &name)
 	sc_trace(tf, v.data, name + ".data");
 
 	return;
+}
+
+// *****************************************************************************
+void fm_out_data::initialize_stub(const data_valid_flag_t data_valid,
+        const fm_stub_t stub_data)
+{
+    set_data_valid_flag(data_valid);
+    set_data_stub(stub_data);
+
+    return;
 }
 
 // *****************************************************************************

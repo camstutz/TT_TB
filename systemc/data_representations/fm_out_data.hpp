@@ -1,7 +1,7 @@
 /*!
  * @fm_out_data.hpp
  * @author Christian Amstutz
- * @date May 6, 2014
+ * @date May 21, 2014
  *
  * @brief
  *
@@ -38,10 +38,10 @@ public:
     static const unsigned int time_stamp_flag_pos = 16;
 
     /** Constructor: */
-    fm_out_data() : fm_out_data(false, fm_stub_t()) {};
+    fm_out_data();
 
     /** Constructor: */
-    fm_out_data(const fm_stub_t stub_data) : fm_out_data(true, stub_data) {};
+    fm_out_data(const fm_stub_t stub_data);
 
     /** Constructor: */
     fm_out_data(const data_valid_flag_t data_valid, const fm_stub_t stub_data);
@@ -77,7 +77,8 @@ public:
     fm_out_data& operator = (const fm_out_data & rhs);
 
     /** Output function to print the data of the signal. The format is
-     * [data_valid,timestamp_flag,[phi,z,fechip,superstrip]] */
+     * [data_valid,timestamp_flag,[phi,z,fechip,superstrip]]
+     */
     friend ostream& operator << (ostream &os, fm_out_data const &v);
 
     /** Function for tracing support in SystemC */
@@ -85,6 +86,11 @@ public:
 
 private:
     data_t data;
+
+    /** Initializer function that is called by all the constructors that
+     * generate stub data.#
+     */
+    void initialize_stub(const data_valid_flag_t data_valid, const fm_stub_t stub_data);
 
     /** Setter function for the data valid bit */
     void set_time_stamp_flag(const time_stamp_flag_t time_stamp_flag);
