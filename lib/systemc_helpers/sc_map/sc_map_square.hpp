@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_square.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date May 21, 2014
  *
  * @brief
  *
@@ -96,7 +96,7 @@ sc_map_square<object_type>::sc_map_square(
         start_id_X(start_id_X)
 {
     size_type element_cnt = element_cnt_X * element_cnt_Y;
-    this->objects.init(element_cnt, creator(element_cnt_Y, element_cnt_X));
+    this->init(element_cnt, creator(element_cnt_Y, element_cnt_X));
 
     for (size_type y = 0; y<element_cnt_Y; ++y) {
         for (size_type x = 0; x<element_cnt_X; ++x) {
@@ -130,7 +130,7 @@ template<typename object_type>
 object_type& sc_map_square<object_type>::at(const key_type key_Y,
         const key_type key_X)
 {
-    object_type& ret_object = this->objects[get_vect_pos(key_Y, key_X)];
+    object_type& ret_object = *this->objects[get_vect_pos(key_Y, key_X)];
     return (ret_object);
 }
 
@@ -150,7 +150,7 @@ std::pair<bool, typename sc_map_square<object_type>::full_key_type>
         element_it = linear_part_it->second.begin();
         for (; element_it != linear_part_it->second.end(); ++element_it)
         {
-            const object_type* map_object = &this->objects[element_it->second];
+            const object_type* map_object = this->objects[element_it->second];
             if (map_object == &object)
             {
                 full_key.first = true;
@@ -227,7 +227,7 @@ bool sc_map_square<object_type>::bind(sc_map_square<signal_type>& signals_map)
         return(false);
     }
 
-    this->objects.bind(signals_map.objects);
+    sc_map_base<object_type>::bind(signals_map);
 
     return (true);
 }

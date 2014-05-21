@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_iter_square.hpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date May 21, 2014
  *
  * @brief
  *
@@ -55,7 +55,8 @@ template<typename object_type>
 sc_map_iter_square<object_type>&
         sc_map_iter_square<object_type>::operator++ ()
 {
-    sc_map_square<object_type>* sc_map_sq = dynamic_cast<sc_map_square<object_type>* >(this->sc_map);
+    sc_map_square<object_type>* sc_map_sq =
+            dynamic_cast<sc_map_square<object_type>* >(this->sc_map);
 
     if (iterate_X)
     {

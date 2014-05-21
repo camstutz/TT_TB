@@ -121,7 +121,7 @@ sc_map_4d<object_type>::sc_map_4d(
 {
     size_type element_cnt = element_cnt_W * element_cnt_Z * element_cnt_Y *
             element_cnt_X;
-    this->objects.init(element_cnt, creator(element_cnt_W, element_cnt_Z,
+    this->init(element_cnt, creator(element_cnt_W, element_cnt_Z,
             element_cnt_Y, element_cnt_X));
 
     for (size_type w = 0; w<element_cnt_W; ++w) {
@@ -182,7 +182,7 @@ template<typename object_type>
 object_type& sc_map_4d<object_type>::at(const key_type key_W,
         const key_type key_Z, const key_type key_Y, const key_type key_X)
 {
-    object_type& ret_object = this->objects[get_vect_pos(key_W, key_Z, key_Y, key_X)];
+    object_type& ret_object = *this->objects[get_vect_pos(key_W, key_Z, key_Y, key_X)];
     return (ret_object);
 }
 
@@ -210,7 +210,7 @@ std::pair<bool, typename sc_map_4d<object_type>::full_key_type>
                 element_it = linear_part_it->second.begin();
                 for (; element_it != linear_part_it->second.end(); ++element_it)
                 {
-                    const object_type* map_object = &this->objects[element_it->second];
+                    const object_type* map_object = this->objects[element_it->second];
                     if (map_object == &object)
                     {
                         full_key.first = true;
@@ -323,7 +323,7 @@ bool sc_map_4d<object_type>::bind(sc_map_4d<signal_type>& signals_map)
         return(false);
     }
 
-    this->objects.bind(signals_map.objects);
+    sc_map_base<object_type>::bind(signals_map);
 
     return (true);
 }

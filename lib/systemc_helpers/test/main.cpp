@@ -15,9 +15,9 @@
 
 int sc_main(int argc, char *agv[])
 {
-    //sc_analyzer myAnalyzer;
+    sc_analyzer myAnalyzer;
 
-    //myAnalyzer.register_model_setup_start();
+    myAnalyzer.register_model_setup_start();
 
     source src1("source1");
     source_square src2("source2");
@@ -165,18 +165,18 @@ int sc_main(int argc, char *agv[])
 
     std::cout << "\n--- Simulation starts ---\n" << std::endl;
 
-    //myAnalyzer.register_model_setup_end();
-    //myAnalyzer.register_simulation_start();
+    myAnalyzer.register_model_setup_end();
+    myAnalyzer.register_simulation_start();
 
     sc_start(1000, SC_NS);
 
-    //myAnalyzer.register_simulation_end();
+    myAnalyzer.register_simulation_end();
 
     std::cout << "\n--- Simulation ended ---\n" << std::endl;
 
     sc_close_vcd_trace_file(fp);
 
-    //myAnalyzer.print_report();
+    myAnalyzer.print_report();
 
     return(0);
 }

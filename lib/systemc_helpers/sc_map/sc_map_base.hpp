@@ -23,33 +23,43 @@
 
 //* todo: should sc_map_base inherit from sc_object?
 //* todo: otherwise add name data member
+//* todo: add access operators [] .at()
 
 //******************************************************************************
 template<typename object_type>
-class sc_map_base
+class sc_map_base : public sc_object
 {
 public:
-    typedef sc_vector<object_type> container_type;
+    typedef std::vector<object_type*> container_type;
     typedef typename container_type::iterator container_iterator;
     typedef typename container_type::const_iterator const_container_iterator;
     typedef int key_type;
     typedef sc_map_iter_sequential<object_type> iterator;
     typedef ptrdiff_t difference_type;
-    typedef sc_vector_base::size_type size_type;
+    typedef typename container_type::size_type size_type;
     typedef object_type value_type;
     typedef object_type* pointer;
     typedef object_type& reference;
 
-    //* todo: hide the sc_vector for the outside world
+    //* todo: hide objects to the outside world
     container_type objects;
 
     sc_map_base(const sc_module_name name);
     virtual ~sc_map_base() {};
 
+    // todo: add simple init with just number
+    //void init( size_type n )
+    //    { init( n, &sc_map_base<object_type>::create_element ); }
+
+    template<typename Creator>
+    void init(size_type n, Creator object_creator);
+
     size_type size();
     iterator begin();
     iterator end();
 
+    template<typename signal_type>
+    void bind(sc_map_base<signal_type> signal_map);
     // todo: how to access members of modules over which is iterated
     // todo: single signal to many port binding
     template<typename signal_type>
@@ -75,12 +85,47 @@ public:
 //******************************************************************************
 template<typename object_type>
 sc_map_base<object_type>::sc_map_base(const sc_module_name name)
-        : objects(name)
-{}
+{
+    // todo: create and name elements of vector
+
+    return;
+}
 
 //******************************************************************************
 template<typename object_type>
-sc_vector_base::size_type sc_map_base<object_type>::size()
+template<typename Creator>
+void sc_map_base<object_type>::init(size_type n, Creator object_creator)
+{
+    // check correct call conditions
+//    if (!n)
+//      return false;
+//
+//    if( size() ) // already filled
+//    {
+//      std::stringstream str;
+//      str << name()
+//          << ", size=" << size()
+//          << ", requested size=" << n;
+//      SC_REPORT_ERROR( SC_ID_VECTOR_INIT_CALLED_TWICE_
+//                     , str.str().c_str() );
+//      return false;
+
+    objects.reserve(n);
+    for (size_type i = 0; i<n; ++i)
+    {
+      std::string name = sc_gen_unique_name(basename());
+      const char* cname = name.c_str();
+
+      object_type* p = object_creator(cname, i);
+      objects.push_back(p);
+    }
+
+    return;
+}
+
+//******************************************************************************
+template<typename object_type>
+typename sc_map_base<object_type>::size_type sc_map_base<object_type>::size()
 {
     return (objects.size());
 }
@@ -97,6 +142,27 @@ template<typename object_type>
 typename sc_map_base<object_type>::iterator sc_map_base<object_type>::end()
 {
     return (iterator(*this, objects.size()));
+}
+
+//******************************************************************************
+template<typename object_type>
+template<typename signal_type>
+void sc_map_base<object_type>::bind(sc_map_base<signal_type> signal_map)
+{
+    // todo: check range
+
+    iterator port_it = begin();
+    iterator port_end = end();
+    typename sc_map_base<signal_type>::iterator signal_it = signal_map.begin();
+    typename sc_map_base<signal_type>::iterator signal_end = signal_map.end();
+
+    for (; port_it != port_end; ++port_it)
+    {
+        port_it->bind(*signal_it);
+        ++signal_it;
+    }
+
+    return;
 }
 
 //******************************************************************************
@@ -141,7 +207,7 @@ void sc_map_base<object_type>::make_sensitive(
     const_container_iterator object_it = objects.begin();
     for (; object_it != objects.end(); ++object_it)
     {
-        sensitive_list << *object_it;
+        sensitive_list << **object_it;
     }
 
     return;
@@ -155,7 +221,7 @@ void sc_map_base<object_type>::write_all(const data_type& value)
     container_iterator object_it = objects.begin();
     for(; object_it != objects.end(); ++object_it)
     {
-        object_it->write(value);
+        (*object_it)->write(value);
     }
 
     return;

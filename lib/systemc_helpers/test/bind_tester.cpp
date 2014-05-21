@@ -4,16 +4,16 @@
 //******************************************************************************
 bind_tester::bind_tester(sc_module_name _name) :
         sc_module(_name),
-        output(3, 2, "out_port") {
-
+        output(3, 2, "out_port")
+{
     SC_THREAD(create_data);
 
     return;
 }
 
 //******************************************************************************
-void bind_tester::create_data() {
-
+void bind_tester::create_data()
+{
     sc_map_square<sc_out<bool> >::square_iterator out_iter =
             output.begin_partial(0,2,true, 0,1,true);
 

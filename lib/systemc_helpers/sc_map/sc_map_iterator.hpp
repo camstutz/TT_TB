@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_iterator.hpp
  * @author Christian Amstutz
- * @date Mar 11, 2014
+ * @date May 21, 2014
  *
  * @brief
  *
@@ -55,7 +55,7 @@ template<typename object_type>
 bool sc_map_iterator<object_type>::operator==(const sc_map_iterator& other)
         const
 {
-    return (&sc_map->objects[vect_pos] == &other.sc_map->objects[other.vect_pos]);
+    return (sc_map->objects[vect_pos] == other.sc_map->objects[other.vect_pos]);
 }
 
 //******************************************************************************
@@ -71,14 +71,14 @@ template<typename object_type>
 object_type& sc_map_iterator<object_type>::operator* ()
 {
     // todo: ensure that out of range is not accessed (end iterator)
-    return (sc_map->objects[vect_pos]);
+    return (*sc_map->objects[vect_pos]);
 }
 
 //******************************************************************************
 template<typename object_type>
 object_type* sc_map_iterator<object_type>::operator-> ()
 {
-    return (&sc_map->objects[vect_pos]);
+    return (sc_map->objects[vect_pos]);
 }
 
 //******************************************************************************

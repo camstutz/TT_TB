@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_iter_cube.hpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date May 21, 2014
  *
  * @brief
  *
@@ -60,15 +60,15 @@ template<typename object_type>
 sc_map_iter_cube<object_type>&
         sc_map_iter_cube<object_type>::operator++ ()
 {
-    sc_map_cube<object_type>& sc_map_cu =
-            dynamic_cast<sc_map_cube<object_type>& >(this->sc_map);
+    sc_map_cube<object_type>* sc_map_cu =
+            dynamic_cast<sc_map_cube<object_type>* >(this->sc_map);
 
     if (iterate_X)
     {
         ++X_pos;
         if(X_pos <= X_iter_stop)
         {
-            this->set_vect_pos(sc_map_cu.get_vect_pos(Z_pos, Y_pos, X_pos));
+            this->set_vect_pos(sc_map_cu->get_vect_pos(Z_pos, Y_pos, X_pos));
             return (*this);
         }
     }
@@ -79,7 +79,7 @@ sc_map_iter_cube<object_type>&
         ++Y_pos;
         if(Y_pos <= Y_iter_stop)
         {
-            this->set_vect_pos(sc_map_cu.get_vect_pos(Z_pos, Y_pos, X_pos));
+            this->set_vect_pos(sc_map_cu->get_vect_pos(Z_pos, Y_pos, X_pos));
             return (*this);
         }
     }
@@ -88,18 +88,18 @@ sc_map_iter_cube<object_type>&
     ++Z_pos;
     if (Z_pos > Z_iter_stop)
     {
-        this->set_vect_pos(sc_map_cu.size());
+        this->set_vect_pos(sc_map_cu->size());
         return (*this);
     }
 
     if (iterate_Z)
     {
-        this->set_vect_pos(sc_map_cu.get_vect_pos(Z_pos, Y_pos, X_pos));
+        this->set_vect_pos(sc_map_cu->get_vect_pos(Z_pos, Y_pos, X_pos));
         return (*this);
     }
     else
     {
-        this->set_vect_pos(sc_map_cu.size());
+        this->set_vect_pos(sc_map_cu->size());
         return (*this);
     }
 }
@@ -125,7 +125,8 @@ sc_map_iter_cube<object_type>::sc_map_iter_cube(
         X_pos(start_X),
         iterate_X(iterate_X)
 {
-    sc_map_cube<object_type>* sc_map_cu = dynamic_cast<sc_map_cube<object_type>* >(&this->sc_map);
+    sc_map_cube<object_type>* sc_map_cu =
+            dynamic_cast<sc_map_cube<object_type>* >(this->sc_map);
 
     if ( (sc_map_cu->start_id_Z+sc_map_cu->size_Z() <= Z_pos) ||
             (sc_map_cu->start_id_Y+sc_map_cu->size_Y() <= Y_pos) ||

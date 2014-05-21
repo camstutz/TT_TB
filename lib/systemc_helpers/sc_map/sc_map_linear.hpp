@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_linear.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date May 21, 2014
  *
  * @brief
  *
@@ -70,10 +70,10 @@ sc_map_linear<object_type>::sc_map_linear(const size_type element_count,
         sc_map_base<object_type>(name) {
 
     this->start_id = start_id;
-    this->objects.init(element_count, creator());
+    this->init(element_count, creator());
 
     for (size_type i = 0; i<element_count; ++i) {
-        objects_map[start_id+i] = &this->objects[i];
+        objects_map[start_id+i] = this->objects[i];
     }
 
     return;
@@ -128,7 +128,7 @@ bool sc_map_linear<object_type>::bind(sc_map_linear<signal_type>& signals_map)
         return(false);
     }
 
-    this->objects.bind(signals_map.objects);
+    sc_map_base<object_type>::bind(signals_map);
 
     return (true);
 }
