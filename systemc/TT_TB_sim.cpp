@@ -24,7 +24,7 @@
 int sc_main(int argc, char *agv[])
 {
     sc_analyzer analyzer;
-    //analyzer.register_model_setup_start();
+    analyzer.register_model_setup_start();
 
     tt_tb testbench("TT_TB");
 
@@ -71,9 +71,9 @@ int sc_main(int argc, char *agv[])
     std::cout << "Start simulation ..." << std::endl;
     #endif
 
-    //analyzer.register_simulation_start();
+    analyzer.register_simulation_start();
     sc_start(50000, SC_NS);
-    //analyzer.register_simulation_end();
+    analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);
 
@@ -81,7 +81,7 @@ int sc_main(int argc, char *agv[])
     std::cout << "Simulation ended." << std::endl;
     #endif
 
-    //analyzer.print_report();
+    analyzer.print_report();
   
     return (0);
 }
