@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_base.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date June 4, 2014
  *
  * @brief
  *
@@ -20,9 +20,8 @@
 #include <systemc.h>
 
 #include "sc_map_iter_sequential.hpp"
+#include "../modelsim_support/modelsim_support.hpp"
 
-//* todo: should sc_map_base inherit from sc_object?
-//* todo: otherwise add name data member
 //* todo: add access operators [] .at()
 
 //******************************************************************************
@@ -77,6 +76,12 @@ public:
     template<typename trace_obj_type>
     friend void sc_trace(sc_trace_file* tf, sc_map_base<trace_obj_type>& sc_map, const std::string& name);
 
+    /** Function for tracing support in ModelSim */
+#ifdef MODELSIM_COMPILER
+    template<typename data_type>
+    void register_signal_modelsim();
+#endif
+
     friend class sc_map_iterator<object_type>;
 };
 
@@ -84,12 +89,9 @@ public:
 
 //******************************************************************************
 template<typename object_type>
-sc_map_base<object_type>::sc_map_base(const sc_module_name name)
-{
-    // todo: create and name elements of vector
-
-    return;
-}
+sc_map_base<object_type>::sc_map_base(const sc_module_name name) :
+        sc_object(name)
+{}
 
 //******************************************************************************
 template<typename object_type>
@@ -113,11 +115,11 @@ void sc_map_base<object_type>::init(size_type n, Creator object_creator)
     objects.reserve(n);
     for (size_type i = 0; i<n; ++i)
     {
-      std::string name = sc_gen_unique_name(basename());
-      const char* cname = name.c_str();
+        std::string name = basename();
+        const char* cname = name.c_str();
 
-      object_type* p = object_creator(cname, i);
-      objects.push_back(p);
+        object_type* p = object_creator(cname, i);
+        objects.push_back(p);
     }
 
     return;
@@ -238,4 +240,24 @@ void sc_trace(sc_trace_file* tf, sc_map_base<trace_obj_type>& sc_map, const std:
         full_name << name << "." << object_it->name();
         sc_trace(tf, *object_it, full_name.str().c_str());
     }
+
+    return;
 }
+
+// *****************************************************************************
+#ifdef MODELSIM_COMPILER
+
+template <typename object_type>
+template <typename data_type>
+void sc_map_base<object_type>::register_signal_modelsim()
+{
+    const_container_iterator object_it = objects.begin();
+    for (; object_it != objects.end(); ++object_it)
+    {
+        SC_MTI_REGISTER_CUSTOM_DEBUG(*object_it, data_type::get_max_value_length(), data_type::mti_debug_cb);
+    }
+    
+    return;
+}
+
+#endif

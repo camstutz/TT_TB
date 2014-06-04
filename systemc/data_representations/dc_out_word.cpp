@@ -1,7 +1,7 @@
 /*!
  * @file do_out_data.cpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date June 4, 2014
  *
  * @brief
  *
@@ -80,6 +80,32 @@ dc_out_word& dc_out_word::operator = (const dc_out_word& rhs)
     data = rhs.data;
 
     return (*this);
+}
+
+// *****************************************************************************
+size_t dc_out_word::get_max_value_length()
+{
+    // todo: think about the return value of length
+    return 35;
+}
+
+// *****************************************************************************
+void dc_out_word::get_string_value(char format_str, char* string_value)
+{
+    std::stringstream my_string;
+    my_string << dv << "-" << data;
+    std::strcpy (string_value, my_string.str().c_str());
+    
+    return;    
+}
+
+// *****************************************************************************
+void dc_out_word::mti_debug_cb (void* var, char* mti_value, char format_str)
+{
+    dc_out_word* typed_var = reinterpret_cast<dc_out_word*>(var);
+    typed_var->get_string_value(format_str, mti_value);
+    
+    return;
 }
 
 // *****************************************************************************

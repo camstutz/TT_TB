@@ -1,7 +1,7 @@
 /*!
  * @file fm_out_data.cpp
  * @author Christian Amstutz
- * @date May 21, 2014
+ * @date June 4, 2014
  *
  * @brief
  *
@@ -118,6 +118,23 @@ fm_out_data& fm_out_data::operator = (const fm_out_data& rhs)
 }
 
 // *****************************************************************************
+size_t fm_out_data::get_max_value_length()
+{
+    // todo: think about the return value of length
+    return 20;
+}
+
+// *****************************************************************************
+void fm_out_data::get_string_value(char format_str, char* string_value)
+{
+    std::stringstream my_string;
+    my_string <<  data;
+    std::strcpy (string_value, my_string.str().c_str());
+
+    return;
+}
+
+// *****************************************************************************
 ostream& operator << (ostream &os, fm_out_data const &v)
 {
 	if (v.get_time_stamp_flag() == false)
@@ -139,6 +156,15 @@ void sc_trace(sc_trace_file *tf, const fm_out_data &v, const std::string &name)
 	sc_trace(tf, v.data, name + ".data");
 
 	return;
+}
+
+// *****************************************************************************
+void fm_out_data::mti_debug_cb (void* var, char* mti_value, char format_str)
+{
+    fm_out_data* typed_var = reinterpret_cast<fm_out_data*>(var);
+    typed_var->get_string_value(format_str, mti_value);
+
+    return;
 }
 
 // *****************************************************************************

@@ -19,7 +19,7 @@ am_board::am_board(sc_module_name _name) :
         clk("clk"),
         rst("rst"),
         init_ev("init_ev"),
-        write_en(NR_DETECTOR_LAYERS, "write-en"),
+        write_en(NR_DETECTOR_LAYERS, "write_en"),
         pattern_inputs(NR_DETECTOR_LAYERS, "pattern_input"),
         data_ready("data_ready"),
         road_output("road_output"),

@@ -15,6 +15,7 @@
 #include <systemc.h>
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
+#include "../lib/systemc_helpers/modelsim_support/modelsim_support.hpp"
 
 #include "data_representations/fm_out_data.hpp"
 

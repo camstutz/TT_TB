@@ -138,13 +138,10 @@ template<typename object_type>
 object_type* sc_map_linear<object_type>::creator::operator() (
         const sc_module_name name, sc_map_linear<object_type>::key_type id)
 {
-    // todo: only remove if there is number in the end of name
-//    std::string cut_name(name);
-//    std::size_t id_pos = cut_name.find_last_of('_');
-//    std::stringstream full_name(cut_name.substr(0, id_pos) );
     std::stringstream full_name;
-    full_name << name;
-    full_name << "_" << id;
+    full_name << name << "_" << id;
+
+    //std::string name = sc_gen_unique_name(basename());
 
     return (new object_type(full_name.str().c_str()) );
 }

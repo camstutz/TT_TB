@@ -1,7 +1,7 @@
 /*!
  * @do_out_data.hpp
  * @author Christian Amstutz
- * @date Mar 18, 2014
+ * @date June 4, 2014
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <iostream>
 
 #include <systemc.h>
@@ -56,12 +57,17 @@ public:
     /** Assignment operator for fe_out_data */
     do_out_data& operator = (const do_out_data & rhs);
 
+    static size_t get_max_value_length();
+    void get_string_value(char format_str, char* string_value);
+
     /** Output function to print the data of the signal. The format is
      * [dv,[phi,z,fechip,strip]] */
     friend ostream& operator << (ostream &os, do_out_data const &v);
 
     /** Function for tracing support in SystemC */
     friend void sc_trace(sc_trace_file *tf, const do_out_data &v, const std::string &name);
+
+    static void mti_debug_cb (void* var, char* mti_value, char format_str);
 
 private:
     /** A bit that show if the data is valid in the actual clock cycle */

@@ -1,7 +1,7 @@
 /*!
  * @file do_out_data.cpp
  * @author Christian Amstutz
- * @date Mar 18, 2014
+ * @date June 4, 2014
  *
  * @brief
  *
@@ -74,6 +74,23 @@ do_out_data& do_out_data::operator = (const do_out_data& rhs)
 }
 
 // *****************************************************************************
+size_t do_out_data::get_max_value_length()
+{
+    // todo: think about the return value of length
+    return 20;
+}
+
+// *****************************************************************************
+void do_out_data::get_string_value(char format_str, char* string_value)
+{
+    std::stringstream my_string;
+    my_string <<  dv << "," << data;
+    std::strcpy (string_value, my_string.str().c_str());
+
+    return;
+}
+
+// *****************************************************************************
 ostream& operator << (ostream &os, do_out_data const &v)
 {
   os << "[" << v.dv << v.data << "]";
@@ -88,4 +105,13 @@ void sc_trace(sc_trace_file *tf, const do_out_data &v, const std::string &name)
   sc_trace(tf, v.data, name + ".data");
 
   return;
+}
+
+// *****************************************************************************
+void do_out_data::mti_debug_cb (void* var, char* mti_value, char format_str)
+{
+    do_out_data* typed_var = reinterpret_cast<do_out_data*>(var);
+    typed_var->get_string_value(format_str, mti_value);
+
+    return;
 }

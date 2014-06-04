@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date May 20, 2014
+ * @date June 4, 2014
  *
  * @brief
  */
@@ -11,6 +11,10 @@
  */
 
 #include "tt_tb.hpp"
+
+#ifdef MODELSIM_COMPILER
+SC_MODULE_EXPORT(tt_tb);
+#endif
 
 // *****************************************************************************
 
@@ -84,6 +88,12 @@ tt_tb::tt_tb(const sc_module_name _name) :
     roadAnalyzer.write_en.bind(result_write_en);
     roadAnalyzer.hit_cnt.bind(hit_cnt_sig);
     roadAnalyzer.road_in.bind(result_road);
+
+#ifdef MODELSIM_COMPILER
+    hit_fifos.register_signal_modelsim<hit_generator::hitgen_stub_t>();
+    do_stub_out_sig.register_signal_modelsim<do_out_data>();
+    fifo_stub_in.register_signal_modelsim<fm_out_data>();
+#endif
 
     return;
 }

@@ -1,7 +1,7 @@
 /*!
  * @fm_out_data.hpp
  * @author Christian Amstutz
- * @date May 21, 2014
+ * @date June 4, 2014
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <iostream>
 
 #include <systemc.h>
@@ -76,6 +77,9 @@ public:
     /** Assignment operator for fe_out_data */
     fm_out_data& operator = (const fm_out_data & rhs);
 
+    static size_t get_max_value_length();
+    void get_string_value(char format_str, char* string_value);
+
     /** Output function to print the data of the signal. The format is
      * [data_valid,timestamp_flag,[phi,z,fechip,superstrip]]
      */
@@ -83,6 +87,8 @@ public:
 
     /** Function for tracing support in SystemC */
     friend void sc_trace(sc_trace_file *tf, const fm_out_data &v, const std::string &name);
+
+    static void mti_debug_cb (void* var, char* mti_value, char format_str);
 
 private:
     data_t data;

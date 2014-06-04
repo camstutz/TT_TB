@@ -77,7 +77,8 @@ private:
         size_type size_X;
 
         creator(const size_type size_Y, const size_type size_X);
-        object_type* operator() (const sc_module_name name, size_type id);
+        object_type* operator() (const sc_module_name name,
+                sc_map_square<object_type>::key_type id);
     };
 
     friend class sc_map_iter_square<object_type>;
@@ -95,8 +96,8 @@ sc_map_square<object_type>::sc_map_square(
         start_id_Y(start_id_Y),
         start_id_X(start_id_X)
 {
-    size_type element_cnt = element_cnt_X * element_cnt_Y;
-    this->init(element_cnt, creator(element_cnt_Y, element_cnt_X));
+    size_type element_count = element_cnt_X * element_cnt_Y;
+    this->init(element_count, creator(element_cnt_Y, element_cnt_X));
 
     for (size_type y = 0; y<element_cnt_Y; ++y) {
         for (size_type x = 0; x<element_cnt_X; ++x) {
@@ -254,7 +255,7 @@ sc_map_square<object_type>::creator::creator(
 //******************************************************************************
 template<typename object_type>
 object_type* sc_map_square<object_type>::creator::operator() (
-        const sc_module_name name, sc_map_square<object_type>::size_type id)
+        const sc_module_name name, sc_map_square<object_type>::key_type id)
 {
     // todo: integrate a label for the dimensions
 
@@ -262,14 +263,11 @@ object_type* sc_map_square<object_type>::creator::operator() (
     sc_map_square<object_type>::key_type id_Y = id / size_X;
 
     // todo: include the start index to the naming
-    // todo: bug with number removal in the end of the modules name
 
-//    std::string cut_name(name);
-//    std::size_t id_pos = cut_name.find_last_of('_');
-//    std::stringstream full_name(cut_name.substr(0, id_pos) );
     std::stringstream full_name;
-    full_name << name;
-    full_name << "_" << id_Y << "-" << id_X;
+    full_name << name << "_" << id_Y << "_" << id_X;
+
+    //std::string name = sc_gen_unique_name(basename());
 
     return (new object_type(full_name.str().c_str()));
 }

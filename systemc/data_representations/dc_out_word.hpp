@@ -1,7 +1,7 @@
 /*!
  * @dc_out_word.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date June 4, 2014
  *
  * @brief
  *
@@ -64,6 +64,10 @@ public:
 
     /** Assignment operator for dc_out_word */
     dc_out_word& operator = (const dc_out_word & rhs);
+    
+    static size_t get_max_value_length();
+    void get_string_value(char format_str, char* string_value);
+    static void mti_debug_cb (void* var, char* mti_value, char format_str);    
 
     /** Output function to print the data of the signal. The format is
      * [dv,[T=time,F=fechip,S=strip,B=bend]] */

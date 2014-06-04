@@ -1,7 +1,7 @@
 /*!
  * @file stub_sb.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date June 2, 2014
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <iostream>
 
 #include <systemc.h>
@@ -74,6 +75,10 @@ public:
 
     /** Assignment operator for stubs */
     stub_sb& operator = (const stub_sb & rhs);
+    
+    static size_t get_max_value_length();
+    void get_string_value(char format_str, char* string_value);
+    static void mti_debug_cb (void* var, char* mti_value, char format_str);
 
     /** Output function to print the address and bend of the stub. The format
      * is: [address,bend] */
@@ -161,6 +166,35 @@ stub_sb<strip_bits, bend_bits>& stub_sb<strip_bits, bend_bits>::operator = (
     bend = rhs.bend;
 
     return (*this);
+}
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits>
+size_t stub_sb<strip_bits, bend_bits>::get_max_value_length()
+{
+    // todo: think about the return value of length
+    return 10;
+}
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits>
+void stub_sb<strip_bits, bend_bits>::get_string_value(char format_str, char* string_value)
+{
+    std::stringstream my_string;
+    my_string << std::dec << strip << "," << bend;
+    std::strcpy (string_value, my_string.str().c_str());
+    
+    return;    
+}
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits>
+void stub_sb<strip_bits, bend_bits>::mti_debug_cb (void* var, char* mti_value, char format_str)
+{
+    stub_sb<strip_bits, bend_bits>* typed_var = reinterpret_cast<stub_sb<strip_bits, bend_bits>* >(var);
+    typed_var->get_string_value(format_str, mti_value);
+    
+    return;
 }
 
 // *****************************************************************************
