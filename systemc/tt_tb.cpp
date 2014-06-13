@@ -36,10 +36,10 @@ tt_tb::tt_tb(const sc_module_name _name) :
         result_road(NR_AM_BOARDS, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", "hits.txt"),
-        sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor-module"),
+        sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module"),
         dataOrganizer("data_organizer", 0, 0),
-        fifoManager("FIFO_manager"),
-        am_lane_array(NR_AM_BOARDS, "am_lane"),
+        //fifoManager("FIFO_manager")
+        //am_lane_array(NR_AM_BOARDS, "am_lane"),
         roadAnalyzer("road_analyzer")
 {
     true_sig.write(true);
@@ -65,12 +65,12 @@ tt_tb::tt_tb(const sc_module_name _name) :
     dataOrganizer.stream_in.bind_by_iter(fe_it);
     dataOrganizer.stub_out.bind(do_stub_out_sig);
 
-    fifoManager.clk.bind(LHCx4_clock);
-    fifoManager.rst.bind(true_sig);
-    fifoManager.stub_in.bind(do_stub_out_sig);
-    fifoManager.fifo_out.bind(fifo_stub_in);
+    //fifoManager.clk.bind(LHCx4_clock);
+    //fifoManager.rst.bind(true_sig);
+    //fifoManager.stub_in.bind(do_stub_out_sig);
+    //fifoManager.fifo_out.bind(fifo_stub_in);
 
-    unsigned int lane_nr = 0;
+/*    unsigned int lane_nr = 0;
     sc_map_linear<am_lane>::iterator am_lane_it = am_lane_array.begin();
     for(; am_lane_it != am_lane_array.end(); ++am_lane_it)
     {
@@ -87,7 +87,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
     roadAnalyzer.clk.bind(AM_clock);
     roadAnalyzer.write_en.bind(result_write_en);
     roadAnalyzer.hit_cnt.bind(hit_cnt_sig);
-    roadAnalyzer.road_in.bind(result_road);
+    roadAnalyzer.road_in.bind(result_road);*/
 
 #ifdef MODELSIM_COMPILER
     hit_fifos.register_signal_modelsim<hit_generator::hitgen_stub_t>();

@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date June 4, 2014
  *
  * @brief
  */
@@ -28,9 +28,9 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         rst("rst"),
         fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_FE_CHIP, "stub_in"),
         dc_out("dc_out"),
-        clock_phase(0),
-        stub_buffer_write_sel(0),
-        stub_buffer_read_sel(0)
+        clock_phase("clock_phase"),
+        stub_buffer_write_sel("stub_buffer_write_sel"),
+        stub_buffer_read_sel("stub_buffer_read_sel")
 {
     // ----- Process registration ------------------------------------------------
     SC_THREAD(controller);
@@ -41,7 +41,7 @@ data_concentrator::data_concentrator(sc_module_name _name) :
         sensitive << clk.pos();
 
     // ----- Module variable initialization --------------------------------------
-
+    
     // ----- Module instance / channel binding -----------------------------------
 
     stub_buffer.resize(2, stub_buffer_type());
@@ -81,6 +81,10 @@ void data_concentrator::read_FE_chips()
 // *****************************************************************************
 void data_concentrator::controller()
 {
+    clock_phase.write(0);
+    stub_buffer_write_sel.write(0);
+    stub_buffer_read_sel.write(0);
+    
     while (1)
     {
         wait();

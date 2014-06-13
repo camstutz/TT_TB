@@ -50,8 +50,8 @@ fifo_manager::fifo_manager(sc_module_name _name) :
     {
         datapath_it->clk.bind(clk);
         datapath_it->rst.bind(rst);
-        datapath_it->buffer_write_en.bind(buf_write_en_sig);
-        datapath_it->buffer_read_en.bind(buf_read_en_sig);
+        //datapath_it->buffer_write_en.bind(buf_write_en_sig);  // Problem
+        //datapath_it->buffer_read_en.bind(buf_read_en_sig);      // Crash
         datapath_it->time_stamp.bind(time_stamp_sig);
 
         sc_map_square<sc_in<do_out_data> >::square_iterator inport_iter = stub_in.begin_partial(layer, false, 0, true);
@@ -60,7 +60,7 @@ fifo_manager::fifo_manager(sc_module_name _name) :
         datapath_it->fifo_out.bind_by_iter(outport_iter);
 
         ++layer;
-    }
+}
 
     return;
 }

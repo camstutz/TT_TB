@@ -56,6 +56,11 @@ sensor_module_ss::sensor_module_ss(const sc_module_name _name) :
     dataConcentrator.fe_stub_in.bind(fe_out_signals);
     dataConcentrator.dc_out(dc_out);
 
+#ifdef MODELSIM_COMPILER
+    stub_inputs.register_signal_modelsim<fe_out_data::fe_stub_t>();
+    fe_out_signals.register_signal_modelsim<fe_out_data>();
+#endif
+
     true_sig.write(true);
 
     return;

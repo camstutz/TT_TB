@@ -173,7 +173,7 @@ template<unsigned int strip_bits, unsigned int bend_bits>
 size_t stub_sb<strip_bits, bend_bits>::get_max_value_length()
 {
     // todo: think about the return value of length
-    return 10;
+    return 20;
 }
 
 // *****************************************************************************
@@ -181,7 +181,8 @@ template<unsigned int strip_bits, unsigned int bend_bits>
 void stub_sb<strip_bits, bend_bits>::get_string_value(char format_str, char* string_value)
 {
     std::stringstream my_string;
-    my_string << std::dec << strip << "," << bend;
+    //my_string << std::dec << strip << "," << bend;
+    my_string << "test";
     std::strcpy (string_value, my_string.str().c_str());
     
     return;    
