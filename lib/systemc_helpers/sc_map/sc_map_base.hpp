@@ -20,7 +20,6 @@
 #include <systemc.h>
 
 #include "sc_map_iter_sequential.hpp"
-#include "../modelsim_support/modelsim_support.hpp"
 
 //* todo: add access operators [] .at()
 
@@ -77,7 +76,7 @@ public:
     friend void sc_trace(sc_trace_file* tf, sc_map_base<trace_obj_type>& sc_map, const std::string& name);
 
     /** Function for tracing support in ModelSim */
-#ifdef MODELSIM_COMPILER
+#ifdef MTI_SYSTEMC
     template<typename data_type>
     void register_signal_modelsim();
 #endif
@@ -245,7 +244,7 @@ void sc_trace(sc_trace_file* tf, sc_map_base<trace_obj_type>& sc_map, const std:
 }
 
 // *****************************************************************************
-#ifdef MODELSIM_COMPILER
+#ifdef MTI_SYSTEMC
 
 template <typename object_type>
 template <typename data_type>

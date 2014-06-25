@@ -20,7 +20,7 @@
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../systemc/modules/am_board/am_board.hpp"
+#include "../systemc/modules/am_lane/am_board/am_board.hpp"
 
 /*!
  * @brief
