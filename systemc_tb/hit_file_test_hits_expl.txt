@@ -1,0 +1,34 @@
+This file contains the expected output values from the hit_file_test_hits.txt
+file that is used to test the hit_file class. The first line indicates the line
+number in the file and the rest the parameters of the hit. There are 27 hits in
+the file.
+
+line  BX  strip  bend  pixel
+--------------------------------
+10    1      10    28     0
+18    1     114     2     2
+21    0     158    30     6
+22    1      34    18     4
+29    0     158     0     6
+29    0     161    20     2
+31    1     225     2     4
+33    1     147    26     6
+34    0      21    10     4
+36    0     232    24     2
+36    0     232    26     2
+37                        
+38    0      77    10     2
+44    0     238     2     4
+50    1     169    30     4
+53    -     254     2     -
+59    -     154     6     -
+29    0     158    16     6
+29    0     158     0     7
+36    1     147    26     6
+54    -      91     0     -
+54    -     254     2     -
+54    -     254     3     -
+63    1     134     2     0
+75    1     234    14     2
+80    1      84    16     4
+83    1      53     0     6

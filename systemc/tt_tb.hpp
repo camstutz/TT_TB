@@ -15,7 +15,6 @@
 #include <systemc.h>
 
 #include "../lib/systemc_helpers/sc_map/sc_map.hpp"
-#include "../lib/systemc_helpers/modelsim_support/modelsim_support.hpp"
 
 #include "data_representations/fm_out_data.hpp"
 
@@ -60,8 +59,8 @@ public:
     hit_generator hitGenerator;
     sc_map_cube<sensor_module_ss> sensor_modules;
     data_organizer dataOrganizer;
-    //fifo_manager fifoManager;
-    //sc_map_linear<am_lane> am_lane_array;
+    fifo_manager fifoManager;
+    sc_map_linear<am_lane> am_lane_array;
     road_analyzer roadAnalyzer;
 
 

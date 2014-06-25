@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date June 20, 2014
  *
  * @brief
  */
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 
+#include "hit_file_test.hpp"
 #include "hit_generator_tb.hpp"
 #include "front_end_chip_tb.hpp"
 #include "data_concentrator_tb.hpp"
@@ -25,6 +26,8 @@
 
 int sc_main(int argc, char *agv[])
 {
+    hit_file_test();
+
     // ----- Channel declarations ----------------------------------------------
 
     // ----- Variable declarations ---------------------------------------------
@@ -37,7 +40,7 @@ int sc_main(int argc, char *agv[])
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
     //am_system_tb am_system_tb("AM_System");
     //am_board_tb am_board_tb("AM_board_TB");
-    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
+    //fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 
     // ----- Time unit / resolution setup --------------------------------------
 
@@ -98,16 +101,16 @@ int sc_main(int argc, char *agv[])
 //    sc_trace(trace_file, am_system_tb.am_ctrl.road_controller.road_out, "road_ctrl.road_out");
 //    sc_trace(trace_file, am_system_tb.am_ctrl.road_controller.finish_road, "road_ctrl.finish_road");
 
-    sc_trace(trace_file, fifo_manager_tb.LHC_clock, "clock");
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.controller.current_state, "current_state");
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.time_stamp_sig, "time_stamp_sig");
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.controller.time_stamp_cnt_en, "time_stamp_cnt_en");
-
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.stub_in.at(0,0), "stub_in-0-0");
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(0,0), "fifo_out-0-0");
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(1,0), "fifo_out-1-0");
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(2,0), "fifo_out-2-0");
-    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(3,0), "fifo_out-3-0");
+//    sc_trace(trace_file, fifo_manager_tb.LHC_clock, "clock");
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.controller.current_state, "current_state");
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.time_stamp_sig, "time_stamp_sig");
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.controller.time_stamp_cnt_en, "time_stamp_cnt_en");
+//
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.stub_in.at(0,0), "stub_in-0-0");
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(0,0), "fifo_out-0-0");
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(1,0), "fifo_out-1-0");
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(2,0), "fifo_out-2-0");
+//    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(3,0), "fifo_out-3-0");
 
 
     // ----- Start simulation --------------------------------------------------
