@@ -1,7 +1,7 @@
 /*!
- * @file data_concentrator.hpp
+ * @file data_concentrator_cbc.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date June 26, 2014
  *
  * @brief
  *
@@ -28,7 +28,7 @@
 /*!
  * @brief
  */
-class data_concentrator : public sc_module
+class data_concentrator_cbc : public sc_module
 {
 public:
     typedef sc_bv<DC_OUTPUT_WIDTH> dc_out_t;
@@ -64,8 +64,8 @@ public:
     // ----- Module Instantiations ---------------------------------------------
 
     // ----- Constructor -------------------------------------------------------
-    data_concentrator(sc_module_name _name);
-    SC_HAS_PROCESS(data_concentrator);
+    data_concentrator_cbc(sc_module_name _name);
+    SC_HAS_PROCESS(data_concentrator_cbc);
 
 private:
     void create_output_buffer();

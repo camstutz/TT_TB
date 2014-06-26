@@ -1,7 +1,7 @@
 /*!
- * @file front_end_chip.cpp
+ * @file frontend_chip_cbc.cpp
  * @author Christian Amstutz
- * @date Mar 18, 2014
+ * @date June 26, 2014
  *
  * @brief
  */
@@ -10,7 +10,7 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "front_end_chip.hpp"
+#include "frontend_chip_cbc.hpp"
 
 // *****************************************************************************
 
@@ -22,7 +22,7 @@
  * The module is sensitive to ....
  */
 
-front_end_chip::front_end_chip(const sc_module_name _name) :
+frontend_chip_cbc::frontend_chip_cbc(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         en("en"),
@@ -45,7 +45,7 @@ front_end_chip::front_end_chip(const sc_module_name _name) :
 }
 
 // *****************************************************************************
-void front_end_chip::prioritize_hits()
+void frontend_chip_cbc::prioritize_hits()
 {
     while (1)
     {
@@ -72,7 +72,7 @@ void front_end_chip::prioritize_hits()
 }
 
 // *****************************************************************************
-void front_end_chip::write_hits()
+void frontend_chip_cbc::write_hits()
 {
     while (1)
     {

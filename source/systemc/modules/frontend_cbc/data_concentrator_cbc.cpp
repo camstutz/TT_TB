@@ -1,7 +1,7 @@
 /*!
- * @file data_concentrator.cpp
+ * @file data_concentrator_cbc.cpp
  * @author Christian Amstutz
- * @date June 4, 2014
+ * @date June 26, 2014
  *
  * @brief
  */
@@ -10,7 +10,7 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "data_concentrator.hpp"
+#include "data_concentrator_cbc.hpp"
 
 // *****************************************************************************
 
@@ -22,7 +22,7 @@
  * The module is sensitive to ....
  */
 
-data_concentrator::data_concentrator(sc_module_name _name) :
+data_concentrator_cbc::data_concentrator_cbc(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
         rst("rst"),
@@ -50,7 +50,7 @@ data_concentrator::data_concentrator(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void data_concentrator::read_FE_chips()
+void data_concentrator_cbc::read_FE_chips()
 {
     while(1)
     {
@@ -79,7 +79,7 @@ void data_concentrator::read_FE_chips()
 }
 
 // *****************************************************************************
-void data_concentrator::controller()
+void data_concentrator_cbc::controller()
 {
     clock_phase.write(0);
     stub_buffer_write_sel.write(0);
@@ -112,7 +112,7 @@ void data_concentrator::controller()
 }
 
 // *****************************************************************************
-void data_concentrator::write_output()
+void data_concentrator_cbc::write_output()
 {
     while(1)
     {
@@ -145,7 +145,7 @@ void data_concentrator::write_output()
 }
 
 // *****************************************************************************
-void data_concentrator::create_output_buffer()
+void data_concentrator_cbc::create_output_buffer()
 {
     output_buffer = sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES>(0);
 

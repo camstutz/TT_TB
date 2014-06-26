@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date June 26, 2014
  *
  * @brief
  */
@@ -10,7 +10,7 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "sensor_module_ss.hpp"
+#include "sensor_module_cbc.hpp"
 
 // *****************************************************************************
 
@@ -18,7 +18,7 @@
  * @class sensor_module
  */
 
-sensor_module_ss::sensor_module_ss(const sc_module_name _name) :
+sensor_module_cbc::sensor_module_cbc(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         stub_inputs(NR_FE_CHIP_PER_MODULE, "stub_in", 0),
@@ -38,7 +38,7 @@ sensor_module_ss::sensor_module_ss(const sc_module_name _name) :
     // ----- Module instance / channel binding ---------------------------------
 
     unsigned int fe_cnt = 0;
-    sc_map_linear<front_end_chip>::iterator fe_chip_it = front_end_chips.begin();
+    sc_map_linear<frontend_chip_cbc>::iterator fe_chip_it = front_end_chips.begin();
     for (; fe_chip_it != front_end_chips.end(); ++fe_chip_it)
     {
         fe_chip_it->clk.bind(clk);

@@ -1,7 +1,7 @@
 /*!
- * @file front_end_chip.hpp
+ * @file frontend_chip_cbc.hpp
  * @author Christian Amstutz
- * @date Mar 18, 2014
+ * @date June 26, 2014
  *
  * @brief
  *
@@ -23,7 +23,7 @@
 /*!
  * @brief
  */
-class front_end_chip : public sc_module
+class frontend_chip_cbc : public sc_module
 {
 public:
 
@@ -48,8 +48,8 @@ public:
     /*!
      * Constructor:
      */
-    front_end_chip(const sc_module_name _name);
-    SC_HAS_PROCESS(front_end_chip);
+    frontend_chip_cbc(const sc_module_name _name);
+    SC_HAS_PROCESS(frontend_chip_cbc);
 
 private:
 

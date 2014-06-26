@@ -47,10 +47,10 @@ tt_tb::tt_tb(const sc_module_name _name) :
     hitGenerator.hit_outputs.bind(hit_fifos);
     hitGenerator.hit_cnt(hit_cnt_sig);
 
-    sc_map_cube<sensor_module_ss>::iterator sensor_module_it = sensor_modules.begin();
+    sc_map_cube<sensor_module_cbc>::iterator sensor_module_it = sensor_modules.begin();
     for (; sensor_module_it != sensor_modules.end(); ++sensor_module_it)
     {
-        std::pair<bool, sc_map_cube<sensor_module_ss>::full_key_type> full_key;
+        std::pair<bool, sc_map_cube<sensor_module_cbc>::full_key_type> full_key;
         full_key = sensor_modules.get_key(*sensor_module_it);
 
         sensor_module_it->clk.bind(LHC_clock);

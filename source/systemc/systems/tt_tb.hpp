@@ -20,7 +20,7 @@
 
 #include "TT_configuration.hpp"
 #include "../modules/hit_generator/hit_generator.hpp"
-#include "../modules/frontend_cbc/sensor_module_ss.hpp"
+#include "../modules/frontend_cbc/sensor_module_cbc.hpp"
 #include "../modules/backend/data_organizer/data_organizer.hpp"
 #include "../modules/backend/fifo_manager/fifo_manager.hpp"
 #include "../modules/backend/am_controller/am_lane.hpp"
@@ -57,7 +57,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     hit_generator hitGenerator;
-    sc_map_cube<sensor_module_ss> sensor_modules;
+    sc_map_cube<sensor_module_cbc> sensor_modules;
     data_organizer dataOrganizer;
     fifo_manager fifoManager;
     sc_map_linear<am_lane> am_lane_array;
