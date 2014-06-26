@@ -237,3 +237,5 @@ exclude/
 roads.txt
 /Debug C++11
 /TT_TB.mpf
+/Debug C++11
+/Debug
