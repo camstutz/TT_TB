@@ -27,7 +27,7 @@ sensor_module_cbc::sensor_module_cbc(const sc_module_name _name) :
                 "fe_out_sig", 0, 0),
         true_sig("true"),
         front_end_chips(NR_FE_CHIP_PER_MODULE, "front_end_chip", 0),
-        dataConcentrator("DC")
+        dataConcentrator("data_concentrator")
 {
     // ----- Module / Port / Signal - creation and naming ----------------------
 

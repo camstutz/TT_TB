@@ -34,19 +34,19 @@ public:
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
 //    sc_map_linear<sc_fifo_in<fe_out_data::fe_stub_t> > stub_inputs;
-//    sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
-//
-//    // ----- Local Channel Declarations ----------------------------------------
+    sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
+
+    // ----- Local Channel Declarations ----------------------------------------
 //    sc_map_square<sc_signal<fe_out_data> > fe_out_signals;
-//    sc_signal<bool> true_sig;
-//
-//    // ----- Process Declarations ----------------------------------------------
-//
-//    // ----- Other Method Declarations -----------------------------------------
-//
-//    // ----- Module Instantiations ---------------------------------------------
-//    sc_map_linear<frontend_chip_cbc> front_end_chips;
-//    data_concentrator_cbc dataConcentrator;
+    sc_signal<bool> true_sig;
+
+    // ----- Process Declarations ----------------------------------------------
+
+    // ----- Other Method Declarations -----------------------------------------
+
+    // ----- Module Instantiations ---------------------------------------------
+    sc_map_linear<frontend_chip_mpa> front_end_chips;
+    data_concentrator_mpa dataConcentrator;
 
     // ----- Constructor -------------------------------------------------------
     /*!
