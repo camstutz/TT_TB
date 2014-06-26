@@ -111,20 +111,23 @@ int hit_generator::readFile(const std::string &hit_file) {
                            >> hit.stubBend;
 
             /** Assumption: hits are in the correct order in the file. */
-            hit_queue.push(hit);
-
-            #ifdef DEBUG
-            std::cout << "Hit read -" << std::hex
-                    << " TS:0x" << hit.timeStamp
-                    << ", Lay:0x" << hit.layer
-                    << ", Phi:0x" << hit.phiCoordinate
-                    << ", Z:0x" << hit.zCoordinate
-                    << ", FE:0x" << hit.frontEndChipNr
-                    << ", Stub:0x" << hit.stubAddress
-                    << ", Bend:0x" << hit.stubBend
-                    << std::endl;
-            #endif
+            if ( !fileLineStream.fail() )
+            {
+                hit_queue.push(hit);
+                //#ifdef DEBUG
+                std::cout << "Hit read -" << std::hex
+                          << " TS:0x" << hit.timeStamp
+                          << ", Lay:0x" << hit.layer
+                          << ", Phi:0x" << hit.phiCoordinate
+                          << ", Z:0x" << hit.zCoordinate
+                          << ", FE:0x" << hit.frontEndChipNr
+                          << ", Stub:0x" << hit.stubAddress
+                          << ", Bend:0x" << hit.stubBend
+                          << std::endl;
+                //#endif
+            }
         }
+
         hitFile.close();
 
         #ifdef DEBUG
