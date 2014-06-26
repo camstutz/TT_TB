@@ -35,7 +35,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         result_write_en(NR_AM_BOARDS, "result_write_en"),
         result_road(NR_AM_BOARDS, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
-        hitGenerator("Hit_Generator", "hits.txt"),
+        hitGenerator("Hit_Generator", "data/hits.txt"),
         sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module"),
         dataOrganizer("data_organizer", 0, 0),
         fifoManager("FIFO_manager"),

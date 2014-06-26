@@ -50,6 +50,7 @@ public:
 
 private:
     key_type start_id;
+
     map_type objects_map;
 
     class creator
@@ -67,9 +68,9 @@ private:
 template<typename object_type>
 sc_map_linear<object_type>::sc_map_linear(const size_type element_count,
         const sc_module_name name, const key_type start_id) :
-        sc_map_base<object_type>(name) {
-
-    this->start_id = start_id;
+        sc_map_base<object_type>(name),
+        start_id(start_id)
+{
     this->init(element_count, creator());
 
     for (size_type i = 0; i<element_count; ++i) {

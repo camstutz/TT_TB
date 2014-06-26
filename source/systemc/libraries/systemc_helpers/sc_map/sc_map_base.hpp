@@ -98,18 +98,20 @@ template<typename Creator>
 void sc_map_base<object_type>::init(size_type n, Creator object_creator)
 {
     // check correct call conditions
-//    if (!n)
-//      return false;
-//
-//    if( size() ) // already filled
-//    {
-//      std::stringstream str;
-//      str << name()
-//          << ", size=" << size()
-//          << ", requested size=" << n;
-//      SC_REPORT_ERROR( SC_ID_VECTOR_INIT_CALLED_TWICE_
-//                     , str.str().c_str() );
-//      return false;
+    if (!n)
+    {
+        return;
+    }
+
+    if( size() ) // already filled
+    {
+        std::stringstream str;
+        str << name()
+            << ", size=" << size()
+            << ", requested size=" << n;
+        SC_REPORT_ERROR(SC_ID_VECTOR_INIT_CALLED_TWICE_, str.str().c_str() );
+        return;
+    }
 
     objects.reserve(n);
     for (size_type i = 0; i<n; ++i)

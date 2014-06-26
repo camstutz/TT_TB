@@ -60,7 +60,7 @@ fifo_manager::fifo_manager(sc_module_name _name) :
         datapath_it->fifo_out.bind_by_iter(outport_iter);
 
         ++layer;
-}
+    }
 
     return;
 }
