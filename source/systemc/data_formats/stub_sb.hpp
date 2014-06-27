@@ -51,25 +51,6 @@ public:
     typedef sc_bv<strip_bits> strip_t;
     typedef sc_bv<bend_bits> bend_t;
 
-    /** Constructor. The default values are 0 for the address and 0 for the
-     * bend. */
-    stub_sb(const strip_t strip=0, const bend_t bend=0);
-
-    /** Setter function for the strip address of the stub */
-    void set_strip(const strip_t address);
-
-    /** Getter function for the strip address of the stub */
-    strip_t  get_strip() const;
-
-    /** Setter function for the bend of the stub */
-    void set_bend(const bend_t bend);
-
-    /** Getter function for the address of the stub */
-    bend_t  get_bend() const;
-
-    /** Getter function for the whole stub as a bit vector */
-    sc_bv<total_width> get_bit_vector() const;
-
     /** Comparison of two stub objects */
     bool operator == (const stub_sb &rhs) const;
 

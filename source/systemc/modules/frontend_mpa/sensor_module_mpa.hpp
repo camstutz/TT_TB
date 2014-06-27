@@ -17,7 +17,7 @@
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../../data_formats/stub_sb.hpp"
+#include "../../data_formats/stub_bsbp.hpp"
 #include "../../systems/TT_configuration.hpp"
 
 #include "frontend_chip_mpa.hpp"

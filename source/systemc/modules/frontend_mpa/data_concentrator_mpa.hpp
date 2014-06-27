@@ -22,8 +22,8 @@
 #include "../../libraries/systemc_helpers/nbits.hpp"
 
 #include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/fe_out_data.hpp"
-#include "../../data_formats/dc_out_word.hpp"
+#include "../../data_formats/fe_mpa_out_data.hpp"
+#include "../../data_formats/dc_mpa_out_word.hpp"
 
 /*!
  * @brief
