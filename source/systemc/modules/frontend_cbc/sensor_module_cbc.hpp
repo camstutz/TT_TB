@@ -33,11 +33,11 @@ public:
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
-    sc_map_linear<sc_fifo_in<fe_out_data::fe_stub_t> > stub_inputs;
+    sc_map_linear<sc_fifo_in<fe_cbc_out_data::fe_cbc_stub_t> > stub_inputs;
     sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_square<sc_signal<fe_out_data> > fe_out_signals;
+    sc_map_square<sc_signal<fe_cbc_out_data> > fe_out_signals;
     sc_signal<bool> true_sig;
 
     // ----- Process Declarations ----------------------------------------------

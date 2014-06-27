@@ -16,10 +16,13 @@
 #define LHC_CLOCK_FREQ 40000000
 #define LHC_CLOCK_PERIOD_NS 25
 
-//* Number of bits to represent the address of a stub at the front end chip output
-#define FE_STUB_STRIP_BITS 8
-//* Number of bits to represent the bend of a stub at the front end chip output
-#define FE_STUB_BEND_BITS 5
+#define FE_CBC_STUB_STRIP_BITS 8
+#define FE_CBC_STUB_BEND_BITS 5
+
+#define FE_MPA_STUB_BX_BITS 8
+#define FE_MPA_STUB_STRIP_BITS 8
+#define FE_MPA_STUB_BEND_BITS 5
+#define FE_MPA_STUB_PIXEL_BITS 8
 
 #define DC_WORD_TIME_BITS 3
 #define DC_WORD_FE_BITS 3

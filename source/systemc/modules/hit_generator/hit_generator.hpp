@@ -30,7 +30,7 @@
 class hit_generator : public sc_module
 {
 public:
-    typedef stub_sb<FE_STUB_STRIP_BITS, FE_STUB_BEND_BITS> hitgen_stub_t;
+    typedef stub_sb<FE_CBC_STUB_STRIP_BITS, FE_CBC_STUB_BEND_BITS> hitgen_stub_t;
 
 // ----- Port Declarations -----------------------------------------------------
     /** 4-dimensional sc_map for the outputs of the stubs. The dimensions are

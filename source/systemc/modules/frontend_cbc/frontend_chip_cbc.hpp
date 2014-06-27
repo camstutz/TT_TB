@@ -18,7 +18,7 @@
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/fe_out_data.hpp"
+#include "../../data_formats/fe_cbc_out_data.hpp"
 
 /*!
  * @brief
@@ -30,11 +30,11 @@ public:
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> en;
-    sc_fifo_in<fe_out_data::fe_stub_t> stub_input;
-    sc_map_linear<sc_out<fe_out_data> > hit_outputs;
+    sc_fifo_in<fe_cbc_out_data::fe_cbc_stub_t> stub_input;
+    sc_map_linear<sc_out<fe_cbc_out_data> > hit_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_fifo<fe_out_data::fe_stub_t> selected_stubs;
+    sc_fifo<fe_cbc_out_data::fe_cbc_stub_t> selected_stubs;
 
 // ----- Process Declarations --------------------------------------------------
     void prioritize_hits();

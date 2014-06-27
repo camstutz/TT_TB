@@ -22,7 +22,7 @@
 #include "../../libraries/systemc_helpers/nbits.hpp"
 
 #include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/fe_out_data.hpp"
+#include "../../data_formats/fe_cbc_out_data.hpp"
 #include "../../data_formats/dc_out_word.hpp"
 
 /*!
@@ -42,7 +42,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> rst;
-    sc_map_square<sc_in<fe_out_data> > fe_stub_in;
+    sc_map_square<sc_in<fe_cbc_out_data> > fe_stub_in;
     sc_out<dc_out_t> dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------

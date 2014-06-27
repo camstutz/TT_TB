@@ -1,5 +1,5 @@
 /*!
- * @file fe_out_data.cpp
+ * @file fe_cbc_out_data.cpp
  * @author Christian Amstutz
  * @date June 4, 2014
  *
@@ -11,19 +11,19 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "fe_out_data.hpp"
+#include "fe_cbc_out_data.hpp"
 
 // *****************************************************************************
-fe_out_data::fe_out_data()
+fe_cbc_out_data::fe_cbc_out_data()
 {
     dv = false;
-    data = fe_stub_t(0,0);
+    data = fe_cbc_stub_t(0,0);
 
     return;
 }
 
 // *****************************************************************************
-void fe_out_data::set_dv(const data_valid_t dv_bit)
+void fe_cbc_out_data::set_dv(const data_valid_t dv_bit)
 {
     dv = dv_bit;
 
@@ -31,13 +31,13 @@ void fe_out_data::set_dv(const data_valid_t dv_bit)
 }
 
 // *****************************************************************************
-fe_out_data::data_valid_t fe_out_data::get_dv() const
+fe_cbc_out_data::data_valid_t fe_cbc_out_data::get_dv() const
 {
     return (dv);
 }
 
 // *****************************************************************************
-void fe_out_data::set_data(const fe_stub_t new_stub)
+void fe_cbc_out_data::set_data(const fe_cbc_stub_t new_stub)
 {
     this->data = new_stub;
 
@@ -45,19 +45,19 @@ void fe_out_data::set_data(const fe_stub_t new_stub)
 }
 
 // *****************************************************************************
-fe_out_data::fe_stub_t fe_out_data::get_data() const
+fe_cbc_out_data::fe_cbc_stub_t fe_cbc_out_data::get_data() const
 {
     return (data);
 }
 
 // *****************************************************************************
-bool fe_out_data::operator == (const fe_out_data &rhs) const
+bool fe_cbc_out_data::operator == (const fe_cbc_out_data &rhs) const
 {
   return (rhs.dv == dv && rhs.data == data );
 }
 
 // *****************************************************************************
-fe_out_data& fe_out_data::operator = (const fe_out_data& rhs)
+fe_cbc_out_data& fe_cbc_out_data::operator = (const fe_cbc_out_data& rhs)
 {
     dv = rhs.dv;
     data = rhs.data;
@@ -66,14 +66,14 @@ fe_out_data& fe_out_data::operator = (const fe_out_data& rhs)
 }
 
 // *****************************************************************************
-size_t fe_out_data::get_max_value_length()
+size_t fe_cbc_out_data::get_max_value_length()
 {
     // todo: think about the return value of length
-    return 35;
+    return (35);
 }
 
 // *****************************************************************************
-void fe_out_data::get_string_value(char format_str, char* string_value)
+void fe_cbc_out_data::get_string_value(char format_str, char* string_value)
 {
     std::stringstream my_string;
     my_string << dv << "-" << data;
@@ -83,7 +83,7 @@ void fe_out_data::get_string_value(char format_str, char* string_value)
 }
 
 // *****************************************************************************
-ostream& operator << (ostream &os, fe_out_data const &v)
+ostream& operator << (ostream &os, fe_cbc_out_data const &v)
 {
     os << "[" << v.dv << v.data << "]";
 
@@ -91,7 +91,8 @@ ostream& operator << (ostream &os, fe_out_data const &v)
 }
 
 // *****************************************************************************
-void sc_trace(sc_trace_file *tf, const fe_out_data &v, const std::string &name)
+void sc_trace(sc_trace_file *tf, const fe_cbc_out_data &v,
+        const std::string &name)
 {
     sc_trace(tf, v.dv, name + ".dv");
     sc_trace(tf, v.data, name + ".data");
@@ -100,9 +101,9 @@ void sc_trace(sc_trace_file *tf, const fe_out_data &v, const std::string &name)
 }
 
 // *****************************************************************************
-void fe_out_data::mti_debug_cb (void* var, char* mti_value, char format_str)
+void fe_cbc_out_data::mti_debug_cb (void* var, char* mti_value, char format_str)
 {
-    fe_out_data* typed_var = reinterpret_cast<fe_out_data*>(var);
+    fe_cbc_out_data* typed_var = reinterpret_cast<fe_cbc_out_data*>(var);
     typed_var->get_string_value(format_str, mti_value);
 
     return;
