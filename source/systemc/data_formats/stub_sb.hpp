@@ -1,7 +1,7 @@
 /*!
  * @file stub_sb.hpp
  * @author Christian Amstutz
- * @date June 2, 2014
+ * @date June 30, 2014
  *
  * @brief
  *
@@ -19,6 +19,8 @@
 
 #include <systemc.h>
 
+#include "multifield_base.hpp"
+
 // *****************************************************************************
 
 template <unsigned int strip_bits, unsigned int bend_bits>
@@ -28,46 +30,58 @@ template <unsigned int strip_bits, unsigned int bend_bits>
 void sc_trace (sc_trace_file *tf, const stub_sb<strip_bits, bend_bits> &v,
         const std::string &name);
 
-template <unsigned int strip_bits, unsigned int bend_bits>
-ostream& operator << (ostream &os, stub_sb<strip_bits, bend_bits> const &v);
-
 // *****************************************************************************
 
 /*!
  * @brief Representation of a stub with the fields strip and bend
  */
 template<unsigned int strip_bits, unsigned int bend_bits>
-class stub_sb
+class stub_sb : public multifield_base<strip_bits + bend_bits>
 {
 
 public:
     static const unsigned int bend_width = bend_bits;
     static const unsigned int strip_width = strip_bits;
-    static const unsigned int total_width = strip_bits + bend_bits;
 
     static const unsigned int bend_start = 0;
     static const unsigned int strip_start = bend_bits;
 
-    typedef sc_bv<strip_bits> strip_t;
-    typedef sc_bv<bend_bits> bend_t;
+    typedef multifield_base<strip_bits+bend_bits> base;
+
+    typedef unsigned int strip_t;
+    typedef sc_bv<strip_bits> strip_bv_t;
+    typedef unsigned int bend_t;
+    typedef sc_bv<strip_bits> bend_bv_t;
+    typedef typename base::full_bv_t full_bv_t;
+
+    stub_sb();
+    stub_sb(const strip_t strip, const bend_t bend);
+    virtual ~stub_sb();
+
+    void set_strip(const strip_t strip);
+    strip_t get_strip() const;
+    void set_bend(const bend_t bend);
+    strip_t get_bend() const;
+
+    virtual full_bv_t get_bitvector() const;
+    virtual void set_bitvector(full_bv_t bit_vector);
 
     /** Comparison of two stub objects */
-    bool operator == (const stub_sb &rhs) const;
+    bool operator== (const stub_sb &rhs) const;
 
     /** Assignment operator for stubs */
-    stub_sb& operator = (const stub_sb & rhs);
+    stub_sb& operator= (const stub_sb & rhs);
     
-    static size_t get_max_value_length();
-    void get_string_value(char format_str, char* string_value);
-    static void mti_debug_cb (void* var, char* mti_value, char format_str);
-
-    /** Output function to print the address and bend of the stub. The format
-     * is: [address,bend] */
-    friend ostream& operator << <> (ostream &os, stub_sb const &v);
+    virtual size_t get_max_string_length();
+    virtual std::string get_string() const;
 
     /** Function for tracing support in SystemC */
     friend void sc_trace <> (sc_trace_file *tf, const stub_sb &v,
             const std::string &name);
+
+protected:
+    bool is_equal(const stub_sb& rhs);
+    bool copy(const stub_sb& original);
 
 private:
     /** Strip address of the strip on the silicon detector */
@@ -81,17 +95,28 @@ private:
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits>
-stub_sb<strip_bits, bend_bits>::stub_sb(const strip_t strip, const bend_t bend) :
-        strip(strip),
-        bend(bend)
+stub_sb<strip_bits, bend_bits>::stub_sb() :
+        strip(0),
+        bend(0)
 {
   return;
 }
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits>
+stub_sb<strip_bits, bend_bits>::stub_sb(const strip_t strip, const bend_t bend)
+{
+    set_strip(strip);
+    set_bend(bend);
+
+    return;
+}
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits>
 inline void stub_sb<strip_bits, bend_bits>::set_strip(const strip_t strip)
 {
+    // todo: check range
     this->strip = strip;
 
     return;
@@ -109,6 +134,7 @@ inline typename stub_sb<strip_bits, bend_bits>::strip_t
 template<unsigned int strip_bits, unsigned int bend_bits>
 inline void stub_sb<strip_bits, bend_bits>::set_bend(const bend_t bend)
 {
+    // todo: check range
     this->bend = bend;
 
     return;
@@ -124,15 +150,25 @@ inline typename stub_sb<strip_bits, bend_bits>::bend_t
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits>
-inline sc_bv<stub_sb<strip_bits, bend_bits>::total_width>
-        stub_sb<strip_bits, bend_bits>::get_bit_vector() const
+typename stub_sb<strip_bits, bend_bits>::full_bv_t
+        stub_sb<strip_bits, bend_bits>::get_bitvector() const
 {
-    return ( (sc_bv<strip_width>(strip), sc_bv<bend_width>(bend)) );
+    return ( (strip_bv_t(strip), bend_bv_t(bend) ) );
 }
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits>
-inline bool stub_sb<strip_bits, bend_bits>::operator == (
+void stub_sb<strip_bits, bend_bits>::set_bitvector(full_bv_t bit_vector)
+{
+    set_strip(bit_vector(strip_start, strip_start+strip_width-1));
+    set_bend(bit_vector(bend_start, bend_start+bend_width-1));
+
+    return;
+}
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits>
+inline bool stub_sb<strip_bits, bend_bits>::operator== (
         const stub_sb<strip_bits, bend_bits> &rhs) const
 {
   return (rhs.strip == strip && rhs.bend == bend );
@@ -140,7 +176,7 @@ inline bool stub_sb<strip_bits, bend_bits>::operator == (
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits>
-stub_sb<strip_bits, bend_bits>& stub_sb<strip_bits, bend_bits>::operator = (
+stub_sb<strip_bits, bend_bits>& stub_sb<strip_bits, bend_bits>::operator= (
         const stub_sb<strip_bits, bend_bits> & rhs)
 {
     strip = rhs.strip;
@@ -151,42 +187,20 @@ stub_sb<strip_bits, bend_bits>& stub_sb<strip_bits, bend_bits>::operator = (
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits>
-size_t stub_sb<strip_bits, bend_bits>::get_max_value_length()
+inline size_t stub_sb<strip_bits, bend_bits>::get_max_string_length()
 {
-    // todo: think about the return value of length
-    return 20;
+    // todo: Is there an intelligent way to determine max length of string?
+    return (13);
 }
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits>
-void stub_sb<strip_bits, bend_bits>::get_string_value(char format_str, char* string_value)
+std::string stub_sb<strip_bits, bend_bits>::get_string() const
 {
-    std::stringstream my_string;
-    //my_string << std::dec << strip << "," << bend;
-    my_string << "test";
-    std::strcpy (string_value, my_string.str().c_str());
+    std::stringstream out_string;
+    out_string << "[" << "S=" << strip << "B=" << bend << "]";
     
-    return;    
-}
-
-// *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-void stub_sb<strip_bits, bend_bits>::mti_debug_cb (void* var, char* mti_value, char format_str)
-{
-    stub_sb<strip_bits, bend_bits>* typed_var = reinterpret_cast<stub_sb<strip_bits, bend_bits>* >(var);
-    typed_var->get_string_value(format_str, mti_value);
-    
-    return;
-}
-
-// *****************************************************************************
-template <unsigned int strip_bits, unsigned int bend_bits>
-ostream& operator << (ostream &os, stub_sb<strip_bits, bend_bits> const &v)
-{
-    os << std::hex;
-    os << "[S=" << v.strip.to_uint() << ",B=" << v.bend.to_uint() << "]";
-
-    return (os);
+    return (out_string);
 }
 
 // *****************************************************************************
