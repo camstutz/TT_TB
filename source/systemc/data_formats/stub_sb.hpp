@@ -23,20 +23,23 @@
 
 // *****************************************************************************
 
-template <unsigned int strip_bits, unsigned int bend_bits>
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
 class stub_sb;
 
-template <unsigned int strip_bits, unsigned int bend_bits>
-void sc_trace (sc_trace_file *tf, const stub_sb<strip_bits, bend_bits> &v,
-        const std::string &name);
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+void sc_trace (sc_trace_file *tf, const stub_sb<strip_bits, bend_bits,
+        total_bits> &v, const std::string &name);
 
 // *****************************************************************************
 
 /*!
  * @brief Representation of a stub with the fields strip and bend
  */
-template<unsigned int strip_bits, unsigned int bend_bits>
-class stub_sb : public multifield_base<strip_bits + bend_bits>
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+class stub_sb : public multifield_base<total_bits>
 {
 
 public:
@@ -46,7 +49,7 @@ public:
     static const unsigned int bend_start = 0;
     static const unsigned int strip_start = bend_bits;
 
-    typedef multifield_base<strip_bits+bend_bits> base;
+    typedef multifield_base<total_bits> base;
 
     typedef unsigned int strip_t;
     typedef sc_bv<strip_bits> strip_bv_t;
@@ -75,13 +78,9 @@ public:
     virtual size_t get_max_string_length();
     virtual std::string get_string() const;
 
-    /** Function for tracing support in SystemC */
-    friend void sc_trace <> (sc_trace_file *tf, const stub_sb &v,
-            const std::string &name);
-
 protected:
     bool is_equal(const stub_sb& rhs);
-    bool copy(const stub_sb& original);
+    void copy(const stub_sb& original);
 
 private:
     /** Strip address of the strip on the silicon detector */
@@ -89,13 +88,18 @@ private:
 
     /** represents the distance of the hits between the two silicon detectors */
     bend_t bend;
+
+    /** Function for tracing support in SystemC */
+    friend void sc_trace <> (sc_trace_file *tf, const stub_sb &v,
+            const std::string &name);
 };
 
 // *****************************************************************************
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-stub_sb<strip_bits, bend_bits>::stub_sb() :
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+stub_sb<strip_bits, bend_bits, total_bits>::stub_sb() :
         strip(0),
         bend(0)
 {
@@ -103,8 +107,10 @@ stub_sb<strip_bits, bend_bits>::stub_sb() :
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-stub_sb<strip_bits, bend_bits>::stub_sb(const strip_t strip, const bend_t bend)
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+stub_sb<strip_bits, bend_bits, total_bits>::stub_sb(const strip_t strip,
+        const bend_t bend)
 {
     set_strip(strip);
     set_bend(bend);
@@ -113,8 +119,10 @@ stub_sb<strip_bits, bend_bits>::stub_sb(const strip_t strip, const bend_t bend)
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-inline void stub_sb<strip_bits, bend_bits>::set_strip(const strip_t strip)
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline void stub_sb<strip_bits, bend_bits, total_bits>::set_strip(
+        const strip_t strip)
 {
     // todo: check range
     this->strip = strip;
@@ -123,16 +131,19 @@ inline void stub_sb<strip_bits, bend_bits>::set_strip(const strip_t strip)
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-inline typename stub_sb<strip_bits, bend_bits>::strip_t
-        stub_sb<strip_bits, bend_bits>::get_strip() const
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline typename stub_sb<strip_bits, bend_bits, total_bits>::strip_t
+        stub_sb<strip_bits, bend_bits, total_bits>::get_strip() const
 {
     return (strip);
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-inline void stub_sb<strip_bits, bend_bits>::set_bend(const bend_t bend)
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline void stub_sb<strip_bits, bend_bits, total_bits>::set_bend(
+        const bend_t bend)
 {
     // todo: check range
     this->bend = bend;
@@ -141,24 +152,28 @@ inline void stub_sb<strip_bits, bend_bits>::set_bend(const bend_t bend)
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-inline typename stub_sb<strip_bits, bend_bits>::bend_t
-        stub_sb<strip_bits, bend_bits>::get_bend() const
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline typename stub_sb<strip_bits, bend_bits, total_bits>::bend_t
+        stub_sb<strip_bits, bend_bits, total_bits>::get_bend() const
 {
     return (bend);
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-typename stub_sb<strip_bits, bend_bits>::full_bv_t
-        stub_sb<strip_bits, bend_bits>::get_bitvector() const
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+typename stub_sb<strip_bits, bend_bits, total_bits>::full_bv_t
+        stub_sb<strip_bits, bend_bits, total_bits>::get_bitvector() const
 {
     return ( (strip_bv_t(strip), bend_bv_t(bend) ) );
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-void stub_sb<strip_bits, bend_bits>::set_bitvector(full_bv_t bit_vector)
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+void stub_sb<strip_bits, bend_bits, total_bits>::set_bitvector(
+        full_bv_t bit_vector)
 {
     set_strip(bit_vector(strip_start, strip_start+strip_width-1));
     set_bend(bit_vector(bend_start, bend_start+bend_width-1));
@@ -167,35 +182,39 @@ void stub_sb<strip_bits, bend_bits>::set_bitvector(full_bv_t bit_vector)
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-inline bool stub_sb<strip_bits, bend_bits>::operator== (
-        const stub_sb<strip_bits, bend_bits> &rhs) const
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline bool stub_sb<strip_bits, bend_bits, total_bits>::operator== (
+        const stub_sb<strip_bits, bend_bits, total_bits> &rhs) const
 {
-  return (rhs.strip == strip && rhs.bend == bend );
+  return (is_equal(rhs));
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-stub_sb<strip_bits, bend_bits>& stub_sb<strip_bits, bend_bits>::operator= (
-        const stub_sb<strip_bits, bend_bits> & rhs)
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline stub_sb<strip_bits, bend_bits, total_bits>&
+        stub_sb<strip_bits, bend_bits, total_bits>::operator= (
+        const stub_sb<strip_bits, bend_bits, total_bits>& rhs)
 {
-    strip = rhs.strip;
-    bend = rhs.bend;
+    copy(rhs);
 
     return (*this);
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-inline size_t stub_sb<strip_bits, bend_bits>::get_max_string_length()
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline size_t stub_sb<strip_bits, bend_bits, total_bits>::get_max_string_length()
 {
     // todo: Is there an intelligent way to determine max length of string?
     return (13);
 }
 
 // *****************************************************************************
-template<unsigned int strip_bits, unsigned int bend_bits>
-std::string stub_sb<strip_bits, bend_bits>::get_string() const
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+std::string stub_sb<strip_bits, bend_bits, total_bits>::get_string() const
 {
     std::stringstream out_string;
     out_string << "[" << "S=" << strip << "B=" << bend << "]";
@@ -204,12 +223,34 @@ std::string stub_sb<strip_bits, bend_bits>::get_string() const
 }
 
 // *****************************************************************************
-template <unsigned int strip_bits, unsigned int bend_bits>
-void sc_trace (sc_trace_file *tf, const stub_sb<strip_bits, bend_bits> &v,
-        const std::string &name)
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline bool stub_sb<strip_bits, bend_bits, total_bits>::is_equal(
+        const stub_sb& rhs)
 {
-    sc_trace(tf, v.strip, name + ".strip");
-    sc_trace(tf, v.bend, name + ".bend");
+    return (rhs.get_strip() == strip && rhs.get_bend() == bend);
+}
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+inline void stub_sb<strip_bits, bend_bits, total_bits>::copy(
+        const stub_sb& original)
+{
+    set_strip(original.get_strip());
+    set_bend(original.get_bend());
+
+    return;
+}
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+void sc_trace (sc_trace_file *tf, const stub_sb<strip_bits, bend_bits,
+        total_bits> &v, const std::string &name)
+{
+    sc_trace(tf, v.get_strip(), name + ".strip");
+    sc_trace(tf, v.get_bend(), name + ".bend");
 
     return;
 }
