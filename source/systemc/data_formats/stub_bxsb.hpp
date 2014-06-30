@@ -43,13 +43,13 @@ class stub_bxsb : public stub_sb<strip_bits, bend_bits, total_bits>
 {
 
 public:
+    typedef stub_sb<strip_bits, bend_bits, total_bits> base;
+
     static const unsigned int bx_width = bx_bits;
 
     static const unsigned int bend_start = 0;
-    static const unsigned int strip_start = bend_start + bend_bits;
-    static const unsigned int bx_start = strip_start + strip_bits;
-
-    typedef stub_sb<strip_bits, bend_bits, total_bits> base;
+    static const unsigned int strip_start = bend_start + base::bend_width;
+    static const unsigned int bx_start = strip_start + base::strip_width;
 
     typedef unsigned int bx_t;
     typedef sc_bv<bx_bits> bv_bv_t;
@@ -80,13 +80,6 @@ private:
      *  frame.
      */
     bx_t bx;
-
-    /** Strip number from which the extended stub originates */
-    strip_t strip;
-
-    /** Bend of the hit, representing the difference of the hits at the two
-     * layers of one sensor. */
-    bend_t bend;
 };
 
 // *****************************************************************************
