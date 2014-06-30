@@ -81,7 +81,7 @@ public:
     bool operator== (const stub_bxfsb& rhs) const;
 
     /** Assignment operator for stubs */
-    stub_bxsb& operator= (const stub_bxfsb& rhs);
+    stub_bxfsb& operator= (const stub_bxfsb& rhs);
 
 protected:
     bool is_equal(const stub_bxfsb& rhs);
