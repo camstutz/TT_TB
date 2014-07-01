@@ -1,7 +1,7 @@
 /*!
  * @fe_mpa_out_data.hpp
  * @author Christian Amstutz
- * @date June 27, 2014
+ * @date July 1, 2014
  *
  * @brief
  *
@@ -20,7 +20,7 @@
 
 // TODO: realize configuration by template?
 #include "../systems/TT_configuration.hpp"
-#include "stub_bsbp.hpp"
+#include "stub_bxsbp.hpp"
 
 /*!
  * @brief Representation of the MPA front end chip output data
@@ -29,7 +29,8 @@ class fe_mpa_out_data
 {
 public:
     typedef bool data_valid_t;
-    typedef stub_bsbp<FE_MPA_STUB_BX_BITS, FE_MPA_STUB_STRIP_BITS, FE_MPA_STUB_BEND_BITS, FE_MPA_STUB_PIXEL_BITS> fe_mpa_stub_t;
+    typedef stub_bxsbp<FE_MPA_STUB_BX_BITS, FE_MPA_STUB_STRIP_BITS, FE_MPA_STUB_BEND_BITS, FE_MPA_STUB_PIXEL_BITS,
+            FE_MPA_STUB_BX_BITS+FE_MPA_STUB_STRIP_BITS+FE_MPA_STUB_BEND_BITS+FE_MPA_STUB_PIXEL_BITS> fe_mpa_stub_t;
 
     /** Constructor. The default value for the data valid bit is set to false.
      *  */

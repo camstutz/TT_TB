@@ -45,6 +45,16 @@ class stub_bxsbp : public stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>
 public:
     typedef stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits> base;
 
+    typedef unsigned int pixel_t;
+    typedef sc_bv<pixel_bits> pixel_bv_t;
+    typedef typename base::bend_t bend_t;
+    typedef typename base::bend_bv_t bend_bv_t;
+    typedef typename base::strip_t strip_t;
+    typedef typename base::strip_bv_t strip_bv_t;
+    typedef typename base::bx_t bx_t;
+    typedef typename base::bx_bv_t bx_bv_t;
+    typedef typename base::full_bv_t full_bv_t;
+
     static const unsigned int pixel_width = pixel_bits;
 
     static const unsigned int pixel_start = 0;
@@ -70,7 +80,7 @@ public:
     virtual full_bv_t get_bitvector() const;
     virtual void set_bitvector(full_bv_t bit_vector);
 
-    virtual size_t get_max_string_length();
+    virtual size_t get_max_string_length() const;
     virtual std::string get_string() const;
 
     /** Comparison of two stub objects */
@@ -172,7 +182,7 @@ virtual void stub_bxsbp<bx_bits, strip_bits, bend_bits, pixel_bits,
 template<unsigned int bx_bits, unsigned int strip_bits, unsigned int bend_bits,
         unsigned int pixel_bits, unsigned int total_bits>
 virtual inline size_t stub_bxsbp<bx_bits, strip_bits, bend_bits, pixel_bits,
-        total_bits>::get_max_string_length()
+        total_bits>::get_max_string_length() const
 {
     return (21);
 }

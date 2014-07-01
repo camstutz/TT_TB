@@ -45,14 +45,19 @@ class stub_bxsb : public stub_sb<strip_bits, bend_bits, total_bits>
 public:
     typedef stub_sb<strip_bits, bend_bits, total_bits> base;
 
+    typedef typename base::strip_t strip_t;
+    typedef typename base::strip_bv_t strip_bv_t;
+    typedef typename base::bend_t bend_t;
+    typedef typename base::bend_bv_t bend_bv_t;
+    typedef unsigned int bx_t;
+    typedef sc_bv<bx_bits> bx_bv_t;
+    typedef typename base::full_bv_t full_bv_t;
+
     static const unsigned int bx_width = bx_bits;
 
     static const unsigned int bend_start = 0;
     static const unsigned int strip_start = bend_start + base::bend_width;
     static const unsigned int bx_start = strip_start + base::strip_width;
-
-    typedef unsigned int bx_t;
-    typedef sc_bv<bx_bits> bv_bv_t;
 
     /** Constructor: All member variables are set to 0 by default. */
     stub_bxsb();
@@ -88,7 +93,7 @@ private:
 template<unsigned int bx_bits, unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
 stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>::stub_bxsb() :
-        stub_sb(0, 0)
+        stub_sb<strip_bits, bend_bits, total_bits>(0, 0)
 {
     set_bx(0);
 
@@ -100,7 +105,7 @@ template<unsigned int bx_bits, unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
 stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>::stub_bxsb(
         const bx_t bx, const strip_t strip, const bend_t bend) :
-        stub_sb(strip, bend)
+        stub_sb<strip_bits, bend_bits, total_bits>(strip, bend)
 {
     set_bx(bx);
 

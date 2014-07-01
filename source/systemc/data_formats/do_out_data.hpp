@@ -52,17 +52,17 @@ public:
     do_stub_t get_data() const;
 
     /** Comparison of two do_out_data objects */
-    bool operator == (const do_out_data &rhs) const;
+    bool operator== (const do_out_data &rhs) const;
 
     /** Assignment operator for fe_out_data */
-    do_out_data& operator = (const do_out_data & rhs);
+    do_out_data& operator= (const do_out_data & rhs);
 
     static size_t get_max_value_length();
     void get_string_value(char format_str, char* string_value);
 
     /** Output function to print the data of the signal. The format is
      * [dv,[phi,z,fechip,strip]] */
-    friend ostream& operator << (ostream &os, do_out_data const &v);
+    friend ostream& operator<< (ostream &os, do_out_data const &v);
 
     /** Function for tracing support in SystemC */
     friend void sc_trace(sc_trace_file *tf, const do_out_data &v, const std::string &name);

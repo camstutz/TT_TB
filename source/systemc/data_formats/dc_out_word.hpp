@@ -19,7 +19,7 @@
 #include <systemc.h>
 
 #include "../systems/TT_configuration.hpp"
-#include "stub_tfsb.hpp"
+#include "stub_bxfsb.hpp"
 
 // *****************************************************************************
 
@@ -32,7 +32,8 @@ class dc_out_word
 {
 public:
     typedef bool data_valid_t;
-    typedef stub_tfsb<DC_WORD_TIME_BITS, DC_WORD_FE_BITS, FE_CBC_STUB_STRIP_BITS, FE_CBC_STUB_BEND_BITS> dc_stub_t;
+    typedef stub_bxfsb<DC_WORD_TIME_BITS, DC_WORD_FE_BITS, FE_CBC_STUB_STRIP_BITS, FE_CBC_STUB_BEND_BITS,
+            DC_WORD_TIME_BITS+DC_WORD_FE_BITS+FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> dc_stub_t;
 
     static const unsigned int width;
 

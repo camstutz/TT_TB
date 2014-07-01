@@ -45,17 +45,17 @@ class stub_sb : public multifield_base<total_bits>
 public:
     typedef multifield_base<total_bits> base;
 
-    static const unsigned int bend_width = bend_bits;
-    static const unsigned int strip_width = strip_bits;
-
-    static const unsigned int bend_start = 0;
-    static const unsigned int strip_start = bend_bits;
-
     typedef unsigned int strip_t;
     typedef sc_bv<strip_bits> strip_bv_t;
     typedef unsigned int bend_t;
     typedef sc_bv<strip_bits> bend_bv_t;
     typedef typename base::full_bv_t full_bv_t;
+
+    static const unsigned int bend_width = bend_bits;
+    static const unsigned int strip_width = strip_bits;
+
+    static const unsigned int bend_start = 0;
+    static const unsigned int strip_start = bend_bits;
 
     stub_sb();
     stub_sb(const strip_t strip, const bend_t bend);
@@ -69,7 +69,7 @@ public:
     virtual full_bv_t get_bitvector() const;
     virtual void set_bitvector(full_bv_t bit_vector);
 
-    virtual size_t get_max_string_length();
+    virtual size_t get_max_string_length() const;
     virtual std::string get_string() const;
 
     /** Comparison of two stub objects */
@@ -117,6 +117,12 @@ stub_sb<strip_bits, bend_bits, total_bits>::stub_sb(const strip_t strip,
 
     return;
 }
+
+// *****************************************************************************
+template<unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+stub_sb<strip_bits, bend_bits, total_bits>::~stub_sb()
+{}
 
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits,
@@ -175,8 +181,8 @@ template<unsigned int strip_bits, unsigned int bend_bits,
 void stub_sb<strip_bits, bend_bits, total_bits>::set_bitvector(
         full_bv_t bit_vector)
 {
-    set_strip(bit_vector(strip_start, strip_start+strip_width-1));
-    set_bend(bit_vector(bend_start, bend_start+bend_width-1));
+    set_strip(bit_vector(strip_start, strip_start+strip_width-1).to_uint());
+    set_bend(bit_vector(bend_start, bend_start+bend_width-1).to_uint());
 
     return;
 }
@@ -184,7 +190,8 @@ void stub_sb<strip_bits, bend_bits, total_bits>::set_bitvector(
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
-virtual inline size_t stub_sb<strip_bits, bend_bits, total_bits>::get_max_string_length()
+inline size_t stub_sb<strip_bits, bend_bits, total_bits>::get_max_string_length(
+        ) const
 {
     // todo: Is there an intelligent way to determine max length of string?
     return (13);
@@ -193,13 +200,13 @@ virtual inline size_t stub_sb<strip_bits, bend_bits, total_bits>::get_max_string
 // *****************************************************************************
 template<unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
-virtual std::string stub_sb<strip_bits, bend_bits, total_bits>::get_string()
+std::string stub_sb<strip_bits, bend_bits, total_bits>::get_string()
         const
 {
     std::stringstream out_string;
     out_string << "[" << "S=" << strip << "B=" << bend << "]";
 
-    return (out_string);
+    return (out_string.str());
 }
 
 // *****************************************************************************
