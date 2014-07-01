@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc.cpp
  * @author Christian Amstutz
- * @date June 26, 2014
+ * @date July 1, 2014
  *
  * @brief
  */
@@ -27,7 +27,8 @@ frontend_chip_cbc::frontend_chip_cbc(const sc_module_name _name) :
         clk("clk"),
         en("en"),
         stub_input("stub_in"),
-        hit_outputs(MAX_HITS_PER_FE_CHIP, "hit_out", 0),
+        data_valids(MAX_HITS_PER_FE_CHIP, "data_valid", 0),
+        stub_outputs(MAX_HITS_PER_FE_CHIP, "stub_out", 0),
         selected_stubs("sel_stubs", MAX_HITS_PER_FE_CHIP)
 {
     // ----- Process registration ----------------------------------------------
@@ -51,7 +52,7 @@ void frontend_chip_cbc::prioritize_hits()
     {
         wait();
 
-        fe_out_data::fe_stub_t act_stub;
+        fe_cbc_stub_t act_stub;
         int stub_cnt = stub_input.num_available();
         for (int i=0;
                 i < std::min(stub_cnt, MAX_HITS_PER_FE_CHIP);
@@ -78,18 +79,17 @@ void frontend_chip_cbc::write_hits()
     {
         wait();
 
-        fe_out_data hit_to_write;
-        hit_to_write.set_dv(false);
-        hit_to_write.set_data(fe_out_data::fe_stub_t(0,0));
-        hit_outputs.write_all(hit_to_write);
+        bool data_valid = false;
+        fe_cbc_stub_t stub_to_write(0,0);
+
+        // todo: optimization potential if not written every cycle
+        stub_outputs.write_all(stub_to_write);
 
         unsigned int num_stubs = selected_stubs.num_available();
         for (unsigned int i=0; i<num_stubs; i++)
         {
-            fe_out_data hit_to_write;
-            hit_to_write.set_dv(true);
-            hit_to_write.set_data(selected_stubs.read());
-            hit_outputs.at(i).write(hit_to_write);
+            data_valids.at(i).write(true);
+            stub_outputs.at(i).write(selected_stubs.read());
         }
     }
 
