@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date Apr 2, 2014
+ * @date July 2, 2014
  *
  * @brief
  *
@@ -19,10 +19,10 @@
 #define FE_CBC_STUB_STRIP_BITS 8
 #define FE_CBC_STUB_BEND_BITS 5
 
-#define FE_MPA_STUB_BX_BITS 8
+#define FE_MPA_STUB_BX_BITS 1
 #define FE_MPA_STUB_STRIP_BITS 8
 #define FE_MPA_STUB_BEND_BITS 5
-#define FE_MPA_STUB_PIXEL_BITS 8
+#define FE_MPA_STUB_PIXEL_BITS 4
 
 #define DC_WORD_TIME_BITS 3
 #define DC_WORD_FE_BITS 3
@@ -46,7 +46,8 @@
 
 #define NR_AM_BOARDS               4
 
-#define NR_DETECTOR_LAYERS         6  // Number of detector sensor modules existing at the detector
+#define NR_DETECTOR_CBC_LAYERS     3  // Number of layers with 2S modules existing in the detector
+#define NR_DETECTOR_MPA_LAYERS     3  // Number of layers with PS modules existing in the detector
 #define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector
 #define NR_DETECTOR_Z              1  // Number of sensors on length of the detector
 #define NR_FE_CHIP_PER_MODULE      8  // Number of front-end chips per sensor module

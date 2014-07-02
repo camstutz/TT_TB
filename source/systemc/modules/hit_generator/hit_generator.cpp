@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date July 2, 2014
  *
  * @brief
  */
@@ -16,8 +16,11 @@
 
 hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
         sc_module(_name),
-        hit_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                NR_FE_CHIP_PER_MODULE, "hit_output", 0, 0, 0, 0),
+        cbc_stub_outputs(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
+                NR_FE_CHIP_PER_MODULE, "hit_output", NR_DETECTOR_MPA_LAYERS,0,
+                0, 0),
+        mpa_stub_outputs(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
+                NR_FE_CHIP_PER_MODULE, "hit_output", 0, 0, 0),
         hit_cnt("hit_cnt"),
         hit_counter(0)
 {
@@ -42,7 +45,8 @@ void hit_generator::schedule_hits()
     {
         sc_time wait_time;
         HitEvent hit;
-        hitgen_stub_t processed_stub;
+        cbc_stub_t processed_cbc_stub;
+        mpa_stub_t processed_mpa_stub;
 
         hit = hit_queue.front();
         hit_queue.pop();
@@ -54,10 +58,24 @@ void hit_generator::schedule_hits()
             wait(wait_time);
         }
 
-        processed_stub.set_strip(hit.stubAddress);
-        processed_stub.set_bend(hit.stubBend);
-        hit_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
-                hit.frontEndChipNr).write(processed_stub);
+        // stub belongs to a MPA chip
+        if (hit.layer < NR_DETECTOR_MPA_LAYERS)
+        {
+            processed_mpa_stub.set_bx(0);
+            processed_mpa_stub.set_strip(hit.stubAddress);
+            processed_mpa_stub.set_bend(hit.stubBend);
+            processed_mpa_stub.set_pixel(0);
+            mpa_stub_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
+                    hit.frontEndChipNr).write(processed_mpa_stub);
+        }
+        // stub belongs to a CBC chip
+        else
+        {
+            processed_cbc_stub.set_strip(hit.stubAddress);
+            processed_cbc_stub.set_bend(hit.stubBend);
+            cbc_stub_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
+                    hit.frontEndChipNr).write(processed_cbc_stub);
+        }
 
         ++hit_counter;
         hit_cnt.write(hit_counter);
@@ -111,10 +129,12 @@ int hit_generator::readFile(const std::string &hit_file) {
                            >> hit.stubBend;
 
             /** Assumption: hits are in the correct order in the file. */
+
+            // check for valid stub in the read line
             if ( !fileLineStream.fail() )
             {
                 hit_queue.push(hit);
-                //#ifdef DEBUG
+                #ifdef DEBUG
                 std::cout << "Hit read -" << std::hex
                           << " TS:0x" << hit.timeStamp
                           << ", Lay:0x" << hit.layer
@@ -124,7 +144,7 @@ int hit_generator::readFile(const std::string &hit_file) {
                           << ", Stub:0x" << hit.stubAddress
                           << ", Bend:0x" << hit.stubBend
                           << std::endl;
-                //#endif
+                #endif
             }
         }
 
