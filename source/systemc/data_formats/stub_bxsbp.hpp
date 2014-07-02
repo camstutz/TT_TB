@@ -72,7 +72,7 @@ public:
     virtual ~stub_bxsbp();
 
     /** Setter function for the front end chip number */
-    void set_pixel(const fechip_t pixel);
+    void set_pixel(const pixel_t pixel);
 
     /** Getter function for the front end chip number */
     pixel_t  get_pixel() const;
