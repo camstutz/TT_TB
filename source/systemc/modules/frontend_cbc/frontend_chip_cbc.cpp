@@ -27,9 +27,9 @@ frontend_chip_cbc::frontend_chip_cbc(const sc_module_name _name) :
         clk("clk"),
         en("en"),
         stub_input("stub_in"),
-        data_valids(MAX_HITS_PER_FE_CHIP, "data_valid", 0),
-        stub_outputs(MAX_HITS_PER_FE_CHIP, "stub_out", 0),
-        selected_stubs("sel_stubs", MAX_HITS_PER_FE_CHIP)
+        data_valids(MAX_HITS_PER_CBC_FE_CHIP, "data_valid", 0),
+        stub_outputs(MAX_HITS_PER_CBC_FE_CHIP, "stub_out", 0),
+        selected_stubs("sel_stubs", MAX_HITS_PER_CBC_FE_CHIP)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(prioritize_hits);
@@ -55,7 +55,7 @@ void frontend_chip_cbc::prioritize_hits()
         fe_cbc_stub_t act_stub;
         int stub_cnt = stub_input.num_available();
         for (int i=0;
-                i < std::min(stub_cnt, MAX_HITS_PER_FE_CHIP);
+                i < std::min(stub_cnt, MAX_HITS_PER_CBC_FE_CHIP);
                 ++i)
         {
             stub_input.read(act_stub);
@@ -64,7 +64,8 @@ void frontend_chip_cbc::prioritize_hits()
 
         if (stub_input.num_available() > 0)
         {
-            std::cout << "Warning: Front End Chip received more than 3 hits" << std::endl;
+            std::cout << "Warning: CBC Front End Chip received more than "
+                      << MAX_HITS_PER_CBC_FE_CHIP << " hits" << std::endl;
             while(stub_input.nb_read(act_stub))
             {};
         }
