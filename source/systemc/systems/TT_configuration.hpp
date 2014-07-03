@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date July 2, 2014
+ * @date July 3, 2014
  *
  * @brief
  *
@@ -24,8 +24,9 @@
 #define FE_MPA_STUB_BEND_BITS 5
 #define FE_MPA_STUB_PIXEL_BITS 4
 
-#define DC_WORD_TIME_BITS 3
-#define DC_WORD_FE_BITS 3
+#define DC_STUB_BX_BITS 3
+#define DC_STUB_FE_BITS 3
+#define DC_OUT_HEADER_BITS 2
 
 #define DO_STUB_PHI_BITS 4
 #define DO_STUB_Z_BITS 4
@@ -42,7 +43,7 @@
 // Duration in cycles of the window in the data concentrator
 #define NR_DC_WINDOW_CYCLES        8
 // Number of stubs transmitted by the data concentrator
-#define NR_DC_OUT_STUBS           ((DC_OUTPUT_WIDTH-2)*NR_DC_WINDOW_CYCLES)/(1+DC_WORD_TIME_BITS+DC_WORD_FE_BITS+FE_STUB_STRIP_BITS+FE_STUB_BEND_BITS)
+#define NR_DC_CBC_OUT_STUBS           ((DC_OUTPUT_WIDTH-2)*NR_DC_WINDOW_CYCLES)/(1+DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS)
 #define NR_DO_OUT_STUBS           12
 
 #define NR_AM_BOARDS               4
