@@ -120,7 +120,7 @@ private:
 template<unsigned int bx_bits, unsigned int fechip_bits,
         unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
-stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_bxfsb()
+stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfsb()
         : stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>(0, 0, 0)
 {
     set_valid(0);
@@ -133,7 +133,7 @@ stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_bxfsb
 template<unsigned int bx_bits, unsigned int fechip_bits,
         unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
-stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_bxfsb(
+stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfsb(
         const valid_t valid, const bx_t bx, const fechip_t fechip,
         const strip_t strip, const bend_t bend) : stub_bxsb<bx_bits, strip_bits,
         bend_bits, total_bits>(bx, strip, bend)
@@ -201,7 +201,7 @@ typename stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
 {
     full_bv_t output_bv;
 
-    output_bv(valid_start, valid_start+valid_width_width-1) = this->get_valid();
+    output_bv(valid_start, valid_start+valid_width-1) = this->get_valid();
     output_bv(bx_start, bx_start+base::bx_width-1) = this->get_bx();
     output_bv(fechip_start, fechip_start+fechip_width-1) = get_fechip();
     output_bv(strip_start, strip_start+base::strip_width-1) = this->get_strip();
