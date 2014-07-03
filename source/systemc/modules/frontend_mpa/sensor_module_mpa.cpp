@@ -40,16 +40,19 @@ sensor_module_mpa::sensor_module_mpa(const sc_module_name _name) :
     // ----- Module instance / channel binding ---------------------------------
 
     unsigned int fe_cnt = 0;
-    sc_map_linear<frontend_chip_cbc>::iterator fe_chip_it = front_end_chips.begin();
+    sc_map_linear<frontend_chip_cbc>::iterator fe_chip_it;
+    fe_chip_it = front_end_chips.begin();
     for (; fe_chip_it != front_end_chips.end(); ++fe_chip_it)
     {
         fe_chip_it->clk.bind(clk);
         //! todo: use the enable port
         fe_chip_it->en(true_sig);
         fe_chip_it->stub_input(stub_inputs[fe_cnt]);
-        sc_map_square<sc_signal<bool> >::square_iterator data_valid_sig_it = data_valid_signals.begin_partial(fe_cnt, false, 0, true);
+        sc_map_square<sc_signal<bool> >::square_iterator data_valid_sig_it;
+        data_valid_sig_it = data_valid_signals.begin_partial(fe_cnt, false, 0, true);
         fe_chip_it->data_valid.bind_by_iter(data_valid_sig_it);
-        sc_map_square<sc_signal<fe_mpa_stub_t> >::square_iterator fe_out_sig_it = fe_out_signals.begin_partial(fe_cnt, false, 0, true);
+        sc_map_square<sc_signal<fe_mpa_stub_t> >::square_iterator fe_out_sig_it;
+        fe_out_sig_it = fe_out_signals.begin_partial(fe_cnt, false, 0, true);
         fe_chip_it->stub_outputs.bind_by_iter(fe_out_sig_it);
 
         fe_cnt++;

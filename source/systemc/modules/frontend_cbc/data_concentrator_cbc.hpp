@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_cbc.hpp
  * @author Christian Amstutz
- * @date June 26, 2014
+ * @date July 3, 2014
  *
  * @brief
  *
@@ -54,7 +54,7 @@ public:
     sc_out<dc_out_t> dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<sc_uint<NBITS(NR_DC_WINDOW_CYCLES-1)> > clock_phase;
+    sc_signal<unsigned int> clock_phase;
     sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
     std::vector<stub_buffer_type> stub_buffer;
 

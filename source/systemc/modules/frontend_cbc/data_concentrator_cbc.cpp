@@ -61,9 +61,9 @@ void data_concentrator_cbc::read_FE_chips()
         sc_map_square<sc_in<in_stub_t> >::iterator fe_in_it = fe_stub_in.begin();
         for (; fe_in_it != fe_stub_in.end(); ++fe_in_it)
         {
-            in_stub_t fe_data = fe_in_it->read();
             if (*data_valid_it == true)
             {
+                in_stub_t fe_data = fe_in_it->read();
                 std::pair<bool, sc_map_square<sc_in<in_stub_t> >::full_key_type>
                         signal_key = fe_stub_in.get_key(*fe_in_it);
                 cbc_out_stub_t stub;
@@ -76,6 +76,8 @@ void data_concentrator_cbc::read_FE_chips()
 
                 stub_buffer[stub_buffer_write_sel].push_back(stub);
             }
+
+            ++data_valid_it;
         }
     }
 
