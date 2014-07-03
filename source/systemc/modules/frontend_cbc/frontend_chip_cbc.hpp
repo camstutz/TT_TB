@@ -34,7 +34,7 @@ public:
     sc_in<bool> clk;
     sc_in<bool> en;
     sc_fifo_in<fe_cbc_stub_t> stub_input;
-    sc_map_linear<sc_out<bool> > data_valids;
+    sc_map_linear<sc_out<bool> > data_valid;
     sc_map_linear<sc_out<fe_cbc_stub_t> > stub_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
