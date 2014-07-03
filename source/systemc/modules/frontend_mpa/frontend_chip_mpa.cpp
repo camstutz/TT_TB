@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa.cpp
  * @author Christian Amstutz
- * @date July 2, 2014
+ * @date July 3, 2014
  *
  * @brief
  */
@@ -27,7 +27,7 @@ frontend_chip_mpa::frontend_chip_mpa(const sc_module_name _name) :
         clk("clk"),
         en("en"),
         stub_input("stub_input"),
-        data_valids(MAX_HITS_PER_MPA_FE_CHIP, "data_valid", 0),
+        data_valid(MAX_HITS_PER_MPA_FE_CHIP, "data_valid", 0),
         stub_outputs(MAX_HITS_PER_MPA_FE_CHIP, "stub_output", 0),
         selected_stubs("selected_stubs", MAX_HITS_PER_MPA_FE_CHIP)
 {
@@ -80,7 +80,6 @@ void frontend_chip_mpa::write_hits()
     {
         wait();
 
-        bool data_valid = false;
         fe_mpa_stub_t stub_to_write(0,0,0,0);
 
         // todo: optimization potential if not written every cycle
@@ -89,7 +88,7 @@ void frontend_chip_mpa::write_hits()
         unsigned int num_stubs = selected_stubs.num_available();
         for (unsigned int i=0; i<num_stubs; i++)
         {
-            data_valids.at(i).write(true);
+            data_valid.at(i).write(true);
             stub_outputs.at(i).write(selected_stubs.read());
         }
     }

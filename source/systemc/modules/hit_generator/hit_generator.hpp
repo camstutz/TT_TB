@@ -23,7 +23,7 @@
 #include "../../systems/TT_configuration.hpp"
 #include "../../data_formats/HitEvent.hpp"
 #include "../../data_formats/stub_sb.hpp"
-#include "../../data_formats/stub_bxsbp.hpp"
+#include "../../data_formats/stub_bxpsb.hpp"
 
 /*!
  * @brief SystemC module that reads hits from a file.
@@ -34,10 +34,10 @@ public:
     typedef stub_sb<FE_CBC_STUB_STRIP_BITS,
                     FE_CBC_STUB_BEND_BITS,
                     FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> cbc_stub_t;
-    typedef stub_bxsbp<FE_MPA_STUB_BX_BITS,
+    typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
+                       FE_MPA_STUB_PIXEL_BITS,
                        FE_MPA_STUB_STRIP_BITS,
                        FE_MPA_STUB_BEND_BITS,
-                       FE_MPA_STUB_PIXEL_BITS,
                        FE_MPA_STUB_BX_BITS+FE_MPA_STUB_STRIP_BITS
                        +FE_MPA_STUB_BEND_BITS+FE_MPA_STUB_PIXEL_BITS> mpa_stub_t;
 

@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa.hpp
  * @author Christian Amstutz
- * @date July 2, 2014
+ * @date July 3, 2014
  *
  * @brief
  *
@@ -18,7 +18,7 @@
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/stub_bxsbp.hpp"
+#include "../../data_formats/stub_bxpsb.hpp"
 
 /*!
  * @brief
@@ -27,10 +27,10 @@ class frontend_chip_mpa : public sc_module
 {
 public:
 
-    typedef stub_bxsbp<FE_MPA_STUB_BX_BITS,
+    typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
+                       FE_MPA_STUB_PIXEL_BITS,
                        FE_MPA_STUB_STRIP_BITS,
                        FE_MPA_STUB_BEND_BITS,
-                       FE_MPA_STUB_PIXEL_BITS,
                        FE_MPA_STUB_BX_BITS+FE_MPA_STUB_STRIP_BITS
                        +FE_MPA_STUB_BEND_BITS+FE_MPA_STUB_PIXEL_BITS> fe_mpa_stub_t;
 
@@ -38,7 +38,7 @@ public:
     sc_in<bool> clk;
     sc_in<bool> en;
     sc_fifo_in<fe_mpa_stub_t> stub_input;
-    sc_map_linear<sc_out<bool> > data_valids;
+    sc_map_linear<sc_out<bool> > data_valid;
     sc_map_linear<sc_out<fe_mpa_stub_t> > stub_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
