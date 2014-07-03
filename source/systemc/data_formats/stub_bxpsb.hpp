@@ -102,8 +102,8 @@ private:
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
-stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::stub_bxsbp()
-        : stub_bxsb(0, 0, 0)
+stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::stub_bxpsb()
+        : stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>(0, 0, 0)
 {
     set_pixel(0);
 
@@ -113,9 +113,10 @@ stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::stub_bxsbp()
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
-stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::stub_bxsbp(
+stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::stub_bxpsb(
         const bx_t bx, const pixel_t pixel, const strip_t strip,
-        const bend_t bend) : stub_bxsb(bx, strip, bend)
+        const bend_t bend) : stub_bxsb<bx_bits, strip_bits, bend_bits,
+        total_bits>(bx, strip, bend)
 {
     set_pixel(pixel);
 
@@ -126,7 +127,7 @@ stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::stub_bxsbp(
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
 inline void stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
-        total_bits>::set_fechip(const fechip_t fechip)
+        total_bits>::set_pixel(const pixel_t pixel)
 {
     // todo: check range
     this->pixel = pixel;
@@ -138,8 +139,8 @@ inline void stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
 inline typename stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
-        total_bits>::fechip_t stub_bxpsb<bx_bits, pixel_bits, strip_bits,
-        bend_bits, total_bits>::get_fechip() const
+        total_bits>::pixel_t stub_bxpsb<bx_bits, pixel_bits, strip_bits,
+        bend_bits, total_bits>::get_pixel() const
 {
     return (pixel);
 }
@@ -147,16 +148,16 @@ inline typename stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
-stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::full_bv_t
+typename stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::full_bv_t
         stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
         total_bits>::get_bitvector() const
 {
     full_bv_t output_bv;
 
-    output_bv(bx_start, bx_start+bx_width-1) = get_bx();
-    output_bv(pixel_start, pixel_start+pixel_width-1) = get_pixel();
-    output_bv(strip_start, strip_start+strip_width-1) = get_strip();
-    output_bv(bend_start, bend_start+bend_width-1) = get_bend();
+    output_bv(bx_start, bx_start+base::bx_width-1) = this->get_bx();
+    output_bv(pixel_start, pixel_start+pixel_width-1) = this->get_pixel();
+    output_bv(strip_start, strip_start+base::strip_width-1) = this->get_strip();
+    output_bv(bend_start, bend_start+base::bend_width-1) = this->get_bend();
 
     return (output_bv);
 }
@@ -167,10 +168,10 @@ template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
 void stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
         total_bits>::set_bitvector(full_bv_t bit_vector)
 {
-    set_bx(bit_vector(bx_start, bx_start+bx_width-1));
+    set_bx(bit_vector(bx_start, bx_start+base::bx_width-1));
     set_pixel(bit_vector(pixel_start, pixel_start+pixel_width-1));
-    set_strip(bit_vector(strip_start, strip_start+strip_width-1));
-    set_bend(bit_vector(bend_start, bend_start+bend_width-1));
+    set_strip(bit_vector(strip_start, strip_start+base::strip_width-1));
+    set_bend(bit_vector(bend_start, bend_start+base::bend_width-1));
 
     return;
 }
@@ -195,7 +196,7 @@ std::string stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
     out_string << "[" << "BX=" << this->get_bx()
                       << "P="  << this->get_pixel()
                       << "S="  << this->get_strip()
-                      << "B="  << this-get_bend() << "]";
+                      << "B="  << this->get_bend() << "]";
 
     return (out_string);
 }
