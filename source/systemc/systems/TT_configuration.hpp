@@ -49,8 +49,9 @@
 
 #define NR_AM_BOARDS               4
 
-#define NR_DETECTOR_CBC_LAYERS     3  // Number of layers with 2S modules existing in the detector
 #define NR_DETECTOR_MPA_LAYERS     3  // Number of layers with PS modules existing in the detector
+#define NR_DETECTOR_CBC_LAYERS     3  // Number of layers with 2S modules existing in the detector
+#define NR_DETECTOR_LAYERS         NR_DETECTOR_CBC_LAYERS + NR_DETECTOR_MPA_LAYERS
 #define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector
 #define NR_DETECTOR_Z              1  // Number of sensors on length of the detector
 #define NR_FE_CHIP_PER_MODULE      8  // Number of front-end chips per sensor module

@@ -191,7 +191,7 @@ inline size_t dc_out_word<header_bits, payload_bits,
         total_bits>::get_max_string_length() const
 {
     // todo: Is there an intelligent way to determine max length of string?
-    return (13);
+    return (25);
 }
 
 // *****************************************************************************
@@ -213,7 +213,7 @@ template<unsigned int header_bits, unsigned int payload_bits,
 inline bool dc_out_word<header_bits, payload_bits, total_bits>::operator== (
         const dc_out_word<header_bits, payload_bits, total_bits> &rhs) const
 {
-  return (is_equal(rhs));
+    return (is_equal(rhs));
 }
 
 // *****************************************************************************
@@ -243,8 +243,8 @@ template<unsigned int header_bits, unsigned int payload_bits,
 inline void dc_out_word<header_bits, payload_bits, total_bits>::copy(
         const dc_out_word& original)
 {
-    set_strip(original.get_strip());
-    set_bend(original.get_bend());
+    set_header(original.get_header());
+    set_payload(original.get_payload());
 
     return;
 }
@@ -255,8 +255,8 @@ template<unsigned int header_bits, unsigned int payload_bits,
 void sc_trace (sc_trace_file *tf, const dc_out_word<header_bits, payload_bits,
         total_bits> &v, const std::string &name)
 {
-    sc_trace(tf, v.get_strip(), name + ".strip");
-    sc_trace(tf, v.get_bend(), name + ".bend");
+    sc_trace(tf, v.get_header(), name + ".header");
+    sc_trace(tf, v.get_payload(), name + ".payload");
 
     return;
 }

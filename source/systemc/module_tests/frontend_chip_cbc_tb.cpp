@@ -1,14 +1,14 @@
 /*!
- * @file front_end_chip_tb.cpp
+ * @file frontend_chip_cbc_tb.cpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date July 4, 2014
  */
 
 /*
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "front_end_chip_tb.hpp"
+#include "frontend_chip_cbc_tb.hpp"
 
 // *****************************************************************************
 
@@ -19,19 +19,21 @@
  * The module is sensitive to ...
  */
 
-front_end_chip_tb::front_end_chip_tb(sc_module_name _name) :
+frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name) :
         sc_module(_name),
         en_sig("en"),
         stub_input_sig("stub_input"),
-        fe_out_signals(MAX_HITS_PER_FE_CHIP, "fe_out_sig"),
+        data_valid_signals(MAX_HITS_PER_CBC_FE_CHIP, "data_valid_sig"),
+        fe_out_signals(MAX_HITS_PER_CBC_FE_CHIP, "fe_out_sig"),
         LHC_clock("LHC_clock", 25, SC_NS, 0.5, 10, SC_NS, true),
         dut_front_end_chip("Front_End_Chip_DUT") {
 
     // ----- Creation and binding of signals -----------------------------------
-    dut_front_end_chip.clk(LHC_clock);
-    dut_front_end_chip.en(en_sig);
-    dut_front_end_chip.stub_input(stub_input_sig);
-    dut_front_end_chip.hit_outputs.bind(fe_out_signals);
+    dut_front_end_chip.clk.bind(LHC_clock);
+    dut_front_end_chip.en.bind(en_sig);
+    dut_front_end_chip.stub_input.bind(stub_input_sig);
+    dut_front_end_chip.data_valid.bind(data_valid_signals);
+    dut_front_end_chip.stub_outputs.bind(fe_out_signals);
 
     // ----- Process registration ----------------------------------------------
 
@@ -46,19 +48,20 @@ front_end_chip_tb::front_end_chip_tb(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void front_end_chip_tb::end_of_elaboration()
+void frontend_chip_cbc_tb::end_of_elaboration()
 {
     SC_THREAD(generate_stubs);
     SC_THREAD(analyse_FE_out);
-    for (auto& fe_out_sig : fe_out_signals)
+    for (auto& dv_sig : data_valid_signals)
     {
-      sensitive << fe_out_sig;
+      sensitive << dv_sig;
     }
+
     return;
 }
 
 // *****************************************************************************
-front_end_chip_tb::~front_end_chip_tb()
+frontend_chip_cbc_tb::~frontend_chip_cbc_tb()
 {
   std::cout << log_buffer.str();
 
@@ -66,9 +69,9 @@ front_end_chip_tb::~front_end_chip_tb()
 }
 
 // *****************************************************************************
-void front_end_chip_tb::generate_stubs()
+void frontend_chip_cbc_tb::generate_stubs()
 {
-    fe_out_data::fe_stub_t stim_stub;
+    frontend_chip_cbc::fe_cbc_stub_t stim_stub;
 
     wait(60, SC_NS);
     en_sig.write(1);
@@ -130,32 +133,32 @@ void front_end_chip_tb::generate_stubs()
 }
 
 // *****************************************************************************
-void front_end_chip_tb::analyse_FE_out()
+void frontend_chip_cbc_tb::analyse_FE_out()
 {
     while(1)
     {
         wait();
 
         log_buffer << sc_time_stamp() << ": DV ";
-        for (auto& fe_out_signal : fe_out_signals)
+        for (auto& dv_signal : data_valid_signals)
         {
-            log_buffer << fe_out_signal.read().get_dv();
+            log_buffer << dv_signal.read();
             log_buffer << "-";
         }
         log_buffer << std::endl;
 
         for (auto& fe_out_signal : fe_out_signals)
         {
-            fe_out_data read_hit = fe_out_signal.read();
-            if(fe_out_signal.read().get_dv() == true)
+            frontend_chip_cbc::fe_cbc_stub_t read_stub = fe_out_signal.read();
+            std::pair<bool, sc_map_linear<sc_signal<frontend_chip_cbc::fe_cbc_stub_t>>::full_key_type> signal_key;
+            signal_key = fe_out_signals.get_key(fe_out_signal);
+
+            if(data_valid_signals.at(signal_key.second.X_dim).read())
             {
-                std::pair<bool, sc_map_linear<sc_signal<fe_out_data>>::full_key_type> signal_key;
-                signal_key = fe_out_signals.get_key(fe_out_signal);
-                auto act_stub = read_hit.get_data();
-                log_buffer << sc_time_stamp() <<" Hit" << signal_key.second.X_dim << ": "
+                log_buffer << sc_time_stamp() <<" Stub" << signal_key.second.X_dim << ": "
                            << std::hex
-                           << " Address: 0x" << act_stub.get_strip()
-                           << " Bend: 0x" << act_stub.get_bend()
+                           << " Address: 0x" << read_stub.get_strip()
+                           << " Bend: 0x" << read_stub.get_bend()
                            << std::dec << std::endl;
             }
         }

@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date June 20, 2014
+ * @date July 4, 2014
  *
  * @brief
  */
@@ -14,19 +14,19 @@
 #include <iostream>
 #include <string>
 
-#include "hit_file_test.hpp"
-#include "hit_generator_tb.hpp"
-#include "front_end_chip_tb.hpp"
-#include "data_concentrator_tb.hpp"
-#include "data_organizer_tb.hpp"
-#include "am_board_tb.hpp"
-#include "am_system_tb.hpp"
-#include "fifo_manager_tb.hpp"
+//#include "hit_file_test.hpp"
+//#include "hit_generator_tb.hpp"
+#include "frontend_chip_cbc_tb.hpp"
+//#include "data_concentrator_tb.hpp"
+//#include "data_organizer_tb.hpp"
+//#include "am_board_tb.hpp"
+//#include "am_system_tb.hpp"
+//#include "fifo_manager_tb.hpp"
 
 
 int sc_main(int argc, char *agv[])
 {
-    hit_file_test();
+    //hit_file_test();
 
     // ----- Channel declarations ----------------------------------------------
 
@@ -35,7 +35,7 @@ int sc_main(int argc, char *agv[])
     // ----- Module instance declarations --------------------------------------
 
     //hit_generator_tb hit_generator_tb("Hit_Generator_TB");
-    //front_end_chip_tb front_end_chip_tb("Front_End_Chip_TB");
+    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB");
     //data_concentrator_tb data_concentrator_tb("Data_Concentrator_TB");
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
     //am_system_tb am_system_tb("AM_System");

@@ -28,7 +28,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
         LHCx4_clock("LHCx4_clock", 6.25, SC_NS, 0.5, 25, SC_NS, true),
         AM_clock("AM_clock", 10, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("TRUE"),
-        hit_fifos(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo"),
+        hit_fifos_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo", 0, 0, 0, 0),
+        hit_fifos_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo", NR_DETECTOR_MPA_LAYERS, 0, 0, 0),
         fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals"),
         do_stub_out_sig(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "do_stub_out_sig"),
         fifo_stub_in(NR_AM_BOARDS, NR_DETECTOR_LAYERS, "fifo_stub_in"),
@@ -36,7 +37,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
         result_road(NR_AM_BOARDS, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", "data/hits.txt"),
-        sensor_modules(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module"),
+        sensor_modules_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module", 0, 0, 0),
+        sensor_modules_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module", NR_DETECTOR_MPA_LAYERS, 0, 0),
         dataOrganizer("data_organizer", 0, 0),
         fifoManager("FIFO_manager"),
         am_lane_array(NR_AM_BOARDS, "am_lane"),
@@ -44,19 +46,32 @@ tt_tb::tt_tb(const sc_module_name _name) :
 {
     true_sig.write(true);
 
-    hitGenerator.hit_outputs.bind(hit_fifos);
+    hitGenerator.mpa_stub_outputs.bind(hit_fifos_mpa);
+    hitGenerator.cbc_stub_outputs.bind(hit_fifos_cbc);
     hitGenerator.hit_cnt(hit_cnt_sig);
 
-    sc_map_cube<sensor_module_cbc>::iterator sensor_module_it = sensor_modules.begin();
-    for (; sensor_module_it != sensor_modules.end(); ++sensor_module_it)
+    sc_map_cube<sensor_module_mpa>::iterator module_mpa_it = module_mpa_it = sensor_modules_mpa.begin();
+    for (; module_mpa_it != sensor_modules_mpa.end(); ++module_mpa_it)
+    {
+        std::pair<bool, sc_map_cube<sensor_module_mpa>::full_key_type> full_key;
+        full_key = sensor_modules_mpa.get_key(*module_mpa_it);
+
+        module_mpa_it->clk.bind(LHC_clock);
+        sc_map_4d<sc_fifo<hit_generator::mpa_stub_t> >::_4d_iterator fifo_it  = hit_fifos_mpa.begin_partial(full_key.second.Z_dim, false, full_key.second.Y_dim, false, full_key.second.X_dim, false, 0, true);
+        module_mpa_it->stub_inputs.bind_by_iter(fifo_it);
+        module_mpa_it->dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
+    }
+
+    sc_map_cube<sensor_module_cbc>::iterator module_cbc_it = module_cbc_it = sensor_modules_cbc.begin();
+    for (; module_cbc_it != sensor_modules_cbc.end(); ++module_cbc_it)
     {
         std::pair<bool, sc_map_cube<sensor_module_cbc>::full_key_type> full_key;
-        full_key = sensor_modules.get_key(*sensor_module_it);
+        full_key = sensor_modules_cbc.get_key(*module_cbc_it);
 
-        sensor_module_it->clk.bind(LHC_clock);
-        sc_map_4d<sc_fifo<hit_generator::hitgen_stub_t> >::_4d_iterator fifo_it  = hit_fifos.begin_partial(full_key.second.Z_dim, false, full_key.second.Y_dim, false, full_key.second.X_dim, false, 0, true);
-        sensor_module_it->stub_inputs.bind_by_iter(fifo_it);
-        sensor_module_it->dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
+        module_cbc_it->clk.bind(LHC_clock);
+        sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> >::_4d_iterator fifo_it  = hit_fifos_cbc.begin_partial(full_key.second.Z_dim, false, full_key.second.Y_dim, false, full_key.second.X_dim, false, 0, true);
+        module_cbc_it->stub_inputs.bind_by_iter(fifo_it);
+        module_cbc_it->dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
     }
 
     dataOrganizer.clk.bind(LHC_clock);

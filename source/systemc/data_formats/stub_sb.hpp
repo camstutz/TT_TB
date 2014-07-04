@@ -79,7 +79,7 @@ public:
     stub_sb& operator= (const stub_sb & rhs);
 
 protected:
-    bool is_equal(const stub_sb& rhs);
+    bool is_equal(const stub_sb& rhs) const;
     void copy(const stub_sb& original);
 
 private:
@@ -234,7 +234,7 @@ inline stub_sb<strip_bits, bend_bits, total_bits>&
 template<unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
 inline bool stub_sb<strip_bits, bend_bits, total_bits>::is_equal(
-        const stub_sb& rhs)
+        const stub_sb& rhs) const
 {
     return (rhs.get_strip() == strip && rhs.get_bend() == bend);
 }

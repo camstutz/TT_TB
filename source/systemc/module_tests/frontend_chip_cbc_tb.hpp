@@ -1,7 +1,7 @@
 /*!
- * @file data_concentrator_tb.hpp
+ * @file frontend_chip_cbc_tb.hpp
  * @author Christian Amstutz
- * @date Mar 27, 2014
+ * @date July 4, 2014
  *
  * @brief
  *
@@ -18,46 +18,42 @@
 
 #include "systemc.h"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map_square.hpp"
+#include "../libraries/systemc_helpers/sc_map/sc_map_linear.hpp"
 
 #include "../systems/TT_configuration.hpp"
-#include "../modules/frontend_cbc/data_concentrator.hpp"
-#include "../data_formats/fe_out_data.hpp"
+#include "../modules/frontend_cbc/frontend_chip_cbc.hpp"
 
 /*!
  * @brief
  */
-class data_concentrator_tb : public sc_module
+class frontend_chip_cbc_tb : public sc_module
 {
 public:
-
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<bool> rst;
-    sc_map_square<sc_signal<fe_out_data> > fe_signals;
-    sc_signal<sc_bv<DC_OUTPUT_WIDTH> > dc_output;
+    sc_signal<bool> en_sig;
+    sc_fifo<frontend_chip_cbc::fe_cbc_stub_t> stub_input_sig;
+    sc_map_linear<sc_signal<bool> > data_valid_signals;
+    sc_map_linear<sc_signal<frontend_chip_cbc::fe_cbc_stub_t> > fe_out_signals;
 
     // ----- Process Declarations ----------------------------------------------
-    void generate_hit_data();
-    void print_output();
+    void generate_stubs();
+    void analyse_FE_out();
 
     // ----- Other Method Declarations -----------------------------------------
-    void write_fe(const unsigned int fe_chip, const unsigned int hit_nr,
-            const unsigned int address, const unsigned int bend);
-    void release_fe(const unsigned int fe_chip, const unsigned int hit_nr);
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    data_concentrator dut_data_concentrator;
+    frontend_chip_cbc dut_front_end_chip;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    data_concentrator_tb(sc_module_name _name);
-    SC_HAS_PROCESS(data_concentrator_tb);
-    ~data_concentrator_tb();
+    frontend_chip_cbc_tb(sc_module_name _name);
+    SC_HAS_PROCESS(frontend_chip_cbc_tb);
+    ~frontend_chip_cbc_tb();
     void end_of_elaboration();
 
 private:

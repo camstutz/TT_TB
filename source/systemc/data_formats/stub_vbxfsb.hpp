@@ -121,7 +121,7 @@ template<unsigned int bx_bits, unsigned int fechip_bits,
         unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
 stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfsb()
-        : stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>(0, 0, 0)
+        : stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits+1>(0, 0, 0)
 {
     set_valid(0);
     set_fechip(0);
@@ -136,13 +136,21 @@ template<unsigned int bx_bits, unsigned int fechip_bits,
 stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfsb(
         const valid_t valid, const bx_t bx, const fechip_t fechip,
         const strip_t strip, const bend_t bend) : stub_bxsb<bx_bits, strip_bits,
-        bend_bits, total_bits>(bx, strip, bend)
+        bend_bits, total_bits+1>(bx, strip, bend)
 {
     set_valid(valid);
     set_fechip(fechip);
 
     return;
 }
+
+// *****************************************************************************
+template<unsigned int bx_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
+        total_bits>::~stub_vbxfsb()
+{}
 
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int fechip_bits,
@@ -217,11 +225,11 @@ template<unsigned int bx_bits, unsigned int fechip_bits,
 void stub_vbxfsb<bx_bits, fechip_bits, strip_bits,
         bend_bits, total_bits>::set_bitvector(full_bv_t bit_vector)
 {
-    set_valid(bit_vector(valid_start, valid_start+valid_width-1));
-    set_bx(bit_vector(bx_start, bx_start+base::bx_width-1));
-    set_frontend(bit_vector(fechip_start, fechip_start+fechip_width-1));
-    set_strip(bit_vector(strip_start, strip_start+base::strip_width-1));
-    set_bend(bit_vector(bend_start, bend_start+base::bend_width-1));
+    this->set_valid(bit_vector(valid_start, valid_start+valid_width-1).to_uint());
+    this->set_bx(bit_vector(bx_start, bx_start+base::bx_width-1).to_uint());
+    this->set_fechip(bit_vector(fechip_start, fechip_start+fechip_width-1).to_uint());
+    this->set_strip(bit_vector(strip_start, strip_start+base::strip_width-1).to_uint());
+    this->set_bend(bit_vector(bend_start, bend_start+base::bend_width-1).to_uint());
 
     return;
 }
@@ -251,7 +259,7 @@ std::string stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
                       << "S="  << this->get_strip()
                       << "B="  << this->get_bend() << "]";
 
-    return (out_string);
+    return (out_string.str());
 }
 
 // *****************************************************************************

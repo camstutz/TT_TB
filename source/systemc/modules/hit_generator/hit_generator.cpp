@@ -87,8 +87,8 @@ void hit_generator::schedule_hits()
                 << "Z" << hit.zCoordinate
                 << "FE" << hit.frontEndChipNr
                 << " Stub --> 0x"
-                << processed_stub.get_strip() << "/0x"
-                << processed_stub.get_bend() << std::endl;
+                << processed_cbc_stub.get_strip() << "/0x"
+                << processed_cbc_stub.get_bend() << std::endl;
         #endif
     }
 

@@ -45,7 +45,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_map_linear<sc_fifo_in<fe_mpa_stub_t> > stub_inputs;
-    sc_out<sc_bv<DC_OUTPUT_WIDTH> > dc_out;
+    sc_out<dc_out_t> dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_square<sc_signal<bool> > data_valid_signals;

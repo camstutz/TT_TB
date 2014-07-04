@@ -170,8 +170,8 @@ void data_concentrator_cbc::create_output_buffer()
 
     for(unsigned short i; i<NR_DC_CBC_OUT_STUBS; i++)
     {
-        size_t word_start = i*cbc_out_stub_t::total_width
-        size_t word_end = (i+1)*cbc_out_stub_t::total_width-1
+        size_t word_start = i*cbc_out_stub_t::total_width;
+        size_t word_end = (i+1)*cbc_out_stub_t::total_width-1;
         output_buffer(word_end, word_start) = stub_buffer[stub_buffer_read_sel][i].get_bitvector();
     }
 

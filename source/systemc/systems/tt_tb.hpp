@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date May 20, 2014
+ * @date July 3, 2014
  *
  * @brief
  */
@@ -21,6 +21,7 @@
 #include "TT_configuration.hpp"
 #include "../modules/hit_generator/hit_generator.hpp"
 #include "../modules/frontend_cbc/sensor_module_cbc.hpp"
+#include "../modules/frontend_mpa/sensor_module_mpa.hpp"
 #include "../modules/backend/data_organizer/data_organizer.hpp"
 #include "../modules/backend/fifo_manager/fifo_manager.hpp"
 #include "../modules/backend/am_controller/am_lane.hpp"
@@ -40,8 +41,9 @@ public:
     sc_clock LHCx4_clock;
     sc_clock AM_clock;
     sc_signal<bool> true_sig;
-    sc_map_4d<sc_fifo<hit_generator::hitgen_stub_t> > hit_fifos;
-    sc_map_cube<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_signals;
+    sc_map_4d<sc_fifo<hit_generator::mpa_stub_t> > hit_fifos_mpa;
+    sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> > hit_fifos_cbc;
+    sc_map_cube<sc_signal<sensor_module_cbc::dc_out_t> > fe_signals;
 
     sc_map_square<sc_signal<do_out_data> > do_stub_out_sig;
 
@@ -57,7 +59,8 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     hit_generator hitGenerator;
-    sc_map_cube<sensor_module_cbc> sensor_modules;
+    sc_map_cube<sensor_module_mpa> sensor_modules_mpa;
+    sc_map_cube<sensor_module_cbc> sensor_modules_cbc;
     data_organizer dataOrganizer;
     fifo_manager fifoManager;
     sc_map_linear<am_lane> am_lane_array;

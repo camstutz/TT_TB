@@ -77,7 +77,7 @@ public:
     stub_bxsb& operator= (const stub_bxsb& rhs);
 
 protected:
-    bool is_equal(const stub_bxsb& rhs);
+    bool is_equal(const stub_bxsb& rhs) const;
     void copy(const stub_bxsb& original);
 
 private:
@@ -111,6 +111,12 @@ stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>::stub_bxsb(
 
     return;
 }
+
+// *****************************************************************************
+template<unsigned int bx_bits, unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>::~stub_bxsb()
+{}
 
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int strip_bits, unsigned int bend_bits,
@@ -158,10 +164,10 @@ inline stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>&
 template<unsigned int bx_bits, unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
 inline bool stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>::is_equal(
-        const stub_bxsb& rhs)
+        const stub_bxsb& rhs) const
 {
     bool equal = false;
-    equal = equal & (base::equal(rhs));
+    equal = equal & (base::is_equal(rhs));
     equal = equal & (bx == rhs.get_bx());
 
     return (equal);

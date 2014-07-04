@@ -1,7 +1,7 @@
 /*!
  * @file multifield_base.hpp
  * @author Christian Amstutz
- * @date June 30, 2014
+ * @date July 4, 2014
  *
  * @brief
  *
@@ -17,6 +17,14 @@
 #include <iostream>
 
 #include <systemc.h>
+
+// *****************************************************************************
+
+template <unsigned int total_bits>
+class multifield_base;
+
+template <unsigned int total_bits>
+ostream& operator<< (ostream &os, multifield_base<total_bits> const &v);
 
 // *****************************************************************************
 
@@ -40,7 +48,7 @@ public:
     virtual void mti_debug_cb (void* var, char* mti_value, char format_str);
 
     // todo: check if this friend/template stuff is correct
-    friend ostream& operator<< (ostream &os, multifield_base<total_bits> const &v);
+    friend ostream& operator<< <> (ostream &os, multifield_base<total_bits> const &v);
 };
 
 // *****************************************************************************

@@ -1,5 +1,5 @@
 /*!
- * @file front_end_chip_tb.hpp
+ * @file data_concentrator_tb.hpp
  * @author Christian Amstutz
  * @date Mar 27, 2014
  *
@@ -18,46 +18,48 @@
 
 #include "systemc.h"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map_linear.hpp"
+#include "../libraries/systemc_helpers/sc_map/sc_map_square.hpp"
 
 #include "../systems/TT_configuration.hpp"
-#include "../modules/hit_generator/hit_generator.hpp"
-#include "../modules/frontend_cbc/front_end_chip.hpp"
-#include "../data_formats/fe_out_data.hpp"
+#include "../modules/frontend_cbc/data_concentrator_cbc.hpp"
+
 
 /*!
  * @brief
  */
-class front_end_chip_tb : public sc_module
+class data_concentrator_tb : public sc_module
 {
 public:
+
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<bool> en_sig;
-    sc_fifo<hit_generator::hitgen_stub_t> stub_input_sig;
-    sc_map_linear<sc_signal<fe_out_data> > fe_out_signals;
+    sc_signal<bool> rst;
+    sc_map_square<sc_signal<fe_out_data> > fe_signals;
+    sc_signal<sc_bv<DC_OUTPUT_WIDTH> > dc_output;
 
     // ----- Process Declarations ----------------------------------------------
-    void generate_stubs();
-    void analyse_FE_out();
+    void generate_hit_data();
+    void print_output();
 
     // ----- Other Method Declarations -----------------------------------------
+    void write_fe(const unsigned int fe_chip, const unsigned int hit_nr,
+            const unsigned int address, const unsigned int bend);
+    void release_fe(const unsigned int fe_chip, const unsigned int hit_nr);
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    front_end_chip dut_front_end_chip;
+    data_concentrator dut_data_concentrator;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    front_end_chip_tb(sc_module_name _name);
-    SC_HAS_PROCESS(front_end_chip_tb);
-    ~front_end_chip_tb();
+    data_concentrator_tb(sc_module_name _name);
+    SC_HAS_PROCESS(data_concentrator_tb);
+    ~data_concentrator_tb();
     void end_of_elaboration();
 
 private:
     std::ostringstream log_buffer;
-
 };

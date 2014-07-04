@@ -87,7 +87,7 @@ public:
     stub_bxpsb& operator= (const stub_bxpsb& rhs);
 
 protected:
-    bool is_equal(const stub_bxpsb& rhs);
+    bool is_equal(const stub_bxpsb& rhs) const;
     void copy(const stub_bxpsb& original);
 
 private:
@@ -122,6 +122,14 @@ stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::stub_bxpsb(
 
     return;
 }
+
+
+// *****************************************************************************
+template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
+        unsigned int bend_bits, unsigned int total_bits>
+stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
+        total_bits>::~stub_bxpsb()
+{}
 
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
@@ -168,10 +176,10 @@ template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
 void stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
         total_bits>::set_bitvector(full_bv_t bit_vector)
 {
-    set_bx(bit_vector(bx_start, bx_start+base::bx_width-1));
-    set_pixel(bit_vector(pixel_start, pixel_start+pixel_width-1));
-    set_strip(bit_vector(strip_start, strip_start+base::strip_width-1));
-    set_bend(bit_vector(bend_start, bend_start+base::bend_width-1));
+    this->set_bx(bit_vector(bx_start, bx_start+base::bx_width-1).to_uint());
+    this->set_pixel(bit_vector(pixel_start, pixel_start+pixel_width-1).to_uint());
+    this->set_strip(bit_vector(strip_start, strip_start+base::strip_width-1).to_uint());
+    this->set_bend(bit_vector(bend_start, bend_start+base::bend_width-1).to_uint());
 
     return;
 }
@@ -198,7 +206,7 @@ std::string stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
                       << "S="  << this->get_strip()
                       << "B="  << this->get_bend() << "]";
 
-    return (out_string);
+    return (out_string.str());
 }
 
 // *****************************************************************************
@@ -228,10 +236,10 @@ stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::operator= (
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
 inline bool stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
-        total_bits>::is_equal(const stub_bxpsb& rhs)
+        total_bits>::is_equal(const stub_bxpsb& rhs) const
 {
     bool equal = false;
-    equal = equal & (base::equal(rhs));
+    equal = equal & (base::is_equal(rhs));
     equal = equal & (pixel == rhs.get_pixel());
 
     return (equal);
