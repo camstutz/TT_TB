@@ -50,19 +50,19 @@ int sc_main(int argc, char *agv[])
     sc_trace_file *trace_file;
     trace_file=sc_create_vcd_trace_file("TT_TB_testbench");
 
-    sc_trace(trace_file, fechip_cbc_tb.LHC_clock, "clock");
-    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals.at(0), "data_valid_0");
-    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[1], "data_valid_1");
-    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[2], "data_valid_2");
-    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[0], "fe_out_sig_0");
-    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[1], "fe_out_sig_1");
-    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[2], "fe_out_sig_2");
+    sc_trace(trace_file, fechip_cbc_tb.LHC_clock, "CBC.clock");
+    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals.at(0), "CBC.data_valid_0");
+    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[1], "CBC.data_valid_1");
+    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[2], "CBC.data_valid_2");
+    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[0], "CBC.fe_out_sig_0");
+    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[1], "CBC.fe_out_sig_1");
+    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[2], "CBC.fe_out_sig_2");
 
-    sc_trace(trace_file, fechip_mpa_tb.LHC_clock, "clock");
-    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals.at(0), "data_valid_0");
-    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals[1], "data_valid_1");
-    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[0], "fe_out_sig_0");
-    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[1], "fe_out_sig_1");
+    sc_trace(trace_file, fechip_mpa_tb.LHC_clock, "MPA.clock");
+    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals.at(0), "MPA.data_valid_0");
+    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals[1], "MPA.data_valid_1");
+    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[0], "MPA.fe_out_sig_0");
+    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[1], "MPA.fe_out_sig_1");
 
 //    sc_trace(trace_file, data_concentrator_tb.LHC_clock, "DC_clock");
 //    sc_trace(trace_file, data_concentrator_tb.dc_output, "dc_out");
