@@ -76,15 +76,16 @@ public:
     /** Assignment operator for stubs */
     stub_bxsb& operator= (const stub_bxsb& rhs);
 
-protected:
-    bool is_equal(const stub_bxsb& rhs) const;
-    void copy(const stub_bxsb& original);
-
-private:
+    // todo: make them at least protected
+public:
     /** Bunch crossing (BX) represents the time when a hit happen within a time
      *  frame.
      */
     bx_t bx;
+
+protected:
+    bool is_equal(const stub_bxsb& rhs) const;
+    void copy(const stub_bxsb& original);
 };
 
 // *****************************************************************************

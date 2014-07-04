@@ -106,10 +106,6 @@ public:
     stub_vbxpfsb& operator= (const stub_vbxpfsb& rhs);
 
 protected:
-    bool is_equal(const stub_vbxpfsb& rhs);
-    void copy(const stub_vbxpfsb& original);
-
-private:
     /** Data valid bit for the stub */
     valid_t valid;
 
@@ -117,6 +113,9 @@ private:
      *  module.
      */
     fechip_t fechip;
+
+    bool is_equal(const stub_vbxpfsb& rhs);
+    void copy(const stub_vbxpfsb& original);
 };
 
 // *****************************************************************************
@@ -328,10 +327,10 @@ void sc_trace (sc_trace_file *tf, const stub_vbxpfsb<bx_bits, pixel_bits,
         fechip_bits, strip_bits, bend_bits, total_bits> &v,
         const std::string &name)
 {
-    sc_trace(tf, v.get_bx(), name + ".bx");
-    sc_trace(tf, v.get_strip(), name + ".strip");
-    sc_trace(tf, v.get_bend(), name + ".bend");
-    sc_trace(tf, v.get_pixel(), name + ".pixel");
+    sc_trace(tf, v.bx, name + ".bx");
+    sc_trace(tf, v.strip, name + ".strip");
+    sc_trace(tf, v.bend, name + ".bend");
+    sc_trace(tf, v.pixel, name + ".pixel");
 
     return;
 }

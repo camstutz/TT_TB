@@ -1,7 +1,7 @@
 /*!
  * @file stub_bxpsb.hpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date July 4, 2014
  *
  * @brief
  *
@@ -29,8 +29,8 @@ class stub_bxsbp;
 
 template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
-void sc_trace(sc_trace_file *tf, const stub_bxsbp<bx_bits, strip_bits,
-        bend_bits, pixel_bits, total_bits> &v, const std::string &name);
+void sc_trace(sc_trace_file *tf, const stub_bxsbp<bx_bits, pixel_bits,
+        strip_bits, bend_bits, total_bits> &v, const std::string &name);
 
 // *****************************************************************************
 
@@ -86,15 +86,18 @@ public:
     /** Assignment operator for stubs */
     stub_bxpsb& operator= (const stub_bxpsb& rhs);
 
-protected:
-    bool is_equal(const stub_bxpsb& rhs) const;
-    void copy(const stub_bxpsb& original);
+    friend void sc_trace <> (sc_trace_file *tf, const stub_bxsbp<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits> &v, const std::string &name);
 
-private:
+    // todo: make them at least protected
+public:
     /** Front end chip number, indicating the FE chip on one side of a sensor
      *  module.
      */
     pixel_t pixel;
+
+protected:
+    bool is_equal(const stub_bxpsb& rhs) const;
+    void copy(const stub_bxpsb& original);
 };
 
 // *****************************************************************************
@@ -263,10 +266,10 @@ template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
 void sc_trace (sc_trace_file *tf, const stub_bxpsb<bx_bits, pixel_bits,
         strip_bits, bend_bits, total_bits> &v, const std::string &name)
 {
-    sc_trace(tf, v.get_bx(), name + ".bx");
-    sc_trace(tf, v.get_strip(), name + ".strip");
-    sc_trace(tf, v.get_bend(), name + ".bend");
-    sc_trace(tf, v.get_pixel(), name + ".pixel");
+    sc_trace(tf, v.bx, name + ".bx");
+    sc_trace(tf, v.strip, name + ".strip");
+    sc_trace(tf, v.bend, name + ".bend");
+    sc_trace(tf, v.pixel, name + ".pixel");
 
     return;
 }

@@ -140,7 +140,7 @@ object_type* sc_map_linear<object_type>::creator::operator() (
         const sc_module_name name, sc_map_linear<object_type>::key_type id)
 {
     std::stringstream full_name;
-    full_name << name << "_" << id;
+    full_name << name << "_" << std::dec << id;
 
     //std::string name = sc_gen_unique_name(basename());
 

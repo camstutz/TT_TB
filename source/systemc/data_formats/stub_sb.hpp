@@ -78,16 +78,18 @@ public:
     /** Assignment operator for stubs */
     stub_sb& operator= (const stub_sb & rhs);
 
-protected:
-    bool is_equal(const stub_sb& rhs) const;
-    void copy(const stub_sb& original);
-
-private:
+// todo: make them at least protected
+public:
     /** Strip address of the strip on the silicon detector */
     strip_t strip;
 
     /** represents the distance of the hits between the two silicon detectors */
     bend_t bend;
+
+protected:
+    bool is_equal(const stub_sb& rhs) const;
+    void copy(const stub_sb& original);
+
 
 /** Function for tracing support in SystemC */
 friend void sc_trace <> (sc_trace_file *tf, const stub_sb &v,
@@ -257,8 +259,8 @@ template<unsigned int strip_bits, unsigned int bend_bits,
 void sc_trace (sc_trace_file *tf, const stub_sb<strip_bits, bend_bits,
         total_bits> &v, const std::string &name)
 {
-    sc_trace(tf, v.get_strip(), name + ".strip");
-    sc_trace(tf, v.get_bend(), name + ".bend");
+    sc_trace(tf, v.strip, name + ".strip");
+    sc_trace(tf, v.bend, name + ".bend");
 
     return;
 }

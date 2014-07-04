@@ -80,10 +80,9 @@ void frontend_chip_cbc::write_hits()
     {
         wait();
 
-        fe_cbc_stub_t stub_to_write(0,0);
-
         // todo: optimization potential if not written every cycle
-        stub_outputs.write_all(stub_to_write);
+        data_valid.write_all(0);
+        stub_outputs.write_all(fe_cbc_stub_t(0,0));
 
         unsigned int num_stubs = selected_stubs.num_available();
         for (unsigned int i=0; i<num_stubs; i++)
