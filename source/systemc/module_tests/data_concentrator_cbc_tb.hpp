@@ -1,7 +1,7 @@
 /*!
- * @file data_organizer_tb.hpp
+ * @file data_concentrator_cbc_tb.hpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date July 7, 2014
  *
  * @brief
  *
@@ -18,16 +18,16 @@
 
 #include "systemc.h"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../libraries/systemc_helpers/sc_map/sc_map_square.hpp"
 
 #include "../systems/TT_configuration.hpp"
-#include "../modules/backend/data_organizer/data_organizer.hpp"
-#include "../data_formats/do_out_data.hpp"
+#include "../modules/frontend_cbc/data_concentrator_cbc.hpp"
+
 
 /*!
  * @brief
  */
-class data_organizer_tb : public sc_module
+class data_concentrator_cbc_tb : public sc_module
 {
 public:
 
@@ -35,28 +35,30 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> rst;
-    sc_map_linear<sc_signal<sc_bv<DC_OUTPUT_WIDTH> > > fe_streams;
-    sc_map_square<sc_signal<do_out_data> > do_output;
+    sc_map_square<sc_signal<bool> > data_valid;
+    sc_map_square<sc_signal<data_concentrator_cbc::in_stub_t> > fe_signals;
+    sc_signal<data_concentrator_cbc::dc_out_t> dc_output;
 
     // ----- Process Declarations ----------------------------------------------
-    void write_stream();
+    void generate_hit_data();
     void print_output();
 
-    void test_proc();
-
     // ----- Other Method Declarations -----------------------------------------
+    void write_fe(const unsigned int fe_chip, const unsigned int hit_nr,
+            const unsigned int address, const unsigned int bend);
+    void release_fe(const unsigned int fe_chip, const unsigned int hit_nr);
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    data_organizer dut_data_organizer;
+    data_concentrator_cbc dut_data_concentrator;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    data_organizer_tb(sc_module_name _name);
-    SC_HAS_PROCESS(data_organizer_tb);
-    ~data_organizer_tb();
+    data_concentrator_cbc_tb(sc_module_name _name);
+    SC_HAS_PROCESS(data_concentrator_cbc_tb);
+    ~data_concentrator_cbc_tb();
 
 private:
     std::ostringstream log_buffer;

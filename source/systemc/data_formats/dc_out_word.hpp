@@ -79,7 +79,7 @@ public:
     dc_out_word& operator= (const dc_out_word & rhs);
 
 protected:
-    bool is_equal(const dc_out_word& rhs);
+    bool is_equal(const dc_out_word& rhs) const;
     void copy(const dc_out_word& original);
 
 private:
@@ -202,7 +202,7 @@ std::string dc_out_word<header_bits, payload_bits, total_bits>::get_string()
 {
     std::stringstream out_string;
     out_string << "[" << "H=" << header
-                      << "P=" << payload << "]";
+                      << "P=0x" << std::hex << payload << "]";
 
     return (out_string.str());
 }
@@ -232,7 +232,7 @@ inline dc_out_word<header_bits, payload_bits, total_bits>&
 template<unsigned int header_bits, unsigned int payload_bits,
         unsigned int total_bits>
 inline bool dc_out_word<header_bits, payload_bits, total_bits>::is_equal(
-        const dc_out_word& rhs)
+        const dc_out_word& rhs) const
 {
     return (rhs.get_header() == header && rhs.get_payload() == payload);
 }
