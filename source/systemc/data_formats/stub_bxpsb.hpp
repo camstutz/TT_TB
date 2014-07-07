@@ -165,10 +165,10 @@ typename stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits, total_bits>::ful
 {
     full_bv_t output_bv;
 
-    output_bv(bx_start, bx_start+base::bx_width-1) = this->get_bx();
-    output_bv(pixel_start, pixel_start+pixel_width-1) = this->get_pixel();
-    output_bv(strip_start, strip_start+base::strip_width-1) = this->get_strip();
-    output_bv(bend_start, bend_start+base::bend_width-1) = this->get_bend();
+    output_bv(bx_start+base::bx_width-1, bx_start) = this->get_bx();
+    output_bv(pixel_start+pixel_width-1, pixel_start) = this->get_pixel();
+    output_bv(strip_start+base::strip_width-1, strip_start) = this->get_strip();
+    output_bv(bend_start+base::bend_width-1, bend_start) = this->get_bend();
 
     return (output_bv);
 }
@@ -179,10 +179,10 @@ template<unsigned int bx_bits, unsigned int pixel_bits, unsigned int strip_bits,
 void stub_bxpsb<bx_bits, pixel_bits, strip_bits, bend_bits,
         total_bits>::set_bitvector(full_bv_t bit_vector)
 {
-    this->set_bx(bit_vector(bx_start, bx_start+base::bx_width-1).to_uint());
-    this->set_pixel(bit_vector(pixel_start, pixel_start+pixel_width-1).to_uint());
-    this->set_strip(bit_vector(strip_start, strip_start+base::strip_width-1).to_uint());
-    this->set_bend(bit_vector(bend_start, bend_start+base::bend_width-1).to_uint());
+    this->set_bx(bit_vector(bx_start+base::bx_width-1, bx_start).to_uint());
+    this->set_pixel(bit_vector(pixel_start+pixel_width-1, pixel_start).to_uint());
+    this->set_strip(bit_vector(strip_start+base::strip_width-1, strip_start).to_uint());
+    this->set_bend(bit_vector(bend_start+base::bend_width-1, bend_start).to_uint());
 
     return;
 }

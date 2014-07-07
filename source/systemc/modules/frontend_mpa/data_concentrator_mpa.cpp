@@ -173,6 +173,7 @@ void data_concentrator_mpa::create_output_buffer()
     {
         size_t word_start = i*mpa_out_stub_t::total_width;
         size_t word_end = (i+1)*mpa_out_stub_t::total_width-1;
+
         output_buffer(word_end, word_start) = stub_buffer[stub_buffer_read_sel][i].get_bitvector();
     }
 
@@ -182,8 +183,8 @@ void data_concentrator_mpa::create_output_buffer()
 }
 
 // *****************************************************************************
-data_concentrator_mpa::mpa_out_stub_t::bx_t data_concentrator_mpa::calculate_bx(clock_phase_t clock_phase,
-        in_stub_t::bx_t stub_bx)
+data_concentrator_mpa::mpa_out_stub_t::bx_t data_concentrator_mpa::calculate_bx(
+		clock_phase_t clock_phase, in_stub_t::bx_t stub_bx)
 {
     if (clock_phase%2 == 0)
     {

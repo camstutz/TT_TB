@@ -61,7 +61,7 @@ void data_concentrator_cbc::read_FE_chips()
         sc_map_square<sc_in<in_stub_t> >::iterator fe_in_it = fe_stub_in.begin();
         for (; fe_in_it != fe_stub_in.end(); ++fe_in_it)
         {
-            if (*data_valid_it == true)
+            if (data_valid_it->read() == true)
             {
                 in_stub_t fe_data = fe_in_it->read();
                 std::pair<bool, sc_map_square<sc_in<in_stub_t> >::full_key_type>

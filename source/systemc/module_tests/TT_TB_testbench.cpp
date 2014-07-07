@@ -19,6 +19,7 @@
 #include "frontend_chip_cbc_tb.hpp"
 #include "frontend_chip_mpa_tb.hpp"
 #include "data_concentrator_cbc_tb.hpp"
+#include "data_concentrator_mpa_tb.hpp"
 //#include "data_organizer_tb.hpp"
 //#include "am_board_tb.hpp"
 //#include "am_system_tb.hpp"
@@ -36,9 +37,10 @@ int sc_main(int argc, char *agv[])
     // ----- Module instance declarations --------------------------------------
 
     //hit_generator_tb hit_generator_tb("Hit_Generator_TB");
-    //frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB");
-    //frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB");
+    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB");
+    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB");
     data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
+    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
     //am_system_tb am_system_tb("AM_System");
     //am_board_tb am_board_tb("AM_board_TB");
@@ -50,19 +52,19 @@ int sc_main(int argc, char *agv[])
     sc_trace_file *trace_file;
     trace_file=sc_create_vcd_trace_file("TT_TB_testbench");
 
-//    sc_trace(trace_file, fechip_cbc_tb.LHC_clock, "CBC.clock");
-//    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals.at(0), "CBC.data_valid_0");
-//    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[1], "CBC.data_valid_1");
-//    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[2], "CBC.data_valid_2");
-//    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[0], "CBC.fe_out_sig_0");
-//    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[1], "CBC.fe_out_sig_1");
-//    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[2], "CBC.fe_out_sig_2");
-//
-//    sc_trace(trace_file, fechip_mpa_tb.LHC_clock, "MPA.clock");
-//    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals.at(0), "MPA.data_valid_0");
-//    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals[1], "MPA.data_valid_1");
-//    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[0], "MPA.fe_out_sig_0");
-//    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[1], "MPA.fe_out_sig_1");
+    sc_trace(trace_file, fechip_cbc_tb.LHC_clock, "CBC.clock");
+    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals.at(0), "CBC.data_valid_0");
+    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[1], "CBC.data_valid_1");
+    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[2], "CBC.data_valid_2");
+    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[0], "CBC.fe_out_sig_0");
+    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[1], "CBC.fe_out_sig_1");
+    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[2], "CBC.fe_out_sig_2");
+
+    sc_trace(trace_file, fechip_mpa_tb.LHC_clock, "MPA.clock");
+    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals.at(0), "MPA.data_valid_0");
+    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals[1], "MPA.data_valid_1");
+    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[0], "MPA.fe_out_sig_0");
+    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[1], "MPA.fe_out_sig_1");
 
 
 
@@ -138,7 +140,7 @@ int sc_main(int argc, char *agv[])
     std::cout << std::endl << "Start test bench ..." << std::endl << std::endl;
 
     //sc_report_handler::set_actions (SC_ID_MORE_THAN_ONE_SIGNAL_DRIVER_, SC_DO_NOTHING);
-    sc_start(500, SC_NS);
+    sc_start(1500, SC_NS);
 
     sc_close_vcd_trace_file(trace_file);
     std::cout << std::endl << "Test bench ended." << std::endl;

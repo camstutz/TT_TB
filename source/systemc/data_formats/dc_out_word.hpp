@@ -16,6 +16,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <bitset>
 
 #include <systemc.h>
 
@@ -201,8 +202,9 @@ std::string dc_out_word<header_bits, payload_bits, total_bits>::get_string()
         const
 {
     std::stringstream out_string;
-    out_string << "[" << "H=" << header
-                      << "P=0x" << std::hex << payload << "]";
+    out_string << "[" << "H=" << std::bitset<header_width>(header)
+                      << "P=0x" << std::bitset<payload_width>(payload)
+                      << " (0x" << std::hex << payload << ")]";
 
     return (out_string.str());
 }
