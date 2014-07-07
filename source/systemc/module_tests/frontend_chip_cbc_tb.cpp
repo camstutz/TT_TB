@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc_tb.cpp
  * @author Christian Amstutz
- * @date July 4, 2014
+ * @date July 7, 2014
  */
 
 /*
@@ -19,8 +19,9 @@
  * The module is sensitive to ...
  */
 
-frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name) :
-        sc_module(_name),
+frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
+		sc_trace_file* trace_file) :
+		sc_module(_name),
         en_sig("en"),
         stub_input_sig("stub_input"),
         data_valid_signals(MAX_HITS_PER_CBC_FE_CHIP, "data_valid_sig"),
@@ -44,6 +45,9 @@ frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name) :
     log_buffer << std::endl
                << "Simulation Output of Front End Chip CBC TB:" << std::endl
                << "*******************************************" << std::endl;
+
+    trace(trace_file);
+
     return;
 }
 
@@ -175,4 +179,18 @@ void frontend_chip_cbc_tb::analyse_FE_out()
         }
     }
 
+}
+
+// *****************************************************************************
+void frontend_chip_cbc_tb::trace(sc_trace_file* trace_file)
+{
+	sc_trace(trace_file, LHC_clock, "CBC.clock");
+	sc_trace(trace_file, data_valid_signals.at(0), "CBC.data_valid_0");
+	sc_trace(trace_file, data_valid_signals[1], "CBC.data_valid_1");
+	sc_trace(trace_file, data_valid_signals[2], "CBC.data_valid_2");
+	sc_trace(trace_file, fe_out_signals[0], "CBC.fe_out_sig_0");
+	sc_trace(trace_file, fe_out_signals[1], "CBC.fe_out_sig_1");
+	sc_trace(trace_file, fe_out_signals[2], "CBC.fe_out_sig_2");
+
+	return;
 }

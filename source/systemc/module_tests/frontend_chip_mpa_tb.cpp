@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.cpp
  * @author Christian Amstutz
- * @date July 4, 2014
+ * @date July 7, 2014
  */
 
 /*
@@ -14,7 +14,8 @@
 
 // *****************************************************************************
 
-frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name) :
+frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name,
+		sc_trace_file* trace_file) :
         sc_module(_name),
         en_sig("en"),
         stub_input_sig("stub_input"),
@@ -39,6 +40,9 @@ frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name) :
     log_buffer << std::endl
                << "Simulation Output of Front End Chip MPA TB:" << std::endl
                << "*******************************************" << std::endl;
+
+    trace(trace_file);
+
     return;
 }
 
@@ -195,4 +199,16 @@ void frontend_chip_mpa_tb::analyse_FE_out()
         }
     }
 
+}
+
+// *****************************************************************************
+void frontend_chip_mpa_tb::trace(sc_trace_file* trace_file)
+{
+    sc_trace(trace_file, LHC_clock, "MPA.clock");
+    sc_trace(trace_file, data_valid_signals.at(0), "MPA.data_valid_0");
+    sc_trace(trace_file, data_valid_signals[1], "MPA.data_valid_1");
+    sc_trace(trace_file, fe_out_signals[0], "MPA.fe_out_sig_0");
+    sc_trace(trace_file, fe_out_signals[1], "MPA.fe_out_sig_1");
+
+	return;
 }

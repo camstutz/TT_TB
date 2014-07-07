@@ -28,6 +28,10 @@
 
 int sc_main(int argc, char *agv[])
 {
+    // ----- Set up tracing ----------------------------------------------------
+    sc_trace_file *trace_file;
+    trace_file = sc_create_vcd_trace_file("TT_TB_testbench");
+
     //hit_file_test();
 
     // ----- Channel declarations ----------------------------------------------
@@ -37,8 +41,8 @@ int sc_main(int argc, char *agv[])
     // ----- Module instance declarations --------------------------------------
 
     //hit_generator_tb hit_generator_tb("Hit_Generator_TB");
-    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB");
-    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB");
+    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file);
+    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
     data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
     data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
     //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
@@ -47,28 +51,6 @@ int sc_main(int argc, char *agv[])
     //fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 
     // ----- Time unit / resolution setup --------------------------------------
-
-    // ----- Set up tracing ----------------------------------------------------
-    sc_trace_file *trace_file;
-    trace_file=sc_create_vcd_trace_file("TT_TB_testbench");
-
-    sc_trace(trace_file, fechip_cbc_tb.LHC_clock, "CBC.clock");
-    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals.at(0), "CBC.data_valid_0");
-    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[1], "CBC.data_valid_1");
-    sc_trace(trace_file, fechip_cbc_tb.data_valid_signals[2], "CBC.data_valid_2");
-    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[0], "CBC.fe_out_sig_0");
-    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[1], "CBC.fe_out_sig_1");
-    sc_trace(trace_file, fechip_cbc_tb.fe_out_signals[2], "CBC.fe_out_sig_2");
-
-    sc_trace(trace_file, fechip_mpa_tb.LHC_clock, "MPA.clock");
-    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals.at(0), "MPA.data_valid_0");
-    sc_trace(trace_file, fechip_mpa_tb.data_valid_signals[1], "MPA.data_valid_1");
-    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[0], "MPA.fe_out_sig_0");
-    sc_trace(trace_file, fechip_mpa_tb.fe_out_signals[1], "MPA.fe_out_sig_1");
-
-
-
-
 
 //    sc_trace(trace_file, data_concentrator_tb.LHC_clock, "DC_clock");
 //    sc_trace(trace_file, data_concentrator_tb.dc_output, "dc_out");

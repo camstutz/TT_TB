@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc_tb.hpp
  * @author Christian Amstutz
- * @date July 4, 2014
+ * @date July 7, 2014
  *
  * @brief
  *
@@ -51,11 +51,13 @@ public:
     /*!
      * Constructor:
      */
-    frontend_chip_cbc_tb(sc_module_name _name);
+    frontend_chip_cbc_tb(sc_module_name _name, sc_trace_file* trace_file);
     SC_HAS_PROCESS(frontend_chip_cbc_tb);
     ~frontend_chip_cbc_tb();
     void end_of_elaboration();
 
 private:
     std::ostringstream log_buffer;
+
+    void trace(sc_trace_file* trace_file);
 };
