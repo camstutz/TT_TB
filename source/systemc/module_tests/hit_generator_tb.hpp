@@ -39,6 +39,7 @@ public:
 
     // ----- Process Declarations ----------------------------------------------
     void check_output();
+    void check_hit_counter();
 
     // ----- Other Method Declarations -----------------------------------------
 

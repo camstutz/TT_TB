@@ -45,6 +45,9 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
         sensitive << hit_signal.data_written_event();
     }
 
+    SC_THREAD(check_hit_counter);
+        sensitive << hit_cnt_signal;
+
     // ----- Module variable initialization ------------------------------------
 
     // ----- Module instance / channel binding ---------------------------------
@@ -59,55 +62,68 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
 // *****************************************************************************
 hit_generator_tb::~hit_generator_tb()
 {
-   std::cout << log_buffer.str();
+    std::cout << log_buffer.str();
 
-   return;
+    return;
 }
 
 // *****************************************************************************
 void hit_generator_tb::check_output()
 {
-  while(1)
-  {
-      wait();
+    while(1)
+    {
+        wait();
 
-      for (auto& hit_signal: hit_signals_mpa)
-      {
-          hit_generator::mpa_stub_t read_stub;
-          while (hit_signal.nb_read(read_stub)) {
-              std::pair<bool, sc_map_4d<sc_fifo<hit_generator::mpa_stub_t>>::full_key_type> signal_key;
-              signal_key = hit_signals_mpa.get_key(hit_signal);
-              log_buffer << sc_time_stamp () << " @ hit_generator."
-                         << "L" << signal_key.second.W_dim
-                         << "Phi" << signal_key.second.Z_dim
-                         << "Z" << signal_key.second.Y_dim
-                         << "FE" << signal_key.second.X_dim
-                         << " (MPA): " << std::hex
-                         << read_stub.get_bx() << " - "
-                         << "0x" << read_stub.get_strip() << ","
-                         << "0x" << read_stub.get_pixel() << " - "
-                         << "0x" << read_stub.get_bend() << std::endl;
-          }
-      }
+        for (auto& hit_signal: hit_signals_mpa)
+        {
+            hit_generator::mpa_stub_t read_stub;
+            while (hit_signal.nb_read(read_stub))
+            {
+                std::pair<bool, sc_map_4d<sc_fifo<hit_generator::mpa_stub_t>>::full_key_type> signal_key;
+                signal_key = hit_signals_mpa.get_key(hit_signal);
+                log_buffer << sc_time_stamp () << " @ hit_generator."
+                           << "L" << signal_key.second.W_dim
+                           << "Phi" << signal_key.second.Z_dim
+                           << "Z" << signal_key.second.Y_dim
+                           << "FE" << signal_key.second.X_dim
+                           << " (MPA): " << std::hex
+                           << read_stub.get_bx() << " - "
+                           << "0x" << read_stub.get_strip() << ","
+                           << "0x" << read_stub.get_pixel() << " - "
+                           << "0x" << read_stub.get_bend() << std::endl;
+            }
+        }
 
-      for (auto& hit_signal: hit_signals_cbc)
-      {
-          hit_generator::cbc_stub_t read_stub;
-          while (hit_signal.nb_read(read_stub)) {
-              std::pair<bool, sc_map_4d<sc_fifo<hit_generator::cbc_stub_t>>::full_key_type> signal_key;
-              signal_key = hit_signals_cbc.get_key(hit_signal);
-              log_buffer << sc_time_stamp () << " @ hit_generator."
-                         << "L" << signal_key.second.W_dim
-                         << "Phi" << signal_key.second.Z_dim
-                         << "Z" << signal_key.second.Y_dim
-                         << "FE" << signal_key.second.X_dim
-                         << " (CBC): " << std::hex
-                         << "0x" << read_stub.get_strip() << " - "
-                         << "0x" << read_stub.get_bend() << std::endl;
-          }
-      }
+        for (auto& hit_signal: hit_signals_cbc)
+        {
+            hit_generator::cbc_stub_t read_stub;
+            while (hit_signal.nb_read(read_stub))
+            {
+                std::pair<bool, sc_map_4d<sc_fifo<hit_generator::cbc_stub_t>>::full_key_type> signal_key;
+                signal_key = hit_signals_cbc.get_key(hit_signal);
+                log_buffer << sc_time_stamp () << " @ hit_generator."
+                           << "L" << signal_key.second.W_dim
+                           << "Phi" << signal_key.second.Z_dim
+                           << "Z" << signal_key.second.Y_dim
+                           << "FE" << signal_key.second.X_dim
+                           << " (CBC): " << std::hex
+                           << "0x" << read_stub.get_strip() << " - "
+                           << "0x" << read_stub.get_bend() << std::endl;
+            }
+        }
+    }
 
-  }
+}
 
-  return;
+// *****************************************************************************
+void hit_generator_tb::check_hit_counter()
+{
+    while(1)
+    {
+        wait();
+
+        log_buffer << sc_time_stamp() << ": hit_counter = "
+                   << hit_cnt_signal.read() << std::endl;
+    }
+
 }
