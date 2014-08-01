@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.hpp
  * @author Christian Amstutz
- * @date May 20, 2014
+ * @date Aug 1, 2014
  *
  * @brief
  *
@@ -22,6 +22,7 @@
 
 #include "../../../systems/TT_configuration.hpp"
 #include "../../../data_formats/fm_out_data.hpp"
+#include "../data_organizer/data_organizer_one_layer.hpp"
 
 /*!
  * @brief
@@ -29,7 +30,6 @@
 class fifo_manager_datapath : public sc_module
 {
 public:
-    //typedef typename std::array<std::vector<sc_bv<16> >, NR_DC_WINDOW_CYCLES > stub_table_type;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -42,13 +42,20 @@ public:
     sc_map_linear<sc_in<bool> > buffer_read_en;
     sc_in<unsigned int> time_stamp;
 
-    sc_map_linear<sc_in<do_out_data> > stub_in;
+    sc_map_linear<sc_in<bool> > dv_in;
+    sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> > stub_in;
+
+    sc_map_linear<sc_in<bool> > neighbour_dv_in;
+    sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> > neighbour_stub_in;
+    sc_map_linear<sc_in<bool> > neighbour_dv_out;
+    sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> > neighbour_stub_out;
+
+    sc_map_linear<sc_out<bool> > dv_out;
     sc_map_linear<sc_out<fm_out_data> > fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
 
 // ----- Local Storage Declarations --------------------------------------------
-    //std::array<stub_table_type, 2> stub_table;
 
 // ----- Process Declarations --------------------------------------------------
     void read_stubs();

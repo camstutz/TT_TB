@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date July 31, 2014
  *
  * @brief
  *
@@ -21,6 +21,7 @@
 
 #include "fifo_manager_controller.hpp"
 #include "fifo_manager_datapath.hpp"
+#include "../data_organizer/data_organizer_one_layer.hpp"
 
 /*!
  * @brief SystemC module
@@ -28,6 +29,7 @@
 class fifo_manager : public sc_module
 {
 public:
+    typedef data_organizer_one_layer::do_stub_t input_stub_t;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -36,8 +38,15 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
-    sc_map_square<sc_in<do_out_data> > stub_in;
+    sc_map_square<sc_in<bool> > dv_in;
+    sc_map_square<sc_in<input_stub_t> > stub_in;
 
+    sc_map_square<sc_in<bool> > neighbour_dv_in;
+    sc_map_square<sc_in<input_stub_t> > neighbour_stub_in;
+    sc_map_square<sc_out<bool> > neighbour_dv_out;
+    sc_map_square<sc_out<input_stub_t> > neighbour_stub_out;
+
+    sc_map_square<sc_out<bool> > dv_out;
     sc_map_square<sc_out<fm_out_data> > fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------

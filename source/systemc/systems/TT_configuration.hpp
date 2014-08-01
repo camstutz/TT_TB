@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date Aug 1, 2014
  *
  * @brief
  *
@@ -49,6 +49,7 @@
 
 #define NR_AM_BOARDS               4
 
+#define NR_NEIGHBOURING_TOWERS     2
 #define NR_DETECTOR_MPA_LAYERS     3  // Number of layers with PS modules existing in the detector
 #define NR_DETECTOR_CBC_LAYERS     3  // Number of layers with 2S modules existing in the detector
 #define NR_DETECTOR_LAYERS         NR_DETECTOR_CBC_LAYERS + NR_DETECTOR_MPA_LAYERS

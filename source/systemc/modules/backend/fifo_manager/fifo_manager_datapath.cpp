@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.cpp
  * @author Christian Amstutz
- * @date May 20, 2014
+ * @date Aug 1, 2014
  *
  * @brief
  */
@@ -27,7 +27,13 @@ fifo_manager_datapath::fifo_manager_datapath(sc_module_name _name) :
         buffer_write_en(NR_AM_BOARDS, "buffer_write_en"),
         buffer_read_en(NR_AM_BOARDS, "buffer_read_en"),
         time_stamp("time_stamp"),
+        dv_in(NR_DO_OUT_STUBS, "dv_in"),
         stub_in(NR_DO_OUT_STUBS, "stub_in"),
+        neighbour_dv_in(NR_NEIGHBOURING_TOWERS, "neighbour_dv_in"),
+        neighbour_stub_in(NR_NEIGHBOURING_TOWERS, "neighbour_stub_in"),
+        neighbour_dv_out(NR_NEIGHBOURING_TOWERS, "neighbour_dv_out"),
+        neighbour_stub_out(NR_NEIGHBOURING_TOWERS, "neighbour_stub_out"),
+        dv_out(NR_AM_BOARDS, "dv_out"),
         fifo_out(NR_AM_BOARDS, "fifo_out")
 {
     // ----- Process registration ----------------------------------------------
@@ -56,23 +62,21 @@ void fifo_manager_datapath::read_stubs()
         {
             if (buffer_write_en[AM_lane].read())
             {
-                sc_map_linear<sc_in<do_out_data> >::iterator input_it = stub_in.begin();
+                // Iterate over all inputs of the layer
+                sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> >::iterator input_it = stub_in.begin();
+                sc_map_linear<sc_in<bool> >::iterator dv_it = dv_in.begin();
                 for (; input_it != stub_in.end(); ++input_it)
                 {
-                    do_out_data input_value = input_it->read();
-                    if (input_value.get_dv())
+                    if (dv_it->read() == true)
                     {
-                        fm_out_data buffer_value;
-                        buffer_value.set_data_valid_flag(true);
-                        buffer_value.set_data_stub(input_value.get_data());
-                        stub_buffer[AM_lane].push(buffer_value);
+                        stub_buffer[AM_lane].push(fm_out_data(input_it->read()));
                     }
+
+                    ++dv_it;
                 }
                 if (!stub_buffer[AM_lane].empty())
                 {
-                    fm_out_data time_stamp_data;
-                    time_stamp_data.set_data_time_stamp(time_stamp.read());
-                    stub_buffer[AM_lane].push(time_stamp_data);
+                    stub_buffer[AM_lane].push(fm_out_data(time_stamp.read()));
                 }
             }
         }
