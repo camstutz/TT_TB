@@ -1,7 +1,7 @@
 /*!
  * @fm_out_data.hpp
  * @author Christian Amstutz
- * @date June 4, 2014
+ * @date July 31, 2014
  *
  * @brief
  *
@@ -31,7 +31,8 @@ class fm_out_data
 public:
     typedef bool data_valid_flag_t;
     typedef bool time_stamp_flag_t;
-    typedef stub_pzfs<DO_STUB_PHI_BITS, DO_STUB_Z_BITS, DO_STUB_FECHIP_BITS, DO_STUB_STRIP_BITS> fm_stub_t;
+    typedef stub_pzfs<DO_STUB_PHI_BITS, DO_STUB_Z_BITS, DO_STUB_FECHIP_BITS, DO_STUB_STRIP_BITS,
+            DO_STUB_PHI_BITS+DO_STUB_Z_BITS+DO_STUB_FECHIP_BITS+DO_STUB_STRIP_BITS> fm_stub_t;
     typedef sc_bv<16> payload_t;
     typedef payload_t time_stamp_t;
     typedef sc_bv<18> data_t;

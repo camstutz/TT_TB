@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date Apr 17, 2014
+ * @date July 30, 2014
  *
  * @brief
  *
@@ -20,9 +20,11 @@
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../../systems/TT_configuration.hpp"
-#include "../../../data_formats/do_out_data.hpp"
+#include "../../../data_formats/stub_pzfs.hpp"
 
 #include "data_organizer_one_layer.hpp"
+#include "data_organizer_one_layer_mpa.hpp"
+#include "data_organizer_one_layer_cbc.hpp"
 
 /*!
  * @brief SystemC module to split up the serial data from the detector into the
@@ -38,6 +40,8 @@ class data_organizer : public sc_module
 {
 public:
 
+    typedef data_organizer_one_layer::dc_out_t do_in_t;
+
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
@@ -45,12 +49,15 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
-    /** Linear sc_map for the stream inputs. There exist a seperate input for
+    /** Linear sc_map for the stream inputs. There exist a separate input for
       * ever layer of the detector */
-    sc_map_linear<sc_in<sc_bv<DC_OUTPUT_WIDTH> > >stream_in;
+    sc_map_linear<sc_in<do_in_t> >stream_in;
 
-    /** Linear sc_map for the re-arranged, re-timed stubs. */
-    sc_map_square<sc_out<do_out_data> > stub_out;
+    /** Square sc_map for the re-arranged, re-timed stubs and the according data
+     * valid lines.
+     */
+    sc_map_square<sc_out<bool> > dv;
+    sc_map_square<sc_out<data_organizer_one_layer::do_stub_t> > stub_out;
 
 // ----- Local Channel Declarations --------------------------------------------
     /** Control signal showing the actual time step of within the time window */
@@ -71,7 +78,8 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
-    sc_map_linear<data_organizer_one_layer> do_one_layer_map;
+    sc_map_linear<data_organizer_one_layer_mpa> do_one_layer_map_mpa;
+    sc_map_linear<data_organizer_one_layer_cbc> do_one_layer_map_cbc;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

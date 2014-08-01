@@ -1,7 +1,7 @@
 /*!
  * @file stub_pzfs.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date July 31, 2014
  *
  * @brief
  *
@@ -14,26 +14,24 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <iostream>
 
 #include <systemc.h>
 
+#include "multifield_base.hpp"
+
 // *****************************************************************************
 
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
+        unsigned int strip_bits, unsigned int total_bits>
 class stub_pzfs;
 
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-ostream& operator << (ostream &os,
-        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits> &v);
-
-template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
+        unsigned int strip_bits, unsigned int total_bits>
 void sc_trace(sc_trace_file *tf,
-        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits> &v,
-        const std::string &name);
+        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits, total_bits>
+        &v, const std::string &name);
 
 // *****************************************************************************
 
@@ -41,34 +39,38 @@ void sc_trace(sc_trace_file *tf,
  * @brief
  */
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-class stub_pzfs
+        unsigned int strip_bits, unsigned int total_bits>
+class stub_pzfs : public multifield_base<total_bits>
 {
 
 public:
+    typedef multifield_base<total_bits> base;
+
+    typedef unsigned int strip_t;
+    typedef sc_bv<strip_bits> strip_bv_t;
+    typedef unsigned int fechip_t;
+    typedef sc_bv<fechip_bits> fechip_bv_t;
+    typedef unsigned int z_t;
+    typedef sc_bv<z_bits> z_bv_t;
+    typedef unsigned int phi_t;
+    typedef sc_bv<phi_bits> phi_bv_t;
+    typedef typename base::full_bv_t full_bv_t;
+
     static const unsigned int strip_width = strip_bits;
     static const unsigned int fechip_width = fechip_bits;
     static const unsigned int z_width = z_bits;
     static const unsigned int phi_width = phi_bits;
-    static const unsigned int total_width = phi_bits + z_bits +
-            fechip_bits + strip_bits;
 
     static const unsigned int strip_start = 0;
     static const unsigned int fechip_start = strip_start + strip_bits;
     static const unsigned int z_start = fechip_start + fechip_bits;
     static const unsigned int phi_start = z_start + z_bits;
 
-    typedef sc_bv<strip_bits> strip_t;
-    typedef sc_bv<fechip_bits> fechip_t;
-    typedef sc_bv<z_bits> z_t;
-    typedef sc_bv<phi_bits> phi_t;
-
     /** Constructor: All member variables are by default set to 0. */
     stub_pzfs(const phi_t phi=0, const z_t z=0, const fechip_t fechip=0,
             const strip_t strip=0);
 
-    /** Constructor: Creates the stub out of a bit vector */
-    stub_pzfs(const sc_bv<total_width> bit_vector);
+    virtual ~stub_pzfs();
 
     /** Setter function for the phi coordinate */
     void set_phi(const phi_t phi);
@@ -95,21 +97,17 @@ public:
     strip_t  get_strip() const;
 
     /** Getter function for the whole stub as a bit vector */
-    sc_bv<total_width> get_bit_vector() const;
+    virtual full_bv_t get_bitvector() const;
+    virtual void set_bitvector(full_bv_t bit_vector);
 
-    /** Comparison of two extended stub objects */
-    bool operator == (const stub_pzfs &rhs) const;
+    virtual size_t get_max_string_length() const;
+    virtual std::string get_string() const;
 
-    /** Assignment operator for extended stubs */
-    stub_pzfs& operator = (const stub_pzfs & rhs);
+    /** Comparison of two stub objects */
+    bool operator== (const stub_pzfs &rhs) const;
 
-    /** Output function to print the address and bend of the extended stub. The
-     * format is: [phi,z,fechip,strip] */
-    friend ostream& operator << <> (ostream &os, const stub_pzfs &v);
-
-    /** Function for tracing support in SystemC */
-    friend void sc_trace <> (sc_trace_file *tf, const stub_pzfs &v,
-            const std::string &name);
+    /** Assignment operator for stubs */
+    stub_pzfs& operator= (const stub_pzfs & rhs);
 
 private:
 
@@ -124,42 +122,44 @@ private:
 
     /** Strip number from which the extended stub originates */
     strip_t strip;
+
+protected:
+    bool is_equal(const stub_pzfs& rhs) const;
+    void copy(const stub_pzfs& original);
+
+/** Function for tracing support in SystemC */
+friend void sc_trace <> (sc_trace_file *tf, const stub_pzfs &v,
+        const std::string &name);
 };
 
 // *****************************************************************************
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::stub_pzfs(const phi_t phi,
-        const z_t z, const fechip_t fechip, const strip_t strip) :
-        phi(phi),
-        z(z),
-        fechip(fechip),
-        strip(strip)
+        unsigned int strip_bits, unsigned int total_bits>
+stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits, total_bits>::stub_pzfs(
+        const phi_t phi, const z_t z, const fechip_t fechip,
+        const strip_t strip)
 {
+    set_phi(phi);
+    set_z(z);
+    set_fechip(fechip);
+    set_strip(strip);
+
     return;
 }
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::stub_pzfs(
-		const sc_bv<total_width> bit_vector)
-{
-	set_phi(bit_vector(total_width-1,phi_start));
-	set_z(bit_vector(phi_start-1, z_start));
-	set_fechip(bit_vector(z_start-1, fechip_start));
-	set_strip(bit_vector(fechip_start-1, strip_start));
-
-	return;
-}
+        unsigned int strip_bits, unsigned int total_bits>
+stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits, total_bits>::~stub_pzfs()
+{}
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_phi(
-        const phi_t phi)
+        unsigned int strip_bits, unsigned int total_bits>
+inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::set_phi(const phi_t phi)
 {
     this->phi = phi;
 
@@ -168,18 +168,19 @@ inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_phi(
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::phi_t
-        stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::get_phi() const
+        unsigned int strip_bits, unsigned int total_bits>
+inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::phi_t stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::get_phi() const
 {
     return (phi);
 }
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_z(
-        const z_t z)
+        unsigned int strip_bits, unsigned int total_bits>
+inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::set_z(const z_t z)
 {
     this->z = z;
 
@@ -188,18 +189,19 @@ inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_z(
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::z_t
-        stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::get_z() const
+        unsigned int strip_bits, unsigned int total_bits>
+inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::z_t stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::get_z() const
 {
     return (z);
 }
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_fechip(
-        const fechip_t fechip)
+        unsigned int strip_bits, unsigned int total_bits>
+inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::set_fechip(const fechip_t fechip)
 {
     this->fechip = fechip;
 
@@ -208,18 +210,19 @@ inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_fechip(
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::fechip_t
-        stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::get_fechip() const
+        unsigned int strip_bits, unsigned int total_bits>
+inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::fechip_t stub_pzfs<phi_bits, z_bits, fechip_bits,
+        strip_bits, total_bits>::get_fechip() const
 {
     return (fechip);
 }
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_strip(
-        const strip_t strip)
+        unsigned int strip_bits, unsigned int total_bits>
+inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::set_strip(const strip_t strip)
 {
     this->strip = strip;
 
@@ -228,78 +231,127 @@ inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::set_strip(
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::strip_t
-        stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::get_strip() const
+        unsigned int strip_bits, unsigned int total_bits>
+inline typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::strip_t stub_pzfs<phi_bits, z_bits, fechip_bits,
+        strip_bits, total_bits>::get_strip() const
 {
   return (strip);
 }
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-sc_bv<stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::total_width>
-        stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::get_bit_vector()
-        const
+        unsigned int strip_bits, unsigned int total_bits>
+typename stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::full_bv_t stub_pzfs<phi_bits, z_bits, fechip_bits,
+        strip_bits, total_bits>::get_bitvector() const
 {
-    sc_bv<total_width> full_stub;
-    full_stub = ( (phi, z, fechip, strip) );
+    full_bv_t output_bv;
 
-    return (full_stub);
+    output_bv(phi_start+phi_width-1, phi_start) = this->get_phi();
+    output_bv(z_start+z_width-1, z_start) = this->get_z();
+    output_bv(fechip_start+fechip_width-1, fechip_start) = this->get_fechip();
+    output_bv(strip_start+strip_width-1, strip_start) = this->get_strip();
+
+    return (output_bv);
 }
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-bool stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>::operator == (
-        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits> &rhs) const
+        unsigned int strip_bits, unsigned int total_bits>
+void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::set_bitvector(full_bv_t bit_vector)
 {
-    bool equality = true;
-    equality = equality && (rhs.phi == phi);
-    equality = equality && (rhs.z == z);
-    equality = equality && (rhs.fechip == fechip);
-    equality = equality && (rhs.strip == strip);
+    this->set_phi(bit_vector(phi_start+phi_width-1, phi_start).to_uint());
+    this->set_z(bit_vector(z_start+z_width-1, z_start).to_uint());
+    this->set_fechip(bit_vector(fechip_start+fechip_width-1, fechip_start).to_uint());
+    this->set_strip(bit_vector(strip_start+strip_width-1, strip_start).to_uint());
 
-    return (equality);
+    return;
 }
 
 // *****************************************************************************
 template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits>& stub_pzfs<phi_bits,
-        z_bits, fechip_bits, strip_bits>::operator = (
-        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits> & rhs)
+        unsigned int strip_bits, unsigned int total_bits>
+inline size_t stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::get_max_string_length() const
 {
-    phi = rhs.phi;
-    z = rhs.z;
-    fechip = rhs.fechip;
-    strip = rhs.strip;
+    // todo: relative to widths of fields
+    return (22);
+}
+
+// *****************************************************************************
+template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int total_bits>
+std::string stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::get_string() const
+{
+    std::stringstream out_string;
+    out_string << "[" << "P=" << this->get_phi()
+                      << "Z=" << this->get_z()
+                      << "F=" << this->get_fechip()
+                      << "S=" << this->get_strip() << "]";
+
+    return (out_string.str());
+}
+
+// *****************************************************************************
+template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int total_bits>
+bool stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::operator == (const stub_pzfs<phi_bits, z_bits, fechip_bits,
+        strip_bits, total_bits> &rhs) const
+{
+    return (is_equal(rhs));
+}
+
+// *****************************************************************************
+template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int total_bits>
+stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits, total_bits>& stub_pzfs<
+        phi_bits, z_bits, fechip_bits, strip_bits, total_bits>::operator= (
+        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits, total_bits>
+        & rhs)
+{
+    copy(rhs);
 
     return (*this);
 }
 
 // *****************************************************************************
-template <unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-ostream& operator << (ostream &os,
-        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits> &v)
+template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int total_bits>
+inline bool stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::is_equal(const stub_pzfs& rhs) const
 {
-    os << "[P=" << std::hex
-            << v.phi.to_uint() << ",Z="
-            << v.z.to_uint() << ",F="
-            << v.fechip.to_uint() << ",S="
-            << v.strip.to_uint()
-            << "]";
+    bool equal = false;
+    equal = equal & (phi == rhs.get_phi());
+    equal = equal & (z == rhs.get_z());
+    equal = equal & (fechip == rhs.get_fechip());
+    equal = equal & (strip == rhs.get_strip());
 
-    return (os);
+    return (equal);
 }
 
 // *****************************************************************************
-template <unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
-        unsigned int strip_bits>
-void sc_trace (sc_trace_file *tf,
-        const stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits> &v,
-        const std::string &name)
+template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int total_bits>
+inline void stub_pzfs<phi_bits, z_bits, fechip_bits, strip_bits,
+        total_bits>::copy(const stub_pzfs& original)
+{
+    set_phi(original.get_phi());
+    set_z(original.get_z());
+    set_fechip(original.get_fechip());
+    set_strip(original.get_strip());
+
+    return;
+}
+
+// *****************************************************************************
+template<unsigned int phi_bits, unsigned int z_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int total_bits>
+void sc_trace (sc_trace_file *tf, const stub_pzfs<phi_bits, z_bits, fechip_bits,
+        strip_bits, total_bits> &v, const std::string &name)
 {
     sc_trace(tf, v.phi, name + ".phi");
     sc_trace(tf, v.z, name + ".z");

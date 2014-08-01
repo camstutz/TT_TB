@@ -21,7 +21,6 @@
 #include "../../../libraries/systemc_helpers/nbits.hpp"
 
 #include "../../../systems/TT_configuration.hpp"
-#include "../../../data_formats/do_out_data.hpp"
 #include "../../../data_formats/fm_out_data.hpp"
 
 /*!

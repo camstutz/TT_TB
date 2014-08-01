@@ -20,7 +20,7 @@
 #include "frontend_chip_mpa_tb.hpp"
 #include "data_concentrator_cbc_tb.hpp"
 #include "data_concentrator_mpa_tb.hpp"
-//#include "data_organizer_tb.hpp"
+#include "data_organizer_tb.hpp"
 //#include "am_board_tb.hpp"
 //#include "am_system_tb.hpp"
 //#include "fifo_manager_tb.hpp"
@@ -45,7 +45,7 @@ int sc_main(int argc, char *agv[])
     frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
     data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
     data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
-    //data_organizer_tb data_organizer_tb("Data_Organizer_TB");
+    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
     //am_system_tb am_system_tb("AM_System");
     //am_board_tb am_board_tb("AM_board_TB");
     //fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");

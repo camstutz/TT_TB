@@ -62,6 +62,6 @@
 
 #define AM_HITS_PER_ROAD_THRESHOLD  6
 #define AM_BOARD_LATENCY           18
-#define AM_BOARD_PATTERN_WIDTH     18
+#define AM_BOARD_PATTERN_WIDTH     16
 #define AM_BOARD_ROAD_WIDTH        21
 #define AM_BOARD_PATTERN_NR        256

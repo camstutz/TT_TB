@@ -17,7 +17,6 @@
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../../systems/TT_configuration.hpp"
-#include "../../../data_formats/do_out_data.hpp"
 #include "../../../data_formats/fm_out_data.hpp"
 
 #include "fifo_manager_controller.hpp"

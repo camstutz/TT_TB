@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer.cpp
  * @author Christian Amstutz
- * @date May 20, 2014
+ * @date July 31, 2014
  *
  * @brief
  */
@@ -28,6 +28,7 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
         clock_phase("clock_phase"),
         stub_table_sel("stub_table_sel"),
         stream_in("stream_in"),
+        dv(NR_DO_OUT_STUBS, "dv"),
         stub_out(NR_DO_OUT_STUBS, "stub_out"),
         phi("phi"),
         z("z")
@@ -44,6 +45,7 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
+    // Make the stub_table the right size
     stub_table.resize(2);
     std::vector<stub_table_type>::iterator stub_table_it = stub_table.begin();
     for (; stub_table_it != stub_table.end(); ++stub_table_it)
@@ -57,30 +59,34 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
 // *****************************************************************************
 void data_organizer_one_layer::read_input()
 {
+    concat_buffer = 0;
+    cc_buf_write_ptr = 0;
+
     while (1)
     {
         wait();
 
-        sc_bv<DC_OUTPUT_WIDTH> input_word = stream_in.read();
-        input_buffer.write(input_word(DC_OUTPUT_WIDTH-2-1,0));
+        dc_out_t input_word = stream_in.read();
+        if (input_word.get_header() == 0x02)
+        {
+            concat_buffer = 0;
+            cc_buf_write_ptr = 0;
+        }
+        input_buffer.write(input_word.get_payload());
     }
 }
 
 // *****************************************************************************
 void data_organizer_one_layer::sort_stubs()
 {
-    sc_bv<DC_OUTPUT_WIDTH+16> concat_buffer;
-
-    concat_buffer = 0;
-    unsigned int cc_buf_write_ptr = 0;
-
     while (1)
     {
         wait();
 
+        // Clear stub buffer when a new buffer is selected
         if (stub_table_sel.event())
         {
-            std::vector<std::vector<sc_bv<16> > >::iterator stub_vector_it = stub_table[stub_table_sel.read()].begin();
+            stub_table_type::iterator stub_vector_it = stub_table[stub_table_sel.read()].begin();
             for(; stub_vector_it != stub_table[stub_table_sel.read()].end(); ++stub_vector_it)
             {
                 stub_vector_it->clear();
@@ -88,22 +94,11 @@ void data_organizer_one_layer::sort_stubs()
             cc_buf_write_ptr = 0;
         }
 
-        concat_buffer(cc_buf_write_ptr+(DC_OUTPUT_WIDTH-2)-1, cc_buf_write_ptr) = input_buffer.read();
-        cc_buf_write_ptr = cc_buf_write_ptr+(DC_OUTPUT_WIDTH-2);
+        // Write the input data to the intermediate buffer
+        concat_buffer(cc_buf_write_ptr+(dc_out_t::payload_width)-1, cc_buf_write_ptr) = input_buffer.read();
+        cc_buf_write_ptr = cc_buf_write_ptr + (dc_out_t::payload_width);
 
-        do
-        {
-            sc_bv<20> process_stub = concat_buffer(19,0);
-            if (process_stub[19] == true)
-            {
-                unsigned int time_stamp = process_stub(18,16).to_uint();
-                stub_table[stub_table_sel.read()][time_stamp].push_back(process_stub(15,0));
-            }
-
-            concat_buffer = concat_buffer(DC_OUTPUT_WIDTH+16-1,20);
-            cc_buf_write_ptr = cc_buf_write_ptr - 20;
-
-        } while (cc_buf_write_ptr >= 20);
+        process_input_buffer();
     }
 
 }
@@ -115,33 +110,26 @@ void data_organizer_one_layer::write_stubs()
     {
         wait();
 
-        // TODO: change constants to text
-        std::vector<sc_bv<16> > stub_vector;
+        std::vector<do_stub_t> stub_vector;
         stub_vector = stub_table[!stub_table_sel.read()][clock_phase.read().to_uint()];
 
         unsigned int output_cnt = 0;
         while (stub_vector.size() != 0)
         {
-            do_out_data::do_stub_t output_stub;
-            sc_bv<16> actual_stub = stub_vector.back();
+            do_stub_t output_stub = stub_vector.back();
             stub_vector.pop_back();
-            sc_bv<3> fe_chip = actual_stub(15,13);
-            sc_bv<5> superstrip = actual_stub(12,8);
-            output_stub.set_phi(phi.read());
-            output_stub.set_z(z.read());
-            output_stub.set_fechip(fe_chip);
-            output_stub.set_strip(superstrip);
-            do_out_data output_data;
-            output_data.set_dv(true);
-            output_data.set_data(output_stub);
-            stub_out[output_cnt].write(output_data);
+
+            dv[output_cnt].write(true);
+            stub_out[output_cnt].write(output_stub);
 
             ++output_cnt;
         }
 
+        do_stub_t empty_stub;
         while (output_cnt < NR_DO_OUT_STUBS)
         {
-            stub_out[output_cnt].write(do_out_data());
+            dv[output_cnt].write(false);
+            stub_out[output_cnt].write(empty_stub);
             ++output_cnt;
         }
     }
