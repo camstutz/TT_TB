@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_tb.cpp
  * @author Christian Amstutz
- * @date Aug 1, 2014
+ * @date Sep 18, 2014
  */
 
 /*
@@ -48,7 +48,10 @@ fifo_manager_tb::fifo_manager_tb(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(generate_input);
     SC_THREAD(print_output);
-        fifo_outputs.make_sensitive(sensitive);
+        sensitive << LHC_clock.posedge_event();
+        //fifo_outputs.make_sensitive(sensitive);
+        //neigh_dv_output;
+        //neigh_stub_output;
 
     // ----- Module variable initialization ------------------------------------
 
@@ -109,13 +112,18 @@ void fifo_manager_tb::generate_input()
     dv_inputs.at(0,10).write(true);
     stub_inputs.at(0,10).write(stub);
     stub = fifo_manager::input_stub_t(0,0,1,12);
-    dv_inputs.at(0,11).write(true);
-    stub_inputs.at(0,11).write(stub);
+    dv_inputs.at(1,11).write(true);
+    stub_inputs.at(1,11).write(stub);
+    stub = fifo_manager::input_stub_t(1,0,0,12);
+    neighbour_dv_inputs.at(0,0).write(true);
+    neighbour_stub_inputs.at(0,0).write(stub);
 
     wait(100, SC_NS);
     stub = fifo_manager::input_stub_t();
     dv_inputs.write_all(false);
     stub_inputs.write_all(stub);
+    neighbour_dv_inputs.write_all(false);
+    neighbour_stub_inputs.write_all(stub);
 
 //    wait(100, SC_NS);
 //    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,1));
@@ -149,8 +157,10 @@ void fifo_manager_tb::print_output()
     {
          wait();
 
+         // Check FIFO outputs
          auto fifo_out_it = fifo_outputs.begin();
          auto dv_out_it = dv_outputs.begin();
+
          for (; fifo_out_it != fifo_outputs.end(); ++fifo_out_it)
          {
              if (dv_out_it->read() == true)
@@ -163,18 +173,42 @@ void fifo_manager_tb::print_output()
 
                  if (value.is_timestamp())
                  {
-                     log_buffer << sc_time_stamp() << "(" << lane << "," << layer << "):";
+                     log_buffer << sc_time_stamp() << " (Lane=" << lane << ",Lay=" << layer << "): ";
                      log_buffer << " TS=" << value.get_timestamp() << std::endl;
                  }
                  else
                  {
-                     log_buffer << sc_time_stamp() << "(" << lane << "," << layer << "):";
+                     log_buffer << sc_time_stamp() << " (Lane=" << lane << ",Lay=" << layer << "): ";
                      log_buffer << value.get_data_stub() << std::endl;
                  }
              }
 
              ++dv_out_it;
          }
+
+         // Check neighbour outputs
+         auto neighbour_out_it = neighbour_stub_outputs.begin();
+         auto neighbour_dv_it = neighbour_dv_outputs.begin();
+
+         for (; neighbour_out_it != neighbour_stub_outputs.end(); ++neighbour_out_it)
+         {
+             if (neighbour_dv_it->read() == true)
+             {
+                 auto neighb_stub = neighbour_out_it->read();
+
+                 auto neighb_key = neighbour_stub_outputs.get_key(*neighbour_out_it);
+                 auto neighbour = neighb_key.second.Y_dim;
+                 auto layer = neighb_key.second.X_dim;
+
+                 log_buffer << sc_time_stamp() << " (N=" << neighbour << ",L=" << layer << "): ";
+                 log_buffer << neighb_stub << std::endl;
+             }
+
+             ++neighbour_dv_it;
+         }
+
+
+
     }
 
 }

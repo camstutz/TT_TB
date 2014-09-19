@@ -15,8 +15,8 @@
 
 #include <systemc.h>
 
-#include "../../../../systems/TT_configuration.hpp"
-#include "../../../../data_formats/fm_out_data.hpp"
+#include "../../../systems/TT_configuration.hpp"
+#include "../../../data_formats/fm_out_data.hpp"
 
 /*!
  * @brief

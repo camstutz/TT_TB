@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.cpp
  * @author Christian Amstutz
- * @date Aug 1, 2014
+ * @date Sep 18, 2014
  *
  * @brief
  */
@@ -41,12 +41,15 @@ fifo_manager_datapath::fifo_manager_datapath(sc_module_name _name) :
         sensitive << clk.pos();
     SC_THREAD(write_fifos);
         sensitive << clk.pos();
+    SC_THREAD(write_neighbours);
+        sensitive << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
 
     stub_buffer.resize(NR_AM_BOARDS);
+    neighbour_buffer.resize(NR_NEIGHBOURING_TOWERS);
 
     return;
 }
@@ -63,17 +66,48 @@ void fifo_manager_datapath::read_stubs()
             if (buffer_write_en[AM_lane].read())
             {
                 // Iterate over all inputs of the layer
-                sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> >::iterator input_it = stub_in.begin();
+                sc_map_linear<sc_in<input_stub_t> >::iterator input_it = stub_in.begin();
                 sc_map_linear<sc_in<bool> >::iterator dv_it = dv_in.begin();
                 for (; input_it != stub_in.end(); ++input_it)
                 {
                     if (dv_it->read() == true)
                     {
-                        stub_buffer[AM_lane].push(fm_out_data(input_it->read()));
+                        input_stub_t input_stub = input_it->read();
+                        stub_buffer[AM_lane].push(fm_out_data(input_stub));
+std::cout << "Value written to output buffer" << std::endl;
+
+                        // Check to which neighbours a stub should be
+                        // transmitted too.
+                        neighbour_vector neighbours = neighbour_selector(input_stub);
+                        if (!neighbours.empty())
+                        {
+                            neighbour_vector::iterator neighbour_it = neighbours.begin();
+                            for (; neighbour_it != neighbours.end(); ++neighbour_it)
+                            {
+                                neighbour_buffer[*neighbour_it].push(input_stub);
+std::cout << "Value written to neighbour buffer" << std::endl;
+                            }
+                        }
                     }
 
                     ++dv_it;
                 }
+
+                sc_map_linear<sc_in<input_stub_t> >::iterator neighbour_input_it = neighbour_stub_in.begin();
+                sc_map_linear<sc_in<bool> >::iterator neighbour_dv_it = neighbour_dv_in.begin();
+                for (; neighbour_input_it != neighbour_stub_in.end(); ++neighbour_input_it)
+                {
+                    if (neighbour_dv_it->read() == true)
+                    {
+                        input_stub_t input_stub = neighbour_input_it->read();
+                        stub_buffer[AM_lane].push(fm_out_data(input_stub));
+std::cout << "Value from neighbour written to output buffer" << std::endl;
+                    }
+
+                    ++neighbour_dv_it;
+                }
+
+                // add time stamp to buffer if there are stubs in the buffer
                 if (!stub_buffer[AM_lane].empty())
                 {
                     stub_buffer[AM_lane].push(fm_out_data(time_stamp.read()));
@@ -91,6 +125,8 @@ void fifo_manager_datapath::write_fifos()
     {
         wait();
 
+        dv_out.write_all(false);
+
         for (unsigned int AM_lane = 0; AM_lane < NR_AM_BOARDS; ++AM_lane)
         {
             bool read_this_lane = buffer_read_en[AM_lane].read();
@@ -98,6 +134,7 @@ void fifo_manager_datapath::write_fifos()
             {
                 fm_out_data output_data = stub_buffer[AM_lane].front();
                 stub_buffer[AM_lane].pop();
+                dv_out[AM_lane].write(true);
                 fifo_out[AM_lane].write(output_data);
             }
             else
@@ -107,4 +144,51 @@ void fifo_manager_datapath::write_fifos()
         }
     }
 
+}
+
+// *****************************************************************************
+void fifo_manager_datapath::write_neighbours()
+{
+    while(1)
+    {
+        wait();
+
+        for (unsigned int neighbour_out = 0;
+             neighbour_out < NR_NEIGHBOURING_TOWERS;
+             ++neighbour_out)
+        {
+            if (!neighbour_buffer[neighbour_out].empty())
+            {
+                neighbour_dv_out[neighbour_out].write(true);
+                neighbour_stub_out[neighbour_out].write(neighbour_buffer[neighbour_out].front());
+                neighbour_buffer[neighbour_out].pop();
+            }
+            else
+            {
+                neighbour_dv_out[neighbour_out].write(false);
+                neighbour_stub_out[neighbour_out].write(input_stub_t());
+            }
+        }
+    }
+
+}
+
+// *****************************************************************************
+fifo_manager_datapath::neighbour_vector
+fifo_manager_datapath::neighbour_selector(input_stub_t stub) const
+{
+    neighbour_vector neighbours;
+
+    // todo: this is not real code just for testing purpose
+    if (stub.get_strip() < 2)
+    {
+        neighbours.push_back(0);
+    }
+
+    if (stub.get_strip() > 10)
+    {
+        neighbours.push_back(1);
+    }
+
+    return (neighbours);
 }

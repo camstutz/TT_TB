@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.hpp
  * @author Christian Amstutz
- * @date Aug 1, 2014
+ * @date Aug 4, 2014
  *
  * @brief
  *
@@ -30,6 +30,8 @@
 class fifo_manager_datapath : public sc_module
 {
 public:
+    typedef data_organizer_one_layer::do_stub_t input_stub_t;
+    typedef std::vector<unsigned int> neighbour_vector;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -43,12 +45,12 @@ public:
     sc_in<unsigned int> time_stamp;
 
     sc_map_linear<sc_in<bool> > dv_in;
-    sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> > stub_in;
+    sc_map_linear<sc_in<input_stub_t> > stub_in;
 
     sc_map_linear<sc_in<bool> > neighbour_dv_in;
-    sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> > neighbour_stub_in;
-    sc_map_linear<sc_in<bool> > neighbour_dv_out;
-    sc_map_linear<sc_in<data_organizer_one_layer::do_stub_t> > neighbour_stub_out;
+    sc_map_linear<sc_in<input_stub_t> > neighbour_stub_in;
+    sc_map_linear<sc_out<bool> > neighbour_dv_out;
+    sc_map_linear<sc_out<input_stub_t> > neighbour_stub_out;
 
     sc_map_linear<sc_out<bool> > dv_out;
     sc_map_linear<sc_out<fm_out_data> > fifo_out;
@@ -60,8 +62,10 @@ public:
 // ----- Process Declarations --------------------------------------------------
     void read_stubs();
     void write_fifos();
+    void write_neighbours();
 
 // ----- Other Method Declarations ---------------------------------------------
+    neighbour_vector neighbour_selector(input_stub_t stub) const;
 
 // ----- Module Instantiations -------------------------------------------------
 
@@ -75,4 +79,5 @@ public:
 private:
 
     std::vector<std::queue<fm_out_data> > stub_buffer;
+    std::vector<std::queue<input_stub_t> > neighbour_buffer;
 };

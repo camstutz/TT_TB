@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager.hpp
  * @author Christian Amstutz
- * @date July 31, 2014
+ * @date Sep 18, 2014
  *
  * @brief
  *
@@ -38,15 +38,31 @@ public:
     /** Input port for the reset signal (currently not used) */
     sc_in<bool> rst;
 
+    /** Data valid inputs for the stub inputs of this trigger tower. The
+     *  dimensions of sc_map are (layer, stub number). */
     sc_map_square<sc_in<bool> > dv_in;
+    /** The stub inputs of the trigger tower. The dimensions of sc_map are
+     *  (layer, stub number). */
     sc_map_square<sc_in<input_stub_t> > stub_in;
 
+    /** Inputs for the data valid signals of the neighboring trigger towers. The
+     *  dimensions of sc_map are (tower, layer). */
     sc_map_square<sc_in<bool> > neighbour_dv_in;
+    /** Inputs for the stubs from the neighboring trigger towers. The dimensions
+     *  of sc_map are (tower, layer). */
     sc_map_square<sc_in<input_stub_t> > neighbour_stub_in;
+    /** Outputs for the data valid signals of the neighboring trigger towers.
+     *  The dimensions of sc_map are (tower, layer). */
     sc_map_square<sc_out<bool> > neighbour_dv_out;
+    /** Outputs for the stubs from the neighboring trigger towers. The
+     *  dimensions of sc_map are (tower, layer). */
     sc_map_square<sc_out<input_stub_t> > neighbour_stub_out;
 
+    /** Data valid output to signal the availability of data to the FIFO. The
+     *  the dimensions within sc_amp are (AM lane, layer). */
     sc_map_square<sc_out<bool> > dv_out;
+    /** Data output to the FIFOs. The dimensions within sc_map are
+     *  (AM lane, layer). */
     sc_map_square<sc_out<fm_out_data> > fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------

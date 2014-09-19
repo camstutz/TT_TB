@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date July 7, 2014
+ * @date Aug 4, 2014
  *
  * @brief
  */
@@ -22,6 +22,7 @@
 #include "data_concentrator_mpa_tb.hpp"
 #include "data_organizer_tb.hpp"
 #include "fifo_manager_tb.hpp"
+//#include "fifo_manager_datapath_tb.hpp"
 //#include "am_board_tb.hpp"
 //#include "am_system_tb.hpp"
 
@@ -31,7 +32,7 @@ int sc_main(int argc, char *agv[])
     sc_trace_file *trace_file;
     trace_file = sc_create_vcd_trace_file("TT_TB_testbench");
 
-    hit_file_test();
+    //hit_file_test();
 
     // ----- Channel declarations ----------------------------------------------
 
@@ -46,6 +47,7 @@ int sc_main(int argc, char *agv[])
 //    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
     fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
+//    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
     //am_system_tb am_system_tb("AM_System");
     //am_board_tb am_board_tb("AM_board_TB");
 
