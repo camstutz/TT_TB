@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.hpp
  * @author Christian Amstutz
- * @date Nov 13, 2014
+ * @date November 18, 2014
  *
  * @brief
  */
@@ -10,8 +10,9 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include <systemc.h>
+#include <map>
 
+#include <systemc.h>
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "am_ctrl_exp_config.hpp"
@@ -30,6 +31,7 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
 
     // ----- Process Declarations ----------------------------------------------
+    void lookup_road();
 
     // ----- Other Method Declarations -----------------------------------------
 
@@ -41,4 +43,12 @@ public:
      */
     pattern_memory(const sc_module_name _name);
     SC_HAS_PROCESS(pattern_memory);
+
+private:
+    void initialize_patterns();
+    void print_pattern_bank();
+
+	typedef std::vector<superstrip_t> pattern_t;
+    typedef std::map<road_t, pattern_t> pattern_bank_t;
+    pattern_bank_t pattern_bank;
 };

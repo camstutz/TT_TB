@@ -47,6 +47,9 @@ int sc_main(int argc, char *agv[])
 
     sc_trace(trace_file, testbench.hit_search_sig, "hit_search");
 
+    sc_trace(trace_file, testbench.pattern_mem_addr_sig, "pattern_address");
+    sc_trace(trace_file, testbench.pattern_mem_out_sig, "pattern");
+
     // ----- Start simulation --------------------------------------------------
 
     std::cout << std::endl << std::endl;
