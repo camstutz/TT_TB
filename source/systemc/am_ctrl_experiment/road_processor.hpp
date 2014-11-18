@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.hpp
  * @author Christian Amstutz
- * @date Nov 13, 2014
+ * @date November 18, 2014
  *
  * @brief
  */
@@ -15,6 +15,8 @@
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "am_ctrl_exp_config.hpp"
+
+#define VALUE_EVENT 0
 
 /*!
  * @brief
@@ -32,8 +34,10 @@ public:
     sc_map_linear<sc_out<hit_t> > hit_output;
 
     // ----- Local Channel Declarations ----------------------------------------
+    sc_buffer<unsigned int> type_buffer;
 
     // ----- Process Declarations ----------------------------------------------
+    void process_incoming_roads();
 
     // ----- Other Method Declarations -----------------------------------------
 

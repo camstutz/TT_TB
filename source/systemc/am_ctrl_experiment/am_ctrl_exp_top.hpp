@@ -1,7 +1,7 @@
 /*!
  * @file am_ctrl_exp_top.hpp
  * @author Christian Amstutz
- * @date Nov 13, 2014
+ * @date November 13, 2014
  *
  * @brief
  */

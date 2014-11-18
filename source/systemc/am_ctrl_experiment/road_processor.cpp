@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.cpp
  * @author Christian Amstutz
- * @date Nov 13, 2014
+ * @date November 18, 2014
  *
  * @brief
  */
@@ -17,7 +17,6 @@ SC_MODULE_EXPORT(road_processor);
 #endif
 
 // *****************************************************************************
-
 road_processor::road_processor(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
@@ -28,6 +27,13 @@ road_processor::road_processor(const sc_module_name _name) :
         hit_lookup_result(LAYER_NUMBER, "hit_lookup_result"),
         hit_output(LAYER_NUMBER, "hit_output")
 {
+	// ----- Process registration ----------------------------------------------
+    SC_THREAD(process_incoming_roads);
+        sensitive << road_input;
+
+    // ----- Module channel/variable initialization ----------------------------
+
+    // ----- Module instance / channel binding ---------------------------------
 
 //#ifdef MTI_SYSTEMC
 //    hit_fifos.register_signal_modelsim<hit_generator::hitgen_stub_t>();
@@ -36,4 +42,26 @@ road_processor::road_processor(const sc_module_name _name) :
 //#endif
 
     return;
+}
+
+// *****************************************************************************
+void road_processor::process_incoming_roads()
+{
+	while(1)
+	{
+		wait();
+
+		road_t detected_road = road_input.read();
+
+		if ((detected_road == IDLE_EVENT) || (detected_road == START_EVENT))
+		{
+		    type_buffer.write(detected_road);
+		}
+		else
+		{
+		    road_lookup.write(detected_road);
+		    type_buffer.write(VALUE_EVENT);
+		}
+	}
+
 }
