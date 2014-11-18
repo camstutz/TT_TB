@@ -1,7 +1,7 @@
 /*!
  * @file am_lane.hpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date Nov 10, 2014
  *
  * @brief
  *
@@ -21,7 +21,7 @@
 #include "../../../data_formats/fm_out_data.hpp"
 #include "am_controller/am_controller.hpp"
 #include "am_board/am_board.hpp"
-#include "stub_fifo/stub_fifo.hpp"
+#include "../stub_fifo/stub_fifo.hpp"
 
 /*!
  * @brief SystemC

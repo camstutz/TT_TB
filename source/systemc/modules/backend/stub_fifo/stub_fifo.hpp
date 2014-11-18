@@ -1,7 +1,7 @@
 /*!
  * @file stub_fifo.hpp
  * @author Christian Amstutz
- * @date Apr 25, 2014
+ * @date Nov 11, 2014
  *
  * @brief
  *
@@ -29,6 +29,7 @@ public:
     sc_in<bool> clk;
     sc_in<bool> rst;
 
+    sc_in<bool> write_en;
     sc_in<bool> read_en;
     sc_out<bool> not_empty;
 
@@ -68,6 +69,7 @@ stub_fifo<depth>::stub_fifo(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
         rst("rst"),
+        write_en("write_en"),
         read_en("read_en"),
         not_empty("not_empty"),
         stub_in("stub_in"),
@@ -76,7 +78,7 @@ stub_fifo<depth>::stub_fifo(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
-        sensitive << stub_in;
+        sensitive << clk.pos();
     SC_THREAD(write_output);
         sensitive << clk.pos();
     SC_THREAD(update_not_empty);
@@ -97,10 +99,9 @@ void stub_fifo<depth>::read_input()
     {
         wait();
 
-        fm_out_data input_value = stub_in.read();
-        if (input_value.get_data_valid_flag())
+        if (write_en.read() == true)
         {
-            fifo.write(input_value);
+            fifo.write(stub_in.read());
         }
     }
 

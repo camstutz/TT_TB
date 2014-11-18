@@ -118,34 +118,12 @@ void fifo_manager_tb::generate_input()
     neighbour_dv_inputs.at(0,0).write(true);
     neighbour_stub_inputs.at(0,0).write(stub);
 
-    wait(100, SC_NS);
+    wait(50, SC_NS);
     stub = fifo_manager::input_stub_t();
     dv_inputs.write_all(false);
     stub_inputs.write_all(stub);
     neighbour_dv_inputs.write_all(false);
     neighbour_stub_inputs.write_all(stub);
-
-//    wait(100, SC_NS);
-//    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,1));
-//    stub_inputs.at(0,0).write(stub);
-//    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,2));
-//    stub_inputs.at(0,1).write(stub);
-//    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,3));
-//    stub_inputs.at(0,2).write(stub);
-//    stub = do_out_data(true, do_out_data::do_stub_t(1,1,0,4));
-//    stub_inputs.at(0,3).write(stub);
-//
-//    wait(100, SC_NS);
-//    stub = do_out_data(false, do_out_data::do_stub_t(0,0,0,0));
-//    stub_inputs.write_all(stub);
-//
-//    wait(100, SC_NS);
-//    stub = do_out_data(true, do_out_data::do_stub_t(2,2,0,20));
-//    stub_inputs.at(0,0).write(stub);
-//
-//    wait(100, SC_NS);
-//    stub = do_out_data(false, do_out_data::do_stub_t(0,0,0,0));
-//    stub_inputs.write_all(stub);
 
     return;
 }
