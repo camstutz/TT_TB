@@ -1,7 +1,7 @@
 /*!
  * @file am_chip_write_ctrl.cpp
  * @author Christian Amstutz
- * @date Nov 14, 2014
+ * @date November 19, 2014
  *
  * @brief File contains the implementation of the AM board FSM.
  */
@@ -15,26 +15,27 @@
 // *****************************************************************************
 
 const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::IDLE = 0x01;
-const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::START = 0x02;
-const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::TX_ROAD = 0x03;
+const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::RX_HIT = 0x02;
 
 // *****************************************************************************
 
 /*!
- * @class am_chip_write_ctrl
+ * @class am_chip_read_ctrl
  *
  */
 
 am_chip_write_ctrl::am_chip_write_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        roads_detected("roads_detected"),
-        road_input("road_input"),
-        road_output("road_output")
+        hit_inputs(LAYER_NUMBER, "hit_inputs"),
+        process_hits(LAYER_NUMBER, "process_hit"),
+        process_roads("process_roads"),
+        current_state("current_state")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
-        sensitive << roads_detected << clk.pos();
+        hit_inputs.make_sensitive(sensitive);
+        process_hits.make_sensitive(sensitive);
 
     // ----- Module channel/variable initialization ----------------------------
     current_state = IDLE;
@@ -47,37 +48,64 @@ am_chip_write_ctrl::am_chip_write_ctrl(sc_module_name _name) :
 // *****************************************************************************
 void am_chip_write_ctrl::controller()
 {
-    road_output.write(IDLE_EVENT);
+    process_roads.write(false);
 
     while (1)
     {
         wait();
 
+        bool wait_flag;
+        sc_map_linear<sc_in<superstrip_t> >::iterator hit_input_it = hit_inputs.begin();
+        sc_map_linear<sc_out<bool> >::iterator process_hit_it = process_hits.begin();
         switch (current_state)
         {
         case IDLE:
-            if (roads_detected.event())
+            wait_flag = false;
+            hit_input_it = hit_inputs.begin();
+            for (; hit_input_it != hit_inputs.end(); ++hit_input_it)
             {
-                road_output.write(IDLE_EVENT);
-                current_state = START;
+                if (hit_input_it->read() != START_EVENT)
+                {
+                    wait_flag = true;
+                }
+            }
+            if (!wait_flag)
+            {
+                current_state.write(RX_HIT);
+                for (unsigned int i=0; i<LAYER_NUMBER; ++i)
+                {
+                    process_hits.write_all(true);
+                }
             }
             break;
 
-        case START:
-            road_output.write(START_EVENT);
-            current_state = TX_ROAD;
-            break;
+        case RX_HIT:
+            hit_input_it = hit_inputs.begin();
+            for (unsigned int i=0; hit_input_it != hit_inputs.end(); ++hit_input_it)
+            {
+                if (hit_input_it->read() == IDLE_EVENT)
+                {
+                    process_hits[i].write(false);
+                }
+                ++i;
+            }
 
-        case TX_ROAD:
-            if (road_input.num_available() > 0)
+            wait_flag = false;
+            process_hit_it = process_hits.begin();
+            for (; process_hit_it != process_hits.end(); ++process_hit_it)
             {
-                road_output.write(road_input.read());
+                if (process_hit_it->read())
+                {
+                    wait_flag = true;
+                }
             }
-            else
+
+            if (!wait_flag)
             {
-                road_output.write(IDLE_EVENT);
-                current_state = IDLE;
+                current_state.write(IDLE);
+                process_roads.write(true);
             }
+
             break;
 
         default:

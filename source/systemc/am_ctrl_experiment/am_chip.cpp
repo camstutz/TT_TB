@@ -47,15 +47,15 @@ am_chip::am_chip(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
-    read_controller.clk.bind(clk);
-    read_controller.hit_inputs.bind(hit_inputs);
-    read_controller.process_hits.bind(process_hits);
-    read_controller.process_roads.bind(process_roads_sig);
-
     write_controller.clk.bind(clk);
-    write_controller.roads_detected.bind(roads_detected);
-    write_controller.road_input(detected_roads_buffer);
-    write_controller.road_output(road_output);
+    write_controller.hit_inputs.bind(hit_inputs);
+    write_controller.process_hits.bind(process_hits);
+    write_controller.process_roads.bind(process_roads_sig);
+
+    read_controller.clk.bind(clk);
+    read_controller.roads_detected.bind(roads_detected);
+    read_controller.road_input(detected_roads_buffer);
+    read_controller.road_output(road_output);
 
 //    latency_correction_data_ready.clk.bind(clk);
 //    latency_correction_data_ready.input.bind(output_data_ready_no_delay);

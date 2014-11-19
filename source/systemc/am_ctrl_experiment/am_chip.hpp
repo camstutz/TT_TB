@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date Nov 14, 2014
+ * @date November 19, 2014
  *
  * @brief File containing the definition of the AM board.
  */

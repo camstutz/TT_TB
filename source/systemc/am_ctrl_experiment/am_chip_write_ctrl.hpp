@@ -1,7 +1,7 @@
 /*!
  * @file am_chip_write_ctrl.hpp
  * @author Christian Amstutz
- * @date Nov 14, 2014
+ * @date November 19, 2014
  *
  * @brief File contains the definition of the AM board FSM.
  */
@@ -23,8 +23,7 @@ public:
     /** @brief Data type of the FSM states */
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
-    static const fsm_states START;
-    static const fsm_states TX_ROAD;
+    static const fsm_states RX_HIT;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock
@@ -32,16 +31,33 @@ public:
      * Input port for the clock signal.
      */
     sc_in<bool> clk;
-    sc_in<bool> roads_detected;
 
-    sc_fifo_in<road_t> road_input;
-    sc_out<road_t> road_output;
+    sc_map_linear<sc_in<superstrip_t> > hit_inputs;
+    sc_map_linear<sc_out<bool> > process_hits;
+
+    /** @brief Signal to enable road processing.
+     *
+     * Output port of the control signal that shows that in the actual state
+     * the hits can be processed.
+     */
+    sc_out<bool> process_roads;
 
 // ----- Local Channel Declarations --------------------------------------------
     /** @brief Signal containing the current FSM state. */
     sc_signal<fsm_states> current_state;
 
 // ----- Process Declarations --------------------------------------------------
+    /**
+     * @brief Combinatorial process of the FSM
+     *
+     * Switches through the different states depending on the input ports
+     * write_enable and road_buffer_empty. Updates the output ports
+     * process_roads and write_roads.
+     *
+     * This process runs indefinitely and is sensitive to the change of the
+     * current state, the empty signal of the output road buffer, and the write
+     * enable inputs.
+     */
     void controller();
 
 // ----- Other Method Declarations ---------------------------------------------
