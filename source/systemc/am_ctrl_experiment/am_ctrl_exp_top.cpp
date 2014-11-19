@@ -109,19 +109,6 @@ void am_ctrl_exp_top::generate_input()
     wait(10, SC_NS);
     input_hit_sig[0].write(IDLE_EVENT);
     wait(100, SC_NS);
-    hit_search_sig[0].write(START_EVENT);
-    hit_search_sig[1].write(START_EVENT);
-    wait(10,SC_NS);
-    hit_search_sig[0].write(0x02);
-    hit_search_sig[1].write(0x02);
-    wait(10, SC_NS);
-    hit_search_sig[0].write(IDLE_EVENT);
-    hit_search_sig[1].write(IDLE_EVENT);
-    wait(100, SC_NS);
-    pattern_mem_addr_sig.write(1);
-    wait(10, SC_NS);
-    pattern_mem_addr_sig.write(3);
-
 
     return;
 }

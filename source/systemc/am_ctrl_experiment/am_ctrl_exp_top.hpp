@@ -39,7 +39,7 @@ public:
     sc_map_linear<sc_signal<superstrip_t> > am_input_sig;
     sc_signal<road_t> am_output_sig;
     sc_signal<road_t> pattern_mem_addr_sig;
-    sc_map_linear<sc_signal<superstrip_t> > pattern_mem_out_sig;
+    sc_map_linear<sc_buffer<superstrip_t> > pattern_mem_out_sig;
     sc_map_linear<sc_signal<superstrip_t> > hit_search_sig;
     sc_map_linear<sc_signal<hit_t> > hit_result_sig;
     sc_map_linear<sc_signal<hit_t> > output_hit_sig;

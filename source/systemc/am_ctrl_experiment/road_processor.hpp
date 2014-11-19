@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.hpp
  * @author Christian Amstutz
- * @date November 18, 2014
+ * @date November 19, 2014
  *
  * @brief
  */
@@ -34,10 +34,11 @@ public:
     sc_map_linear<sc_out<hit_t> > hit_output;
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_buffer<unsigned int> type_buffer;
+    sc_fifo<unsigned int> command_buffer;
 
     // ----- Process Declarations ----------------------------------------------
     void process_incoming_roads();
+    void lookup_superstrips();
 
     // ----- Other Method Declarations -----------------------------------------
 

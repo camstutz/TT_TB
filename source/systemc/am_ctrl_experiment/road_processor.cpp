@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.cpp
  * @author Christian Amstutz
- * @date November 18, 2014
+ * @date November 19, 2014
  *
  * @brief
  */
@@ -30,16 +30,13 @@ road_processor::road_processor(const sc_module_name _name) :
 	// ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_roads);
         sensitive << road_input;
+    SC_THREAD(lookup_superstrips);
+        sensitive << command_buffer.data_written_event();
+
 
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-
-//#ifdef MTI_SYSTEMC
-//    hit_fifos.register_signal_modelsim<hit_generator::hitgen_stub_t>();
-//    do_stub_out_sig.register_signal_modelsim<do_out_data>();
-//    fifo_stub_in.register_signal_modelsim<fm_out_data>();
-//#endif
 
     return;
 }
@@ -55,13 +52,54 @@ void road_processor::process_incoming_roads()
 
 		if ((detected_road == IDLE_EVENT) || (detected_road == START_EVENT))
 		{
-		    type_buffer.write(detected_road);
+		    command_buffer.write(detected_road);
 		}
 		else
 		{
 		    road_lookup.write(detected_road);
-		    type_buffer.write(VALUE_EVENT);
+		    command_buffer.write(VALUE_EVENT);
 		}
 	}
+
+}
+
+// *****************************************************************************
+void road_processor::lookup_superstrips()
+{
+    while(1)
+    {
+        wait();
+
+        do
+        {
+            unsigned int actual_command = command_buffer.read();
+            switch (actual_command)
+            {
+            case IDLE_EVENT:
+            case START_EVENT:
+                for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+                {
+                    superstrip_lookup[layer].write(actual_command);
+                }
+                break;
+
+            case VALUE_EVENT:
+                wait(found_pattern[0].value_changed_event());
+
+                for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+                {
+                    superstrip_lookup[layer].write(found_pattern[layer].read());
+                }
+                break;
+
+            default:
+                for (unsigned int layer; layer < LAYER_NUMBER; ++layer)
+                {
+                    superstrip_lookup[layer].write(IDLE_EVENT);
+                }
+                break;
+            }
+        } while (command_buffer.num_available() > 0);
+    }
 
 }

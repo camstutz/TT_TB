@@ -47,8 +47,10 @@ int sc_main(int argc, char *agv[])
 
     sc_trace(trace_file, testbench.hit_search_sig, "hit_search");
 
-    sc_trace(trace_file, testbench.pattern_mem_addr_sig, "pattern_address");
-    sc_trace(trace_file, testbench.pattern_mem_out_sig, "pattern");
+    sc_trace(trace_file, testbench.road_proc.road_input, "road_input");
+    sc_trace(trace_file, testbench.road_proc.road_lookup, "road_lookup");
+    sc_trace(trace_file, testbench.road_proc.found_pattern, "found_pattern");
+    sc_trace(trace_file, testbench.road_proc.superstrip_lookup, "superstrip_lookup");
 
     // ----- Start simulation --------------------------------------------------
 
