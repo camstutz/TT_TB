@@ -46,6 +46,8 @@ public:
 
     // ----- Process Declarations ----------------------------------------------
     void generate_input();
+    void log_input();
+    void log_result();
 
     // ----- Other Method Declarations -----------------------------------------
 
@@ -62,4 +64,9 @@ public:
      */
     am_ctrl_exp_top(const sc_module_name _name);
     SC_HAS_PROCESS(am_ctrl_exp_top);
+    ~am_ctrl_exp_top();
+
+private:
+    std::ostringstream in_log_buffer;
+    std::ostringstream out_log_buffer;
 };

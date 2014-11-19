@@ -70,6 +70,4 @@ public:
      */
     hit_memory(const sc_module_name _name);
     SC_HAS_PROCESS(hit_memory);
-
-    ~hit_memory();
 };

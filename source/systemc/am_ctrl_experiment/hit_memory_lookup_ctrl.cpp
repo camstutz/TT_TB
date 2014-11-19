@@ -67,7 +67,6 @@ void hit_memory_lookup_ctrl::controller()
             if (!wait_flag)
             {
                 current_state.write(RX_HIT);
-                std::cout << sc_time_stamp() << " event detected" << std::endl;
             }
             break;
 

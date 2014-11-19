@@ -67,25 +67,6 @@ hit_memory::hit_memory(const sc_module_name _name) :
 }
 
 // *****************************************************************************
-hit_memory::~hit_memory()
-{
-    std::cout << endl;
-    print_superstrip_table(hit_storage.front()[0]);
-    std::cout << endl;
-    print_superstrip_table(hit_storage.back()[0]);
-    std::cout << endl;
-
-    std::cout << "Printing Output Buffer:" << std::endl;
-    while (output_buffer[0].num_available() > 0)
-    {
-        std::cout << output_buffer[0].read();
-        std::cout << std::endl;
-    }
-
-    return;
-}
-
-// *****************************************************************************
 void hit_memory::initialize_event()
 {
     while(1)

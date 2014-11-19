@@ -66,12 +66,27 @@ am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
     road_proc.hit_output.bind(output_hit_sig);
 
     SC_THREAD(generate_input);
+    SC_THREAD(log_input);
+            input_hit_sig.make_sensitive(sensitive);
+    SC_THREAD(log_result);
+        hit_result_sig.make_sensitive(sensitive);
 
-//#ifdef MTI_SYSTEMC
-//    hit_fifos.register_signal_modelsim<hit_generator::hitgen_stub_t>();
-//    do_stub_out_sig.register_signal_modelsim<do_out_data>();
-//    fifo_stub_in.register_signal_modelsim<fm_out_data>();
-//#endif
+    in_log_buffer << std::endl
+                  << "Simulation Input of AM experiment:" << std::endl
+                  << "**********************************" << std::endl;
+
+    out_log_buffer << std::endl
+                   << "Simulation Output of AM experiment:" << std::endl
+                   << "***********************************" << std::endl;
+
+    return;
+}
+
+// *****************************************************************************
+am_ctrl_exp_top::~am_ctrl_exp_top()
+{
+    std::cout << in_log_buffer.str();
+    std::cout << out_log_buffer.str();
 
     return;
 }
@@ -111,4 +126,36 @@ void am_ctrl_exp_top::generate_input()
     wait(100, SC_NS);
 
     return;
+}
+
+// *****************************************************************************
+void am_ctrl_exp_top::log_input()
+{
+    while(1)
+    {
+        wait();
+
+        in_log_buffer << sc_time_stamp() << ": ";
+        for(unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+        {
+            in_log_buffer << std::hex << input_hit_sig[layer].read() << ", ";
+        }
+        in_log_buffer << std::endl;
+    }
+}
+
+// *****************************************************************************
+void am_ctrl_exp_top::log_result()
+{
+    while(1)
+    {
+        wait();
+
+        out_log_buffer << sc_time_stamp() << ": ";
+        for(unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+        {
+            out_log_buffer << std::hex << hit_result_sig[layer].read() << ", ";
+        }
+        out_log_buffer << std::endl;
+    }
 }

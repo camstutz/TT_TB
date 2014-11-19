@@ -34,7 +34,7 @@ hit_memory_output_ctrl::hit_memory_output_ctrl(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
-        //sensitive << roads_detected << clk.pos();
+        sensitive << start_transmission << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
     current_state = IDLE;

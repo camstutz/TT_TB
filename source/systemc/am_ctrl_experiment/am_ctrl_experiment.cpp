@@ -50,6 +50,8 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.hit_buffer.pure_superstrips, "pure_superstrips");
     sc_trace(trace_file, testbench.hit_buffer.lookup_controller.current_state, "lookup_state");
     sc_trace(trace_file, testbench.hit_buffer.output_controller.current_state, "output_state");
+    sc_trace(trace_file, testbench.hit_buffer.transmit_event_begin, "transmit_event_begin");
+    sc_trace(trace_file, testbench.hit_buffer.hit_outputs, "hitbuffer.hit_outputs");
 
     sc_trace(trace_file, testbench.road_proc.road_input, "road_input");
     sc_trace(trace_file, testbench.road_proc.road_lookup, "road_lookup");

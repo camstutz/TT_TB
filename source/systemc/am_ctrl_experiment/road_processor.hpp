@@ -35,6 +35,7 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_fifo<unsigned int> command_buffer;
+    sc_map_linear<sc_signal<hit_t> > filtered_hits;
 
     // ----- Process Declarations ----------------------------------------------
     void process_incoming_roads();

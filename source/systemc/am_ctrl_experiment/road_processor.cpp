@@ -25,7 +25,9 @@ road_processor::road_processor(const sc_module_name _name) :
         found_pattern(LAYER_NUMBER, "found_pattern"),
         superstrip_lookup(LAYER_NUMBER, "superstrip_lookup"),
         hit_lookup_result(LAYER_NUMBER, "hit_lookup_result"),
-        hit_output(LAYER_NUMBER, "hit_output")
+        hit_output(LAYER_NUMBER, "hit_output"),
+        command_buffer("command_buffer"),
+        filtered_hits(LAYER_NUMBER, "filtered_hits")
 {
 	// ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_roads);
@@ -37,6 +39,8 @@ road_processor::road_processor(const sc_module_name _name) :
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
+    //hit_lookup_result.bind(filtered_hits);
+    //hit_output.bind(hit_lookup_result);
 
     return;
 }
