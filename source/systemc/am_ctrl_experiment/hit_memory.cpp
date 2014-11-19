@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory.cpp
  * @author Christian Amstutz
- * @date November 17, 2014
+ * @date November 19, 2014
  *
  * @brief
  */
@@ -109,8 +109,6 @@ void hit_memory::write_buffer()
                 substrip_t actual_substrip = substrip_inputs[layer].read();
                 if ((actual_superstrip != IDLE_EVENT) & (actual_superstrip != START_EVENT))
                 {
-                    std::cout << actual_superstrip << ";" << actual_substrip << std::endl;
-
                     superstrip_table_t *superstrip_table = &(hit_storage.back()[layer]);
                     (*superstrip_table)[actual_superstrip].first = false;
                     (*superstrip_table)[actual_superstrip].second.push_back(actual_substrip);
@@ -134,18 +132,22 @@ void hit_memory::search_hits()
             if ((actual_superstrip != IDLE_EVENT) &
                 (actual_superstrip != START_EVENT))
             {
-                superstrip_table_element_t *found_strips = &hit_storage.back()[layer][actual_superstrip];
-                if (!found_strips->first)
+                superstrip_table_t::iterator found_strips = hit_storage.back()[layer].find(actual_superstrip);
+                if (found_strips != hit_storage.back()[layer].end())
                 {
-                    std::list<substrip_t>::iterator strip_it = found_strips->second.begin();
-                    for(; strip_it != found_strips->second.end(); ++strip_it)
+                    superstrip_table_element_t *table_entry = &found_strips->second;
+                    if (!table_entry->first)
                     {
-                        hit_t composed_hit;
-                        composed_hit = actual_superstrip | *strip_it;
-                        output_buffer[layer].push(composed_hit);
-                    }
+                        std::list<substrip_t>::iterator strip_it = table_entry->second.begin();
+                        for(; strip_it != table_entry->second.end(); ++strip_it)
+                        {
+                            hit_t composed_hit;
+                            composed_hit = actual_superstrip | *strip_it;
+                            output_buffer[layer].push(composed_hit);
+                        }
 
-                    found_strips->first = true;
+                        table_entry->first = true;
+                    }
                 }
             }
         }
