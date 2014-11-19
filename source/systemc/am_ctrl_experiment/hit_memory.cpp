@@ -24,37 +24,44 @@ hit_memory::hit_memory(const sc_module_name _name) :
         superstrip_search(LAYER_NUMBER, "superstrip_search"),
         hit_outputs(LAYER_NUMBER, "hit_output"),
         process_hits(LAYER_NUMBER, "process_hits"),
-        read_event_begin("read_event_begin"),
-        read_event_end("read_event_end"),
-        write_controller("write_controller")
+        write_event_begin("read_event_begin"),
+        write_event_end("read_event_end"),
+        transmit_event_begin("transmit_event_begin"),
+        pure_superstrips(LAYER_NUMBER, "pure_superstrips"),
+        output_buffer(LAYER_NUMBER, "output_buffer"),
+        write_controller("write_controller"),
+        lookup_controller("lookup_controller"),
+        output_controller("output_controller")
 {
-
-//#ifdef MTI_SYSTEMC
-//    hit_fifos.register_signal_modelsim<hit_generator::hitgen_stub_t>();
-//    do_stub_out_sig.register_signal_modelsim<do_out_data>();
-//    fifo_stub_in.register_signal_modelsim<fm_out_data>();
-//#endif
-
     // ----- Process registration ----------------------------------------------
     SC_THREAD(initialize_event);
-        sensitive << read_event_begin;
+        sensitive << write_event_begin;
     SC_THREAD(write_buffer);
         superstrip_inputs.make_sensitive(sensitive);
         substrip_inputs.make_sensitive(sensitive);
     SC_THREAD(search_hits);
-        superstrip_search.make_sensitive(sensitive);
+        pure_superstrips.make_sensitive(sensitive);
     SC_THREAD(write_hits);
         sensitive << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
-    output_buffer.resize(LAYER_NUMBER);
 
     // ----- Module instance / channel binding ---------------------------------
     write_controller.clk.bind(clk);
     write_controller.hit_inputs.bind(superstrip_inputs);
     write_controller.process_hits.bind(process_hits);
-    write_controller.event_begin.bind(read_event_begin);
-    write_controller.event_end.bind(read_event_end);
+    write_controller.event_begin.bind(write_event_begin);
+    write_controller.event_end.bind(write_event_end);
+
+    lookup_controller.clk.bind(clk);
+    lookup_controller.superstrip_inputs.bind(superstrip_search);
+    lookup_controller.lookup_superstrips.bind(pure_superstrips);
+    lookup_controller.event_end.bind(transmit_event_begin);
+
+    output_controller.clk.bind(clk);
+    output_controller.start_transmission.bind(transmit_event_begin);
+    output_controller.hit_input.bind(output_buffer);
+    output_controller.hit_output.bind(hit_outputs);
 
     return;
 }
@@ -69,11 +76,10 @@ hit_memory::~hit_memory()
     std::cout << endl;
 
     std::cout << "Printing Output Buffer:" << std::endl;
-    while (output_buffer[0].size() > 0)
+    while (output_buffer[0].num_available() > 0)
     {
-        std::cout << output_buffer[0].front();
+        std::cout << output_buffer[0].read();
         std::cout << std::endl;
-        output_buffer[0].pop();
     }
 
     return;
@@ -143,7 +149,7 @@ void hit_memory::search_hits()
                         {
                             hit_t composed_hit;
                             composed_hit = actual_superstrip | *strip_it;
-                            output_buffer[layer].push(composed_hit);
+                            output_buffer[layer].write(composed_hit);
                         }
 
                         table_entry->first = true;

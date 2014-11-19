@@ -20,6 +20,8 @@
 
 #include "am_ctrl_exp_config.hpp"
 #include "hit_memory_write_ctrl.hpp"
+#include "hit_memory_lookup_ctrl.hpp"
+#include "hit_memory_output_ctrl.hpp"
 
 /*!
  * @brief
@@ -32,8 +34,6 @@ public:
     typedef std::vector<superstrip_table_t> event_set_t;
     std::queue<event_set_t> hit_storage;
 
-    std::vector<std::queue<hit_t> > output_buffer;
-
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_map_linear<sc_in<superstrip_t> > superstrip_inputs;
@@ -43,8 +43,12 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_linear<sc_signal<bool> > process_hits;
-    sc_buffer<bool> read_event_begin;
-    sc_buffer<bool> read_event_end;
+    sc_buffer<bool> write_event_begin;
+    sc_buffer<bool> write_event_end;
+    sc_buffer<bool> transmit_event_begin;
+
+    sc_map_linear<sc_signal<superstrip_t> > pure_superstrips;
+    sc_map_linear<sc_fifo<hit_t> > output_buffer;
 
     // ----- Process Declarations ----------------------------------------------
     void initialize_event();
@@ -57,6 +61,8 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     hit_memory_write_ctrl write_controller;
+    hit_memory_lookup_ctrl lookup_controller;
+    hit_memory_output_ctrl output_controller;
 
     // ----- Constructor -------------------------------------------------------
     /*!

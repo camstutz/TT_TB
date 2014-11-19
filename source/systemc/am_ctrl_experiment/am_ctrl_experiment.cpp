@@ -1,7 +1,7 @@
 /*!
  * @file am_ctrl_experiment.cpp
  * @author Christian Amstutz
- * @date Nov 13, 2014
+ * @date November 19, 2014
  *
  * @brief
  */
@@ -46,6 +46,10 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.road_lookup.road_output, "road_output");
 
     sc_trace(trace_file, testbench.hit_search_sig, "hit_search");
+    sc_trace(trace_file, testbench.hit_buffer.superstrip_search, "superstrip_search");
+    sc_trace(trace_file, testbench.hit_buffer.pure_superstrips, "pure_superstrips");
+    sc_trace(trace_file, testbench.hit_buffer.lookup_controller.current_state, "lookup_state");
+    sc_trace(trace_file, testbench.hit_buffer.output_controller.current_state, "output_state");
 
     sc_trace(trace_file, testbench.road_proc.road_input, "road_input");
     sc_trace(trace_file, testbench.road_proc.road_lookup, "road_lookup");
