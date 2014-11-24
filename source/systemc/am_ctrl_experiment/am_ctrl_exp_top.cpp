@@ -1,7 +1,7 @@
 /*!
  * @file am_ctrl_exp_top.cpp
  * @author Christian Amstutz
- * @date Nov 14, 2014
+ * @date November 24, 2014
  *
  * @brief
  */
@@ -94,11 +94,11 @@ am_ctrl_exp_top::~am_ctrl_exp_top()
 // *****************************************************************************
 void am_ctrl_exp_top::generate_input()
 {
-    input_hit_sig[0].write(IDLE_EVENT);
-    input_hit_sig[1].write(IDLE_EVENT);
+    input_hit_sig[0].write(hit_stream::IDLE);
+    input_hit_sig[1].write(hit_stream::IDLE);
     wait(50, SC_NS);
-    input_hit_sig[0].write(START_EVENT);
-    input_hit_sig[1].write(START_EVENT);
+    input_hit_sig[0].write(hit_stream::START_WORD);
+    input_hit_sig[1].write(hit_stream::START_WORD);
     wait(10, SC_NS);
     input_hit_sig[0].write(0x11);
     input_hit_sig[1].write(0x11);
@@ -110,23 +110,23 @@ void am_ctrl_exp_top::generate_input()
     input_hit_sig[1].write(0x09);
     wait(10, SC_NS);
     input_hit_sig[0].write(0x3);
-    input_hit_sig[1].write(IDLE_EVENT);
+    input_hit_sig[1].write(hit_stream::IDLE);
     wait(10, SC_NS);
     input_hit_sig[0].write(0x1F);
-    input_hit_sig[1].write(IDLE_EVENT);
+    input_hit_sig[1].write(hit_stream::IDLE);
     wait(10, SC_NS);
-    input_hit_sig[0].write(IDLE_EVENT);
+    input_hit_sig[0].write(hit_stream::IDLE);
     wait(80, SC_NS);
-    input_hit_sig[0].write(START_EVENT);
-    input_hit_sig[1].write(START_EVENT);
+    input_hit_sig[0].write(hit_stream::START_WORD);
+    input_hit_sig[1].write(hit_stream::START_WORD);
     wait(10, SC_NS);
     input_hit_sig[0].write(0x9);
     input_hit_sig[1].write(0x8);
     wait(10, SC_NS);
     input_hit_sig[0].write(0x3);
-    input_hit_sig[1].write(IDLE_EVENT);
+    input_hit_sig[1].write(hit_stream::IDLE);
     wait(10, SC_NS);
-    input_hit_sig[0].write(IDLE_EVENT);
+    input_hit_sig[0].write(hit_stream::IDLE);
     wait(100, SC_NS);
 
     return;

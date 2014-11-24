@@ -1,7 +1,7 @@
 /*!
  * @file am_ctrl_exp_top.hpp
  * @author Christian Amstutz
- * @date November 13, 2014
+ * @date November 24, 2014
  *
  * @brief
  */
@@ -15,6 +15,7 @@
 #include <systemc.h>
 
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "simple_stream_protocol.hpp"
 
 #include "am_ctrl_exp_config.hpp"
 #include "hit_processor.hpp"
@@ -29,11 +30,13 @@
 class am_ctrl_exp_top : public sc_module
 {
 public:
+    typedef simple_stream_protocol<hit_t> hit_stream;
+
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_clock clock;
-    sc_map_linear<sc_buffer<hit_t> > input_hit_sig;
+    sc_map_linear<sc_buffer<hit_stream> > input_hit_sig;
     sc_map_linear<sc_signal<superstrip_t> > hit_buffer_ss_store_sig;
     sc_map_linear<sc_signal<substrip_t> > hit_buffer_subs_store_sig;
     sc_map_linear<sc_signal<superstrip_t> > am_input_sig;

@@ -27,7 +27,7 @@ public:
 
     simple_stream_protocol(const value_t& val = 0);
     simple_stream_protocol(const opcode_t& op, const value_t& val);
-    simple_stream_protocol(const simple_stream_protocol<value_type> &copy_object);
+    //simple_stream_protocol(const simple_stream_protocol<value_type> &copy_object);
 };
 
 // *****************************************************************************
@@ -47,10 +47,4 @@ simple_stream_protocol<value_type>::simple_stream_protocol(const value_t& val) :
 template <typename value_type>
 simple_stream_protocol<value_type>::simple_stream_protocol(const opcode_t& op,
         const value_t& val) : stream_data_basetype<value_type>(op, val)
-{}
-
-// *****************************************************************************
-template <typename value_type>
-simple_stream_protocol<value_type>::simple_stream_protocol(
-        const simple_stream_protocol<value_type> &copy_object)
 {}

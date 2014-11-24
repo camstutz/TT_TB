@@ -49,20 +49,25 @@ void hit_processor_one_layer::write_outputs()
     {
         wait();
 
-        if (hit_input.read() == IDLE_EVENT)
+        hit_stream hit = hit_input.read();
+
+        std::cout << sc_time_stamp() << " " << hit.get_value() << std::endl;
+
+        if (hit == hit_stream::IDLE)
         {
             am_superstrip_out.write(IDLE_EVENT);
             hitbuf_superstrip_out.write(IDLE_EVENT);
         }
-        else if (hit_input.read() == START_EVENT)
+        else if (hit == hit_stream::START_WORD)
         {
             am_superstrip_out.write(START_EVENT);
             hitbuf_superstrip_out.write(START_EVENT);
         }
-        else {
-            am_superstrip_out.write(generate_superstrip(hit_input.read()));
-            hitbuf_superstrip_out.write(generate_superstrip(hit_input.read()));
-            hitbuf_substrip_out.write(generate_substrip(hit_input.read()));
+        else
+        {
+            am_superstrip_out.write(generate_superstrip(hit.get_value()));
+            hitbuf_superstrip_out.write(generate_superstrip(hit.get_value()));
+            hitbuf_substrip_out.write(generate_substrip(hit.get_value()));
         }
 
     }
