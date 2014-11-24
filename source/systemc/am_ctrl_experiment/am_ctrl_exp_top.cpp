@@ -95,6 +95,7 @@ am_ctrl_exp_top::~am_ctrl_exp_top()
 void am_ctrl_exp_top::generate_input()
 {
     input_hit_sig[0].write(IDLE_EVENT);
+    input_hit_sig[1].write(IDLE_EVENT);
     wait(50, SC_NS);
     input_hit_sig[0].write(START_EVENT);
     input_hit_sig[1].write(START_EVENT);
@@ -109,6 +110,9 @@ void am_ctrl_exp_top::generate_input()
     input_hit_sig[1].write(0x09);
     wait(10, SC_NS);
     input_hit_sig[0].write(0x3);
+    input_hit_sig[1].write(IDLE_EVENT);
+    wait(10, SC_NS);
+    input_hit_sig[0].write(0x1F);
     input_hit_sig[1].write(IDLE_EVENT);
     wait(10, SC_NS);
     input_hit_sig[0].write(IDLE_EVENT);

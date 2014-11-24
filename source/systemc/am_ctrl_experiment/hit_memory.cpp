@@ -129,7 +129,7 @@ void hit_memory::search_hits()
                         for(; strip_it != table_entry->second.end(); ++strip_it)
                         {
                             hit_t composed_hit;
-                            composed_hit = actual_superstrip | *strip_it;
+                            composed_hit = (actual_superstrip << SS_BIT_WIDTH) | *strip_it;
                             output_buffer[layer].write(composed_hit);
                         }
 

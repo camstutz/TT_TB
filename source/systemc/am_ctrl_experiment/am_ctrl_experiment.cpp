@@ -39,6 +39,7 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.clock, "clock");
     sc_trace(trace_file, testbench.input_hit_sig[0], "input(0)");
     sc_trace(trace_file, testbench.input_hit_sig[1], "input(1)");
+
     sc_trace(trace_file, testbench.road_lookup.process_roads_sig, "process_roads_sig");
     sc_trace(trace_file, testbench.road_lookup.roads_detected, "roads_detected");
     sc_trace(trace_file, testbench.road_lookup.read_controller.current_state, "read_state");

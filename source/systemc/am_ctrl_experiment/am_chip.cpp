@@ -44,6 +44,7 @@ am_chip::am_chip(sc_module_name _name) :
                 << detected_roads_buffer.data_read_event();
 
     // ----- Module channel/variable initialization ----------------------------
+    roads_detected.write(false);
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -108,8 +109,6 @@ void am_chip::process_incoming_hits()
 // *****************************************************************************
 void am_chip::detect_roads()
 {
-    roads_detected.write(false);
-
     while (1)
     {
         wait();
@@ -250,6 +249,7 @@ void am_chip::initialize_patterns()
 // *****************************************************************************
 void am_chip::clear_match_table()
 {
+    // todo: isn't it faster to just create a new object ?
     std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
     for (; match_line_it != match_table.end(); ++match_line_it)
     {
