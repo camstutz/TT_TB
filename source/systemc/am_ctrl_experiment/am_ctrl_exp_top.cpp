@@ -20,6 +20,7 @@ SC_MODULE_EXPORT(am_ctrl_exp_top);
 
 const std::string am_ctrl_exp_top::in_filename = "ss.txt";
 const std::string am_ctrl_exp_top::out_filename = "ss_out.txt";
+const unsigned int output_width = 4;
 
 // *****************************************************************************
 
@@ -84,6 +85,9 @@ am_ctrl_exp_top::~am_ctrl_exp_top()
 {
     std::cout << in_log_buffer.str();
     std::cout << out_log_buffer.str();
+
+    in_file.close();
+    out_file.close();
 
     return;
 }
@@ -156,15 +160,43 @@ void am_ctrl_exp_top::log_result()
                    << "Simulation Output of AM experiment:" << std::endl
                    << "***********************************" << std::endl;
 
+    out_file.open(out_filename.c_str());
+
     while(1)
     {
         wait();
 
         out_log_buffer << sc_time_stamp() << ": ";
+
+        bool value_availble = false;
+        std::stringstream file_line("");
+
         for(unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
         {
-            out_log_buffer << std::hex << hit_result_sig[layer].read() << ", ";
+            hit_stream read_hit = hit_result_sig[layer].read();
+
+            out_log_buffer << std::hex << read_hit << ", ";
+
+            if (read_hit.is_opcode())
+            {
+                hit_stream empty_hit;
+                file_line << "0 ";
+                file_line << std::setfill('0') << std::setw(4) << std::hex;
+                file_line << empty_hit.get_value() << " ";
+            }
+            else
+            {
+                file_line << "1 ";
+                file_line << std::setfill('0') << std::setw(4) << std::hex;
+                file_line << read_hit.get_value() << " ";
+                value_availble = true;
+            }
         }
         out_log_buffer << std::endl;
+
+        if (value_availble)
+        {
+            out_file << file_line.rdbuf() << std::endl;
+        }
     }
 }

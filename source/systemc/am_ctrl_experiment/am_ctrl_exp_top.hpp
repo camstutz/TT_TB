@@ -12,6 +12,8 @@
 
 #include <utility>
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 
 #include <systemc.h>
 
@@ -38,6 +40,7 @@ public:
 
     static const std::string in_filename;
     static const std::string out_filename;
+    static const unsigned int output_width;
 
     // ----- Port Declarations -------------------------------------------------
 
