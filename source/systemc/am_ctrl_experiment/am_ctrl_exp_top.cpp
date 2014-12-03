@@ -1,7 +1,7 @@
 /*!
  * @file am_ctrl_exp_top.cpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date December 3, 2014
  *
  * @brief
  */
@@ -76,14 +76,6 @@ am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
     SC_THREAD(log_result);
         hit_result_sig.make_sensitive(sensitive);
 
-    in_log_buffer << std::endl
-                  << "Simulation Input of AM experiment:" << std::endl
-                  << "**********************************" << std::endl;
-
-    out_log_buffer << std::endl
-                   << "Simulation Output of AM experiment:" << std::endl
-                   << "***********************************" << std::endl;
-
     return;
 }
 
@@ -140,6 +132,10 @@ void am_ctrl_exp_top::generate_input()
 // *****************************************************************************
 void am_ctrl_exp_top::log_input()
 {
+    in_log_buffer << std::endl
+                  << "Simulation Input of AM experiment:" << std::endl
+                  << "**********************************" << std::endl;
+
     while(1)
     {
         wait();
@@ -156,6 +152,10 @@ void am_ctrl_exp_top::log_input()
 // *****************************************************************************
 void am_ctrl_exp_top::log_result()
 {
+    out_log_buffer << std::endl
+                   << "Simulation Output of AM experiment:" << std::endl
+                   << "***********************************" << std::endl;
+
     while(1)
     {
         wait();

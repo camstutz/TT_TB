@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.hpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date December 3, 2014
  *
  * @brief
  */
@@ -27,6 +27,7 @@
 class road_processor : public sc_module
 {
 public:
+    typedef simple_stream_protocol<hit_t> hit_stream;
     typedef simple_stream_protocol<road_t> road_stream;
     typedef simple_stream_protocol<superstrip_t> superstrip_stream;
 
@@ -36,8 +37,8 @@ public:
     sc_out<road_t> road_lookup;
     sc_map_linear<sc_in<superstrip_t> > found_pattern;
     sc_map_linear<sc_out<superstrip_stream> > superstrip_lookup;
-    sc_map_linear<sc_in<hit_t> > hit_lookup_result;
-    sc_map_linear<sc_out<hit_t> > hit_output;
+    sc_map_linear<sc_in<hit_stream> > hit_lookup_result;
+    sc_map_linear<sc_out<hit_stream> > hit_output;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_fifo<road_stream> command_buffer;

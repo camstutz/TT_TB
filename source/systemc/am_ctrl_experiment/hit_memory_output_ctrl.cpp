@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory_output_ctrl.cpp
  * @author Christian Amstutz
- * @date November 19, 2014
+ * @date December 3, 2014
  *
  * @brief File contains the implementation of the AM board FSM.
  */
@@ -37,7 +37,6 @@ hit_memory_output_ctrl::hit_memory_output_ctrl(sc_module_name _name) :
         sensitive << start_transmission << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
-    current_state = IDLE;
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -47,6 +46,9 @@ hit_memory_output_ctrl::hit_memory_output_ctrl(sc_module_name _name) :
 // *****************************************************************************
 void hit_memory_output_ctrl::controller()
 {
+    current_state = IDLE;
+    hit_output.write_all(hit_stream::IDLE);
+
     while (1)
     {
         wait();
@@ -57,19 +59,13 @@ void hit_memory_output_ctrl::controller()
         case IDLE:
             if (start_transmission.event())
             {
-                for (unsigned int layer=0; layer < LAYER_NUMBER; ++layer)
-                {
-                    hit_output[layer].write(IDLE_EVENT);
-                }
+                hit_output.write_all(hit_stream::IDLE);
                 current_state = START;
             }
             break;
 
         case START:
-            for (unsigned int layer=0; layer < LAYER_NUMBER; ++layer)
-            {
-                hit_output[layer].write(START_EVENT);
-            }
+            hit_output.write_all(hit_stream::START_WORD);
             current_state = TX_ROAD;
             break;
 
@@ -83,7 +79,7 @@ void hit_memory_output_ctrl::controller()
                 }
                 else
                 {
-                    hit_output[layer].write(IDLE_EVENT);
+                    hit_output[layer].write(hit_stream::IDLE);
                     ++finished_layer;
                 }
             }

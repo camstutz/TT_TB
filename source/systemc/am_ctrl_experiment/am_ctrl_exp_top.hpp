@@ -51,8 +51,8 @@ public:
     sc_signal<road_t> pattern_mem_addr_sig;
     sc_map_linear<sc_buffer<superstrip_t> > pattern_mem_out_sig;
     sc_map_linear<sc_signal<superstrip_stream> > hit_search_sig;
-    sc_map_linear<sc_signal<hit_t> > hit_result_sig;
-    sc_map_linear<sc_signal<hit_t> > output_hit_sig;
+    sc_map_linear<sc_signal<hit_stream> > hit_result_sig;
+    sc_map_linear<sc_signal<hit_stream> > output_hit_sig;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_input();

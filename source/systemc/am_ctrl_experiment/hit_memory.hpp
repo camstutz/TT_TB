@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory.hpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date December 3, 2014
  *
  * @brief
  */
@@ -46,7 +46,7 @@ public:
     sc_map_linear<sc_in<superstrip_stream> > superstrip_inputs;
     sc_map_linear<sc_in<substrip_stream> > substrip_inputs;
     sc_map_linear<sc_in<superstrip_stream> > superstrip_search;
-    sc_map_linear<sc_out<hit_t> > hit_outputs;
+    sc_map_linear<sc_out<hit_stream> > hit_outputs;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_linear<sc_signal<bool> > process_hits;
