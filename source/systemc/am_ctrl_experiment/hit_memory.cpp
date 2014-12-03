@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory.cpp
  * @author Christian Amstutz
- * @date November 19, 2014
+ * @date November 24, 2014
  *
  * @brief
  */
@@ -24,8 +24,8 @@ hit_memory::hit_memory(const sc_module_name _name) :
         superstrip_search(LAYER_NUMBER, "superstrip_search"),
         hit_outputs(LAYER_NUMBER, "hit_output"),
         process_hits(LAYER_NUMBER, "process_hits"),
-        write_event_begin("read_event_begin"),
-        write_event_end("read_event_end"),
+        write_event_begin("write_event_begin"),
+        write_event_end("write_event_end"),
         transmit_event_begin("transmit_event_begin"),
         pure_superstrips(LAYER_NUMBER, "pure_superstrips"),
         output_buffer(LAYER_NUMBER, "output_buffer"),
@@ -92,13 +92,13 @@ void hit_memory::write_buffer()
                 (superstrip_inputs[layer].event() |
                 substrip_inputs[layer].event()))
             {
-                superstrip_t actual_superstrip = superstrip_inputs[layer].read();
-                substrip_t actual_substrip = substrip_inputs[layer].read();
-                if ((actual_superstrip != IDLE_EVENT) & (actual_superstrip != START_EVENT))
+                superstrip_stream actual_superstrip = superstrip_inputs[layer].read();
+                substrip_stream actual_substrip = substrip_inputs[layer].read();
+                if (!actual_superstrip.is_opcode())
                 {
                     superstrip_table_t *superstrip_table = &(hit_storage.back()[layer]);
-                    (*superstrip_table)[actual_superstrip].first = false;
-                    (*superstrip_table)[actual_superstrip].second.push_back(actual_substrip);
+                    (*superstrip_table)[actual_superstrip.get_value()].first = false;
+                    (*superstrip_table)[actual_superstrip.get_value()].second.push_back(actual_substrip.get_value());
                 }
             }
         }
@@ -115,11 +115,11 @@ void hit_memory::search_hits()
 
         for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
         {
-            superstrip_t actual_superstrip = superstrip_search[layer]->read();
+            superstrip_stream actual_superstrip = superstrip_search[layer]->read();
             if ((actual_superstrip != IDLE_EVENT) &
                 (actual_superstrip != START_EVENT))
             {
-                superstrip_table_t::iterator found_strips = hit_storage.back()[layer].find(actual_superstrip);
+                superstrip_table_t::iterator found_strips = hit_storage.back()[layer].find(actual_superstrip.get_value());
                 if (found_strips != hit_storage.back()[layer].end())
                 {
                     superstrip_table_element_t *table_entry = &found_strips->second;
@@ -129,7 +129,7 @@ void hit_memory::search_hits()
                         for(; strip_it != table_entry->second.end(); ++strip_it)
                         {
                             hit_t composed_hit;
-                            composed_hit = (actual_superstrip << SS_BIT_WIDTH) | *strip_it;
+                            composed_hit = (actual_superstrip.get_value() << SS_BIT_WIDTH) | *strip_it;
                             output_buffer[layer].write(composed_hit);
                         }
 

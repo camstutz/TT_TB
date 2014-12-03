@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date November 19, 2014
+ * @date November 24, 2014
  *
  * @brief File containing the definition of the AM board.
  */
@@ -19,6 +19,7 @@
 #include <systemc.h>
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
+#include "simple_stream_protocol.hpp"
 
 #include "am_ctrl_exp_config.hpp"
 #include "am_chip_read_ctrl.hpp"
@@ -35,6 +36,9 @@
 class am_chip : public sc_module
 {
 public:
+    typedef simple_stream_protocol<superstrip_t> superstrip_stream;
+    typedef simple_stream_protocol<road_t> road_stream;
+
     /** @brief Data type of the pattern at the input on each layer */
     typedef superstrip_t pattern_t;
 
@@ -59,8 +63,8 @@ public:
      */
     sc_in<bool> clk;
 
-    sc_map_linear<sc_in<superstrip_t> > hit_inputs;
-    sc_out<road_t> road_output;
+    sc_map_linear<sc_in<superstrip_stream> > hit_inputs;
+    sc_out<road_stream> road_output;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_map_linear<sc_signal<bool> > process_hits;

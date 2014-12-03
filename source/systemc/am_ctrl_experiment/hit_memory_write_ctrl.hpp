@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory_write_ctrl.hpp
  * @author Christian Amstutz
- * @date November 17, 2014
+ * @date November 24, 2014
  *
  * @brief
  */
@@ -14,12 +14,15 @@
 
 #include <systemc.h>
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "simple_stream_protocol.hpp"
 
 #include "am_ctrl_exp_config.hpp"
 
 class hit_memory_write_ctrl : public sc_module
 {
 public:
+    typedef simple_stream_protocol<superstrip_t> superstrip_stream;
+
     /** @brief Data type of the FSM states */
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
@@ -32,7 +35,7 @@ public:
      */
     sc_in<bool> clk;
 
-    sc_map_linear<sc_in<superstrip_t> > hit_inputs;
+    sc_map_linear<sc_in<superstrip_stream> > hit_inputs;
     sc_map_linear<sc_out<bool> > process_hits;
     sc_out<bool> event_begin;
     sc_out<bool> event_end;

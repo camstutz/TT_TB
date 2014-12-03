@@ -14,12 +14,15 @@
 
 #include <systemc.h>
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "simple_stream_protocol.hpp"
 
 #include "am_ctrl_exp_config.hpp"
 
 class hit_memory_lookup_ctrl : public sc_module
 {
 public:
+    typedef simple_stream_protocol<superstrip_t> superstrip_stream;
+
     /** @brief Data type of the FSM states */
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
@@ -32,7 +35,7 @@ public:
      */
     sc_in<bool> clk;
 
-    sc_map_linear<sc_in<superstrip_t> > superstrip_inputs;
+    sc_map_linear<sc_in<superstrip_stream> > superstrip_inputs;
     sc_map_linear<sc_out<superstrip_t> > lookup_superstrips;
     sc_out<bool> event_end;
 

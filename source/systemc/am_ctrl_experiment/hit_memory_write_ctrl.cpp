@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory_read_ctrl.cpp
  * @author Christian Amstutz
- * @date November 17, 2014
+ * @date November 24, 2014
  *
  * @brief
  */
@@ -54,7 +54,7 @@ void hit_memory_write_ctrl::controller()
         wait();
 
         bool wait_flag;
-        sc_map_linear<sc_in<superstrip_t> >::iterator hit_input_it = hit_inputs.begin();
+        sc_map_linear<sc_in<superstrip_stream> >::iterator hit_input_it = hit_inputs.begin();
         sc_map_linear<sc_out<bool> >::iterator process_hit_it = process_hits.begin();
         switch (current_state)
         {
@@ -63,7 +63,7 @@ void hit_memory_write_ctrl::controller()
             hit_input_it = hit_inputs.begin();
             for (; hit_input_it != hit_inputs.end(); ++hit_input_it)
             {
-                if (hit_input_it->read() != START_EVENT)
+                if (hit_input_it->read() != superstrip_stream::START_WORD)
                 {
                     wait_flag = true;
                 }
@@ -83,7 +83,7 @@ void hit_memory_write_ctrl::controller()
             hit_input_it = hit_inputs.begin();
             for (unsigned int i=0; hit_input_it != hit_inputs.end(); ++hit_input_it)
             {
-                if (hit_input_it->read() == IDLE_EVENT)
+                if (hit_input_it->read() == superstrip_stream::IDLE)
                 {
                     process_hits[i].write(false);
                 }

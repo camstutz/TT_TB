@@ -50,18 +50,10 @@ void hit_processor_one_layer::write_outputs()
         wait();
 
         hit_stream hit = hit_input.read();
-
-        std::cout << sc_time_stamp() << " " << hit.get_value() << std::endl;
-
-        if (hit == hit_stream::IDLE)
+        if (hit.is_opcode())
         {
-            am_superstrip_out.write(IDLE_EVENT);
-            hitbuf_superstrip_out.write(IDLE_EVENT);
-        }
-        else if (hit == hit_stream::START_WORD)
-        {
-            am_superstrip_out.write(START_EVENT);
-            hitbuf_superstrip_out.write(START_EVENT);
+            am_superstrip_out.write(hit);
+            hitbuf_superstrip_out.write(hit);
         }
         else
         {

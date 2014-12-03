@@ -27,13 +27,15 @@ class hit_processor : public sc_module
 {
 public:
     typedef simple_stream_protocol<hit_t> hit_stream;
+    typedef simple_stream_protocol<hit_t> superstrip_stream;
+    typedef simple_stream_protocol<hit_t> substrip_stream;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_map_linear<sc_in<hit_stream> > hit_input;
-    sc_map_linear<sc_out<superstrip_t> > am_superstrip_out;
-    sc_map_linear<sc_out<superstrip_t> > hitbuf_superstrip_out;
-    sc_map_linear<sc_out<substrip_t> > hitbuf_substrip_out;
+    sc_map_linear<sc_out<superstrip_stream> > am_superstrip_out;
+    sc_map_linear<sc_out<superstrip_stream> > hitbuf_superstrip_out;
+    sc_map_linear<sc_out<substrip_stream> > hitbuf_substrip_out;
 
     // ----- Local Channel Declarations ----------------------------------------
 

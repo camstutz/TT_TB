@@ -59,7 +59,7 @@ void hit_memory_lookup_ctrl::controller()
             wait_flag = false;
             for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
             {
-                if (superstrip_inputs[layer].read() != START_EVENT)
+                if (superstrip_inputs[layer].read() != superstrip_stream::START_WORD)
                 {
                     wait_flag = true;
                 }
@@ -74,9 +74,10 @@ void hit_memory_lookup_ctrl::controller()
             finished_layers = 0;
             for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
             {
-                if (superstrip_inputs[layer].read() != IDLE_EVENT)
+                if (superstrip_inputs[layer].read() != superstrip_stream::IDLE)
                 {
-                    lookup_superstrips[layer].write(superstrip_inputs[layer].read());
+                    superstrip_stream stream_value = superstrip_inputs[layer].read();
+                    lookup_superstrips[layer].write(stream_value.get_value());
                 }
                 else
                 {

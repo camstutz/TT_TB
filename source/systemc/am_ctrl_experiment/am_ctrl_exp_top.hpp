@@ -1,7 +1,7 @@
 /*!
  * @file am_ctrl_exp_top.hpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date December 3, 2014
  *
  * @brief
  */
@@ -11,6 +11,7 @@
  */
 
 #include <utility>
+#include <fstream>
 
 #include <systemc.h>
 
@@ -31,19 +32,25 @@ class am_ctrl_exp_top : public sc_module
 {
 public:
     typedef simple_stream_protocol<hit_t> hit_stream;
+    typedef simple_stream_protocol<superstrip_t> superstrip_stream;
+    typedef simple_stream_protocol<substrip_t> substrip_stream;
+    typedef simple_stream_protocol<road_t> road_stream;
+
+    static const std::string in_filename;
+    static const std::string out_filename;
 
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_clock clock;
     sc_map_linear<sc_buffer<hit_stream> > input_hit_sig;
-    sc_map_linear<sc_signal<superstrip_t> > hit_buffer_ss_store_sig;
-    sc_map_linear<sc_signal<substrip_t> > hit_buffer_subs_store_sig;
-    sc_map_linear<sc_signal<superstrip_t> > am_input_sig;
-    sc_signal<road_t> am_output_sig;
+    sc_map_linear<sc_signal<superstrip_stream> > hit_buffer_ss_store_sig;
+    sc_map_linear<sc_signal<substrip_stream> > hit_buffer_subs_store_sig;
+    sc_map_linear<sc_signal<superstrip_stream> > am_input_sig;
+    sc_signal<road_stream> am_output_sig;
     sc_signal<road_t> pattern_mem_addr_sig;
     sc_map_linear<sc_buffer<superstrip_t> > pattern_mem_out_sig;
-    sc_map_linear<sc_signal<superstrip_t> > hit_search_sig;
+    sc_map_linear<sc_signal<superstrip_stream> > hit_search_sig;
     sc_map_linear<sc_signal<hit_t> > hit_result_sig;
     sc_map_linear<sc_signal<hit_t> > output_hit_sig;
 
@@ -72,4 +79,7 @@ public:
 private:
     std::ostringstream in_log_buffer;
     std::ostringstream out_log_buffer;
+
+    std::ifstream in_file;
+    std::ofstream out_file;
 };

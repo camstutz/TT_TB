@@ -14,12 +14,15 @@
 
 #include <systemc.h>
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "simple_stream_protocol.hpp"
 
 #include "am_ctrl_exp_config.hpp"
 
 class am_chip_read_ctrl : public sc_module
 {
 public:
+    typedef simple_stream_protocol<road_t> road_stream;
+
     /** @brief Data type of the FSM states */
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
@@ -35,7 +38,7 @@ public:
     sc_in<bool> roads_detected;
 
     sc_fifo_in<road_t> road_input;
-    sc_out<road_t> road_output;
+    sc_out<road_stream> road_output;
 
 // ----- Local Channel Declarations --------------------------------------------
     /** @brief Signal containing the current FSM state. */

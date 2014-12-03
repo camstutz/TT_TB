@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.cpp
  * @author Christian Amstutz
- * @date November 19, 2014
+ * @date November 24, 2014
  *
  * @brief
  */
@@ -52,17 +52,12 @@ void road_processor::process_incoming_roads()
 	{
 		wait();
 
-		road_t detected_road = road_input.read();
-
-		if ((detected_road == IDLE_EVENT) || (detected_road == START_EVENT))
+		road_stream stream_value = road_input.read();
+		if (!stream_value.is_opcode())
 		{
-		    command_buffer.write(detected_road);
+		    road_lookup.write(stream_value.get_value());
 		}
-		else
-		{
-		    road_lookup.write(detected_road);
-		    command_buffer.write(VALUE_EVENT);
-		}
+		command_buffer.write(stream_value);
 	}
 
 }
@@ -76,32 +71,22 @@ void road_processor::lookup_superstrips()
 
         do
         {
-            unsigned int actual_command = command_buffer.read();
-            switch (actual_command)
+            road_stream actual_command = command_buffer.read();
+            if (actual_command.is_opcode())
             {
-            case IDLE_EVENT:
-            case START_EVENT:
                 for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
                 {
                     superstrip_lookup[layer].write(actual_command);
                 }
-                break;
-
-            case VALUE_EVENT:
+            }
+            else
+            {
                 wait(found_pattern[0].value_changed_event());
 
                 for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
                 {
                     superstrip_lookup[layer].write(found_pattern[layer].read());
                 }
-                break;
-
-            default:
-                for (unsigned int layer; layer < LAYER_NUMBER; ++layer)
-                {
-                    superstrip_lookup[layer].write(IDLE_EVENT);
-                }
-                break;
             }
         } while (command_buffer.num_available() > 0);
     }

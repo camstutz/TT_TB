@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date Nov 14, 2014
+ * @date November 24, 2014
  *
  * @brief File containing the implementation of the AM board.
  */
@@ -88,9 +88,10 @@ void am_chip::process_incoming_hits()
 
         for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
         {
-            if(process_hits[layer].read() & hit_inputs[layer].event())
+            if(process_hits[layer].read() & !hit_inputs[layer].read().is_opcode())
             {
-                pattern_t pattern = hit_inputs[layer].read();
+                superstrip_stream stream_value = hit_inputs[layer].read();
+                pattern_t pattern = stream_value.get_value();
                 std::pair<lay_pattern_bank_t::iterator, lay_pattern_bank_t::iterator> road_addresses = pattern_bank[layer].equal_range(pattern);
                 lay_pattern_bank_t::iterator road_addr_it = road_addresses.first;
 

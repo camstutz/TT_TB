@@ -37,7 +37,6 @@ am_chip_read_ctrl::am_chip_read_ctrl(sc_module_name _name) :
         sensitive << roads_detected << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
-    current_state = IDLE;
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -47,7 +46,8 @@ am_chip_read_ctrl::am_chip_read_ctrl(sc_module_name _name) :
 // *****************************************************************************
 void am_chip_read_ctrl::controller()
 {
-    road_output.write(IDLE_EVENT);
+    current_state = IDLE;
+    road_output.write(road_stream::IDLE);
 
     while (1)
     {
@@ -58,24 +58,25 @@ void am_chip_read_ctrl::controller()
         case IDLE:
             if (roads_detected.event())
             {
-                road_output.write(IDLE_EVENT);
+                road_output.write(road_stream::IDLE);
                 current_state = START;
             }
             break;
 
         case START:
-            road_output.write(START_EVENT);
+            road_output.write(road_stream::START_WORD);
             current_state = TX_ROAD;
             break;
 
         case TX_ROAD:
             if (road_input.num_available() > 0)
             {
-                road_output.write(road_input.read());
+                road_t value = road_input.read();
+                road_output.write(value);
             }
             else
             {
-                road_output.write(IDLE_EVENT);
+                road_output.write(road_stream::IDLE);
                 current_state = IDLE;
             }
             break;

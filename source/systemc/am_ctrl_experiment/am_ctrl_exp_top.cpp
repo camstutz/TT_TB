@@ -18,6 +18,11 @@ SC_MODULE_EXPORT(am_ctrl_exp_top);
 
 // *****************************************************************************
 
+const std::string am_ctrl_exp_top::in_filename = "ss.txt";
+const std::string am_ctrl_exp_top::out_filename = "ss_out.txt";
+
+// *****************************************************************************
+
 am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
         sc_module(_name),
         clock("clock", CLOCK_PERIOD_NS, SC_NS, 0.5, 10, SC_NS, true),
@@ -67,7 +72,7 @@ am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
 
     SC_THREAD(generate_input);
     SC_THREAD(log_input);
-            input_hit_sig.make_sensitive(sensitive);
+        input_hit_sig.make_sensitive(sensitive);
     SC_THREAD(log_result);
         hit_result_sig.make_sensitive(sensitive);
 

@@ -36,6 +36,9 @@ public:
     bool operator== (const stream_data_basetype& rhs) const;
     bool operator== (const value_t& rhs) const;
 
+    bool operator!= (const stream_data_basetype& rhs) const;
+    bool operator!= (const value_t& rhs) const;
+
     value_t get_value();
 
 private:
@@ -128,11 +131,25 @@ bool stream_data_basetype<value_type>::operator== (const value_t& rhs) const
 
 // *****************************************************************************
 template <typename value_type>
+bool stream_data_basetype<value_type>::operator!= (const stream_data_basetype& rhs) const
+{
+    return (!(*this == rhs));
+}
+
+// *****************************************************************************
+template <typename value_type>
+bool stream_data_basetype<value_type>::operator!= (const value_t& rhs) const
+{
+    return (!(*this == rhs));
+}
+
+// *****************************************************************************
+template <typename value_type>
 typename stream_data_basetype<value_type>::value_t stream_data_basetype<value_type>::get_value()
 {
     if (is_opcode())
     {
-        std::cout << "Warning: Read opcode as value." << std::endl;
+        std::cout << "Warning: Read opcode as value - " << *this << std::endl;
     }
 
     return (value);
