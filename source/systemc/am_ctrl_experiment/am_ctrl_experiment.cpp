@@ -51,11 +51,13 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.pattern_mem_out_sig, "pattern_mem_out");
 
     sc_trace(trace_file, testbench.hit_search_sig, "hit_search");
+    sc_trace(trace_file, testbench.hit_buffer.superstrip_inputs, "superstrip_inputs");
+    sc_trace(trace_file, testbench.hit_buffer.substrip_inputs, "substrip_inputs");
     sc_trace(trace_file, testbench.hit_buffer.superstrip_search, "superstrip_search");
     sc_trace(trace_file, testbench.hit_buffer.pure_superstrips, "pure_superstrips");
-    sc_trace(trace_file, testbench.hit_buffer.write_controller.current_state, "hit_buf_write_state");
-    sc_trace(trace_file, testbench.hit_buffer.lookup_controller.current_state, "lookup_state");
-    sc_trace(trace_file, testbench.hit_buffer.output_controller.current_state, "output_state");
+    sc_trace(trace_file, testbench.hit_buffer.write_controller.current_state, "hit_buffer.write_state");
+    sc_trace(trace_file, testbench.hit_buffer.lookup_controller.current_state, "hit_buffer.lookup_state");
+    sc_trace(trace_file, testbench.hit_buffer.output_controller.current_state, "hit_buffer_.output_state");
     sc_trace(trace_file, testbench.hit_buffer.transmit_event_begin, "transmit_event_begin");
     sc_trace(trace_file, testbench.hit_buffer.hit_outputs, "hitbuffer.hit_outputs");
 

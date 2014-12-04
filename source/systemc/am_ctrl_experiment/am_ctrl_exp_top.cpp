@@ -135,7 +135,6 @@ void am_ctrl_exp_top::generate_input()
         {
             if (hitline.hits[layer].dv)
             {
-std::cout << sc_time_stamp() << " " << hitline.hits[layer].data.superstrip << "-" << hitline.hits[layer].data.stub << std::endl;
                 hit_t new_hit = (hitline.hits[layer].data.superstrip << 8) | hitline.hits[layer].data.stub;
                 input_hit_sig[layer].write(new_hit);
             }
@@ -146,43 +145,6 @@ std::cout << sc_time_stamp() << " " << hitline.hits[layer].data.superstrip << "-
         }
         wait(AMEXP_CLOCK_PERIOD_NS, SC_NS);
     }
-
-
-
-//    input_hit_sig[0].write(hit_stream::IDLE);
-//    input_hit_sig[1].write(hit_stream::IDLE);
-//    wait(50, SC_NS);
-//    input_hit_sig[0].write(hit_stream::START_WORD);
-//    input_hit_sig[1].write(hit_stream::START_WORD);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(0x11);
-//    input_hit_sig[1].write(0x11);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(0x12);
-//    input_hit_sig[1].write(0x12);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(0x08);
-//    input_hit_sig[1].write(0x09);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(0x3);
-//    input_hit_sig[1].write(hit_stream::IDLE);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(0x1F);
-//    input_hit_sig[1].write(hit_stream::IDLE);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(hit_stream::IDLE);
-//    wait(80, SC_NS);
-//    input_hit_sig[0].write(hit_stream::START_WORD);
-//    input_hit_sig[1].write(hit_stream::START_WORD);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(0x9);
-//    input_hit_sig[1].write(0x8);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(0x3);
-//    input_hit_sig[1].write(hit_stream::IDLE);
-//    wait(10, SC_NS);
-//    input_hit_sig[0].write(hit_stream::IDLE);
-//    wait(100, SC_NS);
 
     return;
 }

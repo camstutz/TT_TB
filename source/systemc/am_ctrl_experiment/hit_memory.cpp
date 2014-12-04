@@ -41,7 +41,7 @@ hit_memory::hit_memory(const sc_module_name _name) :
         substrip_inputs.make_sensitive(sensitive);
     SC_THREAD(search_hits);
         pure_superstrips.make_sensitive(sensitive);
-    SC_THREAD(write_hits);
+    SC_THREAD(memory_monitor);
         sensitive << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
@@ -63,7 +63,18 @@ hit_memory::hit_memory(const sc_module_name _name) :
     output_controller.hit_input.bind(output_buffer);
     output_controller.hit_output.bind(hit_outputs);
 
+    max_eventbuffers = 0;
+
     return;
+}
+
+// *****************************************************************************
+hit_memory::~hit_memory()
+{
+    std::cout << std::endl;
+    std::cout << "'hit_memory' Report" << std::endl;
+    std::cout << "*******************" << std::endl;
+    std::cout << "Maximum event buffers used: " << max_eventbuffers << std::endl;
 }
 
 // *****************************************************************************
@@ -119,8 +130,8 @@ void hit_memory::search_hits()
             if ((actual_superstrip != IDLE_EVENT) &
                 (actual_superstrip != START_EVENT))
             {
-                superstrip_table_t::iterator found_strips = hit_storage.back()[layer].find(actual_superstrip.get_value());
-                if (found_strips != hit_storage.back()[layer].end())
+                superstrip_table_t::iterator found_strips = hit_storage.front()[layer].find(actual_superstrip.get_value());
+                if (found_strips != hit_storage.front()[layer].end())
                 {
                     superstrip_table_element_t *table_entry = &found_strips->second;
                     if (!table_entry->first)
@@ -140,27 +151,6 @@ void hit_memory::search_hits()
         }
     }
 
-}
-
-// *****************************************************************************
-void hit_memory::write_hits()
-{
-    while (1)
-    {
-        wait();
-
-//        output_data_ready_no_delay.write(false);
-//
-//        if (write_roads_sig)
-//        {
-//            if (!output_roads_buffer_empty)
-//            {
-//                road_addr_t road = detected_roads_buffer.read();
-//                output_data_ready_no_delay.write(true);
-//                output_road_no_delay.write(road);
-//            }
-//        }
-    }
 }
 
 // *****************************************************************************
@@ -190,4 +180,20 @@ void hit_memory::print_superstrip_table(superstrip_table_t table)
 
         std::cout << std::endl;
     }
+}
+
+// *****************************************************************************
+void hit_memory::memory_monitor()
+{
+    while(1)
+    {
+        wait();
+
+        unsigned int actual_size = hit_storage.size();
+        if (actual_size > max_eventbuffers)
+        {
+            max_eventbuffers = actual_size;
+        }
+    }
+
 }

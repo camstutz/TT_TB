@@ -54,14 +54,14 @@ public:
     sc_buffer<bool> write_event_end;
     sc_buffer<bool> transmit_event_begin;
 
-    sc_map_linear<sc_signal<superstrip_t> > pure_superstrips;
+    sc_map_linear<sc_buffer<superstrip_t> > pure_superstrips;
     sc_map_linear<sc_fifo<hit_t> > output_buffer;
 
     // ----- Process Declarations ----------------------------------------------
     void initialize_event();
     void write_buffer();
     void search_hits();
-    void write_hits();
+    void memory_monitor();
 
     // ----- Other Method Declarations -----------------------------------------
     void print_superstrip_table(superstrip_table_t table);
@@ -77,4 +77,8 @@ public:
      */
     hit_memory(const sc_module_name _name);
     SC_HAS_PROCESS(hit_memory);
+    ~hit_memory();
+
+private:
+    unsigned int max_eventbuffers;
 };
