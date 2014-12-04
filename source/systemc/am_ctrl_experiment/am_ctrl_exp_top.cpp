@@ -26,7 +26,7 @@ const unsigned int output_width = 4;
 
 am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
         sc_module(_name),
-        clock("clock", CLOCK_PERIOD_NS, SC_NS, 0.5, 10, SC_NS, true),
+        clock("clock", AMEXP_CLOCK_PERIOD_NS, SC_NS, 0.5, 10, SC_NS, true),
         input_hit_sig(LAYER_NUMBER, "input_hit_sig"),
         hit_buffer_ss_store_sig(LAYER_NUMBER, "hit_buffer_ss_subs_sig"),
         hit_buffer_subs_store_sig(LAYER_NUMBER, "hit_buffer_store_subs_sig"),
@@ -77,6 +77,8 @@ am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
     SC_THREAD(log_result);
         hit_result_sig.make_sensitive(sensitive);
 
+    read_hitfile();
+
     return;
 }
 
@@ -95,40 +97,92 @@ am_ctrl_exp_top::~am_ctrl_exp_top()
 // *****************************************************************************
 void am_ctrl_exp_top::generate_input()
 {
-    input_hit_sig[0].write(hit_stream::IDLE);
-    input_hit_sig[1].write(hit_stream::IDLE);
-    wait(50, SC_NS);
-    input_hit_sig[0].write(hit_stream::START_WORD);
-    input_hit_sig[1].write(hit_stream::START_WORD);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(0x11);
-    input_hit_sig[1].write(0x11);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(0x12);
-    input_hit_sig[1].write(0x12);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(0x08);
-    input_hit_sig[1].write(0x09);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(0x3);
-    input_hit_sig[1].write(hit_stream::IDLE);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(0x1F);
-    input_hit_sig[1].write(hit_stream::IDLE);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(hit_stream::IDLE);
-    wait(80, SC_NS);
-    input_hit_sig[0].write(hit_stream::START_WORD);
-    input_hit_sig[1].write(hit_stream::START_WORD);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(0x9);
-    input_hit_sig[1].write(0x8);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(0x3);
-    input_hit_sig[1].write(hit_stream::IDLE);
-    wait(10, SC_NS);
-    input_hit_sig[0].write(hit_stream::IDLE);
-    wait(100, SC_NS);
+    unsigned int current_event_nr = 0xFFFFFFFF;
+    input_hit_sig.write_all(hit_stream::IDLE);
+
+    while (!hit_queue.empty())
+    {
+        hitfile_line hitline = hit_queue.front();
+        hit_queue.pop();
+
+        if (hitline.hits[0].data.event != current_event_nr)
+        {
+            sc_time wait_time;
+            wait_time = ((hitline.timestamp-1) * sc_time(AMEXP_CLOCK_PERIOD_NS, SC_NS));
+            wait_time = wait_time - sc_time_stamp();
+
+            input_hit_sig.write_all(hit_stream::IDLE);
+            if (wait_time > sc_time(0, SC_PS))
+            {
+                wait(wait_time);
+            }
+
+            input_hit_sig.write_all(hit_stream::START_WORD);
+            wait(AMEXP_CLOCK_PERIOD_NS, SC_NS);
+
+            current_event_nr = hitline.hits[0].data.event;
+        }
+
+        sc_time wait_time;
+        wait_time = (hitline.timestamp * sc_time(AMEXP_CLOCK_PERIOD_NS, SC_NS));
+        wait_time = wait_time - sc_time_stamp();
+        if (wait_time > sc_time(0, SC_PS))
+        {
+            wait(wait_time);
+        }
+
+        for(unsigned int layer=0; layer<LAYER_NUMBER; ++layer)
+        {
+            if (hitline.hits[layer].dv)
+            {
+std::cout << sc_time_stamp() << " " << hitline.hits[layer].data.superstrip << "-" << hitline.hits[layer].data.stub << std::endl;
+                hit_t new_hit = (hitline.hits[layer].data.superstrip << 8) | hitline.hits[layer].data.stub;
+                input_hit_sig[layer].write(new_hit);
+            }
+            else
+            {
+                input_hit_sig[layer].write(hit_stream::IDLE);
+            }
+        }
+        wait(AMEXP_CLOCK_PERIOD_NS, SC_NS);
+    }
+
+
+
+//    input_hit_sig[0].write(hit_stream::IDLE);
+//    input_hit_sig[1].write(hit_stream::IDLE);
+//    wait(50, SC_NS);
+//    input_hit_sig[0].write(hit_stream::START_WORD);
+//    input_hit_sig[1].write(hit_stream::START_WORD);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(0x11);
+//    input_hit_sig[1].write(0x11);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(0x12);
+//    input_hit_sig[1].write(0x12);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(0x08);
+//    input_hit_sig[1].write(0x09);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(0x3);
+//    input_hit_sig[1].write(hit_stream::IDLE);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(0x1F);
+//    input_hit_sig[1].write(hit_stream::IDLE);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(hit_stream::IDLE);
+//    wait(80, SC_NS);
+//    input_hit_sig[0].write(hit_stream::START_WORD);
+//    input_hit_sig[1].write(hit_stream::START_WORD);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(0x9);
+//    input_hit_sig[1].write(0x8);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(0x3);
+//    input_hit_sig[1].write(hit_stream::IDLE);
+//    wait(10, SC_NS);
+//    input_hit_sig[0].write(hit_stream::IDLE);
+//    wait(100, SC_NS);
 
     return;
 }
@@ -199,4 +253,49 @@ void am_ctrl_exp_top::log_result()
             out_file << file_line.rdbuf() << std::endl;
         }
     }
+}
+
+// *****************************************************************************
+void am_ctrl_exp_top::read_hitfile()
+{
+    in_file.open(in_filename.c_str());
+    if (in_file.is_open())
+    {
+        std::string fileLine;
+        while (std::getline(in_file,fileLine))
+        {
+            if(fileLine != "")
+            {
+                std::stringstream fileLineStream(fileLine);
+                hitfile_line formated_line;
+                formated_line.hits.resize(LAYER_NUMBER);
+
+                fileLineStream >> std::hex >> formated_line.timestamp;
+                for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+                {
+                    fileLineStream >> std::hex >> formated_line.hits[layer].dv;
+
+                    unsigned int data;
+                    fileLineStream >> std::hex >> data;
+                    formated_line.hits[layer].data.event = (data & 0xFF000000) >> 24;
+                    formated_line.hits[layer].data.layer = (data & 0x00FF0000) >> 16;
+                    formated_line.hits[layer].data.superstrip = (data & 0x0000FF00) >> 8;
+                    formated_line.hits[layer].data.stub = (data & 0x000000FF);
+                }
+
+//                std::cout << std::hex << formated_line.timestamp <<
+//                        " " << formated_line.hits[0].dv << " " << formated_line.hits[0].data.event << "," << formated_line.hits[0].data.layer << "," << formated_line.hits[0].data.superstrip << "," << formated_line.hits[0].data.stub <<
+//                        " " << formated_line.hits[1].dv << " " << formated_line.hits[1].data.event << "," << formated_line.hits[1].data.layer << "," << formated_line.hits[1].data.superstrip << "," << formated_line.hits[1].data.stub <<
+//                        std::endl;
+
+                hit_queue.push(formated_line);
+            }
+        }
+    }
+    else
+    {
+        std::cout << "Input file could not be read: " << in_file << std::endl;
+    }
+
+    return;
 }

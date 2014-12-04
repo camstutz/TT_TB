@@ -8,11 +8,11 @@
 
 #pragma once
 
-#define CLOCK_PERIOD_NS 10
+#define AMEXP_CLOCK_PERIOD_NS 10
 
 #define LAYER_NUMBER 2
 #define SS_BIT_WIDTH 2
-#define AM_CHIP_PATTERN_NR 5
+#define AM_CHIP_PATTERN_NR 5000
 #define AM_HITS_PER_ROAD_THRESHOLD 2
 
 #define IDLE_EVENT  0xFFFF

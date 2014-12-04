@@ -34,6 +34,7 @@ road_processor::road_processor(const sc_module_name _name) :
         sensitive << road_input;
     SC_THREAD(lookup_superstrips);
         sensitive << command_buffer.data_written_event();
+        found_pattern.make_sensitive(sensitive);
 
 
     // ----- Module channel/variable initialization ----------------------------

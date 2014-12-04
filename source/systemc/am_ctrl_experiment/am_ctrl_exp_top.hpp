@@ -11,6 +11,7 @@
  */
 
 #include <utility>
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -51,7 +52,7 @@ public:
     sc_map_linear<sc_signal<substrip_stream> > hit_buffer_subs_store_sig;
     sc_map_linear<sc_signal<superstrip_stream> > am_input_sig;
     sc_signal<road_stream> am_output_sig;
-    sc_signal<road_t> pattern_mem_addr_sig;
+    sc_buffer<road_t> pattern_mem_addr_sig;
     sc_map_linear<sc_buffer<superstrip_t> > pattern_mem_out_sig;
     sc_map_linear<sc_signal<superstrip_stream> > hit_search_sig;
     sc_map_linear<sc_signal<hit_stream> > hit_result_sig;
@@ -80,9 +81,31 @@ public:
     ~am_ctrl_exp_top();
 
 private:
+    struct hitfile_data_t
+    {
+        unsigned int event;
+        unsigned int layer;
+        unsigned int superstrip;
+        unsigned int stub;
+    };
+
+    struct hitfile_element{
+        bool dv;
+        hitfile_data_t data;
+    };
+
+    struct hitfile_line {
+        unsigned int timestamp;
+        std::vector<hitfile_element> hits;
+    };
+
+    std::queue<hitfile_line> hit_queue;
+
     std::ostringstream in_log_buffer;
     std::ostringstream out_log_buffer;
 
     std::ifstream in_file;
     std::ofstream out_file;
+
+    void read_hitfile();
 };
