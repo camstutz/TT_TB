@@ -93,8 +93,6 @@ void am_chip::process_incoming_hits()
                 }
             }
         }
-        std::cout << sc_time_stamp() << std::endl;
-        print_match_table();
     }
 
 }
