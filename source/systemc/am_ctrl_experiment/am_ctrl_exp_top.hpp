@@ -24,6 +24,7 @@
 #include "am_ctrl_exp_config.hpp"
 #include "hit_processor.hpp"
 #include "hit_memory.hpp"
+#include "pattern_bank/pattern_bank.hpp"
 #include "am_chip.hpp"
 #include "pattern_memory.hpp"
 #include "road_processor.hpp"
@@ -66,6 +67,7 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
+    pattern_bank patterns;
     hit_processor hit_proc;
     hit_memory hit_buffer;
     am_chip road_lookup;

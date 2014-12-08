@@ -37,12 +37,15 @@ am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
         hit_search_sig(LAYER_NUMBER, "hit_search_sig"),
         hit_result_sig(LAYER_NUMBER, "hit_result_sig"),
         output_hit_sig(LAYER_NUMBER, "output_hit_sig"),
+        patterns(LAYER_NUMBER),
         hit_proc("hit_processor"),
         hit_buffer("hit_buffer"),
-        road_lookup("road_lookup"),
-        pattern_lookup("pattern_lookup"),
+        road_lookup("road_lookup", &patterns),
+        pattern_lookup("pattern_lookup", &patterns),
         road_proc("road_processor")
 {
+    patterns.import_text_file("patternbank.txt");
+
     hit_proc.clk.bind(clock);
     hit_proc.hit_input.bind(input_hit_sig);
     hit_proc.am_superstrip_out.bind(am_input_sig);
