@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date December 8, 2014
  *
  * @brief File containing the implementation of the AM board.
  */
@@ -14,7 +14,7 @@
 
 // *****************************************************************************
 
-am_chip::am_chip(sc_module_name _name) :
+am_chip::am_chip(sc_module_name _name, pattern_bank *p_bank) :
         sc_module(_name),
         clk("clk"),
         hit_inputs(LAYER_NUMBER, "hit_input"),
@@ -28,7 +28,8 @@ am_chip::am_chip(sc_module_name _name) :
         output_road_no_delay("output_road_no_delay"),
         detected_roads_buffer("detected_roads_buffer"),
         read_controller("read_controller"),
-        write_controller("write_controller")
+        write_controller("write_controller"),
+        patterns(p_bank)
         //latency_correction_data_ready("latency_correction_data_ready"),
         //latency_correction_road("latency_correction_road")
 {
@@ -66,16 +67,6 @@ am_chip::am_chip(sc_module_name _name) :
 //    latency_correction_road.input.bind(output_road_no_delay);
 //    latency_correction_road.delayed.bind(road_output);
 
-    initialize_patterns();
-    clear_match_table();
-
-    match_table.resize(nr_pattern);
-    std::vector<std::vector<bool> >::iterator match_table_it = match_table.begin();
-    for(; match_table_it != match_table.end(); ++match_table_it)
-    {
-        match_table_it->resize(LAYER_NUMBER);
-    }
-
     return;
 }
 
@@ -91,15 +82,14 @@ void am_chip::process_incoming_hits()
             if(process_hits[layer].read() & !hit_inputs[layer].read().is_opcode())
             {
                 superstrip_stream stream_value = hit_inputs[layer].read();
-                pattern_t pattern = stream_value.get_value();
-                std::pair<lay_pattern_bank_t::iterator, lay_pattern_bank_t::iterator> road_addresses = pattern_bank[layer].equal_range(pattern);
-                lay_pattern_bank_t::iterator road_addr_it = road_addresses.first;
+                std::vector<pattern_bank::pattern_id_t> roads;
+                roads = patterns->find_id(layer, stream_value.get_value());
 
-                while (road_addr_it != road_addresses.second)
+                std::vector<pattern_bank::pattern_id_t>::iterator road_it = roads.begin();
+                for (; road_it != roads.end(); ++road_it)
                 {
-                    unsigned int road_addr = road_addr_it->second;
-                    match_table[road_addr][layer] = true;
-                    ++road_addr_it;
+                    match_table[*road_it].resize(LAYER_NUMBER);
+                    match_table[*road_it][layer] = true;
                 }
             }
         }
@@ -117,12 +107,12 @@ void am_chip::detect_roads()
         {
             unsigned int road_nr = 0;
 
-            std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
+            std::map<pattern_bank::pattern_id_t, std::vector<bool> >::iterator match_line_it = match_table.begin();
             for (; match_line_it != match_table.end(); ++match_line_it)
             {
                 unsigned int road_hits = 0;
-                std::vector<bool>::iterator match_position_it = match_line_it->begin();
-                for (; match_position_it != match_line_it->end(); ++match_position_it)
+                std::vector<bool>::iterator match_position_it = match_line_it->second.begin();
+                for (; match_position_it != match_line_it->second.end(); ++match_position_it)
                 {
                     if (*match_position_it)
                     {
@@ -132,15 +122,16 @@ void am_chip::detect_roads()
 
                 if (road_hits >= AM_HITS_PER_ROAD_THRESHOLD)
                 {
-                    detected_roads_buffer.write(road_addr_t(road_nr));
+                    detected_roads_buffer.write(road_addr_t(match_line_it->first));
                 }
 
                 ++road_nr;
             }
 
             roads_detected.write(true);
-            clear_match_table();
         }
+
+        clear_match_table();
     }
 
 }
@@ -189,17 +180,9 @@ void am_chip::check_detected_road_buffer()
 void am_chip::print_pattern_bank()
 {
 	std::cout << "Pattern Banks:\n";
+	patterns->print_pattern_bank();
 
-    std::vector<lay_pattern_bank_t>::iterator layer_it = pattern_bank.begin();
-    for (; layer_it != pattern_bank.end(); ++layer_it)
-    {
-        std::multimap<unsigned int, road_addr_t>::iterator pattern_it = layer_it->begin();
-		for (; pattern_it != layer_it->end(); ++pattern_it)
-		{
-			std::cout << pattern_it->first << ",";
-		}
-		std::cout << "\n";
-	}
+	return;
 }
 
 // *****************************************************************************
@@ -207,11 +190,12 @@ void am_chip::print_match_table()
 {
 	std::cout << "Match Table:\n";
 
-    std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
+    std::map<pattern_bank::pattern_id_t, std::vector<bool> >::iterator match_line_it = match_table.begin();
     for (; match_line_it != match_table.end(); ++match_line_it)
     {
-        std::vector<bool>::iterator match_position_it = match_line_it->begin();
-        for (; match_position_it != match_line_it->end(); ++match_position_it)
+        std::cout << std::setw(8) << std::hex << match_line_it->first << ":";
+        std::vector<bool>::iterator match_position_it = match_line_it->second.begin();
+        for (; match_position_it != match_line_it->second.end(); ++match_position_it)
     	{
     		if (*match_position_it)
           	{
@@ -229,37 +213,9 @@ void am_chip::print_match_table()
 }
 
 // *****************************************************************************
-void am_chip::initialize_patterns()
-{
-    pattern_bank.resize(LAYER_NUMBER);
-
-    std::vector<lay_pattern_bank_t>::iterator layer_it = pattern_bank.begin();
-    for (; layer_it != pattern_bank.end(); ++layer_it)
-    {
-        for (unsigned int pat_nr=0; pat_nr<nr_pattern; ++pat_nr)
-        {
-            pattern_t pattern;
-            pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr)) ).to_uint();
-            layer_it->insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern) );
-        }
-    }
-
-    return;
-}
-
-// *****************************************************************************
 void am_chip::clear_match_table()
 {
-    // todo: isn't it faster to just create a new object ?
-    std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
-    for (; match_line_it != match_table.end(); ++match_line_it)
-    {
-        std::vector<bool>::iterator match_position_it = match_line_it->begin();
-        for (; match_position_it != match_line_it->end(); ++match_position_it)
-        {
-            *match_position_it = false;
-        }
-    }
+    match_table.clear();
 
     return;
 }

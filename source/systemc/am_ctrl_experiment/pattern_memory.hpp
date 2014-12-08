@@ -15,6 +15,7 @@
 #include <systemc.h>
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
+#include "pattern_bank/pattern_bank.hpp"
 #include "am_ctrl_exp_config.hpp"
 
 /*!
@@ -41,14 +42,11 @@ public:
     /*!
      * Constructor:
      */
-    pattern_memory(const sc_module_name _name);
+    pattern_memory(const sc_module_name _name, pattern_bank *p_bank);
     SC_HAS_PROCESS(pattern_memory);
 
 private:
-    void initialize_patterns();
     void print_pattern_bank();
 
-	typedef std::vector<superstrip_t> pattern_t;
-    typedef std::map<road_t, pattern_t> pattern_bank_t;
-    pattern_bank_t pattern_bank;
+    pattern_bank *patterns;
 };

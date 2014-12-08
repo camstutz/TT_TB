@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.cpp
  * @author Christian Amstutz
- * @date November 18, 2014
+ * @date December 8, 2014
  *
  * @brief
  */
@@ -18,11 +18,12 @@ SC_MODULE_EXPORT(pattern_memory);
 
 // *****************************************************************************
 
-pattern_memory::pattern_memory(const sc_module_name _name) :
+pattern_memory::pattern_memory(const sc_module_name _name, pattern_bank *p_bank) :
         sc_module(_name),
         clk("clk"),
         road_input("road_input"),
-        superstrip_outputs(LAYER_NUMBER, "superstrip_outputs")
+        superstrip_outputs(LAYER_NUMBER, "superstrip_outputs"),
+        patterns(p_bank)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(lookup_road);
@@ -38,8 +39,6 @@ pattern_memory::pattern_memory(const sc_module_name _name) :
 //    fifo_stub_in.register_signal_modelsim<fm_out_data>();
 //#endif
 
-    initialize_patterns();
-
     return;
 }
 
@@ -50,13 +49,13 @@ void pattern_memory::lookup_road()
 	{
 		wait();
 
-		pattern_bank_t::iterator found_entry = pattern_bank.find(road_input.read());
-		if (found_entry != pattern_bank.end())
+		std::pair<bool, pattern_bank::pattern_t> pattern= patterns->find_pattern(road_input.read());
+
+		if (pattern.first)
 		{
 			for(unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
 			{
-				pattern_t found_pattern = found_entry->second;
-				superstrip_outputs[layer].write(found_pattern[layer]);
+				superstrip_outputs[layer].write(pattern.second[layer]);
 			}
 		}
 	}
@@ -64,39 +63,10 @@ void pattern_memory::lookup_road()
 }
 
 // *****************************************************************************
-void pattern_memory::initialize_patterns()
-{
-	for (road_t pat_nr=0; pat_nr<AM_CHIP_PATTERN_NR; ++pat_nr)
-    {
-		pattern_t pattern;
-		pattern.resize(LAYER_NUMBER);
-
-		for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
-		{
-			pattern[layer] = pat_nr;
-		}
-
-		pattern_bank.insert(std::pair<road_t, pattern_t>(pat_nr, pattern));
-    }
-
-    return;
-}
-
-// *****************************************************************************
 void pattern_memory::print_pattern_bank()
 {
 	std::cout << std::endl << "Pattern Bank:" << std::endl;
-
-	pattern_bank_t::iterator pattern_it = pattern_bank.begin();
-	for (; pattern_it != pattern_bank.end(); ++pattern_it)
-	{
-		std::cout << pattern_it->first << ": ";
-		for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
-		{
-			 std::cout << pattern_it->second[layer] << ", ";
-		}
-		std::cout << std::endl;
-	}
+	patterns->print_pattern_bank();
 
 	return;
 }

@@ -21,6 +21,8 @@
 #include "am_ctrl_exp_config.hpp"
 #include "am_ctrl_exp_top.hpp"
 
+#include "pattern_bank/pattern_bank.hpp"
+
 int sc_main(int argc, char *agv[])
 {
     sc_analyzer analyzer;
@@ -80,6 +82,8 @@ int sc_main(int argc, char *agv[])
     std::cout << "Simulation ended." << std::endl;
 
     analyzer.print_report();
-  
+
+    pattern_bank test_bank(6);
+
     return (0);
 }

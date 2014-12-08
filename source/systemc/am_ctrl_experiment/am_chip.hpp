@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date December 8, 2014
  *
  * @brief File containing the definition of the AM board.
  */
@@ -21,6 +21,7 @@
 #include "../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 #include "simple_stream_protocol.hpp"
 
+#include "pattern_bank/pattern_bank.hpp"
 #include "am_ctrl_exp_config.hpp"
 #include "am_chip_read_ctrl.hpp"
 #include "am_chip_write_ctrl.hpp"
@@ -44,9 +45,6 @@ public:
 
     /** @brief Data type of the road at the output of the AM board */
     typedef road_t road_addr_t;
-
-    /** @brief configures the number of pattern that the AM board contains. */
-    static const unsigned int nr_pattern = AM_CHIP_PATTERN_NR;
 
     /** @brief configures the additional cycles of latency needed.
      *
@@ -98,7 +96,7 @@ public:
     sc_signal<road_addr_t> output_road_no_delay;
 
 // ----- Local Storage Declarations --------------------------------------------
-    std::vector<std::vector<bool> > match_table;
+    std::map<pattern_bank::pattern_id_t, std::vector<bool> > match_table;
     sc_fifo<road_addr_t> detected_roads_buffer;
 
 // ----- Process Declarations --------------------------------------------------
@@ -189,21 +187,11 @@ public:
      * sensitivity of the processes. Initializes the pattern bank and clears the
      * match table.
      */
-    am_chip(sc_module_name _name);
+    am_chip(sc_module_name _name, pattern_bank *p_bank);
     SC_HAS_PROCESS(am_chip);
 
 private:
-    // todo: try to use pattern_t as key of multimap
-    typedef std::multimap<unsigned int, road_addr_t> lay_pattern_bank_t;
-    std::vector<lay_pattern_bank_t> pattern_bank;
-
-    /** @brief Initializes pattern banks
-     *
-     * This function initializes the pattern bank inside the AM controller.
-     * The actual version creates patterns that have all their hits in the same
-     * strip on the different layers. Phi and Z are set to 0.
-     */
-    void initialize_patterns();
+    pattern_bank *patterns;
 
     void clear_match_table();
 };
