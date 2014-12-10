@@ -364,9 +364,7 @@ object_type* sc_map_4d<object_type>::creator::operator() (
 
     std::stringstream full_name;
     full_name << name;
-    full_name << "_" << id_W << "_" << id_Z << "_" << id_Y << "_" << id_X;
-
-    //std::string name = sc_gen_unique_name(basename());
+    full_name << "-" << id_W << "_" << id_Z << "_" << id_Y << "_" << id_X;
 
     return (new object_type(full_name.str().c_str()));
 }

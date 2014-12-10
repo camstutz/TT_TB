@@ -265,9 +265,7 @@ object_type* sc_map_square<object_type>::creator::operator() (
     // todo: include the start index to the naming
 
     std::stringstream full_name;
-    full_name << name << "_" << id_Y << "_" << id_X;
-
-    //std::string name = sc_gen_unique_name(basename());
+    full_name << name << "-" << id_Y << "_" << id_X;
 
     return (new object_type(full_name.str().c_str()));
 }
