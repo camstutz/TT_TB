@@ -22,8 +22,8 @@ hit_processor_one_layer::hit_processor_one_layer(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         hit_input("hit_input"),
-        am_superstrip_out("superstrip_out"),
-        hitbuf_superstrip_out("superstrip_out"),
+        am_superstrip_out("am_superstrip_out"),
+        hitbuf_superstrip_out("hitbuf_superstrip_out"),
         hitbuf_substrip_out("substrip_out")
 {
 
