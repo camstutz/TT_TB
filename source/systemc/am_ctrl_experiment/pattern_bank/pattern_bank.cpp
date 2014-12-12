@@ -117,6 +117,80 @@ void pattern_bank::print_pattern_bank() const
 }
 
 // *****************************************************************************
+void pattern_bank::clear()
+{
+    pattern_memory.clear();
+    reverse_lookup_collection_t::iterator rev_table_it = reverse_tables.begin();
+    for(; rev_table_it != reverse_tables.end(); ++rev_table_it)
+    {
+        rev_table_it->clear();
+    }
+
+    return;
+}
+
+// *****************************************************************************
+void pattern_bank::generate_patterns_straight(const unsigned int pattern_nr)
+{
+    for (unsigned int i = 0; i <  pattern_nr; ++i)
+    {
+        pattern_t new_pattern;
+        new_pattern.resize(layer_nr);
+        pattern_t::iterator layer_it = new_pattern.begin();
+        for (; layer_it != new_pattern.end(); ++layer_it)
+        {
+            *layer_it = i;
+        }
+        insert_pattern(i, new_pattern);
+    }
+
+    return;
+}
+
+// *****************************************************************************
+void pattern_bank::generate_patterns_slight_tilt(const unsigned int pattern_nr)
+{
+    for (unsigned int i = 0; i <  pattern_nr; ++i)
+    {
+        std::vector<pattern_t> new_patterns;
+        new_patterns.resize(3);
+
+        for (unsigned int layer = 0; layer < layer_nr; ++layer)
+        {
+            new_patterns[0].push_back(i);
+            if (layer < layer_nr/2)
+            {
+                new_patterns[1].push_back(i);
+                new_patterns[2].push_back(i);
+            }
+            else
+            {
+                if (i > 0)
+                {
+                    new_patterns[1].push_back(i-1);
+                }
+                if (i < pattern_nr-1)
+                {
+                    new_patterns[2].push_back(i+1);
+                }
+            }
+        }
+
+        unsigned int j = 0;
+        for (std::vector<pattern_t>::iterator pattern_it = new_patterns.begin();
+             pattern_it != new_patterns.end();
+             ++pattern_it)
+        {
+            insert_pattern(3*i+j, *pattern_it);
+
+            ++j;
+        }
+    }
+
+    return;
+}
+
+// *****************************************************************************
 void pattern_bank::generate_text_file(const std::string& filename) const
 {
     std::ofstream file(filename.c_str());

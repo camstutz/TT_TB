@@ -36,6 +36,10 @@ public:
     size_t get_pattern_nr() const;
     void print_pattern_bank() const;
 
+    void clear();
+    void generate_patterns_straight(const unsigned int pattern_nr);
+    void generate_patterns_slight_tilt(const unsigned int pattern_nr);
+
     void generate_text_file(const std::string& filename) const;
     void generate_binary_file(const std::string& filename) const;
     void import_text_file(const std::string& filename);
@@ -50,7 +54,7 @@ public:
 
     static const unsigned int id_width;
     static const unsigned int pattern_width;
-    const size_t layer_nr;
+    const unsigned int layer_nr;
     pattern_memory_t pattern_memory;
     reverse_lookup_collection_t reverse_tables;
 

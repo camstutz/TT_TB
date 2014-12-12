@@ -44,7 +44,8 @@ am_ctrl_exp_top::am_ctrl_exp_top(const sc_module_name _name) :
         pattern_lookup("pattern_lookup", &patterns),
         road_proc("road_processor")
 {
-    patterns.import_text_file("patternbank.txt");
+    //patterns.import_text_file("patternbank.txt");
+    patterns.generate_patterns_straight(100000);
 
     hit_proc.clk.bind(clock);
     hit_proc.hit_input.bind(input_hit_sig);
