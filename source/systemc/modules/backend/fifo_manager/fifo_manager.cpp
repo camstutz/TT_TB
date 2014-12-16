@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager.cpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date December 15, 2014
  *
  * @brief
  */
@@ -62,20 +62,20 @@ fifo_manager::fifo_manager(sc_module_name _name) :
 
         sc_map_square<sc_in<bool> >::square_iterator dv_in_it = dv_in.begin_partial(layer, false, 0, true);
         datapath_it->dv_in.bind_by_iter(dv_in_it);
-        sc_map_square<sc_in<data_organizer_one_layer::do_stub_t> >::square_iterator inport_it = stub_in.begin_partial(layer, false, 0, true);
+        sc_map_square<sc_in<input_stub_t> >::square_iterator inport_it = stub_in.begin_partial(layer, false, 0, true);
         datapath_it->stub_in.bind_by_iter(inport_it);
         sc_map_square<sc_out<bool> >::square_iterator dv_out_it = dv_out.begin_partial(0, true, layer, false);
         datapath_it->dv_out.bind_by_iter(dv_out_it);
-        sc_map_square<sc_out<fm_out_data> >::square_iterator outport_it = fifo_out.begin_partial(0, true, layer, false);
+        sc_map_square<sc_out<output_t> >::square_iterator outport_it = fifo_out.begin_partial(0, true, layer, false);
         datapath_it->fifo_out.bind_by_iter(outport_it);
 
         sc_map_square<sc_in<bool> >::square_iterator neigh_dv_in_it = neighbour_dv_in.begin_partial(0, true, layer, false);
         datapath_it->neighbour_dv_in.bind_by_iter(neigh_dv_in_it);
-        sc_map_square<sc_in<data_organizer_one_layer::do_stub_t> >::square_iterator neigh_stub_in_it = neighbour_stub_in.begin_partial(0, true, layer, false);
+        sc_map_square<sc_in<input_stub_t> >::square_iterator neigh_stub_in_it = neighbour_stub_in.begin_partial(0, true, layer, false);
         datapath_it->neighbour_stub_in.bind_by_iter(neigh_stub_in_it);
         sc_map_square<sc_out<bool> >::square_iterator neigh_dv_out_it = neighbour_dv_out.begin_partial(0, true, layer, false);
         datapath_it->neighbour_dv_out.bind_by_iter(neigh_dv_out_it);
-        sc_map_square<sc_out<data_organizer_one_layer::do_stub_t> >::square_iterator neigh_stub_out_it = neighbour_stub_out.begin_partial(0, true, layer, false);
+        sc_map_square<sc_out<input_stub_t> >::square_iterator neigh_stub_out_it = neighbour_stub_out.begin_partial(0, true, layer, false);
         datapath_it->neighbour_stub_out.bind_by_iter(neigh_stub_out_it);
 
         ++layer;

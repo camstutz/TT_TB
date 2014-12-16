@@ -79,7 +79,11 @@ void hit_ctrl_single_line::write_AM_stub()
 
         if (wr_hit_lamb.read() == true)
         {
-            stub_output.write(stub_read.read().get_data()(15,0));
+            fm_out_data::fm_stub_t strip_addr;
+            sc_bv<AM_BOARD_PATTERN_WIDTH> pattern;
+            strip_addr = stub_read.read().get_data_stub();
+            pattern = strip_addr.get_bitvector()(AM_BOARD_PATTERN_WIDTH-1,0);
+            stub_output.write(pattern);
         }
         write_en.write(wr_hit_lamb.read());
     }
@@ -91,8 +95,8 @@ void hit_ctrl_single_line::update_hee_reg()
 {
     while (1)
     {
-        hee_reg_before.write(stub_input.read().get_time_stamp_flag());
-        hee_reg.write(stub_read.read().get_time_stamp_flag());
+        hee_reg_before.write(stub_input.read().is_timestamp());
+        hee_reg.write(stub_read.read().is_timestamp());
 
         wait();
     }
@@ -109,7 +113,7 @@ void hit_ctrl_single_line::update_tag()
 
 		if (hee_reg.read() == true)
 		{
-			stub_tag.write(stub_read.read().get_data_time_stamp());
+			stub_tag.write(stub_read.read().is_timestamp());
 		}
 	}
 }

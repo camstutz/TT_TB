@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc.hpp
  * @author Christian Amstutz
- * @date July 1, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -18,7 +18,6 @@
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/stub_sb.hpp"
 
 /*!
  * @brief
@@ -27,18 +26,17 @@ class frontend_chip_cbc : public sc_module
 {
 public:
 
-    typedef stub_sb<FE_CBC_STUB_STRIP_BITS, FE_CBC_STUB_BEND_BITS,
-            FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_cbc_stub_t;
+    typedef fe_cbc_stub_t stub_t;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> en;
-    sc_fifo_in<fe_cbc_stub_t> stub_input;
+    sc_fifo_in<stub_t> stub_input;
     sc_map_linear<sc_out<bool> > data_valid;
-    sc_map_linear<sc_out<fe_cbc_stub_t> > stub_outputs;
+    sc_map_linear<sc_out<stub_t> > stub_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_fifo<fe_cbc_stub_t> selected_stubs;
+    sc_fifo<stub_t> selected_stubs;
 
 // ----- Process Declarations --------------------------------------------------
     void prioritize_hits();

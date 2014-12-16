@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.cpp
  * @author Christian Amstutz
- * @date Sep 18, 2014
+ * @date December 15, 2014
  *
  * @brief
  */
@@ -73,7 +73,7 @@ void fifo_manager_datapath::read_stubs()
                     if (dv_it->read() == true)
                     {
                         input_stub_t input_stub = input_it->read();
-                        stub_buffer[AM_lane].push(fm_out_data(input_stub));
+                        stub_buffer[AM_lane].push(output_t(input_stub));
 std::cout << "Value written to output buffer" << std::endl;
 
                         // Check to which neighbours a stub should be
@@ -100,7 +100,7 @@ std::cout << "Value written to neighbour buffer" << std::endl;
                     if (neighbour_dv_it->read() == true)
                     {
                         input_stub_t input_stub = neighbour_input_it->read();
-                        stub_buffer[AM_lane].push(fm_out_data(input_stub));
+                        stub_buffer[AM_lane].push(output_t(input_stub));
 std::cout << "Value from neighbour written to output buffer" << std::endl;
                     }
 
@@ -110,7 +110,7 @@ std::cout << "Value from neighbour written to output buffer" << std::endl;
                 // add time stamp to buffer if there are stubs in the buffer
                 if (!stub_buffer[AM_lane].empty())
                 {
-                    stub_buffer[AM_lane].push(fm_out_data(time_stamp.read()));
+                    stub_buffer[AM_lane].push(output_t(time_stamp.read()));
                 }
             }
         }
@@ -132,14 +132,14 @@ void fifo_manager_datapath::write_fifos()
             bool read_this_lane = buffer_read_en[AM_lane].read();
             if (read_this_lane & !stub_buffer[AM_lane].empty())
             {
-                fm_out_data output_data = stub_buffer[AM_lane].front();
+                output_t output_data = stub_buffer[AM_lane].front();
                 stub_buffer[AM_lane].pop();
                 dv_out[AM_lane].write(true);
                 fifo_out[AM_lane].write(output_data);
             }
             else
             {
-                fifo_out[AM_lane].write(fm_out_data());
+                fifo_out[AM_lane].write(output_t());
             }
         }
     }

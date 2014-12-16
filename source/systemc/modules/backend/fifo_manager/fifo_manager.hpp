@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager.hpp
  * @author Christian Amstutz
- * @date Sep 18, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -29,7 +29,8 @@
 class fifo_manager : public sc_module
 {
 public:
-    typedef data_organizer_one_layer::do_stub_t input_stub_t;
+    typedef fifo_manager_datapath::input_stub_t input_stub_t;
+    typedef fifo_manager_datapath::output_t output_t;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -59,11 +60,11 @@ public:
     sc_map_square<sc_out<input_stub_t> > neighbour_stub_out;
 
     /** Data valid output to signal the availability of data to the FIFO. The
-     *  the dimensions within sc_amp are (AM lane, layer). */
+     *  the dimensions within sc_map are (AM lane, layer). */
     sc_map_square<sc_out<bool> > dv_out;
     /** Data output to the FIFOs. The dimensions within sc_map are
      *  (AM lane, layer). */
-    sc_map_square<sc_out<fm_out_data> > fifo_out;
+    sc_map_square<sc_out<output_t> > fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_map_linear<sc_signal<bool> > buf_write_en_sig;

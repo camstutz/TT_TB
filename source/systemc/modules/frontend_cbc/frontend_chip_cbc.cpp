@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc.cpp
  * @author Christian Amstutz
- * @date July 1, 2014
+ * @date December 15, 2014
  *
  * @brief
  */
@@ -52,7 +52,7 @@ void frontend_chip_cbc::prioritize_hits()
     {
         wait();
 
-        fe_cbc_stub_t act_stub;
+        stub_t act_stub;
         int stub_cnt = stub_input.num_available();
         for (int i=0;
                 i < std::min(stub_cnt, MAX_HITS_PER_CBC_FE_CHIP);
@@ -82,7 +82,7 @@ void frontend_chip_cbc::write_hits()
 
         // todo: optimization potential if not written every cycle
         data_valid.write_all(0);
-        stub_outputs.write_all(fe_cbc_stub_t(0,0));
+        stub_outputs.write_all(stub_t(0,0));
 
         unsigned int num_stubs = selected_stubs.num_available();
         for (unsigned int i=0; i<num_stubs; i++)

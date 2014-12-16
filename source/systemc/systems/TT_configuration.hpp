@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date Aug 1, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -11,6 +11,7 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
+#pragma once
 
 // Define the clock frequency and the period in nanoseconds of the LHC clock
 #define LHC_CLOCK_FREQ 40000000
@@ -66,3 +67,44 @@
 #define AM_BOARD_PATTERN_WIDTH     16
 #define AM_BOARD_ROAD_WIDTH        21
 #define AM_BOARD_PATTERN_NR        256
+
+// Signal types used between modules
+#include "../data_formats/stub_sb.hpp"
+#include "../data_formats/stub_vbxfsb.hpp"
+#include "../data_formats/stub_bxpsb.hpp"
+#include "../data_formats/stub_vbxpfsb.hpp"
+#include "../data_formats/stub_pzfs.hpp"
+#include "../data_formats/dc_out_word.hpp"
+
+typedef stub_sb<FE_CBC_STUB_STRIP_BITS,
+                FE_CBC_STUB_BEND_BITS,
+                FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_cbc_stub_t;
+
+typedef stub_vbxfsb<DC_STUB_BX_BITS,
+                    DC_STUB_FE_BITS,
+                    FE_CBC_STUB_STRIP_BITS,
+                    FE_CBC_STUB_BEND_BITS,
+                    DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_CBC_STUB_STRIP_BITS
+                    +FE_CBC_STUB_BEND_BITS> dc_cbc_stub_t;
+
+typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
+                   FE_MPA_STUB_PIXEL_BITS,
+                   FE_MPA_STUB_STRIP_BITS,
+                   FE_MPA_STUB_BEND_BITS,
+                   FE_MPA_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+
+                   FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_mpa_stub_t;
+
+typedef stub_vbxpfsb<DC_STUB_BX_BITS,
+                     FE_MPA_STUB_PIXEL_BITS,
+                     DC_STUB_FE_BITS,
+                     FE_MPA_STUB_STRIP_BITS,
+                     FE_MPA_STUB_BEND_BITS,
+                     DC_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+DC_STUB_FE_BITS+
+                     FE_MPA_STUB_STRIP_BITS+FE_MPA_STUB_BEND_BITS>
+                     dc_mpa_stub_t;
+
+typedef dc_out_word<DC_OUT_HEADER_BITS, DC_OUTPUT_WIDTH-DC_OUT_HEADER_BITS,
+                    DC_OUTPUT_WIDTH> dc_out_t;
+
+typedef stub_pzfs<DO_STUB_PHI_BITS, DO_STUB_Z_BITS, DO_STUB_FECHIP_BITS, DO_STUB_STRIP_BITS,
+        DO_STUB_PHI_BITS+DO_STUB_Z_BITS+DO_STUB_FECHIP_BITS+DO_STUB_STRIP_BITS> do_stub_t;

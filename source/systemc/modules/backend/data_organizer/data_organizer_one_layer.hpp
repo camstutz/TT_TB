@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer.hpp
  * @author Christian Amstutz
- * @date July 30, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -21,8 +21,6 @@
 #include "../../../libraries/systemc_helpers/nbits.hpp"
 
 #include "../../../systems/TT_configuration.hpp"
-#include "../../../data_formats/dc_out_word.hpp"
-#include "../../../data_formats/stub_pzfs.hpp"
 
 /*!
  * @brief
@@ -30,11 +28,8 @@
 class data_organizer_one_layer : public sc_module
 {
 public:
-    typedef stub_pzfs<DO_STUB_PHI_BITS, DO_STUB_Z_BITS, DO_STUB_FECHIP_BITS, DO_STUB_STRIP_BITS,
-            DO_STUB_PHI_BITS+DO_STUB_Z_BITS+DO_STUB_FECHIP_BITS+DO_STUB_STRIP_BITS> do_stub_t;
-    typedef dc_out_word<DC_OUT_HEADER_BITS,
-                        DC_OUTPUT_WIDTH-DC_OUT_HEADER_BITS,
-                        DC_OUTPUT_WIDTH> dc_out_t;
+    typedef do_stub_t do_out_t;
+    typedef dc_out_t do_in_t;
 
     typedef typename std::vector<std::vector<do_stub_t > > stub_table_type;
 
@@ -53,11 +48,11 @@ public:
     /** Control signal that switches between the two re-order tables */
     sc_in<unsigned int> stub_table_sel;
 
-    sc_in<dc_out_t> stream_in;
+    sc_in<do_in_t> stream_in;
 
     /** Linear sc_map for the re-arranged, re-timed stubs. */
     sc_map_linear<sc_out<bool> > dv;
-    sc_map_linear<sc_out<do_stub_t> > stub_out;
+    sc_map_linear<sc_out<do_out_t> > stub_out;
 
     // todo: put these values to constructor
     sc_in<unsigned int> phi;

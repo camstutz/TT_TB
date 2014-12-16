@@ -1,7 +1,7 @@
 /*!
- * @file am_board.hpp
+ * @file am_chip.hpp
  * @author Christian Amstutz
- * @date May 20, 2014
+ * @date December 15, 2014
  *
  * @brief File containing the definition of the AM board.
  */
@@ -21,7 +21,7 @@
 #include "../../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 
 #include "../../../../systems/TT_configuration.hpp"
-#include "am_board_fsm.hpp"
+#include "am_chip_fsm.hpp"
 
 /*!
  * @brief Associative Memory Module
@@ -31,7 +31,7 @@
  *
  * todo: describe algorithm in detail
  */
-class am_board : public sc_module
+class am_chip : public sc_module
 {
 public:
     /** @brief Data type of the pattern at the input on each layer */
@@ -198,7 +198,7 @@ public:
      * Sequences through the different states of the AM board: idle,
      * receive hits, process roads, write roads.
      */
-    am_board_fsm fsm;
+    am_chip_fsm fsm;
 
     /** Additional delay for the data ready signal to correct the low latency of
      * the quite high level implementation of the AM board. */
@@ -218,8 +218,8 @@ public:
      * sensitivity of the processes. Initializes the pattern bank and clears the
      * match table.
      */
-    am_board(sc_module_name _name);
-    SC_HAS_PROCESS(am_board);
+    am_chip(sc_module_name _name);
+    SC_HAS_PROCESS(am_chip);
 
 private:
     // todo: try to use pattern_t as key of multimap

@@ -1,5 +1,5 @@
 /*!
- * @file am_board_fsm.hpp
+ * @file am_chip_fsm.hpp
  * @author Christian Amstutz
  * @date May 5, 2014
  *
@@ -57,7 +57,7 @@
  * \enddot
  */
 
-class am_board_fsm : public sc_module
+class am_chip_fsm : public sc_module
 {
 public:
     /** @brief Data type of the FSM states */
@@ -149,8 +149,8 @@ public:
      * assigning their sensitivity lists. Initializes the FSM by setting the
      * current state to IDLE.
      */
-    am_board_fsm(sc_module_name _name);
-    SC_HAS_PROCESS(am_board_fsm);
+    am_chip_fsm(sc_module_name _name);
+    SC_HAS_PROCESS(am_chip_fsm);
 
 private:
     /** @brief Checks if at least one write enable input is active

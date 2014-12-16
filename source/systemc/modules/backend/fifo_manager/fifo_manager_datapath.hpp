@@ -1,7 +1,7 @@
 /*!
  * @file fifo_manager_datapath.hpp
  * @author Christian Amstutz
- * @date Aug 4, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -22,7 +22,6 @@
 
 #include "../../../systems/TT_configuration.hpp"
 #include "../../../data_formats/fm_out_data.hpp"
-#include "../data_organizer/data_organizer_one_layer.hpp"
 
 /*!
  * @brief
@@ -30,7 +29,8 @@
 class fifo_manager_datapath : public sc_module
 {
 public:
-    typedef data_organizer_one_layer::do_stub_t input_stub_t;
+    typedef do_stub_t input_stub_t;
+    typedef fm_out_data output_t;
     typedef std::vector<unsigned int> neighbour_vector;
 
 // ----- Port Declarations -----------------------------------------------------
@@ -53,7 +53,7 @@ public:
     sc_map_linear<sc_out<input_stub_t> > neighbour_stub_out;
 
     sc_map_linear<sc_out<bool> > dv_out;
-    sc_map_linear<sc_out<fm_out_data> > fifo_out;
+    sc_map_linear<sc_out<output_t> > fifo_out;
 
 // ----- Local Channel Declarations --------------------------------------------
 

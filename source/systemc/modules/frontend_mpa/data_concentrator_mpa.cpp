@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa.cpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date December 15, 2014
  *
  * @brief
  */
@@ -66,7 +66,7 @@ void data_concentrator_mpa::read_FE_chips()
                 in_stub_t fe_data = fe_in_it->read();
                 std::pair<bool, sc_map_square<sc_in<in_stub_t> >::full_key_type>
                         signal_key = fe_stub_in.get_key(*fe_in_it);
-                mpa_out_stub_t stub;
+                out_stub_t stub;
 
                 stub.set_valid(true);
                 stub.set_bx(calculate_bx(clock_phase.read(), fe_data.get_bx()));
@@ -167,12 +167,12 @@ void data_concentrator_mpa::create_output_buffer()
         std::cout << "data_concentrator_mpa: Stub buffer overflow!" << std::endl;
     }
     // cut the stubs that are too much for transmission to the back end
-    stub_buffer[stub_buffer_read_sel].resize(NR_DC_MPA_OUT_STUBS, mpa_out_stub_t());
+    stub_buffer[stub_buffer_read_sel].resize(NR_DC_MPA_OUT_STUBS, out_stub_t());
 
     for(unsigned short i; i<NR_DC_MPA_OUT_STUBS; i++)
     {
-        size_t word_start = i*mpa_out_stub_t::total_width;
-        size_t word_end = (i+1)*mpa_out_stub_t::total_width-1;
+        size_t word_start = i*out_stub_t::total_width;
+        size_t word_end = (i+1)*out_stub_t::total_width-1;
 
         output_buffer(word_end, word_start) = stub_buffer[stub_buffer_read_sel][i].get_bitvector();
     }
@@ -183,15 +183,15 @@ void data_concentrator_mpa::create_output_buffer()
 }
 
 // *****************************************************************************
-data_concentrator_mpa::mpa_out_stub_t::bx_t data_concentrator_mpa::calculate_bx(
+data_concentrator_mpa::out_stub_t::bx_t data_concentrator_mpa::calculate_bx(
 		clock_phase_t clock_phase, in_stub_t::bx_t stub_bx)
 {
     if (clock_phase%2 == 0)
     {
-        return (stub_bx == 0 ? clock_phase : (clock_phase+1));
+        return (stub_bx == 0 ? (clock_phase-1) : clock_phase);
     }
     else
     {
-        return (stub_bx == 0 ? (clock_phase-1) : clock_phase);
+        return (stub_bx == 0 ? (clock_phase) : (clock_phase-1));
     }
 }

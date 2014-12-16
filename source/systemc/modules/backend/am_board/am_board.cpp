@@ -1,7 +1,7 @@
 /*!
- * @file am_lane.cpp
+ * @file am_board.cpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date December 15, 2014
  *
  * @brief
  */
@@ -10,7 +10,7 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "am_lane.hpp"
+#include "am_board.hpp"
 
 // *****************************************************************************
 
@@ -18,10 +18,11 @@
  * @class am_lane
  */
 
-am_lane::am_lane(const sc_module_name _name) :
+am_board::am_board(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
+        fifo_write_en(NR_DETECTOR_LAYERS, "fifo_write_ens"),
         fifo_inputs(NR_DETECTOR_LAYERS, "fifo_inputs"),
         road_write_en("road_write_en"),
         road_output("road_output"),
@@ -44,6 +45,7 @@ am_lane::am_lane(const sc_module_name _name) :
     {
         fifo_it->clk.bind(clk);
         fifo_it->rst.bind(rst);
+        fifo_it->write_en.bind(fifo_write_en[layer]);
         fifo_it->stub_in.bind(fifo_inputs[layer]);
         fifo_it->not_empty.bind(fifo_not_empty_sig[layer]);
         fifo_it->read_en.bind(fifo_read_en_sig[layer]);

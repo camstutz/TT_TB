@@ -1,7 +1,7 @@
 /*!
- * @file am_board.cpp
+ * @file am_chip.cpp
  * @author Christian Amstutz
- * @date May 20, 2014
+ * @date November 15, 2014
  *
  * @brief File containing the implementation of the AM board.
  */
@@ -10,11 +10,11 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "am_board.hpp"
+#include "am_chip.hpp"
 
 // *****************************************************************************
 
-am_board::am_board(sc_module_name _name) :
+am_chip::am_chip(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
@@ -77,7 +77,7 @@ am_board::am_board(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void am_board::process_incoming_hits()
+void am_chip::process_incoming_hits()
 {
     while(1)
     {
@@ -104,7 +104,7 @@ void am_board::process_incoming_hits()
 }
 
 // *****************************************************************************
-void am_board::detect_roads()
+void am_chip::detect_roads()
 {
     while (1)
     {
@@ -139,7 +139,7 @@ void am_board::detect_roads()
 }
 
 // *****************************************************************************
-void am_board::write_roads()
+void am_chip::write_roads()
 {
     while (1)
     {
@@ -161,7 +161,7 @@ void am_board::write_roads()
 }
 
 // *****************************************************************************
-void am_board::check_detected_road_buffer()
+void am_chip::check_detected_road_buffer()
 {
     while (1)
     {
@@ -179,7 +179,7 @@ void am_board::check_detected_road_buffer()
 }
 
 // *****************************************************************************
-void am_board::print_pattern_bank()
+void am_chip::print_pattern_bank()
 {
 	std::cout << "Pattern Banks:\n";
 
@@ -196,7 +196,7 @@ void am_board::print_pattern_bank()
 }
 
 // *****************************************************************************
-void am_board::print_match_table()
+void am_chip::print_match_table()
 {
 	std::cout << "Match Table:\n";
 
@@ -221,7 +221,7 @@ void am_board::print_match_table()
 }
 
 // *****************************************************************************
-void am_board::initialize_patterns()
+void am_chip::initialize_patterns()
 {
     pattern_bank.resize(NR_DETECTOR_LAYERS);
 
@@ -240,7 +240,7 @@ void am_board::initialize_patterns()
 }
 
 // *****************************************************************************
-void am_board::clear_match_table()
+void am_chip::clear_match_table()
 {
     std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
     for (; match_line_it != match_table.end(); ++match_line_it)

@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date December 15, 2014
  *
  * @brief
  */
@@ -47,7 +47,7 @@ sensor_module_cbc::sensor_module_cbc(const sc_module_name _name) :
         //! todo: use the enable port
         fe_chip_it->en(true_sig);
         fe_chip_it->stub_input(stub_inputs[fe_cnt]);
-        sc_map_square<sc_signal<fe_cbc_stub_t> >::square_iterator fe_out_sig_it = fe_out_signals.begin_partial(fe_cnt, false, 0, true);
+        sc_map_square<sc_signal<fe_stub_t> >::square_iterator fe_out_sig_it = fe_out_signals.begin_partial(fe_cnt, false, 0, true);
         fe_chip_it->stub_outputs.bind_by_iter(fe_out_sig_it);
         sc_map_square<sc_signal<bool> >::square_iterator data_valid_sig_it = data_valid_signals.begin_partial(fe_cnt, false, 0, true);
         fe_chip_it->data_valid.bind_by_iter(data_valid_sig_it);
@@ -55,10 +55,11 @@ sensor_module_cbc::sensor_module_cbc(const sc_module_name _name) :
         fe_cnt++;
     }
 
-    dataConcentrator.clk(clk);
-    dataConcentrator.rst(true_sig);
+    dataConcentrator.clk.bind(clk);
+    dataConcentrator.rst.bind(true_sig);
+    dataConcentrator.data_valid.bind(data_valid_signals);
     dataConcentrator.fe_stub_in.bind(fe_out_signals);
-    dataConcentrator.dc_out(dc_out);
+    dataConcentrator.dc_out.bind(dc_out);
 
 #ifdef MTI_SYSTEMC
     stub_inputs.register_signal_modelsim<fe_out_data::fe_stub_t>();

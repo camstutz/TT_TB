@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module_cbc.hpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -17,8 +17,6 @@
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../../data_formats/stub_sb.hpp"
-#include "../../data_formats/dc_out_word.hpp"
 #include "../../systems/TT_configuration.hpp"
 
 #include "frontend_chip_cbc.hpp"
@@ -32,21 +30,17 @@ class sensor_module_cbc : public sc_module
 {
 public:
 
-    typedef stub_sb<FE_CBC_STUB_STRIP_BITS,
-                    FE_CBC_STUB_BEND_BITS,
-                    FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_cbc_stub_t;
-    typedef dc_out_word<DC_OUT_HEADER_BITS,
-                        DC_OUTPUT_WIDTH-DC_OUT_HEADER_BITS,
-                        DC_OUTPUT_WIDTH> dc_out_t;
+    typedef frontend_chip_cbc::stub_t fe_stub_t;
+    typedef data_concentrator_cbc::out_t dc_out_t;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
-    sc_map_linear<sc_fifo_in<fe_cbc_stub_t> > stub_inputs;
+    sc_map_linear<sc_fifo_in<fe_stub_t> > stub_inputs;
     sc_out<dc_out_t> dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_square<sc_signal<bool> > data_valid_signals;
-    sc_map_square<sc_signal<fe_cbc_stub_t> > fe_out_signals;
+    sc_map_square<sc_signal<fe_stub_t> > fe_out_signals;
     sc_signal<bool> true_sig;
 
     // ----- Process Declarations ----------------------------------------------

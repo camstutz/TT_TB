@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date July 31, 2014
+ * @date December 15, 2014
  *
  * @brief
  */
@@ -59,7 +59,7 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
         do_mpa_it->stream_in.bind(stream_in[layer]);
         sc_map_square<sc_out<bool> >::square_iterator dv_iter = dv.begin_partial(layer, false, 0, true);
         do_mpa_it->dv.bind_by_iter(dv_iter);
-        sc_map_square<sc_out<data_organizer_one_layer::do_stub_t> >::square_iterator output_iter = stub_out.begin_partial(layer, false, 0, true);
+        sc_map_square<sc_out<do_out_t> >::square_iterator output_iter = stub_out.begin_partial(layer, false, 0, true);
         do_mpa_it->stub_out.bind_by_iter(output_iter);
         do_mpa_it->phi.bind(phi_sig);
         do_mpa_it->z.bind(z_sig);
@@ -79,7 +79,7 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
         do_cbc_it->stream_in.bind(stream_in[layer]);
         sc_map_square<sc_out<bool> >::square_iterator dv_iter = dv.begin_partial(layer, false, 0, true);
         do_cbc_it->dv.bind_by_iter(dv_iter);
-        sc_map_square<sc_out<data_organizer_one_layer::do_stub_t> >::square_iterator output_iter = stub_out.begin_partial(layer, false, 0, true);
+        sc_map_square<sc_out<do_out_t> >::square_iterator output_iter = stub_out.begin_partial(layer, false, 0, true);
         do_cbc_it->stub_out.bind_by_iter(output_iter);
         do_cbc_it->phi.bind(phi_sig);
         do_cbc_it->z.bind(z_sig);

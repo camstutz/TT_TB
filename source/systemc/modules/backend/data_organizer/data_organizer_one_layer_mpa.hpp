@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer_mpa.hpp
  * @author Christian Amstutz
- * @date July 30, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -15,7 +15,6 @@
 
 #include <systemc.h>
 
-#include "../../../data_formats/stub_vbxpfsb.hpp"
 #include "data_organizer_one_layer.hpp"
 
 /*!
@@ -24,14 +23,7 @@
 class data_organizer_one_layer_mpa : public data_organizer_one_layer
 {
 public:
-    typedef stub_vbxpfsb<DC_STUB_BX_BITS,
-                         FE_MPA_STUB_PIXEL_BITS,
-                         DC_STUB_FE_BITS,
-                         FE_MPA_STUB_STRIP_BITS,
-                         FE_MPA_STUB_BEND_BITS,
-                         DC_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+DC_STUB_FE_BITS+
-                         FE_MPA_STUB_STRIP_BITS+FE_MPA_STUB_BEND_BITS>
-                         mpa_out_stub_t;
+    typedef dc_mpa_stub_t stub_t;
 
 // ----- Port Declarations -----------------------------------------------------
 

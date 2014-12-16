@@ -1,7 +1,7 @@
 /*!
- * @file am_board_fsm.cpp
+ * @file am_chip_fsm.cpp
  * @author Christian Amstutz
- * @date May 5, 2014
+ * @date November 15, 2014
  *
  * @brief File contains the implementation of the AM board FSM.
  */
@@ -10,23 +10,23 @@
  *  Copyright (c) 2014 by Christian Amstutz
  */
 
-#include "am_board_fsm.hpp"
+#include "am_chip_fsm.hpp"
 
 // *****************************************************************************
 
-const am_board_fsm::fsm_states am_board_fsm::IDLE = 0x01;
-const am_board_fsm::fsm_states am_board_fsm::RX_HIT = 0x02;
-const am_board_fsm::fsm_states am_board_fsm::PROCESS_ROAD = 0x03;
-const am_board_fsm::fsm_states am_board_fsm::WRITE_ROAD = 0x04;
+const am_chip_fsm::fsm_states am_chip_fsm::IDLE = 0x01;
+const am_chip_fsm::fsm_states am_chip_fsm::RX_HIT = 0x02;
+const am_chip_fsm::fsm_states am_chip_fsm::PROCESS_ROAD = 0x03;
+const am_chip_fsm::fsm_states am_chip_fsm::WRITE_ROAD = 0x04;
 
 // *****************************************************************************
 
 /*!
- * @class am_board_fsm
+ * @class am_chip_fsm
  *
  */
 
-am_board_fsm::am_board_fsm(sc_module_name _name) :
+am_chip_fsm::am_chip_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         rst("rst"),
@@ -52,7 +52,7 @@ am_board_fsm::am_board_fsm(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void am_board_fsm::state_logic()
+void am_chip_fsm::state_logic()
 {
     while (1)
     {
@@ -64,7 +64,7 @@ void am_board_fsm::state_logic()
 }
 
 // *****************************************************************************
-void am_board_fsm::combinatorial()
+void am_chip_fsm::combinatorial()
 {
     while (1)
     {
@@ -124,7 +124,7 @@ void am_board_fsm::combinatorial()
 }
 
 // *****************************************************************************
-bool am_board_fsm::one_write_en_active()
+bool am_chip_fsm::one_write_en_active()
 {
     bool write_en_active = false;
 

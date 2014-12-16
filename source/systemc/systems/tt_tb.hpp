@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date December 16, 2014
  *
  * @brief
  */
@@ -24,9 +24,8 @@
 #include "../modules/frontend_mpa/sensor_module_mpa.hpp"
 #include "../modules/backend/data_organizer/data_organizer.hpp"
 #include "../modules/backend/fifo_manager/fifo_manager.hpp"
-#include "../modules/backend/am_controller/am_lane.hpp"
+#include "../modules/backend/am_board/am_board.hpp"
 #include "../modules/road_analyzer/road_analyzer.hpp"
-
 
 /*!
  * @brief
@@ -45,13 +44,20 @@ public:
     sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> > hit_fifos_cbc;
     sc_map_cube<sc_signal<sensor_module_cbc::dc_out_t> > fe_signals;
 
-    sc_map_square<sc_signal<do_out_data> > do_stub_out_sig;
+    sc_map_square<sc_signal<bool> > do_dv_sig;
+    sc_map_square<sc_signal<data_organizer::do_out_t> > do_stub_out_sig;
 
+    sc_map_square<sc_signal<bool> > fifo_write_en;
     sc_map_square<sc_signal<fm_out_data> > fifo_stub_in;
     sc_map_linear<sc_signal<bool> > result_write_en;
     sc_map_linear<sc_signal<sc_bv<30> > > result_road;
 
     sc_signal<unsigned int> hit_cnt_sig;
+
+    sc_map_square<sc_signal<bool> > neighbour_dv_in_sink;
+    sc_map_square<sc_signal<do_stub_t> > neighbour_stub_in_sink;
+    sc_map_square<sc_signal<bool> > neighbour_dv_out_sink;
+    sc_map_square<sc_signal<do_stub_t> > neighbour_stub_out_sink;
 
     // ----- Process Declarations ----------------------------------------------
 
@@ -63,9 +69,8 @@ public:
     sc_map_cube<sensor_module_cbc> sensor_modules_cbc;
     data_organizer dataOrganizer;
     fifo_manager fifoManager;
-    sc_map_linear<am_lane> am_lane_array;
+    sc_map_linear<am_board> am_board_array;
     road_analyzer roadAnalyzer;
-
 
     // ----- Constructor -------------------------------------------------------
     /*!

@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_one_layer_cbc.hpp
  * @author Christian Amstutz
- * @date July 31, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -24,12 +24,7 @@
 class data_organizer_one_layer_cbc : public data_organizer_one_layer
 {
 public:
-    typedef stub_vbxfsb<DC_STUB_BX_BITS,
-                        DC_STUB_FE_BITS,
-                        FE_CBC_STUB_STRIP_BITS,
-                        FE_CBC_STUB_BEND_BITS,
-                        DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_CBC_STUB_STRIP_BITS
-                        +FE_CBC_STUB_BEND_BITS> cbc_out_stub_t;
+    typedef dc_cbc_stub_t stub_t;
 
 // ----- Port Declarations -----------------------------------------------------
 

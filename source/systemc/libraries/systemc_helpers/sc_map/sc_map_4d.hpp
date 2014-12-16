@@ -115,8 +115,11 @@ sc_map_4d<object_type>::sc_map_4d(
         const size_type element_cnt_Y, const size_type element_cnt_X,
         const sc_module_name name, const key_type start_id_W,
         const key_type start_id_Z, const key_type start_id_Y,
-        const key_type start_id_X) : sc_map_base<object_type>(name),
-        start_id_W(start_id_W), start_id_Z(start_id_Z), start_id_Y(start_id_Y),
+        const key_type start_id_X) :
+        sc_map_base<object_type>(name),
+        start_id_W(start_id_W),
+        start_id_Z(start_id_Z),
+        start_id_Y(start_id_Y),
         start_id_X(start_id_X)
 {
     size_type element_cnt = element_cnt_W * element_cnt_Z * element_cnt_Y *
@@ -360,7 +363,7 @@ object_type* sc_map_4d<object_type>::creator::operator() (
     sc_map_4d<object_type>::key_type id_W = (id / (size_Z*size_Y*size_X));
     sc_map_4d<object_type>::key_type id_Z = (id / (size_Y*size_X)) % size_Z;
     sc_map_4d<object_type>::key_type id_Y = (id / size_X) % size_Y;
-    sc_map_4d<object_type>::key_type id_X = id % size_X;
+    sc_map_4d<object_type>::key_type id_X = (id % size_X);
 
     std::stringstream full_name;
     full_name << name;

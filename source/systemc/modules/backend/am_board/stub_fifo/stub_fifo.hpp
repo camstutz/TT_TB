@@ -1,7 +1,7 @@
 /*!
  * @file stub_fifo.hpp
  * @author Christian Amstutz
- * @date Nov 11, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -15,8 +15,7 @@
 
 #include <systemc.h>
 
-#include "../../../systems/TT_configuration.hpp"
-#include "../../../data_formats/fm_out_data.hpp"
+#include "../../../../systems/TT_configuration.hpp"
 
 /*!
  * @brief
@@ -25,6 +24,8 @@ template <unsigned int depth>
 class stub_fifo : public sc_module
 {
 public:
+    typedef fm_out_data fifo_content_t;
+
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> rst;
@@ -33,11 +34,11 @@ public:
     sc_in<bool> read_en;
     sc_out<bool> not_empty;
 
-    sc_in<fm_out_data> stub_in;
-    sc_out<fm_out_data> stub_out;
+    sc_in<fifo_content_t> stub_in;
+    sc_out<fifo_content_t> stub_out;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_fifo<fm_out_data> fifo;
+    sc_fifo<fifo_content_t> fifo;
 
 // ----- Process Declarations --------------------------------------------------
     void read_input();
@@ -117,7 +118,7 @@ void stub_fifo<depth>::write_output()
 
         if (read_en && not_empty)
         {
-            fm_out_data fifo_value = fifo.read();
+            fifo_content_t fifo_value = fifo.read();
             stub_out.write(fifo_value);
         }
     }

@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date July 30, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -20,7 +20,6 @@
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../../../systems/TT_configuration.hpp"
-#include "../../../data_formats/stub_pzfs.hpp"
 
 #include "data_organizer_one_layer.hpp"
 #include "data_organizer_one_layer_mpa.hpp"
@@ -39,8 +38,8 @@
 class data_organizer : public sc_module
 {
 public:
-
-    typedef data_organizer_one_layer::dc_out_t do_in_t;
+    typedef data_organizer_one_layer::do_in_t do_in_t;
+    typedef data_organizer_one_layer::do_out_t do_out_t;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -57,7 +56,7 @@ public:
      * valid lines.
      */
     sc_map_square<sc_out<bool> > dv;
-    sc_map_square<sc_out<data_organizer_one_layer::do_stub_t> > stub_out;
+    sc_map_square<sc_out<do_out_t> > stub_out;
 
 // ----- Local Channel Declarations --------------------------------------------
     /** Control signal showing the actual time step of within the time window */

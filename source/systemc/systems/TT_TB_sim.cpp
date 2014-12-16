@@ -43,26 +43,10 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.fe_signals, "serial_link");
 
     sc_trace(trace_file, testbench.fifo_stub_in, "fifo_stub_in");
-    sc_trace(trace_file, testbench.am_lane_array[0].fifo_stub_out_sig[0], "fifo_stub_out_sig_0-0");
-    sc_trace(trace_file, testbench.am_lane_array[1].fifo_stub_out_sig[0], "fifo_stub_out_sig_1-0");
-    sc_trace(trace_file, testbench.am_lane_array[2].fifo_stub_out_sig[0], "fifo_stub_out_sig_2-0");
-    sc_trace(trace_file, testbench.am_lane_array[3].fifo_stub_out_sig[0], "fifo_stub_out_sig_3-0");
-    sc_trace(trace_file, testbench.am_lane_array[1].init_ev_sig, "init_ev_sig");
-    sc_trace(trace_file, testbench.am_lane_array[1].am_write_en_sig, "am_write_en_sig");
-    sc_trace(trace_file, testbench.am_lane_array[1].AMboard.fsm.current_state, "AM_board.current_state");
-    sc_trace(trace_file, testbench.am_lane_array[0].am_pattern_sig, "am_pattern");
-    sc_trace(trace_file, testbench.am_lane_array[1].am_pattern_sig, "am_pattern");
-    sc_trace(trace_file, testbench.am_lane_array[2].am_pattern_sig, "am_pattern");
-    sc_trace(trace_file, testbench.am_lane_array[3].am_pattern_sig, "am_pattern");
-    sc_trace(trace_file, testbench.am_lane_array[0].am_road_sig, "am_road_0");
-    sc_trace(trace_file, testbench.am_lane_array[1].am_road_sig, "am_road_1");
-    sc_trace(trace_file, testbench.am_lane_array[2].am_road_sig, "am_road_2");
-    sc_trace(trace_file, testbench.am_lane_array[3].am_road_sig, "am_road_3");
-    sc_trace(trace_file, testbench.am_lane_array[0].road_output, "road_out_0");
-    sc_trace(trace_file, testbench.am_lane_array[1].road_output, "road_out_1");
-    sc_trace(trace_file, testbench.am_lane_array[2].road_output, "road_out_2");
-    sc_trace(trace_file, testbench.am_lane_array[3].road_output, "road_out_3");
-
+    sc_trace(trace_file, testbench.am_board_array[0].AMcontroller.am_stub_outputs, "Patterns0");
+    sc_trace(trace_file, testbench.am_board_array[1].AMcontroller.am_stub_outputs, "Patterns1");
+    sc_trace(trace_file, testbench.am_board_array[2].AMcontroller.am_stub_outputs, "Patterns2");
+    sc_trace(trace_file, testbench.am_board_array[3].AMcontroller.am_stub_outputs, "Patterns3");
 
     // ----- Start simulation --------------------------------------------------
 

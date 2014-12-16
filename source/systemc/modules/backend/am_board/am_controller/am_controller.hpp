@@ -38,12 +38,12 @@ public:
     sc_map_linear<sc_in<bool> > fifo_not_empty;
     sc_map_linear<sc_in<fm_out_data> > stub_inputs;
     sc_in<bool> data_ready;
-    sc_in<sc_bv<21> > road_in;
+    sc_in<sc_bv<AM_BOARD_ROAD_WIDTH> > road_in;
 
     sc_out<sc_bv<3> > init_ev;
     sc_map_linear<sc_out<bool> > fifo_read_en;
     sc_map_linear<sc_out<bool> > am_write_en;
-    sc_map_linear<sc_out<sc_bv<18> > > am_stub_outputs;
+    sc_map_linear<sc_out<sc_bv<AM_BOARD_PATTERN_WIDTH> > > am_stub_outputs;
     sc_out<bool> road_write_en;
     sc_out<sc_bv<30> > road_output;
 

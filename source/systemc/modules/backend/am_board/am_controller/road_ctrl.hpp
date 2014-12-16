@@ -1,7 +1,7 @@
 /*!
  * @file road_ctrl.hpp
  * @author Christian Amstutz
- * @date Apr 24, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -14,6 +14,8 @@
 #pragma once
 
 #include <systemc.h>
+
+#include "../../../../systems/TT_configuration.hpp"
 
 /*!
  * @brief
@@ -29,8 +31,8 @@ public:
     sc_in<bool> clk;
     sc_in<bool> init;
     sc_in<bool> data_ready_road;
-    sc_in<sc_bv<16> > event_tag;
-    sc_in<sc_bv<21> > road_in;
+    sc_in<sc_bv<AM_BOARD_PATTERN_WIDTH> > event_tag;
+    sc_in<sc_bv<AM_BOARD_ROAD_WIDTH> > road_in;
 
     sc_out<bool> finish_road;
     sc_out<bool> write_en_road;
@@ -38,7 +40,7 @@ public:
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<bool> write_en_sig;
-    sc_signal<sc_bv<21> > road_sig;
+    sc_signal<sc_bv<AM_BOARD_ROAD_WIDTH> > road_sig;
 	sc_signal<bool> data_ready_last;
 
 // ----- Process Declarations --------------------------------------------------

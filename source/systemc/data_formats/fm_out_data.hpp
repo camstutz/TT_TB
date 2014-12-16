@@ -1,7 +1,7 @@
 /*!
  * @fm_out_data.hpp
  * @author Christian Amstutz
- * @date Aug 1, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -21,28 +21,27 @@
 
 #include "../systems/TT_configuration.hpp"
 #include "multifield_base.hpp"
-#include "../modules/backend/data_organizer/data_organizer_one_layer.hpp"
 
 // *****************************************************************************
 
 /*!
  * @brief
  */
-class fm_out_data : public multifield_base<data_organizer_one_layer::do_stub_t::total_width+1>
+class fm_out_data : public multifield_base<do_stub_t::total_width+1>
 {
 public:
-    typedef multifield_base<data_organizer_one_layer::do_stub_t::total_width+1> base;
+    typedef multifield_base<do_stub_t::total_width+1> base_t;
 
-    typedef data_organizer_one_layer::do_stub_t fm_stub_t;
+    typedef do_stub_t fm_stub_t;
     typedef fm_stub_t::full_bv_t fm_stub_bv_t;
     typedef unsigned int payload_t;
     typedef fm_stub_bv_t payload_bv_t;
     typedef payload_t timestamp_t;
     typedef fm_stub_bv_t timestamp_bv_t;
     typedef bool timestamp_flag_t;
-    typedef typename base::full_bv_t full_bv_t;
+    typedef typename base_t::full_bv_t full_bv_t;
 
-    static const unsigned int payload_width = data_organizer_one_layer::do_stub_t::total_width;
+    static const unsigned int payload_width = do_stub_t::total_width;
     static const unsigned int fm_stub_width = payload_width;
     static const unsigned int timestamp_width = payload_width;
     static const unsigned int timestamp_flag_width = 1;

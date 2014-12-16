@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa.hpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date December 15, 2014
  *
  * @brief
  *
@@ -24,9 +24,6 @@
 #include "../../libraries/systemc_helpers/nbits.hpp"
 
 #include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/stub_bxpsb.hpp"
-#include "../../data_formats/stub_vbxpfsb.hpp"
-#include "../../data_formats/dc_out_word.hpp"
 
 /*!
  * @brief
@@ -34,24 +31,10 @@
 class data_concentrator_mpa : public sc_module
 {
 public:
-    typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
-                       FE_MPA_STUB_PIXEL_BITS,
-                       FE_MPA_STUB_STRIP_BITS,
-                       FE_MPA_STUB_BEND_BITS,
-                       FE_MPA_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+
-                       FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> in_stub_t;
-    typedef stub_vbxpfsb<DC_STUB_BX_BITS,
-                         FE_MPA_STUB_PIXEL_BITS,
-                         DC_STUB_FE_BITS,
-                         FE_MPA_STUB_STRIP_BITS,
-                         FE_MPA_STUB_BEND_BITS,
-                         DC_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+DC_STUB_FE_BITS+
-                         FE_MPA_STUB_STRIP_BITS+FE_MPA_STUB_BEND_BITS>
-                         mpa_out_stub_t;
-    typedef dc_out_word<DC_OUT_HEADER_BITS,
-                        DC_OUTPUT_WIDTH-DC_OUT_HEADER_BITS,
-                        DC_OUTPUT_WIDTH> dc_out_t;
-    typedef std::vector<mpa_out_stub_t> stub_buffer_type;
+    typedef fe_mpa_stub_t in_stub_t;
+    typedef dc_mpa_stub_t out_stub_t;
+    typedef dc_out_t out_t;
+    typedef std::vector<out_stub_t> stub_buffer_type;
     typedef unsigned int clock_phase_t;
 
     // ----- Port Declarations -------------------------------------------------
@@ -59,7 +42,7 @@ public:
     sc_in<bool> rst;
     sc_map_square<sc_in<bool> > data_valid;
     sc_map_square<sc_in<in_stub_t> > fe_stub_in;
-    sc_out<dc_out_t> dc_out;
+    sc_out<out_t> dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<clock_phase_t> clock_phase;
@@ -85,6 +68,6 @@ public:
 
 private:
     void create_output_buffer();
-    mpa_out_stub_t::bx_t calculate_bx(clock_phase_t clock_phase,
+    out_stub_t::bx_t calculate_bx(clock_phase_t clock_phase,
             in_stub_t::bx_t stub_bx);
 };
