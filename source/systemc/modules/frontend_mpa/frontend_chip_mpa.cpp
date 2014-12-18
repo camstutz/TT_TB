@@ -54,9 +54,9 @@ void frontend_chip_mpa::prioritize_hits()
 
         stub_t act_stub;
         int stub_cnt = stub_input.num_available();
-        for (int i=0;
-                i < std::min(stub_cnt, MAX_HITS_PER_MPA_FE_CHIP);
-                ++i)
+        for (unsigned int i=0;
+             i < std::min(stub_cnt, MAX_HITS_PER_MPA_FE_CHIP);
+             ++i)
         {
             stub_input.read(act_stub);
             selected_stubs.write(act_stub);

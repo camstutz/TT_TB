@@ -58,7 +58,7 @@ void hit_generator::schedule_hits()
             wait(wait_time);
         }
 
-        // stub belongs to a MPA chip
+        // stub belongs to an MPA chip
         if (hit.layer < NR_DETECTOR_MPA_LAYERS)
         {
             processed_mpa_stub.set_bx(0);
@@ -109,14 +109,14 @@ int hit_generator::readFile(const std::string &hit_file) {
         std::cout << "File: " << hit_file << " opened ..." << std::endl;
         #endif
 
-        std::string fileLine;
         HitEvent hit;
 
         // clear the event queue
         std::queue<HitEvent> empty;
         std::swap(hit_queue, empty);
 
-        // read hits
+        // read all the hits from the file
+        std::string fileLine;
         while (std::getline(hitFile, fileLine))
         {
             std::stringstream fileLineStream(fileLine);
@@ -134,6 +134,7 @@ int hit_generator::readFile(const std::string &hit_file) {
             if ( !fileLineStream.fail() )
             {
                 hit_queue.push(hit);
+
                 #ifdef DEBUG
                 std::cout << "Hit read -" << std::hex
                           << " TS:0x" << hit.timeStamp
