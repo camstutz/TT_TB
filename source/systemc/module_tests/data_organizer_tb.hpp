@@ -37,7 +37,7 @@ public:
     sc_signal<bool> rst;
     sc_map_linear<sc_signal<data_organizer::do_in_t> > fe_streams;
     sc_map_square<sc_signal<bool> > dv;
-    sc_map_square<sc_signal<data_organizer_one_layer::do_stub_t> > do_output;
+    sc_map_square<sc_signal<data_organizer_one_layer::do_out_t> > do_output;
 
     // ----- Process Declarations ----------------------------------------------
     void write_stream();

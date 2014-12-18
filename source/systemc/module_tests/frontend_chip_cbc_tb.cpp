@@ -75,7 +75,7 @@ frontend_chip_cbc_tb::~frontend_chip_cbc_tb()
 // *****************************************************************************
 void frontend_chip_cbc_tb::generate_stubs()
 {
-    frontend_chip_cbc::fe_cbc_stub_t stim_stub;
+    frontend_chip_cbc::stub_t stim_stub;
 
     wait(60, SC_NS);
     en_sig.write(1);
@@ -164,8 +164,8 @@ void frontend_chip_cbc_tb::analyse_FE_out()
 
         for (auto& fe_out_signal : fe_out_signals)
         {
-            frontend_chip_cbc::fe_cbc_stub_t read_stub = fe_out_signal.read();
-            std::pair<bool, sc_map_linear<sc_signal<frontend_chip_cbc::fe_cbc_stub_t>>::full_key_type> signal_key;
+            frontend_chip_cbc::stub_t read_stub = fe_out_signal.read();
+            std::pair<bool, sc_map_linear<sc_signal<frontend_chip_cbc::stub_t>>::full_key_type> signal_key;
             signal_key = fe_out_signals.get_key(fe_out_signal);
 
             if(data_valid_signals.at(signal_key.second.X_dim).read())

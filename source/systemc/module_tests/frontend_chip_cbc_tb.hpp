@@ -33,9 +33,9 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> en_sig;
-    sc_fifo<frontend_chip_cbc::fe_cbc_stub_t> stub_input_sig;
+    sc_fifo<frontend_chip_cbc::stub_t> stub_input_sig;
     sc_map_linear<sc_signal<bool> > data_valid_signals;
-    sc_map_linear<sc_signal<frontend_chip_cbc::fe_cbc_stub_t> > fe_out_signals;
+    sc_map_linear<sc_signal<frontend_chip_cbc::stub_t> > fe_out_signals;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_stubs();

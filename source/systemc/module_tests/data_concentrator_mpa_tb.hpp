@@ -37,7 +37,7 @@ public:
     sc_signal<bool> rst;
     sc_map_square<sc_signal<bool> > data_valid;
     sc_map_square<sc_signal<data_concentrator_mpa::in_stub_t> > fe_signals;
-    sc_signal<data_concentrator_mpa::dc_out_t> dc_output;
+    sc_signal<data_concentrator_mpa::out_t> dc_output;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_hit_data();
