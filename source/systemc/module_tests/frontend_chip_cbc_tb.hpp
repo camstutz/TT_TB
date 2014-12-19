@@ -32,7 +32,6 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<bool> en_sig;
     sc_fifo<frontend_chip_cbc::stub_t> stub_input_sig;
     sc_map_linear<sc_signal<bool> > data_valid_signals;
     sc_map_linear<sc_signal<frontend_chip_cbc::stub_t> > fe_out_signals;
@@ -54,7 +53,6 @@ public:
     frontend_chip_cbc_tb(sc_module_name _name, sc_trace_file* trace_file);
     SC_HAS_PROCESS(frontend_chip_cbc_tb);
     ~frontend_chip_cbc_tb();
-    void end_of_elaboration();
 
 private:
     std::ostringstream log_buffer;

@@ -22,7 +22,6 @@
 frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
 		sc_trace_file* trace_file) :
 		sc_module(_name),
-        en_sig("en"),
         stub_input_sig("stub_input"),
         data_valid_signals(MAX_HITS_PER_CBC_FE_CHIP, "data_valid_sig"),
         fe_out_signals(MAX_HITS_PER_CBC_FE_CHIP, "fe_out_sig"),
@@ -31,7 +30,6 @@ frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
 
     // ----- Creation and binding of signals -----------------------------------
     dut_front_end_chip.clk.bind(LHC_clock);
-    dut_front_end_chip.en.bind(en_sig);
     dut_front_end_chip.stub_input.bind(stub_input_sig);
     dut_front_end_chip.data_valid.bind(data_valid_signals);
     dut_front_end_chip.stub_outputs.bind(fe_out_signals);
@@ -48,18 +46,10 @@ frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
 
     trace(trace_file);
 
-    return;
-}
-
-// *****************************************************************************
-void frontend_chip_cbc_tb::end_of_elaboration()
-{
     SC_THREAD(generate_stubs);
     SC_THREAD(analyse_FE_out);
-    for (auto& dv_sig : data_valid_signals)
-    {
-      sensitive << dv_sig;
-    }
+        data_valid_signals.make_sensitive(sensitive);
+        fe_out_signals.make_sensitive(sensitive);
 
     return;
 }
@@ -79,7 +69,6 @@ void frontend_chip_cbc_tb::generate_stubs()
 
     // at 60 ns
     wait(60, SC_NS);
-    en_sig.write(1);
     write_stub(0xFF, 0x1);
 
     // at 92 ns
