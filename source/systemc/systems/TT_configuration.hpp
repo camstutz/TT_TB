@@ -80,19 +80,19 @@ typedef stub_sb<FE_CBC_STUB_STRIP_BITS,
                 FE_CBC_STUB_BEND_BITS,
                 FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_cbc_stub_t;
 
-typedef stub_vbxfsb<DC_STUB_BX_BITS,
-                    DC_STUB_FE_BITS,
-                    FE_CBC_STUB_STRIP_BITS,
-                    FE_CBC_STUB_BEND_BITS,
-                    DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_CBC_STUB_STRIP_BITS
-                    +FE_CBC_STUB_BEND_BITS> dc_cbc_stub_t;
-
 typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
                    FE_MPA_STUB_PIXEL_BITS,
                    FE_MPA_STUB_STRIP_BITS,
                    FE_MPA_STUB_BEND_BITS,
                    FE_MPA_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+
                    FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_mpa_stub_t;
+
+typedef stub_vbxfsb<DC_STUB_BX_BITS,
+                    DC_STUB_FE_BITS,
+                    FE_CBC_STUB_STRIP_BITS,
+                    FE_CBC_STUB_BEND_BITS,
+                    DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_CBC_STUB_STRIP_BITS
+                    +FE_CBC_STUB_BEND_BITS> dc_cbc_stub_t;
 
 typedef stub_vbxpfsb<DC_STUB_BX_BITS,
                      FE_MPA_STUB_PIXEL_BITS,

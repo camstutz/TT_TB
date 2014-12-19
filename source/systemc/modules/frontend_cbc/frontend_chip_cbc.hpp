@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date December 19, 2014
  *
  * @brief
  *

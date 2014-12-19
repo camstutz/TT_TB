@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.cpp
  * @author Christian Amstutz
- * @date July 7, 2014
+ * @date December 10, 2014
  */
 
 /*
@@ -72,95 +72,49 @@ void frontend_chip_mpa_tb::generate_stubs()
 {
     frontend_chip_mpa::stub_t stim_stub;
 
+    // at 60 ns
     wait(60, SC_NS);
     en_sig.write(1);
-    stim_stub.set_bx(0);
-    stim_stub.set_pixel(7);
-    stim_stub.set_strip(255);
-    stim_stub.set_bend(1);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x0, 0x7, 0xFF, 0x1);
 
+    // at 92 ns
     wait(32, SC_NS);
-    stim_stub.set_bx(0);
-    stim_stub.set_pixel(8);
-    stim_stub.set_strip(100);
-    stim_stub.set_bend(2);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
-    stim_stub.set_bx(0);
-    stim_stub.set_pixel(9);
-    stim_stub.set_strip(120);
-    stim_stub.set_bend(3);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x0, 0x8, 0x80, 0x2);
+    write_stub(0x0, 0x9, 0x90, 0x3);
 
+    // at 93 ns
     wait(1, SC_NS);
-    stim_stub.set_bx(1);
-    stim_stub.set_pixel(10);
-    stim_stub.set_strip(101);
-    stim_stub.set_bend(4);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x1, 0xA, 0x81, 0x4);
+
+    // at 94 ns
     wait(1, SC_NS);
-    stim_stub.set_bx(1);
-    stim_stub.set_pixel(11);
-    stim_stub.set_strip(101);
-    stim_stub.set_bend(5);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x1, 0xB, 0x82, 0x5);
 
+    // at 119 ns
     wait(25, SC_NS);
-    stim_stub.set_pixel(12);
-    stim_stub.set_strip(1);
-    stim_stub.set_bend(6);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x0, 0xC, 0x1, 0x6);
 
+    // at 144 ns
     wait(25, SC_NS);
-    stim_stub.set_bx(0);
-    stim_stub.set_pixel(13);
-    stim_stub.set_strip(12);
-    stim_stub.set_bend(7);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
-    stim_stub.set_bx(0);
-    stim_stub.set_pixel(14);
-    stim_stub.set_strip(13);
-    stim_stub.set_bend(8);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x0, 0xD, 0x12, 0x7);
+    write_stub(0x0, 0xE, 0x15, 0x8);
 
     //! todo: there is an error here with this event falling on a clock edge and does not show on the output
+    // at 160 ns
     wait(16, SC_NS);
-    stim_stub.set_bx(1);
-    stim_stub.set_pixel(14);
-    stim_stub.set_strip(14);
-    stim_stub.set_bend(9);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
-    wait(1, SC_NS);
-    stim_stub.set_bx(0);
-    stim_stub.set_pixel(15);
-    stim_stub.set_strip(1);
-    stim_stub.set_bend(1);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x1, 0x14, 0x14, 0x9);
 
-    wait(40, SC_NS);
-    stim_stub.set_bx(1);
-    stim_stub.set_pixel(16);
-    stim_stub.set_strip(14);
-    stim_stub.set_bend(9);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    // at 161 ns
     wait(1, SC_NS);
-    stim_stub.set_bx(1);
-    stim_stub.set_pixel(17);
-    stim_stub.set_strip(1);
-    stim_stub.set_bend(1);
-    stub_input_sig.write(stim_stub);
-    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+    write_stub(0x0, 0xF, 0x1, 0xA);
+
+    // at 201 ns
+    wait(40, SC_NS);
+    write_stub(0x1, 0x10, 0xB, 0xB);
+
+    // at 202 ns
+    wait(1, SC_NS);
+    write_stub(0x1, 0x12, 0x1, 0xC);
 
     return;
 }
@@ -211,4 +165,17 @@ void frontend_chip_mpa_tb::trace(sc_trace_file* trace_file)
     sc_trace(trace_file, fe_out_signals[1], "MPA.fe_out_sig_1");
 
 	return;
+}
+
+// *****************************************************************************
+void frontend_chip_mpa_tb::write_stub(frontend_chip_mpa::stub_t::bx_t bx,
+        frontend_chip_mpa::stub_t::pixel_t pixel,
+        frontend_chip_mpa::stub_t::strip_t strip,
+        frontend_chip_mpa::stub_t::bend_t bend)
+{
+    frontend_chip_mpa::stub_t stim_stub(bx, pixel, strip, bend);
+    stub_input_sig.write(stim_stub);
+    log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
+
+    return;
 }

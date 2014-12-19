@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.hpp
  * @author Christian Amstutz
- * @date July 7, 2014
+ * @date December 19, 2014
  *
  * @brief
  *
@@ -60,4 +60,6 @@ private:
     std::ostringstream log_buffer;
 
     void trace(sc_trace_file* trace_file);
+    void write_stub(frontend_chip_mpa::stub_t::bx_t bx, frontend_chip_mpa::stub_t::pixel_t pixel,
+            frontend_chip_mpa::stub_t::strip_t strip, frontend_chip_mpa::stub_t::bend_t bend);
 };

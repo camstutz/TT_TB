@@ -22,9 +22,9 @@
 hit_generator_tb::hit_generator_tb(sc_module_name _name) :
         sc_module(_name),
         hit_signals_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                NR_FE_CHIP_PER_MODULE, "hit_signal", 0, 0, 0, 0),
+                NR_FE_CHIP_PER_MODULE, "hit_signal_mpa", 0, 0, 0, 0),
         hit_signals_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                NR_FE_CHIP_PER_MODULE, "hit_signal", NR_DETECTOR_MPA_LAYERS, 0,
+                NR_FE_CHIP_PER_MODULE, "hit_signal_cbc", NR_DETECTOR_MPA_LAYERS, 0,
                 0, 0),
         hit_cnt_signal("hit_cnt_signal"),
         dut_hit_generator("Hit_Generator_DUT", "test_hits.txt")

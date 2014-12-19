@@ -54,8 +54,8 @@ void frontend_chip_cbc::prioritize_hits()
 
         stub_t act_stub;
         int stub_cnt = stub_input.num_available();
-        for (int i=0;
-                i < std::min(stub_cnt, MAX_HITS_PER_CBC_FE_CHIP);
+        for (unsigned int i=0;
+                i < (unsigned int)std::min(stub_cnt, MAX_HITS_PER_CBC_FE_CHIP);
                 ++i)
         {
             stub_input.read(act_stub);
@@ -65,7 +65,8 @@ void frontend_chip_cbc::prioritize_hits()
         if (stub_input.num_available() > 0)
         {
             std::cout << "Warning: CBC Front End Chip received more than "
-                      << MAX_HITS_PER_CBC_FE_CHIP << " hits" << std::endl;
+                      << MAX_HITS_PER_CBC_FE_CHIP << " hits"
+                      << " @ " << sc_time_stamp() << std::endl;
             while(stub_input.nb_read(act_stub))
             {};
         }

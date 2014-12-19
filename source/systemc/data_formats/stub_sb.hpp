@@ -206,7 +206,7 @@ std::string stub_sb<strip_bits, bend_bits, total_bits>::get_string()
         const
 {
     std::stringstream out_string;
-    out_string << "[" << "S=" << strip << "B=" << bend << "]";
+    out_string << "[" << "S=0x" << std::hex << strip << ",B=0x" << bend << "]";
 
     return (out_string.str());
 }
