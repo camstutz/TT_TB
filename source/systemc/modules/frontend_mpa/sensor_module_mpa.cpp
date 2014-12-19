@@ -45,7 +45,6 @@ sensor_module_mpa::sensor_module_mpa(const sc_module_name _name) :
     {
         fe_chip_it->clk.bind(clk);
         //! todo: use the enable port
-        fe_chip_it->en(true_sig);
         fe_chip_it->stub_input(stub_inputs[fe_cnt]);
         sc_map_square<sc_signal<bool> >::square_iterator data_valid_sig_it = data_valid_signals.begin_partial(fe_cnt, false, 0, true);
         fe_chip_it->data_valid.bind_by_iter(data_valid_sig_it);

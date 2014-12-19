@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.cpp
  * @author Christian Amstutz
- * @date December 10, 2014
+ * @date December 19, 2014
  */
 
 /*
@@ -21,12 +21,11 @@ frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name,
         stub_input_sig("stub_input"),
         data_valid_signals(MAX_HITS_PER_MPA_FE_CHIP, "data_valid_sig"),
         fe_out_signals(MAX_HITS_PER_MPA_FE_CHIP, "fe_out_sig"),
-        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 10, SC_NS, true),
-        dut_front_end_chip("Front_End_Chip_DUT") {
-
+        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 50, SC_NS, true),
+        dut_front_end_chip("Front_End_Chip_DUT")
+{
     // ----- Creation and binding of signals -----------------------------------
     dut_front_end_chip.clk.bind(LHC_clock);
-    dut_front_end_chip.en.bind(en_sig);
     dut_front_end_chip.stub_input.bind(stub_input_sig);
     dut_front_end_chip.data_valid.bind(data_valid_signals);
     dut_front_end_chip.stub_outputs.bind(fe_out_signals);
@@ -43,18 +42,11 @@ frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name,
 
     trace(trace_file);
 
-    return;
-}
-
-// *****************************************************************************
-void frontend_chip_mpa_tb::end_of_elaboration()
-{
     SC_THREAD(generate_stubs);
     SC_THREAD(analyse_FE_out);
-    for (auto& dv_sig : data_valid_signals)
-    {
-      sensitive << dv_sig;
-    }
+        data_valid_signals.make_sensitive(sensitive);
+        fe_out_signals.make_sensitive(sensitive);
+
 
     return;
 }
@@ -84,11 +76,12 @@ void frontend_chip_mpa_tb::generate_stubs()
 
     // at 93 ns
     wait(1, SC_NS);
-    write_stub(0x1, 0xA, 0x81, 0x4);
+    write_stub(0x0, 0xA, 0x81, 0x4);
 
     // at 94 ns
-    wait(1, SC_NS);
-    write_stub(0x1, 0xB, 0x82, 0x5);
+    wait(25, SC_NS);
+    write_stub(0x0, 0xB, 0x82, 0x5);
+    write_stub(0x0, 0xB, 0x42, 0x6);
 
     // at 119 ns
     wait(25, SC_NS);
@@ -144,10 +137,10 @@ void frontend_chip_mpa_tb::analyse_FE_out()
             {
                 log_buffer << sc_time_stamp() <<" Stub" << signal_key.second.X_dim << ": "
                            << std::hex
-                           << " BX: 0x" << read_stub.get_bx()
-                           << " Pixel: 0x" << read_stub.get_pixel()
-                           << " Strip: 0x" << read_stub.get_strip()
-                           << " Bend: 0x" << read_stub.get_bend()
+                           << " BX:0x" << read_stub.get_bx()
+                           << " Pixel:0x" << read_stub.get_pixel()
+                           << " Strip:0x" << read_stub.get_strip()
+                           << " Bend:0x" << read_stub.get_bend()
                            << std::dec << std::endl;
             }
         }

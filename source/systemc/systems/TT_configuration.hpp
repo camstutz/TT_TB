@@ -38,6 +38,7 @@
 // Number of hits that can be handled by a single front end chip
 #define MAX_HITS_PER_CBC_FE_CHIP       3
 #define MAX_HITS_PER_MPA_FE_CHIP       2
+#define COLLECTION_CYCLES_MPA_FE_CHIP  2
 
 // Bit width of the data concentrator output
 #define DC_OUTPUT_WIDTH           32

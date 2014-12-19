@@ -54,7 +54,6 @@ public:
     frontend_chip_mpa_tb(sc_module_name _name, sc_trace_file* trace_file);
     SC_HAS_PROCESS(frontend_chip_mpa_tb);
     ~frontend_chip_mpa_tb();
-    void end_of_elaboration();
 
 private:
     std::ostringstream log_buffer;
