@@ -58,7 +58,7 @@ public:
     SC_HAS_PROCESS(frontend_chip_mpa);
 
 private:
-    std::vector<std::vector<stub_t>> collection_buffer;
+    std::vector<std::vector<stub_t> > collection_buffer;
 
     void prioritize_hits();
 };
