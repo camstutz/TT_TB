@@ -16,12 +16,9 @@
 
 // *****************************************************************************
 
-/*!
- * @class front_end_chip
- *
- * The module is sensitive to ....
- */
+const unsigned int frontend_chip_cbc::max_hits_per_cycle = MAX_HITS_PER_MPA_FE_CHIP;
 
+// *****************************************************************************
 frontend_chip_cbc::frontend_chip_cbc(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
@@ -34,8 +31,7 @@ frontend_chip_cbc::frontend_chip_cbc(const sc_module_name _name) :
     SC_THREAD(prioritize_hits);
         sensitive << clk.pos();
     SC_THREAD(write_hits);
-        sensitive << clk.pos();
-        //sensitive << selected_stubs.data_written_event();
+        sensitive << selected_stubs.data_written_event();
 
     // ----- Module variable initialization ------------------------------------
 
@@ -80,15 +76,20 @@ void frontend_chip_cbc::write_hits()
     {
         wait();
 
-        // todo: optimization potential if not written every cycle
-        data_valid.write_all(0);
-        stub_outputs.write_all(stub_t(0,0));
-
-        unsigned int num_stubs = selected_stubs.num_available();
-        for (unsigned int i=0; i<num_stubs; i++)
+        while (selected_stubs.num_available() > 0)
         {
-            data_valid.at(i).write(true);
-            stub_outputs.at(i).write(selected_stubs.read());
+            unsigned int i = 0;
+            while ((i < max_hits_per_cycle) && (selected_stubs.num_available() > 0))
+            {
+                data_valid.at(i).write(true);
+                stub_outputs.at(i).write(selected_stubs.read());
+                ++i;
+            }
+
+            wait(clk.posedge_event());
+
+            data_valid.write_all(0);
+            stub_outputs.write_all(stub_t(0,0));
         }
     }
 

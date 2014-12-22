@@ -25,8 +25,9 @@
 class frontend_chip_cbc : public sc_module
 {
 public:
-
     typedef fe_cbc_stub_t stub_t;
+
+    static const unsigned int max_hits_per_cycle;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
