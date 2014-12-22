@@ -30,7 +30,6 @@ public:
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
-    sc_in<bool> en;
     sc_fifo_in<stub_t> stub_input;
     sc_map_linear<sc_out<bool> > data_valid;
     sc_map_linear<sc_out<stub_t> > stub_outputs;

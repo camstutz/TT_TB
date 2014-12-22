@@ -25,7 +25,6 @@
 frontend_chip_cbc::frontend_chip_cbc(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        en("en"),
         stub_input("stub_in"),
         data_valid(MAX_HITS_PER_CBC_FE_CHIP, "data_valid", 0),
         stub_outputs(MAX_HITS_PER_CBC_FE_CHIP, "stub_out", 0),
