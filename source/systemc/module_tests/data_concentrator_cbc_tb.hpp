@@ -34,7 +34,6 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<bool> rst;
     sc_map_square<sc_signal<bool> > data_valid;
     sc_map_square<sc_signal<data_concentrator_cbc::in_stub_t> > fe_signals;
     sc_signal<data_concentrator_cbc::out_t> dc_output;

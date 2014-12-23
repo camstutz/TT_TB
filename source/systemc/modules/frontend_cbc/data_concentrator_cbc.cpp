@@ -25,7 +25,6 @@
 data_concentrator_cbc::data_concentrator_cbc(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
-        rst("rst"),
         data_valid(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "data_valid"),
         fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "stub_in"),
         dc_out("dc_out"),
@@ -129,15 +128,9 @@ void data_concentrator_cbc::write_output()
         }
 
         dc_out_t output_word;
-        unsigned int high_buffer_idx;
-        unsigned int low_buffer_idx;
-        high_buffer_idx = (clock_phase.read()+1)*(dc_out_t::payload_width)-1;
-        low_buffer_idx = clock_phase.read()*(dc_out_t::payload_width);
-        output_word.set_payload(output_buffer(high_buffer_idx, low_buffer_idx).to_uint());
 
         sc_bv<DC_OUT_HEADER_BITS> header;
         header[0] = 0;
-
         // Indicate the beginning of a window by the first bit of a data word
         if (clock_phase.read() == 0)
         {
@@ -149,6 +142,13 @@ void data_concentrator_cbc::write_output()
         }
 
         output_word.set_header(header.to_uint());
+
+        // Cut number of bits from buffer
+        unsigned int high_buffer_idx;
+        unsigned int low_buffer_idx;
+        high_buffer_idx = (clock_phase.read()+1)*(dc_out_t::payload_width)-1;
+        low_buffer_idx = clock_phase.read()*(dc_out_t::payload_width);
+        output_word.set_payload(output_buffer(high_buffer_idx, low_buffer_idx).to_uint());
 
         dc_out.write(output_word);
     }
@@ -163,7 +163,8 @@ void data_concentrator_cbc::create_output_buffer()
     // Buffer size is maximal NR_DC_OUT_STUBS in real system
     if (stub_buffer[stub_buffer_read_sel].size() > NR_DC_CBC_OUT_STUBS)
     {
-        std::cout << "data_concentrator_cbc: Stub buffer overflow!" << std::endl;
+        std::cerr << sc_time_stamp()
+        		  << ": data_concentrator_cbc - Stub buffer overflow!" << std::endl;
     }
     // cut the stubs that are too much for transmission to the back end
     stub_buffer[stub_buffer_read_sel].resize(NR_DC_CBC_OUT_STUBS, out_stub_t());

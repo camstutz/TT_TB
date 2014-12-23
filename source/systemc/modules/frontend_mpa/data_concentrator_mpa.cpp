@@ -25,7 +25,6 @@
 data_concentrator_mpa::data_concentrator_mpa(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
-        rst("rst"),
         data_valid(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP, "data_valid"),
         fe_stub_in(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP, "stub_in"),
         dc_out("dc_out"),
@@ -161,10 +160,11 @@ void data_concentrator_mpa::create_output_buffer()
 {
     output_buffer = sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES>(0);
 
-    // Buffer size is maximal NR_DC_OUT_STUBS in real system
+    // Buffer size is maximal NR_DC_MPA_OUT_STUBS in real system
     if (stub_buffer[stub_buffer_read_sel].size() > NR_DC_MPA_OUT_STUBS)
     {
-        std::cout << "data_concentrator_mpa: Stub buffer overflow!" << std::endl;
+        std::cout << sc_time_stamp()
+        		  << ": data_concentrator_mpa - Stub buffer overflow!" << std::endl;
     }
     // cut the stubs that are too much for transmission to the back end
     stub_buffer[stub_buffer_read_sel].resize(NR_DC_MPA_OUT_STUBS, out_stub_t());
@@ -186,12 +186,12 @@ void data_concentrator_mpa::create_output_buffer()
 data_concentrator_mpa::out_stub_t::bx_t data_concentrator_mpa::calculate_bx(
 		clock_phase_t clock_phase, in_stub_t::bx_t stub_bx)
 {
-    if (clock_phase%2 == 0)
-    {
-        return (stub_bx == 0 ? (clock_phase-1) : clock_phase);
-    }
-    else
-    {
-        return (stub_bx == 0 ? (clock_phase) : (clock_phase-1));
-    }
+	if (clock_phase % 2 == 0)
+	{
+		return (stub_bx == 0 ? (clock_phase) : clock_phase+1);
+	}
+	else
+	{
+		return (stub_bx == 0 ? (clock_phase-1) : clock_phase);
+	}
 }

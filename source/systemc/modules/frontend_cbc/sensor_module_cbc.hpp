@@ -41,7 +41,6 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_square<sc_signal<bool> > data_valid_signals;
     sc_map_square<sc_signal<fe_stub_t> > fe_out_signals;
-    sc_signal<bool> true_sig;
 
     // ----- Process Declarations ----------------------------------------------
 

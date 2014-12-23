@@ -36,7 +36,6 @@ public:
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
-    sc_in<bool> rst;
     sc_map_square<sc_in<bool> > data_valid;
     sc_map_square<sc_in<in_stub_t> > fe_stub_in;
     sc_out<out_t> dc_out;

@@ -29,7 +29,6 @@ data_concentrator_mpa_tb::data_concentrator_mpa_tb(sc_module_name _name) :
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_data_concentrator.clk.bind(LHC_clock);
-    dut_data_concentrator.rst.bind(rst);
     dut_data_concentrator.data_valid.bind(data_valid);
     dut_data_concentrator.fe_stub_in.bind(fe_signals);
     dut_data_concentrator.dc_out.bind(dc_output);

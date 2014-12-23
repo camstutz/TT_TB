@@ -27,7 +27,6 @@ sensor_module_mpa::sensor_module_mpa(const sc_module_name _name) :
                 "data_valid_sig", 0, 0),
         fe_out_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP,
                 "fe_out_sig", 0, 0),
-        true_sig("true"),
         front_end_chips(NR_FE_CHIP_PER_MODULE, "front_end_chip", 0),
         dataConcentrator("data_concentrator")
 {
@@ -44,7 +43,6 @@ sensor_module_mpa::sensor_module_mpa(const sc_module_name _name) :
     for (; fe_chip_it != front_end_chips.end(); ++fe_chip_it)
     {
         fe_chip_it->clk.bind(clk);
-        //! todo: use the enable port
         fe_chip_it->stub_input(stub_inputs[fe_cnt]);
         sc_map_square<sc_signal<bool> >::square_iterator data_valid_sig_it = data_valid_signals.begin_partial(fe_cnt, false, 0, true);
         fe_chip_it->data_valid.bind_by_iter(data_valid_sig_it);
@@ -55,7 +53,6 @@ sensor_module_mpa::sensor_module_mpa(const sc_module_name _name) :
     }
 
     dataConcentrator.clk.bind(clk);
-    dataConcentrator.rst.bind(true_sig);
     dataConcentrator.data_valid.bind(data_valid_signals);
     dataConcentrator.fe_stub_in.bind(fe_out_signals);
     dataConcentrator.dc_out.bind(dc_out);
@@ -64,8 +61,6 @@ sensor_module_mpa::sensor_module_mpa(const sc_module_name _name) :
     stub_inputs.register_signal_modelsim<fe_out_data::fe_stub_t>();
     fe_out_signals.register_signal_modelsim<fe_out_data>();
 #endif
-
-    true_sig.write(true);
 
     return;
 }

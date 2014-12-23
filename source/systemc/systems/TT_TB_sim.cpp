@@ -38,15 +38,22 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.LHC_clock, "LHC_clock");
     sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
     sc_trace(trace_file, testbench.AM_clock, "AM_clock");
-    sc_trace(trace_file, testbench.dataOrganizer.stub_out, "DO_stub_out");
+    //sc_trace(trace_file, testbench.dataOrganizer.stub_out, "DO_stub_out");
 
-    sc_trace(trace_file, testbench.fe_signals, "serial_link");
+    sc_trace(trace_file, testbench.sensor_modules_mpa.at(0,0,0).data_valid_signals, "dv_mpa0");
+    sc_trace(trace_file, testbench.sensor_modules_mpa.at(1,0,0).data_valid_signals, "dv_mpa1");
+    sc_trace(trace_file, testbench.sensor_modules_mpa.at(2,0,0).data_valid_signals, "dv_mpa2");
+    sc_trace(trace_file, testbench.sensor_modules_cbc.at(3,0,0).data_valid_signals, "dv_cbc3");
+    sc_trace(trace_file, testbench.sensor_modules_cbc.at(4,0,0).data_valid_signals, "dv_cbc4");
+    sc_trace(trace_file, testbench.sensor_modules_cbc.at(5,0,0).data_valid_signals, "dv_cbc5");
+    //sc_trace(trace_file, testbench.fe_signals.at(0,0,0), "serial_link");
+    sc_trace(trace_file, testbench.do_dv_sig, "DO_dv");
 
-    sc_trace(trace_file, testbench.fifo_stub_in, "fifo_stub_in");
-    sc_trace(trace_file, testbench.am_board_array[0].AMcontroller.am_stub_outputs, "Patterns0");
-    sc_trace(trace_file, testbench.am_board_array[1].AMcontroller.am_stub_outputs, "Patterns1");
-    sc_trace(trace_file, testbench.am_board_array[2].AMcontroller.am_stub_outputs, "Patterns2");
-    sc_trace(trace_file, testbench.am_board_array[3].AMcontroller.am_stub_outputs, "Patterns3");
+//    sc_trace(trace_file, testbench.fifo_stub_in, "fifo_stub_in");
+//    sc_trace(trace_file, testbench.am_board_array[0].AMcontroller.am_stub_outputs, "Patterns0");
+//    sc_trace(trace_file, testbench.am_board_array[1].AMcontroller.am_stub_outputs, "Patterns1");
+//    sc_trace(trace_file, testbench.am_board_array[2].AMcontroller.am_stub_outputs, "Patterns2");
+//    sc_trace(trace_file, testbench.am_board_array[3].AMcontroller.am_stub_outputs, "Patterns3");
 
     // ----- Start simulation --------------------------------------------------
 
@@ -55,7 +62,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(50000, SC_NS);
+    sc_start(10000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);

@@ -81,8 +81,8 @@ void frontend_chip_cbc::write_hits()
             unsigned int i = 0;
             while ((i < max_hits_per_cycle) && (selected_stubs.num_available() > 0))
             {
-                data_valid.at(i).write(true);
-                stub_outputs.at(i).write(selected_stubs.read());
+            	data_valid.at(i).write(true);
+            	stub_outputs.at(i).write(selected_stubs.read());
                 ++i;
             }
 

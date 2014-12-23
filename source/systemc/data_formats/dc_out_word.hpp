@@ -203,7 +203,7 @@ std::string dc_out_word<header_bits, payload_bits, total_bits>::get_string()
 {
     std::stringstream out_string;
     out_string << "[" << "H=" << std::bitset<header_width>(header)
-                      << "P=0x" << std::bitset<payload_width>(payload)
+                      << "P=0b" << std::bitset<payload_width>(payload)
                       << " (0x" << std::hex << payload << ")]";
 
     return (out_string.str());

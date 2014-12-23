@@ -74,7 +74,6 @@ void fifo_manager_datapath::read_stubs()
                     {
                         input_stub_t input_stub = input_it->read();
                         stub_buffer[AM_lane].push(output_t(input_stub));
-std::cout << "Value written to output buffer" << std::endl;
 
                         // Check to which neighbours a stub should be
                         // transmitted too.
@@ -85,7 +84,6 @@ std::cout << "Value written to output buffer" << std::endl;
                             for (; neighbour_it != neighbours.end(); ++neighbour_it)
                             {
                                 neighbour_buffer[*neighbour_it].push(input_stub);
-std::cout << "Value written to neighbour buffer" << std::endl;
                             }
                         }
                     }
@@ -101,7 +99,6 @@ std::cout << "Value written to neighbour buffer" << std::endl;
                     {
                         input_stub_t input_stub = neighbour_input_it->read();
                         stub_buffer[AM_lane].push(output_t(input_stub));
-std::cout << "Value from neighbour written to output buffer" << std::endl;
                     }
 
                     ++neighbour_dv_it;
