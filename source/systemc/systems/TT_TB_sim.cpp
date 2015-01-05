@@ -47,7 +47,6 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.sensor_modules_cbc.at(4,0,0).data_valid_signals, "dv_cbc4");
     sc_trace(trace_file, testbench.sensor_modules_cbc.at(5,0,0).data_valid_signals, "dv_cbc5");
     //sc_trace(trace_file, testbench.fe_signals.at(0,0,0), "serial_link");
-    sc_trace(trace_file, testbench.do_dv_sig, "DO_dv");
 
 //    sc_trace(trace_file, testbench.fifo_stub_in, "fifo_stub_in");
 //    sc_trace(trace_file, testbench.am_board_array[0].AMcontroller.am_stub_outputs, "Patterns0");

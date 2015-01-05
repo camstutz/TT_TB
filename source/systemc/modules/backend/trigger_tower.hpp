@@ -41,7 +41,9 @@ public:
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
-    sc_in<bool> clk;
+    sc_in<bool> clk_LHC;
+    sc_in<bool> clk_x4;
+    sc_in<bool> clk_AM;
 
     /** Linear sc_map for the stream inputs. There exist a separate input for
      * every layer of the detector */

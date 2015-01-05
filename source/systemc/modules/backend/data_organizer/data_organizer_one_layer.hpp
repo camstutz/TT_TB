@@ -1,14 +1,14 @@
 /*!
  * @file data_organizer_one_layer.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -36,9 +36,6 @@ public:
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
-
-    /** Input port for the reset signal (currently not used) */
-    sc_in<bool> rst;
 
     sc_in<unsigned int> time_stamp;
 

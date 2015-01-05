@@ -30,7 +30,6 @@ data_organizer_tb::data_organizer_tb(sc_module_name _name) :
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_data_organizer.clk.bind(LHC_clock);
-    dut_data_organizer.rst.bind(rst);
     dut_data_organizer.stream_in.bind(fe_streams);
     dut_data_organizer.dv.bind(dv);
     dut_data_organizer.stub_out.bind(do_output);

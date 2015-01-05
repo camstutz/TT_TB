@@ -14,17 +14,18 @@
 #include <iostream>
 #include <string>
 
-#include "hit_file_test.hpp"
-#include "hit_generator_tb.hpp"
-#include "frontend_chip_cbc_tb.hpp"
-#include "frontend_chip_mpa_tb.hpp"
-#include "data_concentrator_cbc_tb.hpp"
-#include "data_concentrator_mpa_tb.hpp"
-#include "data_organizer_tb.hpp"
-#include "fifo_manager_tb.hpp"
+//#include "hit_file_test.hpp"
+//#include "hit_generator_tb.hpp"
+//#include "frontend_chip_cbc_tb.hpp"
+//#include "frontend_chip_mpa_tb.hpp"
+//#include "data_concentrator_cbc_tb.hpp"
+//#include "data_concentrator_mpa_tb.hpp"
+//#include "data_organizer_tb.hpp"
+//#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
 //#include "am_board_tb.hpp"
 //#include "am_system_tb.hpp"
+#include "trigger_tower_tb.hpp"
 
 int sc_main(int argc, char *agv[])
 {
@@ -48,8 +49,9 @@ int sc_main(int argc, char *agv[])
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 //    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
-    //am_system_tb am_system_tb("AM_System");
-    //am_board_tb am_board_tb("AM_board_TB");
+//	  am_system_tb am_system_tb("AM_System");
+//    am_board_tb am_board_tb("AM_board_TB");
+    trigger_tower_tb("trigger_tower_tb");
 
     // ----- Time unit / resolution setup --------------------------------------
 

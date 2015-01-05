@@ -1,13 +1,13 @@
 /*!
  * @file data_organizer_one_layer.cpp
  * @author Christian Amstutz
- * @date July 31, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "data_organizer_one_layer.hpp"
@@ -23,7 +23,6 @@
 data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         time_stamp("time_stamp"),
         clock_phase("clock_phase"),
         stub_table_sel("stub_table_sel"),

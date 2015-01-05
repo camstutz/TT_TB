@@ -35,7 +35,6 @@ fifo_manager_tb::fifo_manager_tb(sc_module_name _name) :
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_fifo_manager.clk.bind(LHC_clock);
-    dut_fifo_manager.rst.bind(rst);
     dut_fifo_manager.dv_in.bind(dv_inputs);
     dut_fifo_manager.stub_in.bind(stub_inputs);
     dut_fifo_manager.neighbour_dv_in.bind(neighbour_dv_inputs);
