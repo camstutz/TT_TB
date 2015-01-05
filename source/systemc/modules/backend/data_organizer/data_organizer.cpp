@@ -1,13 +1,13 @@
 /*!
  * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2013 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "data_organizer.hpp"
@@ -24,7 +24,6 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
         unsigned int z) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         stream_in(NR_DETECTOR_LAYERS, "stream_in"),
         dv(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "dv"),
         stub_out(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "stub_out"),
@@ -52,7 +51,6 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
     for (; do_mpa_it != do_one_layer_map_mpa.end(); ++do_mpa_it)
     {
         do_mpa_it->clk.bind(clk);
-        do_mpa_it->rst.bind(rst);
         do_mpa_it->time_stamp.bind(time_stamp);
         do_mpa_it->clock_phase.bind(clock_phase);
         do_mpa_it->stub_table_sel.bind(stub_table_sel);
@@ -72,7 +70,6 @@ data_organizer::data_organizer(sc_module_name _name, unsigned int phi,
     for (; do_cbc_it != do_one_layer_map_cbc.end(); ++do_cbc_it)
     {
         do_cbc_it->clk.bind(clk);
-        do_cbc_it->rst.bind(rst);
         do_cbc_it->time_stamp.bind(time_stamp);
         do_cbc_it->clock_phase.bind(clock_phase);
         do_cbc_it->stub_table_sel.bind(stub_table_sel);

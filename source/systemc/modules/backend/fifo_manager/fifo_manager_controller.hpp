@@ -1,14 +1,14 @@
 /*!
  * @file fifo_manager_controller.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date January 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -45,9 +45,6 @@ public:
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
-
-    /** Input port for the reset signal (currently not used) */
-    sc_in<bool> rst;
 
     sc_map_linear<sc_out<bool> > buffer_write_en;
     sc_map_linear<sc_out<bool> > buffer_read_en;

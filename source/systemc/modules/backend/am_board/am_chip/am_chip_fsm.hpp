@@ -74,12 +74,6 @@ public:
      */
     sc_in<bool> clk;
 
-    /** @brief Reset (not used)
-     *
-     * Input port for the reset signal.
-     */
-    sc_in<bool> rst;
-
     /** @brief Hit write enable signals.
      *
      * Array of input ports for the write enable signals of the incoming hits to

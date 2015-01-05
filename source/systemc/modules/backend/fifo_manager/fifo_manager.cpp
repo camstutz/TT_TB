@@ -23,7 +23,6 @@
 fifo_manager::fifo_manager(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         dv_in(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "dv_in"),
         stub_in(NR_DETECTOR_LAYERS, NR_DO_OUT_STUBS, "stub_in"),
         neighbour_dv_in(NR_NEIGHBOURING_TOWERS, NR_DETECTOR_LAYERS, "neighbour_dv_in"),
@@ -45,7 +44,6 @@ fifo_manager::fifo_manager(sc_module_name _name) :
     // ----- Module instance / channel binding ---------------------------------
 
     controller.clk.bind(clk);
-    controller.rst.bind(rst);
     controller.buffer_write_en.bind(buf_write_en_sig);
     controller.buffer_read_en.bind(buf_read_en_sig);
     controller.time_stamp.bind(time_stamp_sig);
@@ -55,7 +53,6 @@ fifo_manager::fifo_manager(sc_module_name _name) :
     for (; datapath_it != datapaths.end(); ++datapath_it)
     {
         datapath_it->clk.bind(clk);
-        datapath_it->rst.bind(rst);
         datapath_it->buffer_write_en.bind(buf_write_en_sig);    // todo: Problem in ModelSim
         datapath_it->buffer_read_en.bind(buf_read_en_sig);      // todo: Crash in ModelSim
         datapath_it->time_stamp.bind(time_stamp_sig);

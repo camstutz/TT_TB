@@ -1,13 +1,13 @@
 /*!
  * @file main_fsm.cpp
  * @author Christian Amstutz
- * @date Apr 16, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "main_fsm.hpp"
@@ -31,7 +31,6 @@ const main_fsm::fsm_states main_fsm::SEND_INIT_EVENT = 0x05;
 main_fsm::main_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        init("init"),
         pok(NR_DETECTOR_LAYERS, "pok"),
         hee_reg(NR_DETECTOR_LAYERS, "hee_reg"),
         hee_reg_before(NR_DETECTOR_LAYERS, "hee_reg_before"),

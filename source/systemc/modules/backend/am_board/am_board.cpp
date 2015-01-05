@@ -1,13 +1,13 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "am_board.hpp"
@@ -21,7 +21,6 @@
 am_board::am_board(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         fifo_write_en(NR_DETECTOR_LAYERS, "fifo_write_ens"),
         fifo_inputs(NR_DETECTOR_LAYERS, "fifo_inputs"),
         road_write_en("road_write_en"),
@@ -44,7 +43,6 @@ am_board::am_board(const sc_module_name _name) :
     for (; fifo_it != stub_fifo_array.end(); ++fifo_it)
     {
         fifo_it->clk.bind(clk);
-        fifo_it->rst.bind(rst);
         fifo_it->write_en.bind(fifo_write_en[layer]);
         fifo_it->stub_in.bind(fifo_inputs[layer]);
         fifo_it->not_empty.bind(fifo_not_empty_sig[layer]);
@@ -55,7 +53,6 @@ am_board::am_board(const sc_module_name _name) :
     }
 
     AMcontroller.clk.bind(clk);
-    AMcontroller.init.bind(rst);
     AMcontroller.fifo_not_empty.bind(fifo_not_empty_sig);
     AMcontroller.fifo_read_en.bind(fifo_read_en_sig);
     AMcontroller.stub_inputs.bind(fifo_stub_out_sig);
@@ -68,7 +65,6 @@ am_board::am_board(const sc_module_name _name) :
     AMcontroller.road_output.bind(road_output);
 
     AMboard.clk.bind(clk);
-    AMboard.rst.bind(rst);
     AMboard.init_ev.bind(init_ev_sig);
     AMboard.write_en.bind(am_write_en_sig);
     AMboard.pattern_inputs.bind(am_pattern_sig);

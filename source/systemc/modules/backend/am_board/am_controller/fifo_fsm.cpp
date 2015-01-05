@@ -1,13 +1,13 @@
 /*!
  * @file fifo_fsm.cpp
  * @author Christian Amstutz
- * @date Apr 22, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "fifo_fsm.hpp"
@@ -29,7 +29,6 @@ const fifo_fsm::fsm_states fifo_fsm::STDBY = 0x04;
 fifo_fsm::fifo_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         fifo_not_empty("fifo_not_empty"),
         pop("pop"),
         pok("pok"),

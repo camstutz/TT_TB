@@ -17,7 +17,6 @@
 am_chip::am_chip(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         init_ev("init_ev"),
         write_en(NR_DETECTOR_LAYERS, "write_en"),
         pattern_inputs(NR_DETECTOR_LAYERS, "pattern_input"),
@@ -49,7 +48,6 @@ am_chip::am_chip(sc_module_name _name) :
     // ----- Module instance / channel binding ---------------------------------
 
     fsm.clk.bind(clk);
-    fsm.rst.bind(rst);
     fsm.write_en.bind(write_en);
     fsm.road_buffer_empty.bind(output_roads_buffer_empty);
     fsm.process_roads.bind(process_roads_sig);

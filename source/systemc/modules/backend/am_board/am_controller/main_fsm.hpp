@@ -1,14 +1,14 @@
 /*!
  * @file main_fsm.hpp
  * @author Christian Amstutz
- * @date Apr 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -38,7 +38,6 @@ public:
     /** Input port for the clock signal */
     sc_in<bool> clk;
 
-    sc_in<bool> init;
     sc_map_linear<sc_in<bool> > pok;
     sc_map_linear<sc_in<bool> > hee_reg;
     sc_map_linear<sc_in<bool> > hee_reg_before;

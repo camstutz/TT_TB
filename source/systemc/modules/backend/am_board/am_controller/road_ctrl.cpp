@@ -1,13 +1,13 @@
 /*!
  * @file road_ctrl.cpp
  * @author Christian Amstutz
- * @date Apr 24, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "road_ctrl.hpp"
@@ -23,7 +23,6 @@
 road_ctrl::road_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        init("init"),
         data_ready_road("data_ready_road"),
         event_tag("event_tag"),
         road_in("road_in"),

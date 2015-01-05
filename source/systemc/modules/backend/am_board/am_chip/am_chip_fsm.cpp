@@ -29,7 +29,6 @@ const am_chip_fsm::fsm_states am_chip_fsm::WRITE_ROAD = 0x04;
 am_chip_fsm::am_chip_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         write_en(NR_DETECTOR_LAYERS, "write_en"),
         road_buffer_empty("road_buffer_empty"),
         process_roads("process_roads"),

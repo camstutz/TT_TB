@@ -1,14 +1,14 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -33,7 +33,6 @@ public:
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
-    sc_in<bool> rst;
 
     sc_map_linear<sc_in<bool> > fifo_write_en;
     sc_map_linear<sc_in<fifo_in_t> > fifo_inputs;

@@ -1,14 +1,14 @@
 /*!
  * @file fifo_manager.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -35,9 +35,6 @@ public:
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
-
-    /** Input port for the reset signal (currently not used) */
-    sc_in<bool> rst;
 
     /** Data valid inputs for the stub inputs of this trigger tower. The
      *  dimensions of sc_map are (layer, stub number). */

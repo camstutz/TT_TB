@@ -1,13 +1,13 @@
 /*!
  * @file fifo_manager_controller.cpp
  * @author Christian Amstutz
- * @date Apr 28, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "fifo_manager_controller.hpp"
@@ -42,7 +42,6 @@ const fifo_manager_controller::fsm_states fifo_manager_controller::S3_3 = 0x10;
 fifo_manager_controller::fifo_manager_controller(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         buffer_write_en(NR_AM_BOARDS, "buffer_write_en"),
         buffer_read_en(NR_AM_BOARDS, "buffer_read_en"),
         time_stamp("time_stamp"),

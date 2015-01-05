@@ -1,13 +1,13 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date Janaury 5, 2015
  *
  * @brief File containing the definition of the AM board.
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -57,12 +57,6 @@ public:
      * Input port for the clock signal.
      */
     sc_in<bool> clk;
-
-    /** @brief Reset (not used)
-     *
-     * Input port for the reset signal.
-     */
-    sc_in<bool> rst;
 
     /** @brief Initialize Event
      *

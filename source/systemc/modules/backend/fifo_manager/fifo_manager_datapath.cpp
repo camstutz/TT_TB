@@ -1,13 +1,13 @@
 /*!
  * @file fifo_manager_datapath.cpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "fifo_manager_datapath.hpp"
@@ -23,7 +23,6 @@
 fifo_manager_datapath::fifo_manager_datapath(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        rst("rst"),
         buffer_write_en(NR_AM_BOARDS, "buffer_write_en"),
         buffer_read_en(NR_AM_BOARDS, "buffer_read_en"),
         time_stamp("time_stamp"),

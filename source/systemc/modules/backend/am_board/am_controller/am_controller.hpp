@@ -34,7 +34,6 @@ public:
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
-    sc_in<bool> init;
     sc_map_linear<sc_in<bool> > fifo_not_empty;
     sc_map_linear<sc_in<fm_out_data> > stub_inputs;
     sc_in<bool> data_ready;

@@ -1,13 +1,13 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date December 16, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "tt_tb.hpp"
@@ -27,7 +27,6 @@ tt_tb::tt_tb(const sc_module_name _name) :
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         LHCx4_clock("LHCx4_clock", 6.25, SC_NS, 0.5, 25, SC_NS, true),
         AM_clock("AM_clock", 10, SC_NS, 0.5, 25, SC_NS, true),
-        true_sig("TRUE"),
         hit_fifos_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo_mpa", 0, 0, 0, 0),
         hit_fifos_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo_cbc", NR_DETECTOR_MPA_LAYERS, 0, 0, 0),
         fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals"),
@@ -50,8 +49,6 @@ tt_tb::tt_tb(const sc_module_name _name) :
         am_board_array(NR_AM_BOARDS, "am_board"),
         roadAnalyzer("road_analyzer")
 {
-    true_sig.write(true);
-
     hitGenerator.mpa_stub_outputs.bind(hit_fifos_mpa);
     hitGenerator.cbc_stub_outputs.bind(hit_fifos_cbc);
     hitGenerator.hit_cnt(hit_cnt_sig);
@@ -81,14 +78,12 @@ tt_tb::tt_tb(const sc_module_name _name) :
     }
 
     dataOrganizer.clk.bind(LHC_clock);
-    dataOrganizer.rst.bind(true_sig);
     sc_map_cube<sc_signal<data_organizer::do_in_t > >::iterator fe_it = fe_signals.begin();
     dataOrganizer.stream_in.bind_by_iter(fe_it);
     dataOrganizer.dv.bind(do_dv_sig);
     dataOrganizer.stub_out.bind(do_stub_out_sig);
 
     fifoManager.clk.bind(LHCx4_clock);
-    fifoManager.rst.bind(true_sig);
     fifoManager.dv_in.bind(do_dv_sig);
     fifoManager.stub_in.bind(do_stub_out_sig);
     fifoManager.dv_out.bind(fifo_write_en);
@@ -103,7 +98,6 @@ tt_tb::tt_tb(const sc_module_name _name) :
     for(; am_board_it != am_board_array.end(); ++am_board_it)
     {
         am_board_it->clk.bind(AM_clock);
-        am_board_it->rst.bind(true_sig);
         sc_map_square<sc_signal<bool> >::square_iterator fifo_write_en_it = fifo_write_en.begin_partial(lane_nr, false, 0, true);
         am_board_it->fifo_write_en.bind_by_iter(fifo_write_en_it);
         sc_map_square<sc_signal<fm_out_data> >::square_iterator fifo_stub_it = fifo_stub_in.begin_partial(lane_nr, false, 0, true);

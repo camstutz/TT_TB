@@ -1,14 +1,14 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date Janaury 5, 2014
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -45,11 +45,8 @@ public:
     /** Input port for the clock signal */
     sc_in<bool> clk;
 
-    /** Input port for the reset signal (currently not used) */
-    sc_in<bool> rst;
-
     /** Linear sc_map for the stream inputs. There exist a separate input for
-      * ever layer of the detector */
+      * every layer of the detector */
     sc_map_linear<sc_in<do_in_t> >stream_in;
 
     /** Square sc_map for the re-arranged, re-timed stubs and the according data

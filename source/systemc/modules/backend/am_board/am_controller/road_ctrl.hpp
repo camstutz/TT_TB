@@ -1,14 +1,14 @@
 /*!
  * @file road_ctrl.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2014
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -29,7 +29,6 @@ public:
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
-    sc_in<bool> init;
     sc_in<bool> data_ready_road;
     sc_in<sc_bv<AM_BOARD_PATTERN_WIDTH> > event_tag;
     sc_in<sc_bv<AM_BOARD_ROAD_WIDTH> > road_in;

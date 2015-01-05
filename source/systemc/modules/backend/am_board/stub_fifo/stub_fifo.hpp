@@ -1,14 +1,14 @@
 /*!
  * @file stub_fifo.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -28,7 +28,6 @@ public:
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
-    sc_in<bool> rst;
 
     sc_in<bool> write_en;
     sc_in<bool> read_en;
@@ -69,7 +68,6 @@ template <unsigned int depth>
 stub_fifo<depth>::stub_fifo(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
-        rst("rst"),
         write_en("write_en"),
         read_en("read_en"),
         not_empty("not_empty"),
