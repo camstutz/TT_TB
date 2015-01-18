@@ -27,7 +27,7 @@ trigger_tower::trigger_tower(const sc_module_name _name, unsigned int phi, unsig
 		clk_x4("clk_x4"),
 		clk_AM("clk_AM"),
 		stream_in(detector_layers, "stream_in"),
-		neighbour_dv_in(number_neighbour_towers, detector_layers, "neighbour_dv"),
+		neighbour_dv_in(number_neighbour_towers, detector_layers, "neighbour_dv_in"),
 		neighbour_stub_in(number_neighbour_towers, detector_layers, "neighbour_stub_in"),
 		neighbour_dv_out(number_neighbour_towers, detector_layers, "nighbour_dv_out"),
 		neighbour_stub_out(number_neighbour_towers, detector_layers, "neighbour_stub_out"),

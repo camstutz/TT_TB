@@ -1,14 +1,14 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date January 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -55,10 +55,12 @@
 #define NR_DETECTOR_MPA_LAYERS     3  // Number of layers with PS modules existing in the detector
 #define NR_DETECTOR_CBC_LAYERS     3  // Number of layers with 2S modules existing in the detector
 #define NR_DETECTOR_LAYERS         NR_DETECTOR_CBC_LAYERS + NR_DETECTOR_MPA_LAYERS
-#define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector
-#define NR_DETECTOR_Z              1  // Number of sensors on length of the detector
+#define NR_DETECTOR_PHI            2  // Number of sensors in the circumference of the detector
+#define NR_DETECTOR_Z              2  // Number of sensors on length of the detector
 #define NR_FE_CHIP_PER_MODULE      8  // Number of front-end chips per sensor module
 
+#define NR_TRIGGER_TOWERS NR_DETECTOR_PHI*NR_DETECTOR_Z
+#define NR_TOWER_CONNECTIONS 4
 #define NR_SENSOR_MODULES NR_DETECTOR_LAYERS*NR_DETECTOR_PHI*NR_DETECTOR_Z // Total number of sensor modules of a detector
 
 #define STUB_FIFO_DEPTH            50

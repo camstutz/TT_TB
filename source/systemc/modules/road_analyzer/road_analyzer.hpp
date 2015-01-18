@@ -1,13 +1,13 @@
 /*!
  * @file road_analyzer.hpp
  * @author Christian Amstutz
- * @date Apr 24, 2014
+ * @date January 5, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -31,10 +31,10 @@ public:
 
 // ----- Port Declarations -----------------------------------------------------
 	sc_in<bool> clk;
-	sc_map_linear<sc_in<bool> > write_en;
+	sc_map_square<sc_in<bool> > write_en;
 
 	sc_in<unsigned int> hit_cnt;
-	sc_map_linear<sc_in<sc_bv<30> > > road_in;
+	sc_map_square<sc_in<sc_bv<30> > > road_in;
 
 // ----- Local Channel Declarations --------------------------------------------
 

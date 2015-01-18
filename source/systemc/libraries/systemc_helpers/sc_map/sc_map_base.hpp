@@ -193,7 +193,7 @@ template<typename signal_type>
 bool sc_map_base<object_type>::bind_by_iter(sc_map_iterator<signal_type>& signal_iter)
 {
     iterator port_iter = this->begin();
-    bool bind_ok = bind_by_iter(port_iter ,signal_iter);
+    bool bind_ok = bind_by_iter(port_iter, signal_iter);
 
     return (bind_ok);
 }

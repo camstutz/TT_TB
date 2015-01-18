@@ -42,15 +42,13 @@ public:
     sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> > hit_fifos_cbc;
     sc_map_cube<sc_signal<sensor_module_cbc::dc_out_t> > fe_signals;
 
-    sc_map_linear<sc_signal<bool> > result_write_en;
-    sc_map_linear<sc_signal<sc_bv<30> > > result_road;
+    sc_map_square<sc_signal<bool> > result_write_en;
+    sc_map_square<sc_signal<sc_bv<30> > > result_road;
 
     sc_signal<unsigned int> hit_cnt_sig;
 
-    sc_map_square<sc_signal<bool> > neighbour_dv_in_sink;
-    sc_map_square<sc_signal<do_stub_t> > neighbour_stub_in_sink;
-    sc_map_square<sc_signal<bool> > neighbour_dv_out_sink;
-    sc_map_square<sc_signal<do_stub_t> > neighbour_stub_out_sink;
+    sc_map_cube<sc_signal<bool> > neighbour_dv_sig;
+    sc_map_cube<sc_signal<do_stub_t> > neighbour_stub_sig;
 
     // ----- Process Declarations ----------------------------------------------
 
@@ -60,7 +58,10 @@ public:
     hit_generator hitGenerator;
     sc_map_cube<sensor_module_mpa> sensor_modules_mpa;
     sc_map_cube<sensor_module_cbc> sensor_modules_cbc;
-    trigger_tower triggerTower;
+    trigger_tower trigger_tower_0_0;
+    trigger_tower trigger_tower_0_1;
+    trigger_tower trigger_tower_1_0;
+    trigger_tower trigger_tower_1_1;
     road_analyzer roadAnalyzer;
 
     // ----- Constructor -------------------------------------------------------
