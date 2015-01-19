@@ -86,6 +86,9 @@ void am_chip::process_incoming_hits()
             if (write_en[layer])
             {
                 pattern_t pattern = pattern_inputs[layer].read();
+
+                std::cout << pattern_bank[layer].size() << "/" << pattern_bank[layer].count(pattern.to_uint()) << std::endl;
+
                 std::pair<lay_pattern_bank_t::iterator, lay_pattern_bank_t::iterator> road_addresses = pattern_bank[layer].equal_range(pattern.to_uint());
                 lay_pattern_bank_t::iterator road_addr_it = road_addresses.first;
 
