@@ -69,7 +69,7 @@
 #define AM_BOARD_LATENCY           18
 #define AM_BOARD_PATTERN_WIDTH     16
 #define AM_BOARD_ROAD_WIDTH        21
-#define AM_BOARD_PATTERN_NR        256
+#define AM_BOARD_PATTERN_NR        1280
 
 // Signal types used between modules
 #include "../data_formats/stub_sb.hpp"

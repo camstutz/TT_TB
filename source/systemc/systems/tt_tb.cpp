@@ -114,7 +114,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
 	trigger_tower_0_1.clk_LHC.bind(LHC_clock);
 	trigger_tower_0_1.clk_x4.bind(LHCx4_clock);
 	trigger_tower_0_1.clk_AM.bind(AM_clock);
-	sc_map_cube<sc_signal<data_organizer::do_in_t > >::cube_iterator fe_stream_it_0_1 = fe_signals.begin_partial(0, true, 0, false, 0, false);
+	sc_map_cube<sc_signal<data_organizer::do_in_t > >::cube_iterator fe_stream_it_0_1 = fe_signals.begin_partial(0, true, 0, false, 1, false);
 	trigger_tower_0_1.stream_in.bind_by_iter(fe_stream_it_0_1);
 
 	sc_map_cube<sc_signal<bool> >::cube_iterator neighbour_dv_sig_in_it_0_1_a = neighbour_dv_sig.begin_partial(2, false, 0, true, 0, false);
@@ -151,7 +151,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
 	trigger_tower_1_0.clk_LHC.bind(LHC_clock);
 	trigger_tower_1_0.clk_x4.bind(LHCx4_clock);
 	trigger_tower_1_0.clk_AM.bind(AM_clock);
-	sc_map_cube<sc_signal<data_organizer::do_in_t > >::cube_iterator fe_stream_it_1_0 = fe_signals.begin_partial(0, true, 0, false, 0, false);
+	sc_map_cube<sc_signal<data_organizer::do_in_t > >::cube_iterator fe_stream_it_1_0 = fe_signals.begin_partial(0, true, 1, false, 0, false);
 	trigger_tower_1_0.stream_in.bind_by_iter(fe_stream_it_1_0);
 
 	sc_map_cube<sc_signal<bool> >::cube_iterator neighbour_dv_sig_in_it_1_0_a = neighbour_dv_sig.begin_partial(1, false, 0, true, 0, false);
@@ -189,7 +189,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
 	trigger_tower_1_1.clk_LHC.bind(LHC_clock);
 	trigger_tower_1_1.clk_x4.bind(LHCx4_clock);
 	trigger_tower_1_1.clk_AM.bind(AM_clock);
-	sc_map_cube<sc_signal<data_organizer::do_in_t > >::cube_iterator fe_stream_it_1_1 = fe_signals.begin_partial(0, true, 0, false, 0, false);
+	sc_map_cube<sc_signal<data_organizer::do_in_t > >::cube_iterator fe_stream_it_1_1 = fe_signals.begin_partial(0, true, 1, false, 1, false);
 	trigger_tower_1_1.stream_in.bind_by_iter(fe_stream_it_1_1);
 
 	sc_map_cube<sc_signal<bool> >::cube_iterator neighbour_dv_sig_in_it_1_1_a = neighbour_dv_sig.begin_partial(3, false, 0, true, 0, false);

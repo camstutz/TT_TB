@@ -95,6 +95,7 @@ void am_chip::process_incoming_hits()
                     match_table[road_addr][layer] = true;
                     ++road_addr_it;
                 }
+                print_match_table();
             }
         }
     }
@@ -187,7 +188,7 @@ void am_chip::print_pattern_bank()
         std::multimap<unsigned int, road_addr_t>::iterator pattern_it = layer_it->begin();
 		for (; pattern_it != layer_it->end(); ++pattern_it)
 		{
-			std::cout << pattern_it->first << ",";
+			std::cout << pattern_it->second << ",";
 		}
 		std::cout << "\n";
 	}
@@ -212,9 +213,8 @@ void am_chip::print_match_table()
             {
             	std::cout << " ,";
             }
-
-            std::cout << "\n";
         }
+        std::cout << "\n";
 	}
 }
 
@@ -223,15 +223,51 @@ void am_chip::initialize_patterns()
 {
     pattern_bank.resize(NR_DETECTOR_LAYERS);
 
-    std::vector<lay_pattern_bank_t>::iterator layer_it = pattern_bank.begin();
-    for (; layer_it != pattern_bank.end(); ++layer_it)
+    for (unsigned int layer=0; layer<NR_DETECTOR_LAYERS; ++layer)
     {
-        for (unsigned int pat_nr=0; pat_nr<nr_pattern; ++pat_nr)
-        {
-            pattern_t pattern;
-            pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr)) );
-            layer_it->insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
+    	if (layer < NR_DETECTOR_MPA_LAYERS)
+    	{
+    		for (unsigned int pat_nr=0; pat_nr<nr_pattern; ++pat_nr)
+    		{
+    			pattern_t pattern;
+    			pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr%256)) );
+    			pattern_bank[layer].insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
+    		}
         }
+    	// CBC Layers
+    	else
+    	{
+    		for (unsigned int pat_nr=0; pat_nr<256; ++pat_nr)
+    		{
+    			pattern_t pattern;
+    			pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr)) );
+    			pattern_bank[layer].insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
+    		}
+    		for (unsigned int pat_nr=256; pat_nr<512; ++pat_nr)
+    		{
+    			pattern_t pattern;
+    			pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr%256+1)) );
+    			pattern_bank[layer].insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
+    		}
+    		for (unsigned int pat_nr=512; pat_nr<768; ++pat_nr)
+    		{
+    			pattern_t pattern;
+    			pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr%256+2)) );
+    			pattern_bank[layer].insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
+    		}
+    		for (unsigned int pat_nr=768; pat_nr<1024; ++pat_nr)
+    		{
+    			pattern_t pattern;
+    			pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr%256-1)) );
+    			pattern_bank[layer].insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
+    		}
+    		for (unsigned int pat_nr=1024; pat_nr<1280; ++pat_nr)
+    		{
+    			pattern_t pattern;
+    			pattern = ( (sc_bv<2>(0), sc_bv<4>(0), sc_bv<4>(0), sc_bv<8>(pat_nr%256-2)) );
+    			pattern_bank[layer].insert(std::pair<unsigned int, road_addr_t>(pat_nr, pattern.to_uint()) );
+    		}
+    	}
     }
 
     return;
