@@ -183,18 +183,36 @@ void am_chip::check_detected_road_buffer()
 // *****************************************************************************
 void am_chip::print_pattern_bank()
 {
-	std::cout << "Pattern Banks:\n";
+	std::cout << "Pattern Bank:\n";
 
+	std::vector<std::multimap<unsigned int, road_addr_t>::iterator> pattern_it_vec;
+	std::vector<std::multimap<unsigned int, road_addr_t>::iterator> pattern_it_end_vec;
+
+	// Initialize all vector iterators
     std::vector<lay_pattern_bank_t>::iterator layer_it = pattern_bank.begin();
     for (; layer_it != pattern_bank.end(); ++layer_it)
     {
-        std::multimap<unsigned int, road_addr_t>::iterator pattern_it = layer_it->begin();
-		for (; pattern_it != layer_it->end(); ++pattern_it)
-		{
-			std::cout << pattern_it->second << ",";
-		}
-		std::cout << "\n";
+    	pattern_it_vec.push_back(layer_it->begin());
+    	pattern_it_end_vec.push_back(layer_it->end());
 	}
+
+    for (unsigned int pattern_nr = 0; pattern_nr < pattern_bank[0].size(); ++pattern_nr)
+    {
+    	std::vector<std::multimap<unsigned int, road_addr_t>::iterator>::iterator pattern_it_it = pattern_it_vec.begin();
+
+    	std::cout << std::hex << (*pattern_it_it)->first << " : ";
+		std::cout << std::hex << (*pattern_it_it)->second;
+		*pattern_it_it = ++(*pattern_it_it);
+		++pattern_it_it;
+    	for (; pattern_it_it != pattern_it_vec.end(); ++pattern_it_it)
+    	{
+    		std::cout << "," << std::hex << (*pattern_it_it)->second;
+    		*pattern_it_it = ++(*pattern_it_it);
+    	}
+    	std::cout << "\n";
+    }
+
+    return;
 }
 
 // *****************************************************************************
