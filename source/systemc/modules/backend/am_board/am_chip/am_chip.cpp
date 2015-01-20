@@ -223,16 +223,28 @@ void am_chip::print_match_table()
     std::vector<std::vector<bool> >::iterator match_line_it = match_table.begin();
     for (; match_line_it != match_table.end(); ++match_line_it)
     {
+    	std::cout << std::hex << (match_line_it - match_table.begin()) << " : ";
         std::vector<bool>::iterator match_position_it = match_line_it->begin();
+
+        if (*match_position_it)
+      	{
+			std::cout << "*";
+        }
+        else
+        {
+        	std::cout << " ";
+        }
+        ++match_position_it;
         for (; match_position_it != match_line_it->end(); ++match_position_it)
     	{
+        	std::cout << ",";
     		if (*match_position_it)
           	{
-    			std::cout << "*,";
+    			std::cout << "*";
             }
             else
             {
-            	std::cout << " ,";
+            	std::cout << " ";
             }
         }
         std::cout << "\n";
