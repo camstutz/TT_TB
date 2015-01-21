@@ -66,7 +66,7 @@ void road_analyzer::detect_roads()
 			{
 				if (write_en.at(trigger_tower,am_id).read() == true)
 				{
-					std::cout << sc_time_stamp() << ": Road detected (" << am_id << ") - "
+					std::cout << sc_time_stamp() << ": Road detected (" << trigger_tower << "/" << am_id << ") - "
 							  << std::hex << road_in.at(trigger_tower,am_id).read().to_uint() << std::endl;
 					road_file << std::hex << road_in.at(trigger_tower,am_id).read().to_uint() << std::endl;
 

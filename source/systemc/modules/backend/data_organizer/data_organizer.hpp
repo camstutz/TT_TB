@@ -46,7 +46,7 @@ public:
     sc_in<bool> clk;
 
     /** Linear sc_map for the stream inputs. There exist a separate input for
-      * every layer of the detector */
+      * every sensor module connected to the trigger tower */
     sc_map_linear<sc_in<do_in_t> >stream_in;
 
     /** Square sc_map for the re-arranged, re-timed stubs and the according data

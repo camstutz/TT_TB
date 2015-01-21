@@ -39,6 +39,12 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
     sc_trace(trace_file, testbench.AM_clock, "AM_clock");
 
+    sc_trace(trace_file, testbench.trigger_tower_0_0.dataOrganizer.stub_out, "stub_out_0_0");
+    sc_trace(trace_file, testbench.trigger_tower_0_1.dataOrganizer.stub_out, "stub_out_0_1");
+    sc_trace(trace_file, testbench.trigger_tower_1_0.dataOrganizer.stub_out, "stub_out_1_0");
+    sc_trace(trace_file, testbench.trigger_tower_1_1.dataOrganizer.stub_out, "stub_out_1_1");
+
+
     sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_dv_out, "neig_dv_out_0-0");
     sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_stub_out, "neig_stub_out_0-0");
     sc_trace(trace_file, testbench.trigger_tower_0_1.neighbour_dv_in, "neig_dv_in_0-1");
