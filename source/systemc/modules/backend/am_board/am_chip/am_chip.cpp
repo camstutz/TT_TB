@@ -96,7 +96,6 @@ void am_chip::process_incoming_hits()
                     match_table[road_addr][layer] = true;
                     ++road_addr_it;
                 }
-                //print_match_table();
             }
         }
     }

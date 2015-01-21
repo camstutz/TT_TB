@@ -26,7 +26,6 @@ int sc_main(int argc, char *agv[])
     analyzer.register_model_setup_start();
 
     tt_tb testbench("TT_TB");
-    testbench.trigger_tower_0_0.am_board_array[0].AMboard.print_pattern_bank();
 
     // ----- Time unit / resolution setup --------------------------------------
 
@@ -39,6 +38,26 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.LHC_clock, "LHC_clock");
     sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
     sc_trace(trace_file, testbench.AM_clock, "AM_clock");
+
+    sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_dv_out, "neig_dv_out_0-0");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_stub_out, "neig_stub_out_0-0");
+    sc_trace(trace_file, testbench.trigger_tower_0_1.neighbour_dv_in, "neig_dv_in_0-1");
+    sc_trace(trace_file, testbench.trigger_tower_0_1.neighbour_stub_in, "neigh_stub_in_0-1");
+    sc_trace(trace_file, testbench.trigger_tower_1_0.neighbour_dv_in, "neig_dv_in_1-0");
+    sc_trace(trace_file, testbench.trigger_tower_1_0.neighbour_stub_in, "neigh_stub_in_1-0");
+    sc_trace(trace_file, testbench.trigger_tower_1_1.neighbour_dv_in, "neig_dv_in_1-1");
+    sc_trace(trace_file, testbench.trigger_tower_1_1.neighbour_stub_in, "neigh_stub_in_1-1");
+
+    sc_trace(trace_file, testbench.trigger_tower_0_0.fifoManager.stub_in, "FM_stub_in");
+
+    sc_trace(trace_file, testbench.trigger_tower_0_1.fifoManager.neighbour_dv_in, "FM_dv_in");
+    sc_trace(trace_file, testbench.trigger_tower_0_1.fifoManager.datapaths[0].neighbour_dv_in, "DP_dv_in");
+
+    sc_trace(trace_file, testbench.trigger_tower_0_1.fifoManager.dv_out, "dv_out");
+    sc_trace(trace_file, testbench.trigger_tower_0_1.fifoManager.fifo_out, "fifo_out");
+
+
+
     //sc_trace(trace_file, testbench.dataOrganizer.stub_out, "DO_stub_out");
 
     //sc_trace(trace_file, testbench.sensor_modules_mpa.at(0,0,0).data_valid_signals, "dv_mpa0");

@@ -178,7 +178,7 @@ fifo_manager_datapath::neighbour_selector(input_stub_t stub) const
     // todo: this is not real code just for testing purpose
     if (stub.get_strip() < 2)
     {
-        neighbours.push_back(0);
+    	neighbours.push_back(0);
     }
 
     if (stub.get_strip() > 10)
