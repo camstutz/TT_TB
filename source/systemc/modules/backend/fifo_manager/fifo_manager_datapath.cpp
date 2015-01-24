@@ -38,6 +38,7 @@ fifo_manager_datapath::fifo_manager_datapath(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_stubs);
         sensitive << clk.pos();
+        neighbour_dv_in.make_sensitive(sensitive);
     SC_THREAD(write_fifos);
         sensitive << clk.pos();
     SC_THREAD(write_neighbours);
@@ -59,6 +60,9 @@ void fifo_manager_datapath::read_stubs()
     while (1)
     {
         wait();
+
+    	neighbour_dv_out.write_all(false);
+    	neighbour_stub_out.write_all(0);
 
         for (unsigned int AM_lane = 0; AM_lane < NR_AM_BOARDS; ++AM_lane)
         {
@@ -82,7 +86,9 @@ void fifo_manager_datapath::read_stubs()
                             neighbour_vector::iterator neighbour_it = neighbours.begin();
                             for (; neighbour_it != neighbours.end(); ++neighbour_it)
                             {
-                                neighbour_buffer[*neighbour_it].push(input_stub);
+                                //neighbour_buffer[*neighbour_it].push(input_stub);
+                            	neighbour_dv_out[*neighbour_it].write(true);
+                            	neighbour_stub_out[*neighbour_it].write(input_stub);
                             }
                         }
                     }
@@ -149,22 +155,22 @@ void fifo_manager_datapath::write_neighbours()
     {
         wait();
 
-        for (unsigned int neighbour_out = 0;
-             neighbour_out < NR_NEIGHBOURING_TOWERS;
-             ++neighbour_out)
-        {
-            if (!neighbour_buffer[neighbour_out].empty())
-            {
-                neighbour_dv_out[neighbour_out].write(true);
-                neighbour_stub_out[neighbour_out].write(neighbour_buffer[neighbour_out].front());
-                neighbour_buffer[neighbour_out].pop();
-            }
-            else
-            {
-                neighbour_dv_out[neighbour_out].write(false);
-                neighbour_stub_out[neighbour_out].write(input_stub_t());
-            }
-        }
+//        for (unsigned int neighbour_out = 0;
+//             neighbour_out < NR_NEIGHBOURING_TOWERS;
+//             ++neighbour_out)
+//        {
+//            if (!neighbour_buffer[neighbour_out].empty())
+//            {
+//                neighbour_dv_out[neighbour_out].write(true);
+//                neighbour_stub_out[neighbour_out].write(neighbour_buffer[neighbour_out].front());
+//                neighbour_buffer[neighbour_out].pop();
+//            }
+//            else
+//            {
+//                neighbour_dv_out[neighbour_out].write(false);
+//                neighbour_stub_out[neighbour_out].write(input_stub_t());
+//            }
+//        }
     }
 
 }

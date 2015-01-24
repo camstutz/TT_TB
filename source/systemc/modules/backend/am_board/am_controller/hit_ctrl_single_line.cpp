@@ -82,7 +82,11 @@ void hit_ctrl_single_line::write_AM_stub()
             fm_out_data::fm_stub_t strip_addr;
             sc_bv<AM_BOARD_PATTERN_WIDTH> pattern;
             strip_addr = stub_read.read().get_data_stub();
+
+            // Super strip generation
             pattern = strip_addr.get_bitvector()(AM_BOARD_PATTERN_WIDTH-1,0);
+            pattern = pattern & 0x00FF;
+
             stub_output.write(pattern);
         }
         write_en.write(wr_hit_lamb.read());
