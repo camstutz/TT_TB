@@ -1,14 +1,14 @@
 /*!
  * @file sc_delay_tb.cpp
  * @author Christian Amstutz
- * @date Apr 4, 2014
+ * @date Feb 12, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "sc_delay_tb.hpp"
@@ -17,17 +17,25 @@
 sc_delay_tb::sc_delay_tb(sc_module_name _name) :
         sc_module(_name),
         delay_element("delay_element"),
+        zero_delay("zero_delay_element"),
         in_signal("in_signal"),
         out_signal("out_signal"),
+        zerod_out_signal("zero_out_signal"),
         clock("clock", 10, SC_NS, 0.5, 30, SC_NS, true)
 {
     SC_THREAD(create_signal);
     SC_THREAD(detect_signal);
         sensitive << out_signal;
+    SC_THREAD(detect_zerod_signal);
+        sensitive << zerod_out_signal;
 
     delay_element.clk(clock);
     delay_element.input(in_signal);
     delay_element.delayed(out_signal);
+
+    zero_delay.clk(clock);
+    zero_delay.input(in_signal);
+    zero_delay.delayed(zerod_out_signal);
 
     log_buffer << std::endl;
     log_buffer << "*******************************************" << std::endl;
@@ -86,6 +94,20 @@ void sc_delay_tb::detect_signal()
 
         log_buffer << sc_time_stamp() << ": output = " <<
                 delay_element.delayed.read() << std::endl;
+    }
+
+    return;
+}
+
+// *****************************************************************************
+void sc_delay_tb::detect_zerod_signal()
+{
+    while (1)
+    {
+        wait();
+
+        log_buffer << sc_time_stamp() << ": output (zero) = " <<
+                zero_delay.delayed.read() << std::endl;
     }
 
     return;
