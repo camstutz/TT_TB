@@ -1,14 +1,14 @@
 /*!
  * @file sc_delay_signal.hpp
  * @author Christian Amstutz
- * @date May 19, 2014
+ * @date Feb 12, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -171,4 +171,77 @@ void sc_delay_signal<signal_t, delay_cycles>::increase_ptr(
     }
 
     return;
+}
+
+//******************************************************************************
+
+//******************************************************************************
+
+template <typename signal_t>
+class sc_delay_signal<signal_t, 0> : public sc_module
+{
+public:
+
+// ----- Port Declarations -----------------------------------------------------
+    /** Input port for the clock signal */
+    sc_in<bool> clk;
+
+    sc_in<signal_t> input;
+    sc_out<signal_t> delayed;
+
+// ----- Local Channel Declarations --------------------------------------------
+    sc_signal<signal_t> forward_signal;
+
+// ----- Process Declarations --------------------------------------------------
+    void forward_input();
+
+// ----- Other Method Declarations ---------------------------------------------
+
+// ----- Module Instantiations -------------------------------------------------
+
+// ----- Constructor -----------------------------------------------------------
+    /*!
+     * Constructor:
+     */
+    sc_delay_signal(sc_module_name _name);
+    SC_HAS_PROCESS(sc_delay_signal);
+};
+
+//******************************************************************************
+
+//******************************************************************************
+/*!
+ * @class sc_delay_signal
+ *
+ * The module is sensitive to ....
+ */
+template <typename signal_t>
+sc_delay_signal<signal_t, 0>::sc_delay_signal(sc_module_name _name) :
+        sc_module(_name),
+        clk("clk"),
+        input("input"),
+        delayed("delayed"),
+        forward_signal("forward_singal")
+{
+    // ----- Process registration ----------------------------------------------
+    SC_THREAD(forward_input);
+        sensitive << input;
+
+    // ----- Module variable initialization ------------------------------------
+
+    // ----- Module instance / channel binding ---------------------------------
+
+    return;
+}
+
+//******************************************************************************
+template <typename signal_t>
+void sc_delay_signal<signal_t, 0>::forward_input()
+{
+    while (1)
+    {
+        wait();
+
+        delayed.write(input.read());
+    }
 }
