@@ -1,7 +1,7 @@
 /*!
- * @file fifo_fsm.hpp
+ * @file fifo_ctrl.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 13, 2015
  *
  * @brief
  *
@@ -15,48 +15,45 @@
 
 #include <systemc.h>
 
+#include "../../../../../data_formats/fm_out_data.hpp"
+
+#include "fifo_ctrl_fsm.hpp"
+#include "../../track_finder/track_finder.hpp"
+
 /*!
  * @brief
  */
-class fifo_fsm : public sc_module
+class fifo_ctrl : public sc_module
 {
 public:
-    typedef unsigned int fsm_states;
-    static const fsm_states IDLE;
-    static const fsm_states RX_DATA;
-    static const fsm_states STDBY;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
-
+    sc_in<bool> fifo_write_en;
     sc_in<bool> fifo_not_empty;
-    sc_in<bool> pop;
-    sc_out<bool> pok;
-    sc_in<bool> hee_reg_before;
+    sc_in<bool> event_active;
+    sc_in<fm_out_data> stub_input;
 
     sc_out<bool> fifo_read_en;
-    sc_out<bool> reg_en;
+    sc_out<track_finder::hit_stream> stub_output;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<fsm_states> current_state;
-    sc_signal<fsm_states> next_state;
-
-    sc_signal<bool> fifo_read_en_d1;
 
 // ----- Process Declarations --------------------------------------------------
-    void state_logic();
-    void combinatorial();
-    void delay_pok();
+    void read_input_stub();
+    void write_AM_stub();
+    void update_tag();
 
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
+    fifo_ctrl_fsm FSM;
 
 // ----- Constructor -----------------------------------------------------------
     /*!
      * Constructor:
      */
-    fifo_fsm(sc_module_name _name);
-    SC_HAS_PROCESS(fifo_fsm);
+    fifo_ctrl(sc_module_name _name);
+    SC_HAS_PROCESS(fifo_ctrl);
 };

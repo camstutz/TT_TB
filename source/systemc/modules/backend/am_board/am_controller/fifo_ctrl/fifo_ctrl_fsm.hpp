@@ -1,7 +1,7 @@
 /*!
- * @file main_fsm.hpp
+ * @file fifo_ctrl_fsm.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 13, 2015
  *
  * @brief
  *
@@ -15,43 +15,31 @@
 
 #include <systemc.h>
 
-#include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-
-#include "../../../../systems/TT_configuration.hpp"
-
 /*!
  * @brief
  */
-class main_fsm : public sc_module
+class fifo_ctrl_fsm : public sc_module
 {
 public:
-    static const unsigned int am_latency;
-
     typedef unsigned int fsm_states;
-    static const fsm_states RESET;
-    static const fsm_states RX_HIT;
-    static const fsm_states WAIT_T0;
-    static const fsm_states SEND_ROAD;
-    static const fsm_states SEND_INIT_EVENT;
+    static const fsm_states IDLE;
+    static const fsm_states PROCESS;
+    static const fsm_states WAIT_EVENT_END;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
 
-    sc_map_linear<sc_in<bool> > pok;
-    sc_map_linear<sc_in<bool> > hee_reg;
-    sc_map_linear<sc_in<bool> > hee_reg_before;
-    sc_in<bool> finish_road;
+    sc_in<bool> fifo_write_en;
+    sc_in<bool> fifo_not_empty;
+    sc_in<bool> is_timestamp;
+    sc_in<bool> event_active;
 
-    sc_map_linear<sc_out<bool> > pop;
-    sc_map_linear<sc_out<bool> > en;
-    sc_out<sc_bv<3> > init_ev;
+    sc_out<bool> fifo_read_en;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<fsm_states> current_state;
     sc_signal<fsm_states> next_state;
-
-    sc_signal<unsigned int> AM_latency_cnt;
 
 // ----- Process Declarations --------------------------------------------------
     void state_logic();
@@ -65,6 +53,6 @@ public:
     /*!
      * Constructor:
      */
-    main_fsm(sc_module_name _name);
-    SC_HAS_PROCESS(main_fsm);
+    fifo_ctrl_fsm(sc_module_name _name);
+    SC_HAS_PROCESS(fifo_ctrl_fsm);
 };

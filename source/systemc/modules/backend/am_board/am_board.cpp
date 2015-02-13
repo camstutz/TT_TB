@@ -35,7 +35,7 @@ am_board::am_board(const sc_module_name _name) :
         am_road_sig("am_road_sig"),
         stub_fifo_array(NR_DETECTOR_LAYERS, "stub_fifo"),
         AMcontroller("AM_controller"),
-        AMboard("AM_board")
+        TrackFinder("Track Finder")
 {
     // ----- Module instance / channel binding ---------------------------------
     unsigned int layer = 0;

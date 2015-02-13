@@ -1,7 +1,7 @@
 /*!
- * @file road_ctrl.hpp
+ * @file read_ctrl_fsm.hpp
  * @author Christian Amstutz
- * @date January 5, 2014
+ * @date February 13, 2015
  *
  * @brief
  *
@@ -15,35 +15,35 @@
 
 #include <systemc.h>
 
-#include "../../../../systems/TT_configuration.hpp"
-
 /*!
  * @brief
  */
-class road_ctrl : public sc_module
+class read_ctrl_fsm : public sc_module
 {
 public:
-
-    // TODO: numbers to constants
+    typedef unsigned int fsm_states;
+    static const fsm_states IDLE;
+    static const fsm_states PROCESS;
+    static const fsm_states WAIT_EVENT_END;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
-    sc_in<bool> data_ready_road;
-    sc_in<sc_bv<AM_BOARD_PATTERN_WIDTH> > event_tag;
-    sc_in<sc_bv<AM_BOARD_ROAD_WIDTH> > road_in;
 
-    sc_out<bool> finish_road;
-    sc_out<bool> write_en_road;
-    sc_out<sc_bv<30> > road_out;
+    sc_in<bool> fifo_write_en;
+    sc_in<bool> fifo_not_empty;
+    sc_in<bool> is_timestamp;
+    sc_in<bool> event_active;
+
+    sc_out<bool> fifo_read_en;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<bool> write_en_sig;
-    sc_signal<sc_bv<AM_BOARD_ROAD_WIDTH> > road_sig;
-	sc_signal<bool> data_ready_last;
+    sc_signal<fsm_states> current_state;
+    sc_signal<fsm_states> next_state;
 
 // ----- Process Declarations --------------------------------------------------
-    void transfer_roads();
+    void state_logic();
+    void combinatorial();
 
 // ----- Other Method Declarations ---------------------------------------------
 
@@ -53,6 +53,6 @@ public:
     /*!
      * Constructor:
      */
-    road_ctrl(sc_module_name _name);
-    SC_HAS_PROCESS(road_ctrl);
+    read_ctrl_fsm(sc_module_name _name);
+    SC_HAS_PROCESS(read_ctrl_fsm);
 };

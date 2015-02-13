@@ -39,23 +39,6 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
     sc_trace(trace_file, testbench.AM_clock, "AM_clock");
 
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMboard.pattern_inputs, "AM_chip-0-0-0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[1].AMboard.pattern_inputs, "AM_chip-0-0-1");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[2].AMboard.pattern_inputs, "AM_chip-0-0-2");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[3].AMboard.pattern_inputs, "AM_chip-0-0-3");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[0].AMboard.pattern_inputs, "AM_chip-0-1-0");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[1].AMboard.pattern_inputs, "AM_chip-0-1-1");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[2].AMboard.pattern_inputs, "AM_chip-0-1-2");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[3].AMboard.pattern_inputs, "AM_chip-0-1-3");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[0].AMboard.pattern_inputs, "AM_chip-1-0-0");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[1].AMboard.pattern_inputs, "AM_chip-1-0-1");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[2].AMboard.pattern_inputs, "AM_chip-1-0-2");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[3].AMboard.pattern_inputs, "AM_chip-1-0-3");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[0].AMboard.pattern_inputs, "AM_chip-1-1-0");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[1].AMboard.pattern_inputs, "AM_chip-1-1-1");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[2].AMboard.pattern_inputs, "AM_chip-1-1-2");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[3].AMboard.pattern_inputs, "AM_chip-1-1-3");
-
     sc_trace(trace_file, testbench.trigger_tower_0_0.fifoManager.datapaths[0].buffer_write_en, "buffer_write_en");
     sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_dv_out, "neig_dv_out_0-0");
     sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_stub_out, "neig_stub_out_0-0");

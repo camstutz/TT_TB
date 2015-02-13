@@ -1,56 +1,52 @@
 /*!
- * @file am_controller.hpp
+ * @file pattern_memory.hpp
  * @author Christian Amstutz
  * @date February 13, 2015
  *
  * @brief
- *
  */
 
 /*
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#pragma once
+#include <map>
 
 #include <systemc.h>
+#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-
-#include "../../../../systems/TT_configuration.hpp"
-#include "../../../../data_formats/fm_out_data.hpp"
-
-#include "../track_finder/track_finder.hpp"
-#include "fifo_ctrl/fifo_ctrl.hpp"
-
+#include "../pattern_bank/pattern_bank.hpp"
+#include "../track_finder_config.hpp"
 
 /*!
- * @brief SystemC
+ * @brief
  */
-class am_controller : public sc_module
+class pattern_memory : public sc_module
 {
 public:
-
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
-    sc_map_linear<sc_in<bool> > fifo_not_empty;
-    sc_map_linear<sc_in<bool> > fifo_write_en;
-    sc_map_linear<sc_in<fm_out_data> > stub_inputs;
-
-    sc_map_linear<sc_out<track_finder::hit_stream> > stub_outputs;
+    sc_in<road_t> road_input;
+    sc_map_linear<sc_out<superstrip_t> > superstrip_outputs;
 
     // ----- Local Channel Declarations ----------------------------------------
 
     // ----- Process Declarations ----------------------------------------------
+    void lookup_road();
 
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
-    sc_map_linear<fifo_ctrl> fifo_controller_array;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    am_controller(const sc_module_name _name);
+    pattern_memory(const sc_module_name _name, pattern_bank *p_bank);
+    SC_HAS_PROCESS(pattern_memory);
+
+private:
+    void print_pattern_bank();
+
+    pattern_bank *patterns;
 };

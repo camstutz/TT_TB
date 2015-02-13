@@ -1,16 +1,16 @@
 /*!
- * @file hit_ctrl_single_line.cpp
+ * @file fifo_ctrl.cpp
  * @author Christian Amstutz
- * @date Apr 20, 2014
+ * @date February 13, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "hit_ctrl_single_line.hpp"
+#include "fifo_ctrl.hpp"
 
 // *****************************************************************************
 
@@ -20,7 +20,7 @@
  * The module is sensitive to ...
  */
 
-hit_ctrl_single_line::hit_ctrl_single_line(sc_module_name _name) :
+fifo_ctrl::fifo_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         new_hit("new_hit"),
@@ -30,7 +30,8 @@ hit_ctrl_single_line::hit_ctrl_single_line(sc_module_name _name) :
         hee_reg("hee_reg"),
         write_en("write_en"),
         stub_output("stub_output"),
-        stub_tag("stub_tag")
+        stub_tag("stub_tag"),
+        FSM("FSM")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input_stub);
@@ -45,12 +46,18 @@ hit_ctrl_single_line::hit_ctrl_single_line(sc_module_name _name) :
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
+    FSM.clk.bind(clk);
+//  FSM.fifo_write_en.bind();
+//  FSM.fifo_not_empty.bind();
+//  FSM.is_timestamp.bind();
+//  FSM.event_active.bind();
+//  FSM.fifo_read_en.bind();
 
     return;
 }
 
 // *****************************************************************************
-void hit_ctrl_single_line::read_input_stub()
+void fifo_ctrl::read_input_stub()
 {
     while (1)
     {
@@ -71,7 +78,7 @@ void hit_ctrl_single_line::read_input_stub()
 }
 
 // *****************************************************************************
-void hit_ctrl_single_line::write_AM_stub()
+void fifo_ctrl::write_AM_stub()
 {
     while (1)
     {
@@ -95,21 +102,7 @@ void hit_ctrl_single_line::write_AM_stub()
 }
 
 // *****************************************************************************
-void hit_ctrl_single_line::update_hee_reg()
-{
-    while (1)
-    {
-        hee_reg_before.write(stub_input.read().is_timestamp());
-        hee_reg.write(stub_read.read().is_timestamp());
-
-        wait();
-    }
-
-
-}
-
-// *****************************************************************************
-void hit_ctrl_single_line::update_tag()
+void fifo_ctrl::update_tag()
 {
 	while (1)
 	{

@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 13, 2015
  *
  * @brief
  *
@@ -19,9 +19,10 @@
 
 #include "../../../systems/TT_configuration.hpp"
 #include "../../../data_formats/fm_out_data.hpp"
-#include "am_controller/am_controller.hpp"
-#include "am_chip/am_chip.hpp"
 #include "stub_fifo/stub_fifo.hpp"
+#include "am_controller/am_controller.hpp"
+#include "track_finder/track_finder.hpp"
+
 
 /*!
  * @brief SystemC
@@ -57,13 +58,11 @@ public:
     // ----- Module Instantiations ---------------------------------------------
     sc_map_linear<stub_fifo<STUB_FIFO_DEPTH> > stub_fifo_array;
     am_controller AMcontroller;
-    am_chip AMboard;
+    track_finder TrackFinder;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
     am_board(const sc_module_name _name);
-    SC_HAS_PROCESS(am_board);
-
 };

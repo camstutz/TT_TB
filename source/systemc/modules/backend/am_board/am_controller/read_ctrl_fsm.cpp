@@ -1,7 +1,7 @@
 /*!
- * @file fifo_fsm.cpp
+ * @file read_ctrl_fsm.cpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 13, 2015
  *
  * @brief
  */
@@ -10,38 +10,36 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "fifo_fsm.hpp"
+#include "read_ctrl_fsm.hpp"
 
 // *****************************************************************************
 
-const fifo_fsm::fsm_states fifo_fsm::IDLE = 0x01;
-const fifo_fsm::fsm_states fifo_fsm::RX_DATA = 0x02;
-const fifo_fsm::fsm_states fifo_fsm::STDBY = 0x04;
+const read_ctrl_fsm::fsm_states read_ctrl_fsm::IDLE = 0x01;
+const read_ctrl_fsm::fsm_states read_ctrl_fsm::PROCESS = 0x02;
+const read_ctrl_fsm::fsm_states read_ctrl_fsm::WAIT_EVENT_END = 0x04;
 
 // *****************************************************************************
 
 /*!
- * @class fifo_fsm
+ * @class fifo_ctrl_fsm
  *
- * The module is sensitive to clk.pos().
+ * The module is sensitive ...
  */
 
-fifo_fsm::fifo_fsm(sc_module_name _name) :
+read_ctrl_fsm::read_ctrl_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
+        fifo_write_en("fifo_write_en"),
         fifo_not_empty("fifo_not_empty"),
-        pop("pop"),
-        pok("pok"),
-        fifo_read_en("fifo_read_en"),
-        reg_en("reg_en")
+        event_active("event_active"),
+        fifo_read_en("fifo_read_en")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(state_logic);
         sensitive << clk.pos();
     SC_THREAD(combinatorial);
-        sensitive << current_state << fifo_not_empty << pop << hee_reg_before;
-    SC_THREAD(delay_pok)
-        sensitive << clk.pos();
+        sensitive << current_state << fifo_not_empty << fifo_write_en
+                  << event_active;
 
     // ----- Module channel/variable initialization ----------------------------
     current_state = IDLE;
@@ -53,7 +51,7 @@ fifo_fsm::fifo_fsm(sc_module_name _name) :
 }
 
 // *****************************************************************************
-void fifo_fsm::state_logic()
+void read_ctrl_fsm::state_logic()
 {
     while (1)
     {
@@ -65,7 +63,7 @@ void fifo_fsm::state_logic()
 }
 
 // *****************************************************************************
-void fifo_fsm::combinatorial()
+void read_ctrl_fsm::combinatorial()
 {
     while (1)
     {
@@ -74,41 +72,42 @@ void fifo_fsm::combinatorial()
         switch (current_state)
         {
         case IDLE:
-            fifo_read_en.write(fifo_not_empty.read());
-            reg_en.write(false);
-            if (fifo_not_empty.read() == true)
-            {
-                next_state = RX_DATA;
-            }
-            else
-            {
-                next_state = IDLE;
-            }
-            break;
-
-        case RX_DATA:
-            fifo_read_en.write(pop.read() & fifo_not_empty.read() & !hee_reg_before.read());
-            reg_en.write(pop.read());
-            if (pop.read() == false)
-            {
-                next_state = STDBY;
-            }
-            else
-            {
-                next_state = RX_DATA;
-            }
-            break;
-
-        case STDBY:
             fifo_read_en.write(false);
-            reg_en.write(false);
-            if (pop.read() & fifo_not_empty.read())
+
+            if ((fifo_not_empty.read() == true) &
+                (fifo_write_en.read() == false))
+            {
+                next_state = PROCESS;
+            }
+            else
+            {
+                next_state = IDLE;
+            }
+            break;
+
+        case PROCESS:
+            fifo_read_en.write(true);
+
+            if (is_timestamp.read() == true)
+            {
+                next_state = WAIT_EVENT_END;
+            }
+            else
+            {
+                next_state = PROCESS;
+            }
+            break;
+
+        case WAIT_EVENT_END:
+            fifo_read_en.write(false);
+
+            if (event_active.read() == false)
             {
                 next_state = IDLE;
             }
             else
             {
-                next_state = STDBY;
+                next_state = WAIT_EVENT_END;
             }
             break;
 
@@ -116,17 +115,4 @@ void fifo_fsm::combinatorial()
             next_state = IDLE;
         }
     }
-}
-
-// *****************************************************************************
-void fifo_fsm::delay_pok()
-{
-    while (1)
-    {
-        wait();
-
-        fifo_read_en_d1.write(fifo_read_en.read());
-        pok.write(fifo_read_en_d1.read());
-    }
-
 }
