@@ -1,24 +1,24 @@
 /*!
- * @file am_chip_write_ctrl.hpp
+ * @file hit_memory_lookup_ctrl.hpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date Febraury 13, 2015
  *
- * @brief File contains the definition of the AM board FSM.
+ * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
 
 #include <systemc.h>
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "simple_stream_protocol.hpp"
+#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../simple_stream_protocol.hpp"
 
-#include "am_ctrl_exp_config.hpp"
+#include "../track_finder_config.hpp"
 
-class am_chip_write_ctrl : public sc_module
+class hit_memory_lookup_ctrl : public sc_module
 {
 public:
     typedef simple_stream_protocol<superstrip_t> superstrip_stream;
@@ -35,32 +35,15 @@ public:
      */
     sc_in<bool> clk;
 
-    sc_map_linear<sc_in<superstrip_stream> > hit_inputs;
-    sc_map_linear<sc_out<bool> > process_hits;
-
-    /** @brief Signal to enable road processing.
-     *
-     * Output port of the control signal that shows that in the actual state
-     * the hits can be processed.
-     */
-    sc_out<bool> process_roads;
+    sc_map_linear<sc_in<superstrip_stream> > superstrip_inputs;
+    sc_map_linear<sc_out<superstrip_t> > lookup_superstrips;
+    sc_out<bool> event_end;
 
 // ----- Local Channel Declarations --------------------------------------------
     /** @brief Signal containing the current FSM state. */
     sc_signal<fsm_states> current_state;
 
 // ----- Process Declarations --------------------------------------------------
-    /**
-     * @brief Combinatorial process of the FSM
-     *
-     * Switches through the different states depending on the input ports
-     * write_enable and road_buffer_empty. Updates the output ports
-     * process_roads and write_roads.
-     *
-     * This process runs indefinitely and is sensitive to the change of the
-     * current state, the empty signal of the output road buffer, and the write
-     * enable inputs.
-     */
     void controller();
 
 // ----- Other Method Declarations ---------------------------------------------
@@ -75,6 +58,6 @@ public:
      * assigning their sensitivity lists. Initializes the FSM by setting the
      * current state to IDLE.
      */
-    am_chip_write_ctrl(sc_module_name _name);
-    SC_HAS_PROCESS(am_chip_write_ctrl);
+    hit_memory_lookup_ctrl(sc_module_name _name);
+    SC_HAS_PROCESS(hit_memory_lookup_ctrl);
 };

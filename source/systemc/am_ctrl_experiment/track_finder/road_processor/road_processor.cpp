@@ -1,13 +1,13 @@
 /*!
  * @file road_processor.cpp
  * @author Christian Amstutz
- * @date December 3, 2014
+ * @date February 13, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "road_processor.hpp"
@@ -26,8 +26,7 @@ road_processor::road_processor(const sc_module_name _name) :
         superstrip_lookup(LAYER_NUMBER, "superstrip_lookup"),
         hit_lookup_result(LAYER_NUMBER, "hit_lookup_result"),
         hit_output(LAYER_NUMBER, "hit_output"),
-        command_buffer("command_buffer"),
-        filtered_hits(LAYER_NUMBER, "filtered_hits")
+        command_buffer("command_buffer")
 {
 	// ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_roads);
@@ -35,13 +34,13 @@ road_processor::road_processor(const sc_module_name _name) :
     SC_THREAD(lookup_superstrips);
         sensitive << command_buffer.data_written_event();
         found_pattern.make_sensitive(sensitive);
+    SC_THREAD(output_result);
+        hit_lookup_result.make_sensitive(sensitive);
 
 
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-    //hit_lookup_result.bind(filtered_hits);
-    //hit_output.bind(hit_lookup_result);
 
     return;
 }
@@ -90,6 +89,24 @@ void road_processor::lookup_superstrips()
                 }
             }
         } while (command_buffer.num_available() > 0);
+    }
+
+}
+
+// *****************************************************************************
+void road_processor::output_result()
+{
+    while(1)
+    {
+        wait();
+
+        for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+        {
+            if (hit_lookup_result[layer].event())
+            {
+                hit_output[layer].write(hit_lookup_result[layer]);
+            }
+        }
     }
 
 }

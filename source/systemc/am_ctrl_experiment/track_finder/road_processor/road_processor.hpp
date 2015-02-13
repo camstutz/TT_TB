@@ -1,23 +1,23 @@
 /*!
  * @file road_processor.hpp
  * @author Christian Amstutz
- * @date December 3, 2014
+ * @date February 13, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
 
 #include <systemc.h>
 
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "simple_stream_protocol.hpp"
+#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../simple_stream_protocol.hpp"
 
-#include "am_ctrl_exp_config.hpp"
+#include "../track_finder_config.hpp"
 
 #define VALUE_EVENT 0
 
@@ -42,11 +42,11 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_fifo<road_stream> command_buffer;
-    sc_map_linear<sc_signal<hit_t> > filtered_hits;
 
     // ----- Process Declarations ----------------------------------------------
     void process_incoming_roads();
     void lookup_superstrips();
+    void output_result();
 
     // ----- Other Method Declarations -----------------------------------------
 

@@ -1,13 +1,13 @@
 /*!
  * @file hit_memory.hpp
  * @author Christian Amstutz
- * @date December 3, 2014
+ * @date February 13, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -18,10 +18,10 @@
 #include <utility>
 
 #include <systemc.h>
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "simple_stream_protocol.hpp"
+#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../simple_stream_protocol.hpp"
 
-#include "am_ctrl_exp_config.hpp"
+#include "../track_finder_config.hpp"
 #include "hit_memory_write_ctrl.hpp"
 #include "hit_memory_lookup_ctrl.hpp"
 #include "hit_memory_output_ctrl.hpp"

@@ -1,13 +1,13 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date December 8, 2014
+ * @date February 13, 2015
  *
  * @brief File containing the definition of the AM board.
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -17,12 +17,12 @@
 #include <utility>
 
 #include <systemc.h>
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
-#include "simple_stream_protocol.hpp"
+#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
+#include "../../simple_stream_protocol.hpp"
 
-#include "pattern_bank/pattern_bank.hpp"
-#include "am_ctrl_exp_config.hpp"
+#include "../pattern_bank/pattern_bank.hpp"
+#include "../track_finder_config.hpp"
 #include "am_chip_read_ctrl.hpp"
 #include "am_chip_write_ctrl.hpp"
 

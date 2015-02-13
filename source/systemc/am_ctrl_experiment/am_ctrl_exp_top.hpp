@@ -1,13 +1,13 @@
 /*!
  * @file am_ctrl_exp_top.hpp
  * @author Christian Amstutz
- * @date December 3, 2014
+ * @date February 13, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include <utility>
@@ -21,13 +21,7 @@
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "simple_stream_protocol.hpp"
 
-#include "am_ctrl_exp_config.hpp"
-#include "hit_processor.hpp"
-#include "hit_memory.hpp"
-#include "pattern_bank/pattern_bank.hpp"
-#include "am_chip.hpp"
-#include "pattern_memory.hpp"
-#include "road_processor.hpp"
+#include "track_finder/track_finder.hpp"
 
 /*!
  * @brief
@@ -49,14 +43,6 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_clock clock;
     sc_map_linear<sc_buffer<hit_stream> > input_hit_sig;
-    sc_map_linear<sc_signal<superstrip_stream> > hit_buffer_ss_store_sig;
-    sc_map_linear<sc_signal<substrip_stream> > hit_buffer_subs_store_sig;
-    sc_map_linear<sc_signal<superstrip_stream> > am_input_sig;
-    sc_signal<road_stream> am_output_sig;
-    sc_buffer<road_t> pattern_mem_addr_sig;
-    sc_map_linear<sc_buffer<superstrip_t> > pattern_mem_out_sig;
-    sc_map_linear<sc_signal<superstrip_stream> > hit_search_sig;
-    sc_map_linear<sc_signal<hit_stream> > hit_result_sig;
     sc_map_linear<sc_signal<hit_stream> > output_hit_sig;
 
     // ----- Process Declarations ----------------------------------------------
@@ -67,12 +53,7 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
-    pattern_bank patterns;
-    hit_processor hit_proc;
-    hit_memory hit_buffer;
-    am_chip road_lookup;
-    pattern_memory pattern_lookup;
-    road_processor road_proc;
+    track_finder am_board;
 
     // ----- Constructor -------------------------------------------------------
     /*!

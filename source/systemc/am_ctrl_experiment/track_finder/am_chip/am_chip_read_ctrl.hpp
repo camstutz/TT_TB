@@ -1,22 +1,22 @@
 /*!
  * @file am_chip_read_ctrl.hpp
  * @author Christian Amstutz
- * @date November 19, 2014
+ * @date February 13, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
 
 #include <systemc.h>
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "simple_stream_protocol.hpp"
+#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../simple_stream_protocol.hpp"
 
-#include "am_ctrl_exp_config.hpp"
+#include "../track_finder_config.hpp"
 
 class am_chip_read_ctrl : public sc_module
 {
