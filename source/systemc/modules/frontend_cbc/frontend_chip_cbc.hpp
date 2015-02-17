@@ -1,14 +1,14 @@
 /*!
  * @file frontend_chip_cbc.hpp
  * @author Christian Amstutz
- * @date December 19, 2014
+ * @date February 17, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -28,6 +28,7 @@ class frontend_chip_cbc : public sc_module
 public:
     typedef fe_cbc_stub_t stub_t;
 
+    static const unsigned int max_input_hits;
     static const unsigned int max_hits_per_cycle;
 
 // ----- Port Declarations -----------------------------------------------------

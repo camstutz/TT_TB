@@ -112,7 +112,9 @@ void fifo_manager_datapath::read_stubs()
                 // add time stamp to buffer if there are stubs in the buffer
                 if (!stub_buffer[AM_lane].empty())
                 {
-                    stub_buffer[AM_lane].push(output_t(time_stamp.read()));
+                    output_t timestamp_element;
+                    timestamp_element.set_timestamp(time_stamp.read());
+                    stub_buffer[AM_lane].push(timestamp_element);
                 }
             }
         }

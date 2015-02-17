@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 16, 2015
  *
  * @brief
  */
@@ -24,18 +24,14 @@ am_board::am_board(const sc_module_name _name) :
         fifo_write_en(NR_DETECTOR_LAYERS, "fifo_write_ens"),
         fifo_inputs(NR_DETECTOR_LAYERS, "fifo_inputs"),
         road_write_en("road_write_en"),
-        road_output("road_output"),
         fifo_not_empty_sig(NR_DETECTOR_LAYERS, "fifo_not_empty_sig"),
         fifo_read_en_sig(NR_DETECTOR_LAYERS, "fifo_read_en_sig"),
         fifo_stub_out_sig(NR_DETECTOR_LAYERS, "fifo_stub_out_sig"),
-        init_ev_sig("init_ev_sig"),
-        am_write_en_sig(NR_DETECTOR_LAYERS, "AM_write_en_sig"),
-        am_pattern_sig(NR_DETECTOR_LAYERS, "AM_pattern_sig"),
-        am_data_ready_sig("am_data_ready_sig"),
-        am_road_sig("am_road_sig"),
+        track_finder_in_signal(NR_DETECTOR_LAYERS, "track_finder_in_signal"),
+        track_finder_out_signal(NR_DETECTOR_LAYERS, "track_finder_out_signal"),
         stub_fifo_array(NR_DETECTOR_LAYERS, "stub_fifo"),
         AMcontroller("AM_controller"),
-        AMboard("AM_board")
+        TrackFinder("track_finder")
 {
     // ----- Module instance / channel binding ---------------------------------
     unsigned int layer = 0;
@@ -54,26 +50,31 @@ am_board::am_board(const sc_module_name _name) :
 
     AMcontroller.clk.bind(clk);
     AMcontroller.fifo_not_empty.bind(fifo_not_empty_sig);
+    AMcontroller.fifo_write_en.bind(fifo_write_en);
     AMcontroller.fifo_read_en.bind(fifo_read_en_sig);
     AMcontroller.stub_inputs.bind(fifo_stub_out_sig);
-    AMcontroller.init_ev.bind(init_ev_sig);
-    AMcontroller.am_write_en.bind(am_write_en_sig);
-    AMcontroller.am_stub_outputs.bind(am_pattern_sig);
-    AMcontroller.data_ready.bind(am_data_ready_sig);
-    AMcontroller.road_in.bind(am_road_sig);
-    AMcontroller.road_write_en.bind(road_write_en);
-    AMcontroller.road_output.bind(road_output);
+    AMcontroller.stub_outputs.bind(track_finder_in_signal);
 
-    AMboard.clk.bind(clk);
-    AMboard.init_ev.bind(init_ev_sig);
-    AMboard.write_en.bind(am_write_en_sig);
-    AMboard.pattern_inputs.bind(am_pattern_sig);
-    AMboard.data_ready.bind(am_data_ready_sig);
-    AMboard.road_output.bind(am_road_sig);
+    TrackFinder.clk.bind(clk);
+    TrackFinder.hit_input.bind(track_finder_in_signal);
+    TrackFinder.hit_output.bind(track_finder_out_signal);
 
     // ----- Process registration ----------------------------------------------
+    SC_THREAD(process_result);
+        track_finder_out_signal.make_sensitive(sensitive);
 
     // ----- Module variable initialization ------------------------------------
 
     return;
 }
+
+// *****************************************************************************
+void am_board::process_result()
+{
+    while(1)
+    {
+        wait();
+        std::cout <<  track_finder_out_signal[0].read() << std::endl;
+    }
+}
+

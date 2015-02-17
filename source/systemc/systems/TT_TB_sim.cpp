@@ -1,7 +1,8 @@
 /*!
  * @file TT_TB_sim.cpp
  * @author Christian Amstutz
- * @date January 24, 2015
+ * @date February 17, 2015
+
  *
  * @brief
  */
@@ -39,32 +40,22 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
     sc_trace(trace_file, testbench.AM_clock, "AM_clock");
 
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMboard.pattern_inputs, "AM_chip-0-0-0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[1].AMboard.pattern_inputs, "AM_chip-0-0-1");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[2].AMboard.pattern_inputs, "AM_chip-0-0-2");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[3].AMboard.pattern_inputs, "AM_chip-0-0-3");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[0].AMboard.pattern_inputs, "AM_chip-0-1-0");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[1].AMboard.pattern_inputs, "AM_chip-0-1-1");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[2].AMboard.pattern_inputs, "AM_chip-0-1-2");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.am_board_array[3].AMboard.pattern_inputs, "AM_chip-0-1-3");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[0].AMboard.pattern_inputs, "AM_chip-1-0-0");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[1].AMboard.pattern_inputs, "AM_chip-1-0-1");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[2].AMboard.pattern_inputs, "AM_chip-1-0-2");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[3].AMboard.pattern_inputs, "AM_chip-1-0-3");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[0].AMboard.pattern_inputs, "AM_chip-1-1-0");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[1].AMboard.pattern_inputs, "AM_chip-1-1-1");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[2].AMboard.pattern_inputs, "AM_chip-1-1-2");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.am_board_array[3].AMboard.pattern_inputs, "AM_chip-1-1-3");
-
-    sc_trace(trace_file, testbench.trigger_tower_0_0.fifoManager.datapaths[0].buffer_write_en, "buffer_write_en");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_dv_out, "neig_dv_out_0-0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.neighbour_stub_out, "neig_stub_out_0-0");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.neighbour_dv_in, "neig_dv_in_0-1");
-    sc_trace(trace_file, testbench.trigger_tower_0_1.neighbour_stub_in, "neigh_stub_in_0-1");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.neighbour_dv_in, "neig_dv_in_1-0");
-    sc_trace(trace_file, testbench.trigger_tower_1_0.neighbour_stub_in, "neigh_stub_in_1-0");
-    sc_trace(trace_file, testbench.trigger_tower_1_1.neighbour_dv_in, "neig_dv_in_1-1");
-    sc_trace(trace_file, testbench.trigger_tower_1_1.neighbour_stub_in, "neigh_stub_in_1-1");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].not_empty, "not_empty");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].stub_out, "stub_out");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].stub_in, "stub_in");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].write_en, "write_en");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].read_en, "read_en");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.event_active, "event_active-FIFOCONTROLLER");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.event_active, "event_active-READCONTROLLER");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.stub_outputs, "T0_B0_stub_out");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.is_timestamp, "FIFO_FSM_is_timestamp");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.event_start, "FIFO_FSM_event_start");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.current_state, "FIFO_FSM_current_state");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.current_state, "read_controller.current_state");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.layers_active, "read_controller.layers_active");
+//    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[1].AMcontroller.stub_outputs, "T0_B1_stub_out");
+//    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[2].AMcontroller.stub_outputs, "T0_B2_stub_out");
+//    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[3].AMcontroller.stub_outputs, "T0_B3_stub_out");
 
     // ----- Start simulation --------------------------------------------------
 
