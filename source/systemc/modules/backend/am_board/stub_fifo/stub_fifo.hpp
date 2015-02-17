@@ -101,6 +101,7 @@ void stub_fifo<depth>::read_input()
         if (write_en.read() == true)
         {
             fifo.write(stub_in.read());
+std::cout << sc_time_stamp() << ":" <<  fifo.num_available() << " (W) = " << stub_in.read() << std::endl;
         }
     }
 
@@ -118,6 +119,7 @@ void stub_fifo<depth>::write_output()
         {
             fifo_content_t fifo_value = fifo.read();
             stub_out.write(fifo_value);
+std::cout << sc_time_stamp() << ":" <<  fifo.num_available() << " (R) = " << fifo_value << std::endl;
         }
     }
 

@@ -1,7 +1,7 @@
 /*!
  * @file am_controller.hpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 16, 2015
  *
  * @brief
  *
@@ -22,6 +22,7 @@
 
 #include "../track_finder/track_finder.hpp"
 #include "fifo_ctrl/fifo_ctrl.hpp"
+#include "read_ctrl_fsm.hpp"
 
 
 /*!
@@ -37,9 +38,11 @@ public:
     sc_map_linear<sc_in<bool> > fifo_write_en;
     sc_map_linear<sc_in<fm_out_data> > stub_inputs;
 
+    sc_map_linear<sc_out<bool> > fifo_read_en;
     sc_map_linear<sc_out<track_finder::hit_stream> > stub_outputs;
 
     // ----- Local Channel Declarations ----------------------------------------
+    sc_signal<bool> event_active_signal;
 
     // ----- Process Declarations ----------------------------------------------
 
@@ -47,6 +50,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     sc_map_linear<fifo_ctrl> fifo_controller_array;
+    read_ctrl_fsm read_controller;
 
     // ----- Constructor -------------------------------------------------------
     /*!

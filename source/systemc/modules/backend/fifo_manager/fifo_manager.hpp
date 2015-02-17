@@ -83,8 +83,4 @@ public:
      * Constructor:
      */
     fifo_manager(sc_module_name _name);
-    SC_HAS_PROCESS(fifo_manager);
-
-private:
-
 };

@@ -39,19 +39,18 @@ public:
     sc_map_linear<sc_in<fifo_in_t> > fifo_inputs;
 
     sc_out<bool> road_write_en;
-    sc_out<sc_bv<30> > road_output;
+    sc_out<track_finder::hit_stream> hit_output;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_linear<sc_signal<bool> > fifo_not_empty_sig;
     sc_map_linear<sc_signal<bool> > fifo_read_en_sig;
     sc_map_linear<sc_signal<fifo_in_t> > fifo_stub_out_sig;
-    sc_signal<sc_bv<3> > init_ev_sig;
-    sc_map_linear<sc_signal<bool> > am_write_en_sig;
-    sc_map_linear<sc_signal<sc_bv<AM_BOARD_PATTERN_WIDTH> > > am_pattern_sig;
-    sc_signal<bool> am_data_ready_sig;
-    sc_signal<sc_bv<AM_BOARD_ROAD_WIDTH> > am_road_sig;
+    sc_map_linear<sc_signal<track_finder::hit_stream> > track_finder_in_signal;
+    sc_map_linear<sc_signal<track_finder::hit_stream> > track_finder_out_signal;
 
     // ----- Process Declarations ----------------------------------------------
+    //TODO: remove process
+    void process_result();
 
     // ----- Other Method Declarations -----------------------------------------
 
@@ -65,4 +64,5 @@ public:
      * Constructor:
      */
     am_board(const sc_module_name _name);
+    SC_HAS_PROCESS(am_board);
 };

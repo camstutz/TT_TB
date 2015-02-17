@@ -1,14 +1,14 @@
 /*!
  * @file fm_out_data.cpp
  * @author Christian Amstutz
- * @date Aug 1, 2014
+ * @date February 17, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "fm_out_data.hpp"
@@ -56,7 +56,7 @@ fm_out_data::fm_stub_t fm_out_data::get_data_stub() const
 // *****************************************************************************
 void fm_out_data::set_timestamp(const timestamp_t new_timestamp)
 {
-    timestamp_flag = STUB;
+    timestamp_flag = TIMESTAMP;
 	payload = new_timestamp;
 
 	return;

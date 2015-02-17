@@ -39,7 +39,7 @@ track_finder::track_finder(const sc_module_name _name) :
         road_proc("road_processor")
 {
     //patterns.import_text_file("patternbank.txt");
-    patterns.generate_patterns_straight(100000);
+    patterns.generate_patterns_straight(10000);
 
     hit_proc.clk.bind(clk);
     hit_proc.hit_input.bind(hit_input);

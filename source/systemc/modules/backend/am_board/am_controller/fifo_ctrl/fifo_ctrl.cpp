@@ -1,7 +1,7 @@
 /*!
  * @file fifo_ctrl.cpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 17, 2015
  *
  * @brief
  */
@@ -23,94 +23,60 @@
 fifo_ctrl::fifo_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        new_hit("new_hit"),
-        wr_hit_lamb("wr_hit_lamb"),
-        init_event("init_ev"),
+        fifo_write_en("fifo_write_en"),
+        fifo_not_empty("fifo_not_emtpty"),
+        event_active("event_active"),
         stub_input("stub_input"),
-        hee_reg("hee_reg"),
-        write_en("write_en"),
+        fifo_read_en("fifo_read_en"),
         stub_output("stub_output"),
-        stub_tag("stub_tag"),
+        event_start_sig("event_start_sig"),
+        is_timestamp_sig("is_timestamp_sig"),
         FSM("FSM")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(read_input_stub);
-        sensitive << clk.pos() << init_event;
-    SC_THREAD(write_AM_stub);
+    SC_THREAD(process_stub);
         sensitive << clk.pos();
-    SC_THREAD(update_hee_reg)
-        sensitive << stub_read << stub_input;
-    SC_THREAD(update_tag);
-    	sensitive << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
     FSM.clk.bind(clk);
-//  FSM.fifo_write_en.bind();
-//  FSM.fifo_not_empty.bind();
-//  FSM.is_timestamp.bind();
-//  FSM.event_active.bind();
-//  FSM.fifo_read_en.bind();
+    FSM.fifo_write_en.bind(fifo_write_en);
+    FSM.fifo_not_empty.bind(fifo_not_empty);
+    FSM.is_timestamp.bind(is_timestamp_sig);
+    FSM.event_start.bind(event_start_sig);
+    FSM.event_active.bind(event_active);
+    FSM.fifo_read_en.bind(fifo_read_en);
 
     return;
 }
 
 // *****************************************************************************
-void fifo_ctrl::read_input_stub()
+void fifo_ctrl::process_stub()
 {
     while (1)
     {
         wait();
 
-        if (new_hit.read() == true)
+        if (event_start_sig.read())
         {
-            fm_out_data stub = stub_input.read();
-            stub_read.write(stub);
+            is_timestamp_sig.write(false);
+            stub_output.write(track_finder::hit_stream::START_WORD);
         }
-
-        if (init_event.read() == 7)
+        else if (event_active.read())
         {
-            stub_read.write(fm_out_data(fm_out_data::fm_stub_t()));
+            fm_out_data input_stub = stub_input.read();
+            if (input_stub.is_timestamp())
+            {
+                is_timestamp_sig.write(true);
+                stub_output.write(track_finder::hit_stream::IDLE);
+            }
+            else
+            {
+                is_timestamp_sig.write(false);
+                stub_output.write(input_stub.get_data_stub().get_bitvector().to_uint());
+            }
         }
     }
 
-}
-
-// *****************************************************************************
-void fifo_ctrl::write_AM_stub()
-{
-    while (1)
-    {
-        wait();
-
-        if (wr_hit_lamb.read() == true)
-        {
-            fm_out_data::fm_stub_t strip_addr;
-            sc_bv<AM_BOARD_PATTERN_WIDTH> pattern;
-            strip_addr = stub_read.read().get_data_stub();
-
-            // Super strip generation
-            pattern = strip_addr.get_bitvector()(AM_BOARD_PATTERN_WIDTH-1,0);
-            pattern = pattern & 0x00FF;
-
-            stub_output.write(pattern);
-        }
-        write_en.write(wr_hit_lamb.read());
-    }
-
-}
-
-// *****************************************************************************
-void fifo_ctrl::update_tag()
-{
-	while (1)
-	{
-		wait ();
-
-		if (hee_reg.read() == true)
-		{
-			stub_tag.write(stub_read.read().is_timestamp());
-		}
-	}
 }

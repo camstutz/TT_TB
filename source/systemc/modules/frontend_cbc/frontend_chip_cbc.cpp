@@ -1,13 +1,13 @@
 /*!
  * @file frontend_chip_cbc.cpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date February 17, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "frontend_chip_cbc.hpp"
@@ -16,6 +16,7 @@
 
 // *****************************************************************************
 
+const unsigned int frontend_chip_cbc::max_input_hits = MAX_HITS_PER_CBC_FE_CHIP;
 const unsigned int frontend_chip_cbc::max_hits_per_cycle = MAX_HITS_PER_MPA_FE_CHIP;
 
 // *****************************************************************************
@@ -23,8 +24,8 @@ frontend_chip_cbc::frontend_chip_cbc(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         stub_input("stub_in"),
-        data_valid(MAX_HITS_PER_CBC_FE_CHIP, "data_valid", 0),
-        stub_outputs(MAX_HITS_PER_CBC_FE_CHIP, "stub_out", 0),
+        data_valid(max_input_hits, "data_valid", 0),
+        stub_outputs(max_input_hits, "stub_out", 0),
         selected_stubs("sel_stubs", MAX_HITS_PER_CBC_FE_CHIP)
 {
     // ----- Process registration ----------------------------------------------
@@ -47,11 +48,10 @@ void frontend_chip_cbc::prioritize_hits()
     {
         wait();
 
+        // Read only the first 'max_input_hits' number of hits
         stub_t act_stub;
-        int stub_cnt = stub_input.num_available();
-        for (unsigned int i=0;
-                i < (unsigned int)std::min(stub_cnt, MAX_HITS_PER_CBC_FE_CHIP);
-                ++i)
+        unsigned int stub_cnt = stub_input.num_available();
+        for (unsigned int i=0; i < std::min(stub_cnt, max_input_hits); ++i)
         {
             stub_input.read(act_stub);
             selected_stubs.write(act_stub);
@@ -60,7 +60,7 @@ void frontend_chip_cbc::prioritize_hits()
         if (stub_input.num_available() > 0)
         {
             std::cout << "Warning: CBC Front End Chip received more than "
-                      << MAX_HITS_PER_CBC_FE_CHIP << " hits"
+                      << max_input_hits << " hits"
                       << " @ " << sc_time_stamp() << std::endl;
             while(stub_input.nb_read(act_stub))
             {};

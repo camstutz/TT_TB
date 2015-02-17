@@ -10,7 +10,7 @@
 
 #define AMEXP_CLOCK_PERIOD_NS 10
 
-#define LAYER_NUMBER 2
+#define LAYER_NUMBER 6
 #define SS_BIT_WIDTH 2
 #define AM_HITS_PER_ROAD_THRESHOLD 2
 

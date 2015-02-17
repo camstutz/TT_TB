@@ -1,7 +1,7 @@
 /*!
  * @file fifo_ctrl.hpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 16, 2015
  *
  * @brief
  *
@@ -39,11 +39,11 @@ public:
     sc_out<track_finder::hit_stream> stub_output;
 
 // ----- Local Channel Declarations --------------------------------------------
+    sc_signal<bool> event_start_sig;
+    sc_signal<bool> is_timestamp_sig;
 
 // ----- Process Declarations --------------------------------------------------
-    void read_input_stub();
-    void write_AM_stub();
-    void update_tag();
+    void process_stub();
 
 // ----- Other Method Declarations ---------------------------------------------
 

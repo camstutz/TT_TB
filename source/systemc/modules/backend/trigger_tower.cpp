@@ -66,7 +66,7 @@ trigger_tower::trigger_tower(const sc_module_name _name, unsigned int phi, unsig
     	sc_map_square<sc_signal<am_board::fifo_in_t> >::square_iterator fifo_sig_it = am_fifo_input_sigs.begin_partial(am_cnt, false, 0, true);
     	am_board_it->fifo_inputs.bind_by_iter(fifo_sig_it);
     	am_board_it->road_write_en.bind(road_write_en[am_cnt]);
-    	am_board_it->road_output.bind(road_output[am_cnt]);
+    	am_board_it->hit_output.bind(road_output[am_cnt]);
 
     	++am_cnt;
     }

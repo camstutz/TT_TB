@@ -1,7 +1,7 @@
 /*!
  * @file read_ctrl_fsm.hpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 16, 2015
  *
  * @brief
  *
@@ -15,6 +15,9 @@
 
 #include <systemc.h>
 
+#include "../../../../systems/TT_configuration.hpp"
+#include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+
 /*!
  * @brief
  */
@@ -24,18 +27,13 @@ public:
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
     static const fsm_states PROCESS;
-    static const fsm_states WAIT_EVENT_END;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
 
-    sc_in<bool> fifo_write_en;
-    sc_in<bool> fifo_not_empty;
-    sc_in<bool> is_timestamp;
-    sc_in<bool> event_active;
-
-    sc_out<bool> fifo_read_en;
+    sc_map_linear<sc_in<bool> > layers_active;
+    sc_out<bool> event_active;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<fsm_states> current_state;
@@ -55,4 +53,7 @@ public:
      */
     read_ctrl_fsm(sc_module_name _name);
     SC_HAS_PROCESS(read_ctrl_fsm);
+
+private:
+    sc_bv<NR_DETECTOR_LAYERS> active_layer_array;
 };
