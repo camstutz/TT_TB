@@ -1,13 +1,13 @@
 /*!
  * @file TT_TB_sim.cpp
  * @author Christian Amstutz
- * @date Mar 13, 2014
+ * @date January 24, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include <iostream>
@@ -73,7 +73,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(1500, SC_NS);
+    sc_start(3000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);
