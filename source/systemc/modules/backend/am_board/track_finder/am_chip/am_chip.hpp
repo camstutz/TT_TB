@@ -1,9 +1,9 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 17, 2015
  *
- * @brief File containing the definition of the AM board.
+ * @brief
  */
 
 /*
@@ -22,7 +22,7 @@
 #include "../../simple_stream_protocol.hpp"
 
 #include "../pattern_bank/pattern_bank.hpp"
-#include "../track_finder_config.hpp"
+#include "../../../../../systems/TT_configuration.hpp"
 #include "am_chip_read_ctrl.hpp"
 #include "am_chip_write_ctrl.hpp"
 

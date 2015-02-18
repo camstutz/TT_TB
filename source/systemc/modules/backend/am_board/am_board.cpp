@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date February 16, 2015
+ * @date February 18, 2015
  *
  * @brief
  */
@@ -21,6 +21,7 @@
 am_board::am_board(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
+        clk_fifo("clk_fifo"),
         fifo_write_en(NR_DETECTOR_LAYERS, "fifo_write_ens"),
         fifo_inputs(NR_DETECTOR_LAYERS, "fifo_inputs"),
         road_write_en("road_write_en"),
@@ -38,7 +39,8 @@ am_board::am_board(const sc_module_name _name) :
     sc_map_linear<stub_fifo<STUB_FIFO_DEPTH> >::iterator fifo_it = stub_fifo_array.begin();
     for (; fifo_it != stub_fifo_array.end(); ++fifo_it)
     {
-        fifo_it->clk.bind(clk);
+        fifo_it->clk_write.bind(clk_fifo);
+        fifo_it->clk_read.bind(clk);
         fifo_it->write_en.bind(fifo_write_en[layer]);
         fifo_it->stub_in.bind(fifo_inputs[layer]);
         fifo_it->not_empty.bind(fifo_not_empty_sig[layer]);

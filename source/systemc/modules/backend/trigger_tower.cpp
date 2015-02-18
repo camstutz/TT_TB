@@ -61,6 +61,7 @@ trigger_tower::trigger_tower(const sc_module_name _name, unsigned int phi, unsig
     for (; am_board_it != am_board_array.end(); ++am_board_it)
     {
     	am_board_it->clk.bind(clk_AM);
+    	am_board_it->clk_fifo(clk_x4);
     	sc_map_square<sc_signal<bool> >::square_iterator write_en_it = am_fifo_write_en_sigs.begin_partial(am_cnt, false, 0, true);
     	am_board_it->fifo_write_en.bind_by_iter(write_en_it);
     	sc_map_square<sc_signal<am_board::fifo_in_t> >::square_iterator fifo_sig_it = am_fifo_input_sigs.begin_partial(am_cnt, false, 0, true);

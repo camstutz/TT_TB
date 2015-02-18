@@ -3,7 +3,7 @@
  * @author Christian Amstutz
  * @date February 13, 2015
  *
- * @brief File contains the definition of the AM board FSM.
+ * @brief
  */
 
 /*
@@ -16,7 +16,7 @@
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
-#include "../track_finder_config.hpp"
+#include "../../../../../systems/TT_configuration.hpp"
 
 class am_chip_write_ctrl : public sc_module
 {

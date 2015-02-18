@@ -1,7 +1,7 @@
 /*!
  * @file stub_fifo.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 18, 2015
  *
  * @brief
  *
@@ -27,7 +27,8 @@ public:
     typedef fm_out_data fifo_content_t;
 
 // ----- Port Declarations -----------------------------------------------------
-    sc_in<bool> clk;
+    sc_in<bool> clk_write;
+    sc_in<bool> clk_read;
 
     sc_in<bool> write_en;
     sc_in<bool> read_en;
@@ -67,7 +68,8 @@ private:
 template <unsigned int depth>
 stub_fifo<depth>::stub_fifo(sc_module_name _name) :
         sc_module(_name) ,
-        clk("clk"),
+        clk_write("clk_write"),
+        clk_read("clk_read"),
         write_en("write_en"),
         read_en("read_en"),
         not_empty("not_empty"),
@@ -77,9 +79,9 @@ stub_fifo<depth>::stub_fifo(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
-        sensitive << clk.pos();
+        sensitive << clk_write.pos();
     SC_THREAD(write_output);
-        sensitive << clk.pos();
+        sensitive << clk_read.pos();
     SC_THREAD(update_not_empty);
         sensitive << fifo.data_read_event() << fifo.data_written_event();
 
@@ -101,7 +103,6 @@ void stub_fifo<depth>::read_input()
         if (write_en.read() == true)
         {
             fifo.write(stub_in.read());
-std::cout << sc_time_stamp() << ":" <<  fifo.num_available() << " (W) = " << stub_in.read() << std::endl;
         }
     }
 
@@ -119,7 +120,6 @@ void stub_fifo<depth>::write_output()
         {
             fifo_content_t fifo_value = fifo.read();
             stub_out.write(fifo_value);
-std::cout << sc_time_stamp() << ":" <<  fifo.num_available() << " (R) = " << fifo_value << std::endl;
         }
     }
 

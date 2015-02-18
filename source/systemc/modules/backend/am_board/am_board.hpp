@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 17, 2015
  *
  * @brief
  *
@@ -34,6 +34,7 @@ public:
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
+    sc_in<bool> clk_fifo;
 
     sc_map_linear<sc_in<bool> > fifo_write_en;
     sc_map_linear<sc_in<fifo_in_t> > fifo_inputs;

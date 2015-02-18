@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.hpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 17, 2015
  *
  * @brief
  */
@@ -17,7 +17,7 @@
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
-#include "../track_finder_config.hpp"
+#include "../../../../../systems/TT_configuration.hpp"
 
 #define VALUE_EVENT 0
 

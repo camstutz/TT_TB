@@ -1,7 +1,7 @@
 /*!
  * @file track_finder.hpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date February 17, 2015
  *
  * @brief
  */
@@ -17,7 +17,7 @@
 #include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../simple_stream_protocol.hpp"
 
-#include "track_finder_config.hpp"
+#include "../../../../systems/TT_configuration.hpp"
 #include "hit_processor/hit_processor.hpp"
 #include "hit_memory/hit_memory.hpp"
 #include "pattern_bank/pattern_bank.hpp"

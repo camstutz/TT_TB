@@ -71,6 +71,13 @@
 #define AM_BOARD_ROAD_WIDTH        21
 #define AM_BOARD_PATTERN_NR        1280
 
+#define AMEXP_CLOCK_PERIOD_NS 10
+#define LAYER_NUMBER 6
+#define SS_BIT_WIDTH 2
+
+#define IDLE_EVENT  0xFFFF
+#define START_EVENT 0xFFFE
+
 // Signal types used between modules
 #include "../data_formats/stub_sb.hpp"
 #include "../data_formats/stub_vbxfsb.hpp"
@@ -111,3 +118,8 @@ typedef dc_out_word<DC_OUT_HEADER_BITS, DC_OUTPUT_WIDTH-DC_OUT_HEADER_BITS,
 
 typedef stub_pzfs<DO_STUB_PHI_BITS, DO_STUB_Z_BITS, DO_STUB_FECHIP_BITS, DO_STUB_STRIP_BITS,
         DO_STUB_PHI_BITS+DO_STUB_Z_BITS+DO_STUB_FECHIP_BITS+DO_STUB_STRIP_BITS> do_stub_t;
+
+typedef unsigned int hit_t;
+typedef unsigned int superstrip_t;
+typedef unsigned int substrip_t;
+typedef unsigned int road_t;

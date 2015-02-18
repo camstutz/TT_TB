@@ -53,9 +53,6 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.current_state, "FIFO_FSM_current_state");
     sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.current_state, "read_controller.current_state");
     sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.layers_active, "read_controller.layers_active");
-//    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[1].AMcontroller.stub_outputs, "T0_B1_stub_out");
-//    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[2].AMcontroller.stub_outputs, "T0_B2_stub_out");
-//    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[3].AMcontroller.stub_outputs, "T0_B3_stub_out");
 
     // ----- Start simulation --------------------------------------------------
 
@@ -64,7 +61,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(3000, SC_NS);
+    sc_start(1000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);

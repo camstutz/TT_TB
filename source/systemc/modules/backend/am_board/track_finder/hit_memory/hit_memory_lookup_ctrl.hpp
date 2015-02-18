@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory_lookup_ctrl.hpp
  * @author Christian Amstutz
- * @date Febraury 13, 2015
+ * @date Febraury 17, 2015
  *
  * @brief
  */
@@ -16,7 +16,7 @@
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
-#include "../track_finder_config.hpp"
+#include "../../../../../systems/TT_configuration.hpp"
 
 class hit_memory_lookup_ctrl : public sc_module
 {

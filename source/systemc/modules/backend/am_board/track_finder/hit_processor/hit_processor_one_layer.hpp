@@ -17,7 +17,7 @@
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
-#include "../track_finder_config.hpp"
+#include "../../../../../systems/TT_configuration.hpp"
 
 /*!
  * @brief
