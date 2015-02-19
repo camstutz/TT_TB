@@ -32,7 +32,7 @@
 #define DO_STUB_PHI_BITS 4
 #define DO_STUB_Z_BITS 4
 #define DO_STUB_FECHIP_BITS 3
-#define DO_STUB_STRIP_BITS 5
+#define DO_STUB_STRIP_BITS 8
 #define DO_STUB_BEND_BITS 0
 
 // Number of hits that can be handled by a single front end chip

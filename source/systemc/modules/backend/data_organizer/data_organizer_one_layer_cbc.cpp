@@ -1,13 +1,13 @@
 /*!
  * @file data_organizer_one_layer_cbc.cpp
  * @author Christian Amstutz
- * @date July 31, 2014
+ * @date February 19, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "data_organizer_one_layer_cbc.hpp"
@@ -46,8 +46,7 @@ void data_organizer_one_layer_cbc::process_input_buffer()
             output_stub.set_phi(phi);
             output_stub.set_z(z);
             output_stub.set_fechip(process_stub.get_fechip());
-            // Superstrip generation
-            output_stub.set_strip(process_stub.get_strip() >> (stub_t::strip_width - do_stub_t::strip_width));
+            output_stub.set_strip(process_stub.get_strip());
             stub_table[stub_table_sel.read()][time_stamp].push_back(output_stub);
         }
 
