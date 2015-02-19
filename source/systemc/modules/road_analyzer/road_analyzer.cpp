@@ -14,7 +14,7 @@
 
 // *****************************************************************************
 
-const std::string road_analyzer::filename = "roads.txt";
+const std::string road_analyzer::filename = "data/roads.txt";
 
 // *****************************************************************************
 road_analyzer::road_analyzer(sc_module_name _name) :
@@ -67,10 +67,10 @@ void road_analyzer::detect_hits()
 		            if (filtered_hits.at(trigger_tower, am_id, layer).event())
 		            {
 		                track_finder::hit_stream read_hit;
-		                read_hit = filtered_hits.at(!trigger_tower, am_id, layer).read();
+		                read_hit = filtered_hits.at(trigger_tower, am_id, layer).read();
 		                if (!read_hit.is_opcode())
 		                {
-		                    road_file << sc_time_stamp() << ": " <<  std::hex << read_hit.get_value() << std::endl;
+		                    road_file << sc_time_stamp() << " @ " << trigger_tower << ": " <<  std::hex << read_hit.get_value() << std::endl;
 		                    ++filtered_hits_cnt;
 		                }
 		            }
