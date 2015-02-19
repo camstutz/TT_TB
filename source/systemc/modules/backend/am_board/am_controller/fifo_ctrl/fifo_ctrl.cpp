@@ -23,8 +23,8 @@
 fifo_ctrl::fifo_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        fifo_write_en("fifo_write_en"),
-        fifo_not_empty("fifo_not_emtpty"),
+        event_start("event_start"),
+        transmission_start("transmission_start"),
         event_active("event_active"),
         stub_input("stub_input"),
         fifo_read_en("fifo_read_en"),
@@ -41,10 +41,8 @@ fifo_ctrl::fifo_ctrl(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
     FSM.clk.bind(clk);
-    FSM.fifo_write_en.bind(fifo_write_en);
-    FSM.fifo_not_empty.bind(fifo_not_empty);
+    FSM.event_start.bind(event_start);
     FSM.is_timestamp.bind(is_timestamp_sig);
-    FSM.event_start.bind(event_start_sig);
     FSM.event_active.bind(event_active);
     FSM.fifo_read_en.bind(fifo_read_en);
 
@@ -58,7 +56,7 @@ void fifo_ctrl::process_stub()
     {
         wait();
 
-        if (event_start_sig.read())
+        if (transmission_start.read() == true)
         {
             is_timestamp_sig.write(false);
             stub_output.write(track_finder::hit_stream::START_WORD);

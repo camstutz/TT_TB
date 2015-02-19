@@ -1,7 +1,7 @@
 /*!
  * @file fifo_ctrl.hpp
  * @author Christian Amstutz
- * @date February 16, 2015
+ * @date February 19, 2015
  *
  * @brief
  *
@@ -30,8 +30,8 @@ public:
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
-    sc_in<bool> fifo_write_en;
-    sc_in<bool> fifo_not_empty;
+    sc_in<bool> event_start;
+    sc_in<bool> transmission_start;
     sc_in<bool> event_active;
     sc_in<fm_out_data> stub_input;
 

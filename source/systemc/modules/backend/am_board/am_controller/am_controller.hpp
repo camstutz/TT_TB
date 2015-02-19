@@ -1,7 +1,7 @@
 /*!
  * @file am_controller.hpp
  * @author Christian Amstutz
- * @date February 16, 2015
+ * @date February 18, 2015
  *
  * @brief
  *
@@ -42,7 +42,9 @@ public:
     sc_map_linear<sc_out<track_finder::hit_stream> > stub_outputs;
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<bool> event_active_signal;
+    sc_signal<bool> event_start_sig;
+    sc_signal<bool> transmission_start_sig;
+    sc_signal<bool> event_active_sig;
 
     // ----- Process Declarations ----------------------------------------------
 

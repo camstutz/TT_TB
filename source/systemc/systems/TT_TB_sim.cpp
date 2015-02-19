@@ -40,19 +40,11 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
     sc_trace(trace_file, testbench.AM_clock, "AM_clock");
 
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].not_empty, "not_empty");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].stub_out, "stub_out");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].stub_in, "stub_in");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].write_en, "write_en");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].stub_fifo_array[0].read_en, "read_en");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.event_active, "event_active-FIFOCONTROLLER");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.event_active, "event_active-READCONTROLLER");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.stub_outputs, "T0_B0_stub_out");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.is_timestamp, "FIFO_FSM_is_timestamp");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.event_start, "FIFO_FSM_event_start");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.fifo_controller_array[0].FSM.current_state, "FIFO_FSM_current_state");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.current_state, "read_controller.current_state");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].AMcontroller.read_controller.layers_active, "read_controller.layers_active");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].TrackFinder.hit_output, "out0");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[1].TrackFinder.hit_output, "out1");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[2].TrackFinder.hit_output, "out2");
+    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[3].TrackFinder.hit_output, "out3");
+
 
     // ----- Start simulation --------------------------------------------------
 
@@ -61,7 +53,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(1000, SC_NS);
+    sc_start(3000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);

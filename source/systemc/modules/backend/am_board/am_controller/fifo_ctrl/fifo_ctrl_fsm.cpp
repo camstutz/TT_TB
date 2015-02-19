@@ -1,7 +1,7 @@
 /*!
  * @file fifo_ctrl_fsm.cpp
  * @author Christian Amstutz
- * @date February 16, 2015
+ * @date February 18, 2015
  *
  * @brief
  */
@@ -15,9 +15,8 @@
 // *****************************************************************************
 
 const fifo_ctrl_fsm::fsm_states fifo_ctrl_fsm::IDLE = 0x01;
-const fifo_ctrl_fsm::fsm_states fifo_ctrl_fsm::START = 0x02;
-const fifo_ctrl_fsm::fsm_states fifo_ctrl_fsm::PROCESS = 0x03;
-const fifo_ctrl_fsm::fsm_states fifo_ctrl_fsm::WAIT_EVENT_END = 0x04;
+const fifo_ctrl_fsm::fsm_states fifo_ctrl_fsm::PROCESS = 0x02;
+const fifo_ctrl_fsm::fsm_states fifo_ctrl_fsm::WAIT_EVENT_END = 0x03;
 
 // *****************************************************************************
 
@@ -30,19 +29,16 @@ const fifo_ctrl_fsm::fsm_states fifo_ctrl_fsm::WAIT_EVENT_END = 0x04;
 fifo_ctrl_fsm::fifo_ctrl_fsm(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        fifo_write_en("fifo_write_en"),
-        fifo_not_empty("fifo_not_empty"),
         is_timestamp("is_timestamp"),
         event_active("event_active"),
-        event_start("event_start"),
         fifo_read_en("fifo_read_en")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(state_logic);
         sensitive << clk.pos();
     SC_THREAD(combinatorial);
-        sensitive << current_state << fifo_not_empty << fifo_write_en
-                  << event_active << is_timestamp;
+        sensitive << current_state << event_start << event_active
+                  << is_timestamp;
 
     // ----- Module channel/variable initialization ----------------------------
     current_state = IDLE;
@@ -76,12 +72,10 @@ void fifo_ctrl_fsm::combinatorial()
         {
         case IDLE:
             fifo_read_en.write(false);
-            event_start.write(false);
 
-            if ((fifo_not_empty.read() == true) &
-                (fifo_write_en.read() == false))
+            if (event_start.read() == true)
             {
-                next_state = START;
+                next_state = PROCESS;
             }
             else
             {
@@ -89,16 +83,8 @@ void fifo_ctrl_fsm::combinatorial()
             }
             break;
 
-        case START:
-            fifo_read_en.write(false);
-            event_start.write(true);
-
-            next_state = PROCESS;
-            break;
-
         case PROCESS:
             fifo_read_en.write(true);
-            event_start.write(false);
 
             if (is_timestamp.read() == true)
             {
@@ -112,7 +98,6 @@ void fifo_ctrl_fsm::combinatorial()
 
         case WAIT_EVENT_END:
             fifo_read_en.write(false);
-            event_start.write(false);
 
             if (event_active.read() == false)
             {

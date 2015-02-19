@@ -45,7 +45,6 @@ private:
     opcode_t opcode;
     value_t value;
 
-
     template <typename v_type>
     friend ostream& operator<< (ostream& os, stream_data_basetype<v_type> const& out_object);
 

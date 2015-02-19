@@ -1,7 +1,7 @@
 /*!
  * @file read_ctrl_fsm.hpp
  * @author Christian Amstutz
- * @date February 16, 2015
+ * @date February 18, 2015
  *
  * @brief
  *
@@ -26,13 +26,20 @@ class read_ctrl_fsm : public sc_module
 public:
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
+    static const fsm_states INIT_EVENT;
+    static const fsm_states START_TRANS;
     static const fsm_states PROCESS;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
     sc_in<bool> clk;
 
+    sc_map_linear<sc_in<bool> > fifo_not_empty;
+    sc_map_linear<sc_in<bool> > fifo_write_en;
     sc_map_linear<sc_in<bool> > layers_active;
+
+    sc_out<bool> event_start;
+    sc_out<bool> transmission_start;
     sc_out<bool> event_active;
 
 // ----- Local Channel Declarations --------------------------------------------
