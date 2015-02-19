@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 19, 2015
  *
  * @brief
  */
@@ -30,8 +30,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         hit_fifos_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo_mpa", 0, 0, 0, 0),
         hit_fifos_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo_cbc", NR_DETECTOR_MPA_LAYERS, 0, 0, 0),
         fe_signals(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "fe_signals"),
-        result_write_en(NR_TRIGGER_TOWERS, NR_AM_BOARDS, "result_write_en"),
-        result_road(NR_TRIGGER_TOWERS, NR_AM_BOARDS, "result_road"),
+        result_hits(NR_TRIGGER_TOWERS, NR_AM_BOARDS, NR_DETECTOR_LAYERS, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         neighbour_dv_sig(NR_TOWER_CONNECTIONS, NR_DETECTOR_LAYERS, 2, "neighbour_dv_sig"),
         neighbour_stub_sig(NR_TOWER_CONNECTIONS, NR_DETECTOR_LAYERS, 2, "neighbour_stub_sig"),
@@ -41,8 +40,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
         trigger_tower_0_0("trigger_tower_0_0", 0, 0),
         trigger_tower_0_1("trigger_tower_0_1", 0, 1),
         trigger_tower_1_0("trigger_tower_1_0", 1, 0),
-        trigger_tower_1_1("trigger_tower_1_1", 1, 1)
-        //roadAnalyzer("road_analyzer")
+        trigger_tower_1_1("trigger_tower_1_1", 1, 1),
+        roadAnalyzer("road_analyzer")
 {
     hitGenerator.mpa_stub_outputs.bind(hit_fifos_mpa);
     hitGenerator.cbc_stub_outputs.bind(hit_fifos_cbc);
@@ -104,10 +103,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
     sc_map_cube<sc_signal<do_stub_t> >::cube_iterator neighbour_stub_sig_out_it_0_0_b = neighbour_stub_sig.begin_partial(1, false, 0, true, 0, false);
     sc_map_square<sc_out<do_stub_t> >::square_iterator neighbour_stub_out_it_0_0_b = trigger_tower_0_0.neighbour_stub_out.begin_partial(1, false, 0, true);
     trigger_tower_0_0.neighbour_stub_out.bind_by_iter(neighbour_stub_out_it_0_0_b, neighbour_stub_sig_out_it_0_0_b);
-    sc_map_square<sc_signal<bool> >::square_iterator result_write_en_it_0_0 = result_write_en.begin_partial(0, false, 0, true);
-    trigger_tower_0_0.road_write_en.bind_by_iter(result_write_en_it_0_0);
-    sc_map_square<sc_signal<track_finder::hit_stream > >::square_iterator result_road_it_0_0 = result_road.begin_partial(0, false, 0, true);
-    trigger_tower_0_0.road_output.bind_by_iter(result_road_it_0_0);
+    sc_map_cube<sc_buffer<track_finder::hit_stream > >::cube_iterator result_hits_it_0_0 = result_hits.begin_partial(0, false, 0, true, 0, true);
+    trigger_tower_0_0.road_output.bind_by_iter(result_hits_it_0_0);
 
 
 // Trigger Tower 0-1
@@ -142,10 +139,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
 	sc_map_cube<sc_signal<do_stub_t> >::cube_iterator neighbour_stub_sig_out_it_0_1_b = neighbour_stub_sig.begin_partial(0, false, 0, true, 0, false);
 	sc_map_square<sc_out<do_stub_t> >::square_iterator neighbour_stub_out_it_0_1_b = trigger_tower_0_1.neighbour_stub_out.begin_partial(1, false, 0, true);
 	trigger_tower_0_1.neighbour_stub_out.bind_by_iter(neighbour_stub_out_it_0_1_b, neighbour_stub_sig_out_it_0_1_b);
-	sc_map_square<sc_signal<bool> >::square_iterator result_write_en_it_0_1 = result_write_en.begin_partial(1, false, 0, true);
-	trigger_tower_0_1.road_write_en.bind_by_iter(result_write_en_it_0_1);
-	sc_map_square<sc_signal<track_finder::hit_stream> >::square_iterator result_road_it_0_1 = result_road.begin_partial(1, false, 0, true);
-	trigger_tower_0_1.road_output.bind_by_iter(result_road_it_0_1);
+	sc_map_cube<sc_buffer<track_finder::hit_stream > >::cube_iterator result_hits_it_0_1 = result_hits.begin_partial(1, false, 0, true, 0, true);
+	trigger_tower_0_1.road_output.bind_by_iter(result_hits_it_0_1);
 
 // Trigger Tower 1-0
 	trigger_tower_1_0.clk_LHC.bind(LHC_clock);
@@ -179,10 +174,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
 	sc_map_cube<sc_signal<do_stub_t> >::cube_iterator neighbour_stub_sig_out_it_1_0_b = neighbour_stub_sig.begin_partial(3, false, 0, true, 0, false);
 	sc_map_square<sc_out<do_stub_t> >::square_iterator neighbour_stub_out_it_1_0_b = trigger_tower_1_0.neighbour_stub_out.begin_partial(1, false, 0, true);
 	trigger_tower_1_0.neighbour_stub_out.bind_by_iter(neighbour_stub_out_it_1_0_b, neighbour_stub_sig_out_it_1_0_b);
-	sc_map_square<sc_signal<bool> >::square_iterator result_write_en_it_1_0 = result_write_en.begin_partial(2, false, 0, true);
-	trigger_tower_1_0.road_write_en.bind_by_iter(result_write_en_it_1_0);
-	sc_map_square<sc_signal<track_finder::hit_stream> >::square_iterator result_road_it_1_0 = result_road.begin_partial(2, false, 0, true);
-	trigger_tower_1_0.road_output.bind_by_iter(result_road_it_1_0);
+	sc_map_cube<sc_buffer<track_finder::hit_stream > >::cube_iterator result_hits_it_1_0 = result_hits.begin_partial(2, false, 0, true, 0, true);
+	trigger_tower_1_0.road_output.bind_by_iter(result_hits_it_1_0);
 
 
 // Trigger Tower 1-1
@@ -217,15 +210,11 @@ tt_tb::tt_tb(const sc_module_name _name) :
 	sc_map_cube<sc_signal<do_stub_t> >::cube_iterator neighbour_stub_sig_out_it_1_1_b = neighbour_stub_sig.begin_partial(2, false, 0, true, 0, false);
 	sc_map_square<sc_out<do_stub_t> >::square_iterator neighbour_stub_out_it_1_1_b = trigger_tower_1_1.neighbour_stub_out.begin_partial(1, false, 0, true);
 	trigger_tower_1_1.neighbour_stub_out.bind_by_iter(neighbour_stub_out_it_1_1_b, neighbour_stub_sig_out_it_1_1_b);
-	sc_map_square<sc_signal<bool> >::square_iterator result_write_en_it_1_1 = result_write_en.begin_partial(3, false, 0, true);
-	trigger_tower_1_1.road_write_en.bind_by_iter(result_write_en_it_1_1);
-	sc_map_square<sc_signal<track_finder::hit_stream> >::square_iterator result_road_it_1_1 = result_road.begin_partial(3, false, 0, true);
-	trigger_tower_1_1.road_output.bind_by_iter(result_road_it_1_1);
+	sc_map_cube<sc_buffer<track_finder::hit_stream > >::cube_iterator result_hits_it_1_1 = result_hits.begin_partial(3, false, 0, true, 0, true);
+	trigger_tower_1_1.road_output.bind_by_iter(result_hits_it_1_1);
 
-//    roadAnalyzer.clk.bind(AM_clock);
-//    roadAnalyzer.write_en.bind(result_write_en);
-//    roadAnalyzer.hit_cnt.bind(hit_cnt_sig);
-//    roadAnalyzer.road_in.bind(result_road);
+    roadAnalyzer.hit_cnt.bind(hit_cnt_sig);
+    roadAnalyzer.filtered_hits.bind(result_hits);
 
 #ifdef MTI_SYSTEMC
     hit_fifos.register_signal_modelsim<hit_generator::hitgen_stub_t>();

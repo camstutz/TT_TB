@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date February 18, 2015
+ * @date February 19, 2015
  *
  * @brief
  */
@@ -24,12 +24,11 @@ am_board::am_board(const sc_module_name _name) :
         clk_fifo("clk_fifo"),
         fifo_write_en(NR_DETECTOR_LAYERS, "fifo_write_ens"),
         fifo_inputs(NR_DETECTOR_LAYERS, "fifo_inputs"),
-        road_write_en("road_write_en"),
+        hit_output(NR_DETECTOR_LAYERS, "hit_output"),
         fifo_not_empty_sig(NR_DETECTOR_LAYERS, "fifo_not_empty_sig"),
         fifo_read_en_sig(NR_DETECTOR_LAYERS, "fifo_read_en_sig"),
         fifo_stub_out_sig(NR_DETECTOR_LAYERS, "fifo_stub_out_sig"),
         track_finder_in_signal(NR_DETECTOR_LAYERS, "track_finder_in_signal"),
-        track_finder_out_signal(NR_DETECTOR_LAYERS, "track_finder_out_signal"),
         stub_fifo_array(NR_DETECTOR_LAYERS, "stub_fifo"),
         AMcontroller("AM_controller"),
         TrackFinder("track_finder")
@@ -59,24 +58,11 @@ am_board::am_board(const sc_module_name _name) :
 
     TrackFinder.clk.bind(clk);
     TrackFinder.hit_input.bind(track_finder_in_signal);
-    TrackFinder.hit_output.bind(track_finder_out_signal);
+    TrackFinder.hit_output.bind(hit_output);
 
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(process_result);
-        track_finder_out_signal.make_sensitive(sensitive);
 
     // ----- Module variable initialization ------------------------------------
 
     return;
 }
-
-// *****************************************************************************
-void am_board::process_result()
-{
-    while(1)
-    {
-        wait();
-        std::cout <<  track_finder_out_signal[0].read() << std::endl;
-    }
-}
-

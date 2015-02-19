@@ -42,8 +42,7 @@ public:
     sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> > hit_fifos_cbc;
     sc_map_cube<sc_signal<sensor_module_cbc::dc_out_t> > fe_signals;
 
-    sc_map_square<sc_signal<bool> > result_write_en;
-    sc_map_square<sc_signal<track_finder::hit_stream> > result_road;
+    sc_map_cube<sc_buffer<track_finder::hit_stream> > result_hits;
 
     sc_signal<unsigned int> hit_cnt_sig;
 
@@ -62,7 +61,7 @@ public:
     trigger_tower trigger_tower_0_1;
     trigger_tower trigger_tower_1_0;
     trigger_tower trigger_tower_1_1;
-    //road_analyzer roadAnalyzer;
+    road_analyzer roadAnalyzer;
 
     // ----- Constructor -------------------------------------------------------
     /*!

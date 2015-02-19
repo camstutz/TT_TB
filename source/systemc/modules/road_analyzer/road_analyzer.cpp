@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.cpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 19, 2015
  *
  * @brief
  */
@@ -19,16 +19,14 @@ const std::string road_analyzer::filename = "roads.txt";
 // *****************************************************************************
 road_analyzer::road_analyzer(sc_module_name _name) :
         sc_module(_name),
-        clk("clk"),
-        write_en(NR_TRIGGER_TOWERS, NR_AM_BOARDS, "write_en"),
         hit_cnt("hit_cnt"),
-        road_in(NR_TRIGGER_TOWERS, NR_AM_BOARDS, "road_in"),
+        filtered_hits(NR_TRIGGER_TOWERS, NR_AM_BOARDS, NR_DETECTOR_LAYERS, "filtered_hits"),
         hit_counter(0),
-        road_cnt(0)
+        filtered_hits_cnt(0)
 {
     // ----- Process registration ----------------------------------------------
-	SC_THREAD(detect_roads);
-		sensitive << clk.pos();
+	SC_THREAD(detect_hits);
+		filtered_hits.make_sensitive(sensitive);
 	SC_THREAD(update_hit_cnt)
 	    sensitive << hit_cnt;
 
@@ -48,13 +46,13 @@ road_analyzer::~road_analyzer()
 
     std::cout << std::endl;
     std::cout << hit_counter << " hits analyzed" << std::endl;
-    std::cout << road_cnt << " roads written to " << filename << std::endl;
+    std::cout << filtered_hits_cnt << " hits written to " << filename << std::endl;
 
     return;
 }
 
 // *****************************************************************************
-void road_analyzer::detect_roads()
+void road_analyzer::detect_hits()
 {
 	while (1)
 	{
@@ -64,17 +62,20 @@ void road_analyzer::detect_roads()
 		{
 			for (unsigned int am_id = 0; am_id < NR_AM_BOARDS; ++am_id)
 			{
-				if (write_en.at(trigger_tower,am_id).read() == true)
-				{
-					std::cout << sc_time_stamp() << ": Road detected (" << trigger_tower << "/" << am_id << ") - "
-							  << std::hex << road_in.at(trigger_tower,am_id).read().to_uint() << std::endl;
-					road_file << std::hex << road_in.at(trigger_tower,am_id).read().to_uint() << std::endl;
+		        for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+		        {
+		            if (filtered_hits.at(trigger_tower, am_id, layer).event())
+		            {
+		                track_finder::hit_stream read_hit;
+		                read_hit = filtered_hits.at(!trigger_tower, am_id, layer).read();
+		                if (!read_hit.is_opcode())
+		                {
+		                    road_file << sc_time_stamp() << ": " <<  std::hex << read_hit.get_value() << std::endl;
+		                    ++filtered_hits_cnt;
+		                }
+		            }
 
-					if (road_in.at(trigger_tower,am_id).read()(29,28) == 0x1)
-					{
-						++road_cnt;
-					}
-				}
+		        }
 			}
 		}
 	}

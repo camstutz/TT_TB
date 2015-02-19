@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 19, 2015
  *
  * @brief
  */
@@ -19,6 +19,7 @@
 #include <systemc.h>
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
+#include "../backend/am_board/track_finder/track_finder.hpp"
 #include "../../systems/TT_configuration.hpp"
 
 /*!
@@ -30,16 +31,13 @@ public:
     static const std::string filename;
 
 // ----- Port Declarations -----------------------------------------------------
-	sc_in<bool> clk;
-	sc_map_square<sc_in<bool> > write_en;
-
 	sc_in<unsigned int> hit_cnt;
-	sc_map_square<sc_in<sc_bv<30> > > road_in;
+	sc_map_cube<sc_in<track_finder::hit_stream> > filtered_hits;
 
 // ----- Local Channel Declarations --------------------------------------------
 
 // ----- Process Declarations --------------------------------------------------
-	void detect_roads();
+	void detect_hits();
 	void update_hit_cnt();
 
 // ----- Other Method Declarations ---------------------------------------------
@@ -57,5 +55,5 @@ public:
 private:
     ofstream road_file;
     unsigned int hit_counter;
-    unsigned int road_cnt;
+    unsigned int filtered_hits_cnt;
 };

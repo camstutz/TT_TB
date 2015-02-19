@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 19, 2015
  *
  * @brief
  *
@@ -62,8 +62,7 @@ public:
      *  dimensions of sc_map are (tower, layer). */
     sc_map_square<sc_out<fifo_manager::input_stub_t> > neighbour_stub_out;
 
-    sc_map_linear<sc_out<bool> > road_write_en;
-    sc_map_linear<sc_out<track_finder::hit_stream> > road_output;
+    sc_map_square<sc_out<track_finder::hit_stream> > road_output;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_map_square<sc_signal<bool> > do_dv_sigs;

@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.cpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date February 19, 2015
  *
  * @brief
  */
@@ -31,8 +31,7 @@ trigger_tower::trigger_tower(const sc_module_name _name, unsigned int phi, unsig
 		neighbour_stub_in(number_neighbour_towers, detector_layers, "neighbour_stub_in"),
 		neighbour_dv_out(number_neighbour_towers, detector_layers, "nighbour_dv_out"),
 		neighbour_stub_out(number_neighbour_towers, detector_layers, "neighbour_stub_out"),
-		road_write_en(number_AM_boards, "road_write_en"),
-		road_output(number_AM_boards, "road_output"),
+		road_output(number_AM_boards, detector_layers, "road_output"),
 		do_dv_sigs(detector_layers, nr_DO_out_stubs, "do_dv_sigs"),
 		do_stub_out_sigs(detector_layers, nr_DO_out_stubs, "do_stub_out_sigs"),
 		am_fifo_write_en_sigs(number_AM_boards, detector_layers, "am_fifo_write_en_sigs"),
@@ -66,8 +65,8 @@ trigger_tower::trigger_tower(const sc_module_name _name, unsigned int phi, unsig
     	am_board_it->fifo_write_en.bind_by_iter(write_en_it);
     	sc_map_square<sc_signal<am_board::fifo_in_t> >::square_iterator fifo_sig_it = am_fifo_input_sigs.begin_partial(am_cnt, false, 0, true);
     	am_board_it->fifo_inputs.bind_by_iter(fifo_sig_it);
-    	am_board_it->road_write_en.bind(road_write_en[am_cnt]);
-    	am_board_it->hit_output.bind(road_output[am_cnt]);
+    	sc_map_square<sc_out<track_finder::hit_stream> >::square_iterator road_output_it = road_output.begin_partial(am_cnt, false, 0, true);
+    	am_board_it->hit_output.bind_by_iter(road_output_it);
 
     	++am_cnt;
     }

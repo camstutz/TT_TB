@@ -40,11 +40,7 @@ int sc_main(int argc, char *agv[])
     sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
     sc_trace(trace_file, testbench.AM_clock, "AM_clock");
 
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].TrackFinder.hit_output, "out0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[1].TrackFinder.hit_output, "out1");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[2].TrackFinder.hit_output, "out2");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[3].TrackFinder.hit_output, "out3");
-
+    sc_trace(trace_file, testbench.trigger_tower_0_0.road_output, "out0");
 
     // ----- Start simulation --------------------------------------------------
 

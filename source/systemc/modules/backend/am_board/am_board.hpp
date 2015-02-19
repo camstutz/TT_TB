@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date February 17, 2015
+ * @date February 19, 2015
  *
  * @brief
  *
@@ -39,19 +39,15 @@ public:
     sc_map_linear<sc_in<bool> > fifo_write_en;
     sc_map_linear<sc_in<fifo_in_t> > fifo_inputs;
 
-    sc_out<bool> road_write_en;
-    sc_out<track_finder::hit_stream> hit_output;
+    sc_map_linear<sc_out<track_finder::hit_stream> > hit_output;
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_linear<sc_signal<bool> > fifo_not_empty_sig;
     sc_map_linear<sc_signal<bool> > fifo_read_en_sig;
     sc_map_linear<sc_signal<fifo_in_t> > fifo_stub_out_sig;
     sc_map_linear<sc_signal<track_finder::hit_stream> > track_finder_in_signal;
-    sc_map_linear<sc_signal<track_finder::hit_stream> > track_finder_out_signal;
 
     // ----- Process Declarations ----------------------------------------------
-    //TODO: remove process
-    void process_result();
 
     // ----- Other Method Declarations -----------------------------------------
 
@@ -65,5 +61,4 @@ public:
      * Constructor:
      */
     am_board(const sc_module_name _name);
-    SC_HAS_PROCESS(am_board);
 };
