@@ -33,9 +33,9 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> en_sig;
-    sc_fifo<frontend_chip_mpa::stub_t> stub_input_sig;
+    sc_fifo<frontend_chip_mpa::input_stub_t> stub_input_sig;
     sc_map_linear<sc_signal<bool> > data_valid_signals;
-    sc_map_linear<sc_signal<frontend_chip_mpa::stub_t> > fe_out_signals;
+    sc_map_linear<sc_signal<frontend_chip_mpa::output_stub_t> > fe_out_signals;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_stubs();
@@ -59,6 +59,6 @@ private:
     std::ostringstream log_buffer;
 
     void trace(sc_trace_file* trace_file);
-    void write_stub(frontend_chip_mpa::stub_t::bx_t bx, frontend_chip_mpa::stub_t::pixel_t pixel,
-            frontend_chip_mpa::stub_t::strip_t strip, frontend_chip_mpa::stub_t::bend_t bend);
+    void write_stub(frontend_chip_mpa::input_stub_t::bx_t bx, frontend_chip_mpa::input_stub_t::pixel_t pixel,
+            frontend_chip_mpa::input_stub_t::strip_t strip, frontend_chip_mpa::input_stub_t::bend_t bend);
 };

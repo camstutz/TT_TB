@@ -1,14 +1,14 @@
 /*!
  * @file sensor_module_mpa.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date February 23, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -29,8 +29,8 @@
 class sensor_module_mpa : public sc_module
 {
 public:
-
-    typedef frontend_chip_mpa::stub_t fe_stub_t;
+// ----- Configuration ---------------------------------------------------------
+    typedef frontend_chip_mpa::input_stub_t fe_stub_t;
     typedef data_concentrator_mpa::out_t dc_out_t;
 
     // ----- Port Declarations -------------------------------------------------
@@ -55,6 +55,4 @@ public:
      * Constructor:
      */
     sensor_module_mpa(const sc_module_name _name);
-    SC_HAS_PROCESS(sensor_module_mpa);
-
 };

@@ -116,7 +116,7 @@ void data_concentrator_cbc_tb::write_fe( const unsigned int fe_chip,
         const unsigned int hit_nr, const unsigned int address,
         const unsigned int bend)
 {
-    data_concentrator_cbc::in_stub_t fe_data(address, bend);
+    data_concentrator_cbc::in_stub_t fe_data(0, address, bend);
 
     data_valid.at(fe_chip, hit_nr).write(true);
     fe_signals.at(fe_chip, hit_nr).write(fe_data);

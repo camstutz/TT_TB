@@ -86,6 +86,10 @@ public:
 protected:
     bool is_equal(const stub_bxsb& rhs) const;
     void copy(const stub_bxsb& original);
+
+    /** Function for tracing support in SystemC */
+    friend void sc_trace <> (sc_trace_file *tf, const stub_bxsb &v,
+                const std::string &name);
 };
 
 // *****************************************************************************
@@ -182,6 +186,19 @@ inline void stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits>::copy(
 {
     base::copy(original);
     set_bx(original.get_bx());
+
+    return;
+}
+
+// *****************************************************************************
+template<unsigned int bx_bits, unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
+void sc_trace (sc_trace_file *tf, const stub_bxsb<bx_bits, strip_bits, bend_bits,
+        total_bits> &v, const std::string &name)
+{
+	sc_trace(tf, v.bx, name + ".bx");
+    sc_trace(tf, v.strip, name + ".strip");
+    sc_trace(tf, v.bend, name + ".bend");
 
     return;
 }
