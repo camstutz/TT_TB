@@ -60,7 +60,7 @@ data_concentrator_cbc_tb::~data_concentrator_cbc_tb()
 void data_concentrator_cbc_tb::generate_hit_data()
 {
     data_valid.write_all(false);
-    fe_signals.write_all(data_concentrator_cbc::in_stub_t());
+    fe_signals.write_all(data_concentrator_cbc::fe_stub_t());
 
     wait(25, SC_NS);
     write_fe(0,0,255,0);
@@ -116,7 +116,7 @@ void data_concentrator_cbc_tb::write_fe( const unsigned int fe_chip,
         const unsigned int hit_nr, const unsigned int address,
         const unsigned int bend)
 {
-    data_concentrator_cbc::in_stub_t fe_data(0, address, bend);
+    data_concentrator_cbc::fe_stub_t fe_data(0, address, bend);
 
     data_valid.at(fe_chip, hit_nr).write(true);
     fe_signals.at(fe_chip, hit_nr).write(fe_data);
@@ -135,7 +135,7 @@ void data_concentrator_cbc_tb::release_fe(const unsigned int fe_chip,
         const unsigned int hit_nr)
 {
     data_valid.at(fe_chip, hit_nr).write(false);
-	fe_signals.at(fe_chip, hit_nr).write(data_concentrator_cbc::in_stub_t());
+	fe_signals.at(fe_chip, hit_nr).write(data_concentrator_cbc::fe_stub_t());
 
     return;
 }

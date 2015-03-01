@@ -18,8 +18,8 @@
 //#include "hit_generator_tb.hpp"
 #include "frontend_chip_cbc_tb.hpp"
 #include "frontend_chip_mpa_tb.hpp"
-//#include "data_concentrator_cbc_tb.hpp"
-//#include "data_concentrator_mpa_tb.hpp"
+#include "data_concentrator_cbc_tb.hpp"
+#include "data_concentrator_mpa_tb.hpp"
 //#include "data_organizer_tb.hpp"
 //#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
@@ -42,9 +42,9 @@ int sc_main(int argc, char *agv[])
     // ----- Module instance declarations --------------------------------------
 
 //    hit_generator_tb hit_generator_tb("Hit_Generator_TB");
-    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file);
-    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
-//    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
+//    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file);
+//    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
+    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
 //    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");

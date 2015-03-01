@@ -35,8 +35,8 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_square<sc_signal<bool> > data_valid;
-    sc_map_square<sc_signal<data_concentrator_cbc::in_stub_t> > fe_signals;
-    sc_signal<data_concentrator_cbc::out_t> dc_output;
+    sc_map_square<sc_signal<data_concentrator_cbc::fe_stub_t> > fe_signals;
+    sc_signal<data_concentrator_cbc::output_stream_t> dc_output;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_hit_data();

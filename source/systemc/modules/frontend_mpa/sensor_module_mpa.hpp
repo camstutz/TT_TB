@@ -31,7 +31,7 @@ class sensor_module_mpa : public sc_module
 public:
 // ----- Configuration ---------------------------------------------------------
     typedef frontend_chip_mpa::input_stub_t fe_stub_t;
-    typedef data_concentrator_mpa::out_t dc_out_t;
+    typedef data_concentrator_mpa::output_stream_t dc_out_t;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
