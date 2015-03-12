@@ -1,14 +1,14 @@
 /*!
  * @file stub_vbxfsb.hpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date February 25, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -74,7 +74,11 @@ public:
     stub_vbxfsb();
     stub_vbxfsb(const valid_t valid, const bx_t bx, const fechip_t fechip,
             const strip_t strip, const bend_t bend);
+    stub_vbxfsb(const base fe_stub);
     virtual ~stub_vbxfsb();
+
+    template <class base_t>
+    void set_from_base(const base_t base_stub);
 
     /** Setter function for the data valid bit */
     void set_valid(const valid_t valid);
@@ -120,7 +124,8 @@ template<unsigned int bx_bits, unsigned int fechip_bits,
         unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
 stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfsb()
-        : stub_bxsb<bx_bits, strip_bits, bend_bits, total_bits+1>(0, 0, 0)
+        : stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
+        total_bits>::base(0, 0, 0)
 {
     set_valid(0);
     set_fechip(0);
@@ -134,8 +139,8 @@ template<unsigned int bx_bits, unsigned int fechip_bits,
         unsigned int total_bits>
 stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfsb(
         const valid_t valid, const bx_t bx, const fechip_t fechip,
-        const strip_t strip, const bend_t bend) : stub_bxsb<bx_bits, strip_bits,
-        bend_bits, total_bits+1>(bx, strip, bend)
+        const strip_t strip, const bend_t bend) : stub_vbxfsb<bx_bits,
+        fechip_bits, strip_bits, bend_bits, total_bits>::base(bx, strip, bend)
 {
     set_valid(valid);
     set_fechip(fechip);
@@ -147,9 +152,40 @@ stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfs
 template<unsigned int bx_bits, unsigned int fechip_bits,
         unsigned int strip_bits, unsigned int bend_bits,
         unsigned int total_bits>
+stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits, total_bits>::stub_vbxfsb(
+		const base fe_stub) : stub_vbxfsb<bx_bits, fechip_bits, strip_bits,
+		bend_bits, total_bits>::base(0, fe_stub.strip, fe_stub.bend)
+{
+	set_valid(0);
+	set_fechip(0);
+
+	return;
+}
+
+// *****************************************************************************
+template<unsigned int bx_bits, unsigned int fechip_bits,
+        unsigned int strip_bits, unsigned int bend_bits,
+        unsigned int total_bits>
 stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
         total_bits>::~stub_vbxfsb()
 {}
+
+// *****************************************************************************
+template <unsigned int bx_bits, unsigned int fechip_bits,
+          unsigned int strip_bits, unsigned int bend_bits,
+          unsigned int total_bits>
+template <class base_t>
+void stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
+        total_bits>::set_from_base(const base_t base_stub)
+{
+    this->set_valid(0);
+    this->set_bx(base_stub.get_bx());
+    this->set_fechip(0);
+    this->set_strip(base_stub.get_strip());
+    this->set_bend(base_stub.get_bend());
+
+    return;
+}
 
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int fechip_bits,

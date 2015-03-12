@@ -17,6 +17,7 @@
 #define LHC_CLOCK_FREQ 40000000
 #define LHC_CLOCK_PERIOD_NS 25
 
+#define FE_CBC_STUB_BX_BITS 0
 #define FE_CBC_STUB_STRIP_BITS 8
 #define FE_CBC_STUB_BEND_BITS 5
 
@@ -37,6 +38,7 @@
 
 // Number of hits that can be handled by a single front end chip
 #define MAX_HITS_PER_CBC_FE_CHIP       3
+#define COLLECTION_CYCLES_CBC_FE_CHIP  1
 #define MAX_HITS_PER_MPA_FE_CHIP       2
 #define COLLECTION_CYCLES_MPA_FE_CHIP  2
 
@@ -86,9 +88,10 @@
 #include "../data_formats/stub_pzfs.hpp"
 #include "../data_formats/dc_out_word.hpp"
 
-typedef stub_sb<FE_CBC_STUB_STRIP_BITS,
-                FE_CBC_STUB_BEND_BITS,
-                FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_cbc_stub_t;
+typedef stub_bxsb<FE_CBC_STUB_BX_BITS,
+		          FE_CBC_STUB_STRIP_BITS,
+                  FE_CBC_STUB_BEND_BITS,
+                  FE_CBC_STUB_BX_BITS+FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_cbc_stub_t;
 
 typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
                    FE_MPA_STUB_PIXEL_BITS,

@@ -1,14 +1,14 @@
 /*!
  * @file stub_vbxpfsb.hpp
  * @author Christian Amstutz
- * @date July 3, 2014
+ * @date March 12, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -23,14 +23,14 @@
 
 // *****************************************************************************
 
-template<unsigned int bx_bits, unsigned int pixel_bits,
-        unsigned int fechip_bits, unsigned int strip_bits,
-        unsigned int bend_bits, unsigned int total_bits>
+template <unsigned int bx_bits, unsigned int pixel_bits,
+          unsigned int fechip_bits, unsigned int strip_bits,
+          unsigned int bend_bits, unsigned int total_bits>
 class stub_vbxpfsb;
 
-template<unsigned int bx_bits, unsigned int pixel_bits,
-        unsigned int fechip_bits, unsigned int strip_bits,
-        unsigned int bend_bits, unsigned int total_bits>
+template <unsigned int bx_bits, unsigned int pixel_bits,
+          unsigned int fechip_bits, unsigned int strip_bits,
+          unsigned int bend_bits, unsigned int total_bits>
 void sc_trace(sc_trace_file *tf, const stub_vbxpfsb<bx_bits, pixel_bits,
         fechip_bits, strip_bits, bend_bits, total_bits> &v, const std::string
         &name);
@@ -40,9 +40,9 @@ void sc_trace(sc_trace_file *tf, const stub_vbxpfsb<bx_bits, pixel_bits,
 /*!
  * @brief
  */
-template<unsigned int bx_bits, unsigned int pixel_bits,
-        unsigned int fechip_bits, unsigned int strip_bits,
-        unsigned int bend_bits, unsigned int total_bits>
+template <unsigned int bx_bits, unsigned int pixel_bits,
+          unsigned int fechip_bits, unsigned int strip_bits,
+          unsigned int bend_bits, unsigned int total_bits>
 class stub_vbxpfsb : public stub_bxpsb<bx_bits, pixel_bits, strip_bits,
         bend_bits, total_bits+1>
 {
@@ -81,11 +81,14 @@ public:
             const fechip_t fechip, const strip_t strip, const bend_t bend);
     virtual ~stub_vbxpfsb();
 
+    template <class base_t>
+    void set_from_base(const base_t base_stub);
+
     /** Setter function for the data valid bit */
     void set_valid(const valid_t valid);
 
     /** Getter function for the data valid bit */
-    valid_t  get_valid() const;
+    valid_t get_valid() const;
 
     /** Setter function for the front end chip number */
     void set_fechip(const fechip_t fechip);
@@ -125,8 +128,8 @@ template<unsigned int bx_bits, unsigned int pixel_bits,
         unsigned int fechip_bits, unsigned int strip_bits,
         unsigned int bend_bits, unsigned int total_bits>
 stub_vbxpfsb<bx_bits, pixel_bits, fechip_bits, strip_bits, bend_bits,
-        total_bits>::stub_vbxpfsb() : stub_bxpsb<bx_bits, pixel_bits, strip_bits,
-        bend_bits, total_bits+1>(0, 0, 0, 0)
+        total_bits>::stub_vbxpfsb() : stub_vbxpfsb<bx_bits, pixel_bits,
+        fechip_bits, strip_bits, bend_bits, total_bits>::base(0, 0, 0, 0)
 {
     set_valid(0);
     set_fechip(0);
@@ -141,8 +144,9 @@ template<unsigned int bx_bits, unsigned int pixel_bits,
 stub_vbxpfsb<bx_bits, pixel_bits, fechip_bits, strip_bits, bend_bits,
         total_bits>::stub_vbxpfsb(const valid_t valid, const bx_t bx,
         const pixel_t pixel, const fechip_t fechip, const strip_t strip,
-        const bend_t bend) : stub_bxpsb<bx_bits, pixel_bits, strip_bits,
-        bend_bits, total_bits+1>(bx, pixel, strip, bend)
+        const bend_t bend) : stub_vbxpfsb<bx_bits, pixel_bits,
+        fechip_bits, strip_bits, bend_bits, total_bits>::base(bx, pixel, strip,
+        bend)
 {
     set_valid(valid);
     set_fechip(fechip);
@@ -151,17 +155,35 @@ stub_vbxpfsb<bx_bits, pixel_bits, fechip_bits, strip_bits, bend_bits,
 }
 
 // *****************************************************************************
-template<unsigned int bx_bits, unsigned int pixel_bits,
-        unsigned int fechip_bits, unsigned int strip_bits,
-        unsigned int bend_bits, unsigned int total_bits>
+template <unsigned int bx_bits, unsigned int pixel_bits,
+          unsigned int fechip_bits, unsigned int strip_bits,
+          unsigned int bend_bits, unsigned int total_bits>
 stub_vbxpfsb<bx_bits, pixel_bits, fechip_bits, strip_bits, bend_bits,
         total_bits>::~stub_vbxpfsb()
 {}
 
 // *****************************************************************************
-template<unsigned int bx_bits, unsigned int pixel_bits,
-        unsigned int fechip_bits, unsigned int strip_bits,
-        unsigned int bend_bits, unsigned int total_bits>
+template <unsigned int bx_bits, unsigned int pixel_bits,
+          unsigned int fechip_bits, unsigned int strip_bits,
+          unsigned int bend_bits, unsigned int total_bits>
+template <class base_t>
+void stub_vbxpfsb<bx_bits, pixel_bits, fechip_bits, strip_bits, bend_bits,
+        total_bits>::set_from_base(const base_t base_stub)
+{
+    this->set_valid(0);
+    this->set_bx(base_stub.get_bx());
+    this->set_pixel(base_stub.get_pixel());
+    this->set_fechip(0);
+    this->set_strip(base_stub.get_strip());
+    this->set_bend(base_stub.get_bend());
+
+    return;
+}
+
+// *****************************************************************************
+template <unsigned int bx_bits, unsigned int pixel_bits,
+          unsigned int fechip_bits, unsigned int strip_bits,
+          unsigned int bend_bits, unsigned int total_bits>
 inline void stub_vbxpfsb<bx_bits, pixel_bits, fechip_bits, strip_bits,
         bend_bits, total_bits>::set_valid(const valid_t valid)
 {

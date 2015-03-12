@@ -30,8 +30,8 @@ class sensor_module_cbc : public sc_module
 {
 public:
 
-    typedef frontend_chip_cbc::stub_t fe_stub_t;
-    typedef data_concentrator_cbc::out_t dc_out_t;
+    typedef frontend_chip_cbc::input_stub_t fe_stub_t;
+    typedef data_concentrator_cbc::output_stream_t dc_out_t;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;

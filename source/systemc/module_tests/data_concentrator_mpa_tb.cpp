@@ -61,7 +61,7 @@ data_concentrator_mpa_tb::~data_concentrator_mpa_tb()
 void data_concentrator_mpa_tb::generate_hit_data()
 {
     data_valid.write_all(false);
-    fe_signals.write_all(data_concentrator_mpa::in_stub_t());
+    fe_signals.write_all(data_concentrator_mpa::fe_stub_t());
 
     wait(50, SC_NS);
     write_fe(2,0,1,3,255,4);
@@ -118,7 +118,7 @@ void data_concentrator_mpa_tb::write_fe(const unsigned int fe_chip,
 		const unsigned int pixel, const unsigned int strip,
 		const unsigned int bend)
 {
-    data_concentrator_mpa::in_stub_t fe_data(bx, pixel, strip, bend);
+    data_concentrator_mpa::fe_stub_t fe_data(bx, pixel, strip, bend);
 
     data_valid.at(fe_chip, hit_nr).write(true);
     fe_signals.at(fe_chip, hit_nr).write(fe_data);
@@ -137,7 +137,7 @@ void data_concentrator_mpa_tb::release_fe(const unsigned int fe_chip,
         const unsigned int hit_nr)
 {
     data_valid.at(fe_chip, hit_nr).write(false);
-	fe_signals.at(fe_chip, hit_nr).write(data_concentrator_mpa::in_stub_t());
+	fe_signals.at(fe_chip, hit_nr).write(data_concentrator_mpa::fe_stub_t());
 
     return;
 }
