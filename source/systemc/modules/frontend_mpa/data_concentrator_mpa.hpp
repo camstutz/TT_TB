@@ -18,4 +18,4 @@
 
 #include "../frontend/data_concentrator.hpp"
 
-typedef data_concentrator<fe_mpa_stub_t, dc_mpa_stub_t, MAX_HITS_PER_MPA_FE_CHIP, COLLECTION_CYCLES_MPA_FE_CHIP> data_concentrator_mpa;
+typedef data_concentrator<fe_mpa_stub_t, dc_mpa_stub_t, MAX_HITS_PER_MPA_FE_CHIP, NR_DC_WINDOW_CYCLES> data_concentrator_mpa;

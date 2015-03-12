@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa.hpp
  * @author Christian Amstutz
- * @date February 23, 2015
+ * @date March 12, 2015
  *
  * @brief
  *
@@ -36,9 +36,9 @@ public:
 	typedef OUT_STUB_T output_stub_t;
 
 	static const unsigned int nr_fe_chips;
-	static const unsigned int max_stubs_per_cycle;
+	static const unsigned int max_in_stubs_per_cycle;
 	static const unsigned int collection_cycles;
-	static const unsigned int total_collected_stubs;
+	static const unsigned int total_output_stubs;
 	static const unsigned int output_width;
 	static const unsigned int output_window_cycles;
 
@@ -61,8 +61,8 @@ public:
     std::vector<stub_buffer_type> stub_buffer;
 
     /** Control signal that switches between the two stub tables */
-    sc_signal<unsigned int> stub_buffer_write_sel;
-    sc_signal<unsigned int> stub_buffer_read_sel;
+    sc_signal<bool> stub_buffer_write_sel;
+    sc_signal<bool> stub_buffer_read_sel;
 
     // ----- Process Declarations ----------------------------------------------
     void controller();
@@ -94,7 +94,7 @@ const unsigned int data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, 
 
 template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-const unsigned int data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::max_stubs_per_cycle = MAX_STUBS_PER_CYCLE;
+const unsigned int data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::max_in_stubs_per_cycle = MAX_STUBS_PER_CYCLE;
 
 template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
@@ -102,7 +102,7 @@ const unsigned int data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, 
 
 template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-const unsigned int data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::total_collected_stubs = MAX_STUBS_PER_CYCLE * COLLECTION_CYCLES;
+const unsigned int data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::total_output_stubs = ((COLLECTION_CYCLES * output_stream_t::payload_width)  / OUT_STUB_T::total_width);
 
 template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
@@ -123,8 +123,8 @@ template <typename IN_STUB_T, typename OUT_STUB_T,
 data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::data_concentrator(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
-        data_valid(nr_fe_chips, max_stubs_per_cycle, "data_valid"),
-        fe_stub_in(nr_fe_chips, max_stubs_per_cycle, "fe_stub_in"),
+        data_valid(nr_fe_chips, max_in_stubs_per_cycle, "data_valid"),
+        fe_stub_in(nr_fe_chips, max_in_stubs_per_cycle, "fe_stub_in"),
         dc_out("dc_out"),
         clock_phase("clock_phase"),
         stub_buffer_write_sel("stub_buffer_write_sel"),
@@ -143,6 +143,10 @@ data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>:
     // ----- Module instance / channel binding -----------------------------------
 
     stub_buffer.resize(2, stub_buffer_type());
+
+    clock_phase.write(0);
+    stub_buffer_write_sel.write(0);
+    stub_buffer_read_sel.write(1);
 
     return;
 }
@@ -166,7 +170,8 @@ void data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYC
                 std::pair<bool, typename sc_map_square<sc_in<fe_stub_t> >::full_key_type>
                         signal_key = fe_stub_in.get_key(*fe_in_it);
 
-                output_stub_t stub(fe_data);
+                output_stub_t stub;
+                stub.template set_from_base<data_concentrator<IN_STUB_T, OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::fe_stub_t>(fe_data);
                 stub.set_valid(true);
                 stub.set_bx(calculate_bx(clock_phase.read(), fe_data.get_bx()));
                 stub.set_fechip(signal_key.second.Y_dim);
@@ -185,27 +190,15 @@ template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
 void data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::controller()
 {
-    clock_phase.write(0);
-    stub_buffer_write_sel.write(0);
-    stub_buffer_read_sel.write(0);
-
     while (1)
     {
         wait();
 
-        if (clock_phase.read() == NR_DC_WINDOW_CYCLES-1)
+        if (clock_phase.read() == collection_cycles-1)
         {
             clock_phase.write(0);
-            if(stub_buffer_write_sel.read() == 0)
-            {
-                stub_buffer_write_sel.write(1);
-                stub_buffer_read_sel.write(0);
-            }
-            else
-            {
-                stub_buffer_write_sel.write(0);
-                stub_buffer_read_sel.write(1);
-            }
+            stub_buffer_write_sel.write( !stub_buffer_write_sel.read() );
+            stub_buffer_read_sel.write( !stub_buffer_read_sel.read() );
         }
         else
         {
@@ -261,21 +254,23 @@ template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
 void data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::create_output_buffer()
 {
-    output_buffer = sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES>(0);
+    output_buffer = sc_bv<output_width*output_window_cycles>(0);
 
-    // Buffer size is maximal NR_DC_MPA_OUT_STUBS in real system
-    if (stub_buffer[stub_buffer_read_sel].size() > max_stubs_per_cycle)
+    if (stub_buffer[stub_buffer_read_sel].size() > total_output_stubs)
     {
-        std::cout << sc_time_stamp()
-        		  << ": data_concentrator_mpa - Stub buffer overflow!" << std::endl;
+        std::cerr << sc_time_stamp()
+        		  << ": data_concentrator - Stub buffer overflow! ("
+        		  << stub_buffer[stub_buffer_read_sel].size() << ")"
+        		  << std::endl;
     }
     // cut the stubs that are too much for transmission to the back end
-    stub_buffer[stub_buffer_read_sel].resize(max_stubs_per_cycle, output_stub_t());
+    // TODO: cut stubs by bend
+    stub_buffer[stub_buffer_read_sel].resize(total_output_stubs, output_stub_t());
 
-    for(unsigned short i; i<max_stubs_per_cycle; i++)
+    for(unsigned int i = 0; i < total_output_stubs; i++)
     {
         size_t word_start = i*output_stub_t::total_width;
-        size_t word_end = (i+1)*output_stub_t::total_width-1;
+        size_t word_end   = (i+1)*output_stub_t::total_width-1;
 
         output_buffer(word_end, word_start) = stub_buffer[stub_buffer_read_sel][i].get_bitvector();
     }
@@ -291,13 +286,7 @@ template <typename IN_STUB_T, typename OUT_STUB_T,
 typename data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::output_stub_t::bx_t
 		data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::calculate_bx(clock_phase_t clock_phase, typename fe_stub_t::bx_t stub_bx)
 {
-	if (clock_phase % 2 == 0)
-	{
-		return (stub_bx == 0 ? (clock_phase) : clock_phase+1);
-	}
-	else
-	{
-		return (stub_bx == 0 ? (clock_phase-1) : clock_phase);
-	}
+    unsigned int fe_collection_cycles = pow(2, fe_stub_t::bx_width);
+    return (fe_collection_cycles * (clock_phase / fe_collection_cycles) + stub_bx);
 }
 

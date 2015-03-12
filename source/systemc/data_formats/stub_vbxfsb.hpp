@@ -77,6 +77,9 @@ public:
     stub_vbxfsb(const base fe_stub);
     virtual ~stub_vbxfsb();
 
+    template <class base_t>
+    void set_from_base(const base_t base_stub);
+
     /** Setter function for the data valid bit */
     void set_valid(const valid_t valid);
 
@@ -166,6 +169,23 @@ template<unsigned int bx_bits, unsigned int fechip_bits,
 stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
         total_bits>::~stub_vbxfsb()
 {}
+
+// *****************************************************************************
+template <unsigned int bx_bits, unsigned int fechip_bits,
+          unsigned int strip_bits, unsigned int bend_bits,
+          unsigned int total_bits>
+template <class base_t>
+void stub_vbxfsb<bx_bits, fechip_bits, strip_bits, bend_bits,
+        total_bits>::set_from_base(const base_t base_stub)
+{
+    this->set_valid(0);
+    this->set_bx(base_stub.get_bx());
+    this->set_fechip(0);
+    this->set_strip(base_stub.get_strip());
+    this->set_bend(base_stub.get_bend());
+
+    return;
+}
 
 // *****************************************************************************
 template<unsigned int bx_bits, unsigned int fechip_bits,

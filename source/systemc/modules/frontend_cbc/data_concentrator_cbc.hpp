@@ -18,4 +18,4 @@
 
 #include "../frontend/data_concentrator.hpp"
 
-typedef data_concentrator<fe_cbc_stub_t, dc_cbc_stub_t, MAX_HITS_PER_CBC_FE_CHIP, COLLECTION_CYCLES_CBC_FE_CHIP> data_concentrator_cbc;
+typedef data_concentrator<fe_cbc_stub_t, dc_cbc_stub_t, MAX_HITS_PER_CBC_FE_CHIP, NR_DC_WINDOW_CYCLES> data_concentrator_cbc;
