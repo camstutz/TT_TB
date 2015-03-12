@@ -1,14 +1,14 @@
 /*!
  * @file sensor_module_cbc.hpp
  * @author Christian Amstutz
- * @date December 15, 2014
+ * @date March 12, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -34,7 +34,7 @@ public:
     typedef data_concentrator_cbc::output_stream_t dc_out_t;
 
     // ----- Port Declarations -------------------------------------------------
-    sc_in<bool> clk;
+    sc_in<unsigned int> LHC_cycle;
     sc_map_linear<sc_fifo_in<fe_stub_t> > stub_inputs;
     sc_out<dc_out_t> dc_out;
 

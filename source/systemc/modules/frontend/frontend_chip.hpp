@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date February 23, 2015
+ * @date March 12, 2015
  *
  * @brief
  *
@@ -39,7 +39,7 @@ public:
     static const unsigned int total_collected_stubs;
 
 // ----- Port Declarations -----------------------------------------------------
-    sc_in<bool> clk;
+    sc_in<unsigned int> LHC_cycle;
     sc_fifo_in<input_stub_t> stub_input;
     sc_map_linear<sc_out<bool> > data_valid;
     sc_map_linear<sc_out<output_stub_t> > stub_outputs;
@@ -90,7 +90,7 @@ template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
 frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::frontend_chip(const sc_module_name _name) :
         sc_module(_name),
-        clk("clk"),
+        LHC_cycle("LHC_cycle"),
         stub_input("stub_input"),
         data_valid(max_stubs_per_cycle, "data_valid", 0),
         stub_outputs(max_stubs_per_cycle, "stub_output", 0),
@@ -98,7 +98,7 @@ frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::fro
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
-        sensitive << clk.pos();
+        sensitive <<  stub_input.data_written_event();
     SC_THREAD(write_hits);
         sensitive << selected_stubs.data_written_event();
 
@@ -158,7 +158,7 @@ void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>
                 ++i;
             }
 
-            wait(clk.posedge_event());
+//            wait(clk.posedge_event());
 
             data_valid.write_all(0);
             stub_outputs.write_all(output_stub_t());

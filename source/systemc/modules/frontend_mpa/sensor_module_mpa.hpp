@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module_mpa.hpp
  * @author Christian Amstutz
- * @date February 23, 2015
+ * @date March 12, 2015
  *
  * @brief
  *
@@ -34,7 +34,7 @@ public:
     typedef data_concentrator_mpa::output_stream_t dc_out_t;
 
     // ----- Port Declarations -------------------------------------------------
-    sc_in<bool> clk;
+    sc_in<unsigned int> LHC_cycle;
     sc_map_linear<sc_fifo_in<fe_stub_t> > stub_inputs;
     sc_out<dc_out_t> dc_out;
 

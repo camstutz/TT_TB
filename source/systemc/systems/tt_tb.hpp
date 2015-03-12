@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date March 12, 2015
  *
  * @brief
  */
@@ -38,7 +38,7 @@ public:
     sc_clock LHC_clock;
     sc_clock LHCx4_clock;
     sc_clock AM_clock;
-    sc_signal<bool> true_sig;
+    sc_signal<unsigned int> LHC_cycle;
     sc_map_4d<sc_fifo<hit_generator::mpa_stub_t> > hit_fifos_mpa;
     sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> > hit_fifos_cbc;
     sc_map_cube<sc_signal<sensor_module_cbc::dc_out_t> > fe_signals;

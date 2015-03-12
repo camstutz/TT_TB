@@ -20,7 +20,7 @@
 
 sensor_module_cbc::sensor_module_cbc(const sc_module_name _name) :
         sc_module(_name),
-        clk("clk"),
+        LHC_cycle("LHC_cycle"),
         stub_inputs(NR_FE_CHIP_PER_MODULE, "stub_in", 0),
         dc_out("dc_out"),
         data_valid_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP,
@@ -42,7 +42,7 @@ sensor_module_cbc::sensor_module_cbc(const sc_module_name _name) :
     sc_map_linear<frontend_chip_cbc>::iterator fe_chip_it = front_end_chips.begin();
     for (; fe_chip_it != front_end_chips.end(); ++fe_chip_it)
     {
-        fe_chip_it->clk.bind(clk);
+        fe_chip_it->LHC_cycle.bind(LHC_cycle);
         fe_chip_it->stub_input(stub_inputs[fe_cnt]);
         sc_map_square<sc_signal<fe_stub_t> >::square_iterator fe_out_sig_it = fe_out_signals.begin_partial(fe_cnt, false, 0, true);
         fe_chip_it->stub_outputs.bind_by_iter(fe_out_sig_it);
@@ -52,7 +52,7 @@ sensor_module_cbc::sensor_module_cbc(const sc_module_name _name) :
         fe_cnt++;
     }
 
-    dataConcentrator.clk.bind(clk);
+    dataConcentrator.LHC_cycle.bind(LHC_cycle);
     dataConcentrator.data_valid.bind(data_valid_signals);
     dataConcentrator.fe_stub_in.bind(fe_out_signals);
     dataConcentrator.dc_out.bind(dc_out);

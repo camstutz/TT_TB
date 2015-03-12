@@ -50,7 +50,7 @@ public:
     typedef unsigned int clock_phase_t;
 
     // ----- Port Declarations -------------------------------------------------
-    sc_in<bool> clk;
+    sc_in<unsigned int> LHC_cycle;
     sc_map_square<sc_in<bool> > data_valid;
     sc_map_square<sc_in<fe_stub_t> > fe_stub_in;
     sc_out<output_stream_t> dc_out;
@@ -122,7 +122,7 @@ template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
 data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::data_concentrator(sc_module_name _name) :
         sc_module(_name) ,
-        clk("clk"),
+        LHC_cycle("LHC_cycle"),
         data_valid(nr_fe_chips, max_in_stubs_per_cycle, "data_valid"),
         fe_stub_in(nr_fe_chips, max_in_stubs_per_cycle, "fe_stub_in"),
         dc_out("dc_out"),
@@ -132,11 +132,11 @@ data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>:
 {
     // ----- Process registration ------------------------------------------------
     SC_THREAD(controller);
-        sensitive << clk.pos();
+        sensitive << LHC_cycle.value_changed();
     SC_THREAD(read_FE_chips);
-        sensitive << clk.pos();
+        sensitive << LHC_cycle.value_changed();
     SC_THREAD(write_output);
-        sensitive << clk.pos();
+        sensitive << LHC_cycle.value_changed();
 
     // ----- Module variable initialization --------------------------------------
 

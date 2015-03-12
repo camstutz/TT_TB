@@ -56,7 +56,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         std::pair<bool, sc_map_cube<sensor_module_mpa>::full_key_type> full_key;
         full_key = sensor_modules_mpa.get_key(*module_mpa_it);
 
-        module_mpa_it->clk.bind(LHC_clock);
+        module_mpa_it->LHC_cycle.bind(LHC_cycle);
         sc_map_4d<sc_fifo<hit_generator::mpa_stub_t> >::_4d_iterator fifo_it  = hit_fifos_mpa.begin_partial(full_key.second.Z_dim, false, full_key.second.Y_dim, false, full_key.second.X_dim, false, 0, true);
         module_mpa_it->stub_inputs.bind_by_iter(fifo_it);
         module_mpa_it->dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
@@ -68,7 +68,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         std::pair<bool, sc_map_cube<sensor_module_cbc>::full_key_type> full_key;
         full_key = sensor_modules_cbc.get_key(*module_cbc_it);
 
-        module_cbc_it->clk.bind(LHC_clock);
+        module_cbc_it->LHC_cycle.bind(LHC_cycle);
         sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> >::_4d_iterator fifo_it  = hit_fifos_cbc.begin_partial(full_key.second.Z_dim, false, full_key.second.Y_dim, false, full_key.second.X_dim, false, 0, true);
         module_cbc_it->stub_inputs.bind_by_iter(fifo_it);
         module_cbc_it->dc_out.bind(fe_signals.at(full_key.second.Z_dim, full_key.second.Y_dim, full_key.second.X_dim));
