@@ -19,6 +19,7 @@
 #include "../data_formats/fm_out_data.hpp"
 
 #include "TT_configuration.hpp"
+#include "../modules/LHC_cycle_counter/LHC_cycle_counter.hpp"
 #include "../modules/hit_generator/hit_generator.hpp"
 #include "../modules/frontend_cbc/sensor_module_cbc.hpp"
 #include "../modules/frontend_mpa/sensor_module_mpa.hpp"
@@ -54,6 +55,7 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
+    LHC_cycle_counter LHC_cycle_cnt;
     hit_generator hitGenerator;
     sc_map_cube<sensor_module_mpa> sensor_modules_mpa;
     sc_map_cube<sensor_module_cbc> sensor_modules_cbc;

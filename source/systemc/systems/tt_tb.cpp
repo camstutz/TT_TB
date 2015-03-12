@@ -34,6 +34,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         hit_cnt_sig("hit_cnt_sig"),
         neighbour_dv_sig(NR_TOWER_CONNECTIONS, NR_DETECTOR_LAYERS, 2, "neighbour_dv_sig"),
         neighbour_stub_sig(NR_TOWER_CONNECTIONS, NR_DETECTOR_LAYERS, 2, "neighbour_stub_sig"),
+        LHC_cycle_cnt("LHC_cycle_cnt"),
         hitGenerator("Hit_Generator", "data/hits.txt"),
         sensor_modules_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module_mpa", 0, 0, 0),
         sensor_modules_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module_cbc", NR_DETECTOR_MPA_LAYERS, 0, 0),
@@ -43,6 +44,8 @@ tt_tb::tt_tb(const sc_module_name _name) :
         trigger_tower_1_1("trigger_tower_1_1", 1, 1),
         roadAnalyzer("road_analyzer")
 {
+    LHC_cycle_cnt.LHC_clock.bind(LHC_clock);
+
     hitGenerator.mpa_stub_outputs.bind(hit_fifos_mpa);
     hitGenerator.cbc_stub_outputs.bind(hit_fifos_cbc);
     hitGenerator.hit_cnt(hit_cnt_sig);
