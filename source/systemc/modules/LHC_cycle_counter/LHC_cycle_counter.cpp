@@ -32,6 +32,8 @@ LHC_cycle_counter::LHC_cycle_counter(sc_module_name _name) :
 // *****************************************************************************
 void LHC_cycle_counter::update_cnt()
 {
+    LHC_cycle.write(-1);
+
     while (1)
     {
         wait();

@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.cpp
  * @author Christian Amstutz
- * @date February 23, 2015
+ * @date March 13, 2015
  */
 
 /*
@@ -17,15 +17,19 @@
 frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name,
 		sc_trace_file* trace_file) :
         sc_module(_name),
-        en_sig("en"),
+        LHC_cycle("LHC_cycle"),
         stub_input_sig("stub_input"),
         data_valid_signals(MAX_HITS_PER_MPA_FE_CHIP, "data_valid_sig"),
         fe_out_signals(MAX_HITS_PER_MPA_FE_CHIP, "fe_out_sig"),
-        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 50, SC_NS, true),
+        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 0, SC_NS, true),
+        LHC_cycle_cnt("LHC_cycle_cnt"),
         dut_front_end_chip("Front_End_Chip_DUT")
 {
     // ----- Creation and binding of signals -----------------------------------
-    dut_front_end_chip.clk.bind(LHC_clock);
+    LHC_cycle_cnt.LHC_clock.bind(LHC_clock);
+    LHC_cycle_cnt.LHC_cycle.bind(LHC_cycle);
+
+    dut_front_end_chip.LHC_cycle.bind(LHC_cycle);
     dut_front_end_chip.stub_input.bind(stub_input_sig);
     dut_front_end_chip.data_valid.bind(data_valid_signals);
     dut_front_end_chip.stub_outputs.bind(fe_out_signals);
@@ -64,52 +68,67 @@ void frontend_chip_mpa_tb::generate_stubs()
 {
     frontend_chip_mpa::input_stub_t stim_stub;
 
-    // at 60 ns
-    wait(60, SC_NS);
-    en_sig.write(1);
+    wait(LHC_cycle.value_changed_event());
+    wait(LHC_cycle.value_changed_event());
+    wait(LHC_cycle.value_changed_event());
     write_stub(0x0, 0x7, 0xFF, 0x1);
 
-    // at 92 ns
-    wait(32, SC_NS);
-    write_stub(0x0, 0x8, 0x80, 0x2);
-    write_stub(0x0, 0x9, 0x90, 0x3);
-    write_stub(0x0, 0x9, 0x91, 0x3);
-    write_stub(0x0, 0x9, 0x92, 0x3);
+    wait(LHC_cycle.value_changed_event());
+    write_stub(0x0, 0x7, 0xFF, 0x2);
 
-    // at 93 ns
-    wait(1, SC_NS);
-    write_stub(0x0, 0xA, 0x81, 0x4);
+    wait(LHC_cycle.value_changed_event());
+    write_stub(0x0, 0x7, 0xFF, 0x3);
 
-    // at 94 ns
-    wait(25, SC_NS);
-    write_stub(0x0, 0xB, 0x82, 0x5);
-    write_stub(0x0, 0xB, 0x42, 0x6);
+    wait(LHC_cycle.value_changed_event());
+    write_stub(0x0, 0x7, 0xFF, 0x4);
 
-    // at 119 ns
-    wait(25, SC_NS);
-    write_stub(0x0, 0xC, 0x1, 0x6);
+    wait(LHC_cycle.value_changed_event());
+    //write_stub(0x0, 0x7, 0xFF, 0x5);
 
-    // at 144 ns
-    wait(25, SC_NS);
-    write_stub(0x0, 0xD, 0x12, 0x7);
-    write_stub(0x0, 0xE, 0x15, 0x8);
+    wait(LHC_cycle.value_changed_event());
+    write_stub(0x0, 0x7, 0xFF, 0x6);
 
-    //! todo: there is an error here with this event falling on a clock edge and does not show on the output
-    // at 160 ns
-    wait(16, SC_NS);
-    write_stub(0x1, 0x14, 0x14, 0x9);
+    wait(LHC_cycle.value_changed_event());
+    write_stub(0x0, 0x7, 0xFF, 0x7);
 
-    // at 161 ns
-    wait(1, SC_NS);
-    write_stub(0x0, 0xF, 0x1, 0xA);
+//    wait(LHC_cycle.value_changed_event());
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x0, 0x8, 0x80, 0x2);
+//    write_stub(0x0, 0x9, 0x90, 0x3);
+//    write_stub(0x0, 0x9, 0x91, 0x3);
+//    write_stub(0x0, 0x9, 0x92, 0x3);
+//
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x0, 0xA, 0x81, 0x4);
+//    write_stub(0x0, 0xB, 0x82, 0x5);
+//    write_stub(0x0, 0xB, 0x42, 0x6);
+//
+//    // at 119 ns
+//    wait(LHC_cycle.value_changed_event());
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x0, 0xC, 0x1, 0x6);
+//
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x0, 0xD, 0x12, 0x7);
+//    write_stub(0x0, 0xE, 0x15, 0x8);
+//
+//    // at 160 ns
+//    wait(LHC_cycle.value_changed_event());
+//    wait(LHC_cycle.value_changed_event());
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x1, 0x14, 0x14, 0x9);
+//
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x0, 0xF, 0x1, 0xA);
+//
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x1, 0x10, 0xB, 0xB);
+//
+//    wait(LHC_cycle.value_changed_event());
+//    wait(LHC_cycle.value_changed_event());
+//    write_stub(0x1, 0x12, 0x1, 0xC);
 
-    // at 201 ns
-    wait(40, SC_NS);
-    write_stub(0x1, 0x10, 0xB, 0xB);
-
-    // at 202 ns
-    wait(1, SC_NS);
-    write_stub(0x1, 0x12, 0x1, 0xC);
+    wait(50, SC_NS);
 
     return;
 }

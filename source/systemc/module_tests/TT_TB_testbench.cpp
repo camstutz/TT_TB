@@ -16,10 +16,10 @@
 
 //#include "hit_file_test.hpp"
 //#include "hit_generator_tb.hpp"
-#include "frontend_chip_cbc_tb.hpp"
+//#include "frontend_chip_cbc_tb.hpp"
 #include "frontend_chip_mpa_tb.hpp"
-#include "data_concentrator_cbc_tb.hpp"
-#include "data_concentrator_mpa_tb.hpp"
+//#include "data_concentrator_cbc_tb.hpp"
+//#include "data_concentrator_mpa_tb.hpp"
 //#include "data_organizer_tb.hpp"
 //#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
@@ -43,9 +43,9 @@ int sc_main(int argc, char *agv[])
 
 //    hit_generator_tb hit_generator_tb("Hit_Generator_TB");
 //    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file);
-//    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
-    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
-    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
+    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
+//    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
+//    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 //    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
@@ -54,6 +54,8 @@ int sc_main(int argc, char *agv[])
 //    trigger_tower_tb("trigger_tower_tb");
 
     // ----- Time unit / resolution setup --------------------------------------
+
+    sc_trace(trace_file, fechip_mpa_tb.LHC_cycle, "LHC_cycle");
 
 //    sc_trace(trace_file, data_concentrator_tb.LHC_clock, "DC_clock");
 //    sc_trace(trace_file, data_concentrator_tb.dc_output, "dc_out");

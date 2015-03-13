@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date March 12, 2015
+ * @date March 13, 2015
  *
  * @brief
  *
@@ -64,11 +64,13 @@ public:
 
 private:
 	typedef std::multimap<typename output_stub_t::bend_t, output_stub_t> ordering_buffer_t;
-
 	ordering_buffer_t ordered_stubs;
-    std::vector<std::vector<input_stub_t> > collection_buffer;
 
-    void prioritize_hits();
+	typedef std::vector<std::vector<input_stub_t> > collection_buffer_t;
+    std::vector<collection_buffer_t> collection_buffers;
+    sc_event buffer_written;
+
+    void prioritize_hits(collection_buffer_t& collection_buffer);
 };
 
 // *****************************************************************************
@@ -98,9 +100,8 @@ frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::fro
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
-        sensitive <<  stub_input.data_written_event();
+        sensitive << stub_input.data_written();
     SC_THREAD(write_hits);
-        sensitive << selected_stubs.data_written_event();
 
     // ----- Module variable initialization ------------------------------------
 
@@ -114,29 +115,26 @@ template <typename IN_STUBS_T, typename OUT_STUBS_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
 void frontend_chip<IN_STUBS_T, OUT_STUBS_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::read_input()
 {
-    collection_buffer.resize(collection_cycles);
-
-    wait();
-    int clock_cycle = -1;
+    collection_buffers.resize(2);
+    collection_buffers[0].resize(collection_cycles);
+    collection_buffers[1].resize(collection_cycles);
 
     while (1)
     {
         wait();
-        ++clock_cycle;
 
+        unsigned int buffer_selector = (LHC_cycle / collection_cycles) % 2;
+        std::cout << sc_time_stamp() << ": " << buffer_selector << std::endl;
         while (stub_input.num_available() > 0)
         {
             input_stub_t act_stub;
             stub_input.read(act_stub);
-            collection_buffer[clock_cycle].push_back(act_stub);
-        }
+            collection_buffers[buffer_selector][LHC_cycle%collection_cycles].push_back(act_stub);
 
-        if (clock_cycle == collection_cycles-1)
-        {
-            prioritize_hits();
-            clock_cycle = -1;
+            buffer_written.notify();
         }
     }
+
 }
 
 // *****************************************************************************
@@ -146,22 +144,35 @@ void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>
 {
     while (1)
     {
-        wait();
+        wait(buffer_written);
 
-        while (selected_stubs.num_available() > 0)
+        bool processed = false;
+        while (!processed)
         {
-            unsigned int i = 0;
-            while ((i < max_stubs_per_cycle) && (selected_stubs.num_available() > 0))
+            wait(LHC_cycle.value_changed_event());
+            if ((LHC_cycle % collection_cycles) == 0)
             {
-                data_valid.at(i).write(true);
-                stub_outputs.at(i).write(selected_stubs.read());
-                ++i;
+                unsigned int buffer_selector = ((LHC_cycle+collection_cycles) / collection_cycles) % 2;
+
+                prioritize_hits(collection_buffers[buffer_selector]);
+
+                while (selected_stubs.num_available() > 0)
+                {
+                    unsigned int i = 0;
+                    while ((i < max_stubs_per_cycle) && (selected_stubs.num_available() > 0))
+                    {
+                        data_valid.at(i).write(true);
+                        stub_outputs.at(i).write(selected_stubs.read());
+                        ++i;
+                    }
+
+                    wait(LHC_cycle.value_changed_event());
+
+                    data_valid.write_all(0);
+                    stub_outputs.write_all(output_stub_t());
+                }
+                processed = true;
             }
-
-//            wait(clk.posedge_event());
-
-            data_valid.write_all(0);
-            stub_outputs.write_all(output_stub_t());
         }
     }
 
@@ -170,7 +181,8 @@ void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>
 // *****************************************************************************
 template <typename IN_STUB_T, typename OUT_STUB_T,
           unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::prioritize_hits()
+void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE,
+        COLLECTION_CYCLES>::prioritize_hits(collection_buffer_t& collection_buffer)
 {
 	ordered_stubs.clear();
 

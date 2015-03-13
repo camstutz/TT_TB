@@ -22,6 +22,7 @@
 
 #include "../systems/TT_configuration.hpp"
 #include "../modules/frontend_mpa/frontend_chip_mpa.hpp"
+#include "../modules/LHC_cycle_counter/LHC_cycle_counter.hpp"
 
 /*!
  * @brief
@@ -32,7 +33,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_signal<bool> en_sig;
+    sc_signal<unsigned int> LHC_cycle;
     sc_fifo<frontend_chip_mpa::input_stub_t> stub_input_sig;
     sc_map_linear<sc_signal<bool> > data_valid_signals;
     sc_map_linear<sc_signal<frontend_chip_mpa::output_stub_t> > fe_out_signals;
@@ -45,6 +46,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
+    LHC_cycle_counter LHC_cycle_cnt;
     frontend_chip_mpa dut_front_end_chip;
 
     // ----- Constructor -------------------------------------------------------
