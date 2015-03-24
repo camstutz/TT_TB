@@ -57,7 +57,7 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
         stub_table_it->resize(NR_DC_WINDOW_CYCLES);
     }
 
-    sc_map_linear<sc_delay_signal<bool, DC_output_delay> >::iterator delay_dv_it = delay_dv.begin();
+    sc_map_linear<sc_delay_signal<bool, DO_output_delay> >::iterator delay_dv_it = delay_dv.begin();
     sc_map_linear<sc_signal<bool> >::iterator dv_sig_it = dv_sig.begin();
     sc_map_linear<sc_out<bool> >::iterator dv_it = dv.begin();
     for (; delay_dv_it != delay_dv.end(); ++delay_dv_it)
@@ -70,7 +70,7 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
     	++dv_it;
     }
 
-    sc_map_linear<sc_delay_signal<do_out_t, DC_output_delay> >::iterator delay_stub_out_it = delay_stub_out.begin();
+    sc_map_linear<sc_delay_signal<do_out_t, DO_output_delay> >::iterator delay_stub_out_it = delay_stub_out.begin();
     sc_map_linear<sc_signal<do_out_t> >::iterator stub_out_sig_it = stub_out_sig.begin();
     sc_map_linear<sc_out<do_out_t> >::iterator stub_out_it = stub_out.begin();
     for (; delay_stub_out_it != delay_stub_out.end(); ++delay_stub_out_it)

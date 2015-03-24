@@ -13,8 +13,6 @@
 
 #pragma once
 
-#define DC_output_delay 5
-
 #include <sstream>
 #include <vector>
 
@@ -83,8 +81,8 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
-    sc_map_linear<sc_delay_signal<bool, DC_output_delay> > delay_dv;
-    sc_map_linear<sc_delay_signal<do_out_t, DC_output_delay> > delay_stub_out;
+    sc_map_linear<sc_delay_signal<bool, DO_output_delay> > delay_dv;
+    sc_map_linear<sc_delay_signal<do_out_t, DO_output_delay> > delay_stub_out;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

@@ -80,6 +80,9 @@
 #define IDLE_EVENT  0xFFFF
 #define START_EVENT 0xFFFE
 
+// Define delays
+#define DO_output_delay 5
+
 // Signal types used between modules
 #include "../data_formats/stub_sb.hpp"
 #include "../data_formats/stub_vbxfsb.hpp"
