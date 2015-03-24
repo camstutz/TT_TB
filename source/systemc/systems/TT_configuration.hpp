@@ -81,7 +81,9 @@
 #define START_EVENT 0xFFFE
 
 // Define delays
+#define DC_output_delay 2
 #define DO_output_delay 5
+#define AM_CHIP_LATENCY 2
 
 // Signal types used between modules
 #include "../data_formats/stub_sb.hpp"

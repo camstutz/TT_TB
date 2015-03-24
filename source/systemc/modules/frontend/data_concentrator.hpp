@@ -19,7 +19,7 @@
 #include <systemc.h>
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "../../libraries/systemc_helpers/nbits.hpp"
+#include "../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 
 #include "../../systems/TT_configuration.hpp"
 
@@ -59,6 +59,7 @@ public:
     sc_signal<clock_phase_t> clock_phase;
     sc_bv<DC_OUTPUT_WIDTH*NR_DC_WINDOW_CYCLES> output_buffer;
     std::vector<stub_buffer_type> stub_buffer;
+    sc_signal<output_stream_t> dc_out_sig;
 
     /** Control signal that switches between the two stub tables */
     sc_signal<bool> stub_buffer_write_sel;
@@ -72,6 +73,7 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
+    sc_delay_signal<output_stream_t, DC_output_delay> delay_output;
 
     // ----- Constructor -------------------------------------------------------
     data_concentrator(sc_module_name _name);
@@ -128,7 +130,8 @@ data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>:
         dc_out("dc_out"),
         clock_phase("clock_phase"),
         stub_buffer_write_sel("stub_buffer_write_sel"),
-        stub_buffer_read_sel("stub_buffer_read_sel")
+        stub_buffer_read_sel("stub_buffer_read_sel"),
+		delay_output("delay_outout")
 {
     // ----- Process registration ------------------------------------------------
     SC_THREAD(controller);
@@ -141,6 +144,10 @@ data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>:
     // ----- Module variable initialization --------------------------------------
 
     // ----- Module instance / channel binding -----------------------------------
+
+    delay_output.clk.bind(clk);
+    delay_output.input.bind(dc_out_sig);
+    delay_output.delayed.bind(dc_out);
 
     stub_buffer.resize(2, stub_buffer_type());
 
@@ -244,7 +251,7 @@ void data_concentrator<IN_STUB_T,OUT_STUB_T, MAX_STUBS_PER_CYCLE, COLLECTION_CYC
 
         output_word.set_header(header.to_uint());
 
-        dc_out.write(output_word);
+        dc_out_sig.write(output_word);
     }
 
 }
