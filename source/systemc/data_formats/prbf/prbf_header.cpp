@@ -14,6 +14,15 @@
 #include "prbf_header.hpp"
 
 // *****************************************************************************
+prbf_header::prbf_header()
+{
+    type_field = prbf_element_type::sof;
+    bunch_crossing_ID = 0;
+
+    return;
+}
+
+// *****************************************************************************
 void prbf_header::set_bunch_crossing_ID(bunch_crossing_ID_t bunch_crossing)
 {
     this->bunch_crossing_ID = bunch_crossing;

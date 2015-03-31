@@ -14,6 +14,14 @@
 #include "prbf_trailer.hpp"
 
 // *****************************************************************************
+prbf_trailer::prbf_trailer()
+{
+    type_field = prbf_element_type::eof;
+    stub_count = 0;
+
+    return;
+}
+// *****************************************************************************
 void prbf_trailer::set_stub_count(stub_count_t stub_count)
 {
     this->stub_count = stub_count;

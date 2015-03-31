@@ -21,6 +21,8 @@ class prbf_trailer : public prbf_element
 public:
     typedef unsigned int stub_count_t;
 
+    prbf_trailer();
+
     void set_stub_count(stub_count_t stub_count);
     stub_count_t get_stub_count() const;
 

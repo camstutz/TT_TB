@@ -21,6 +21,8 @@ class prbf_header : public prbf_element
 public:
     typedef unsigned int bunch_crossing_ID_t;
 
+    prbf_header();
+
     void set_bunch_crossing_ID(bunch_crossing_ID_t bunch_crossing);
     bunch_crossing_ID_t get_bunch_crossing_ID() const;
 
