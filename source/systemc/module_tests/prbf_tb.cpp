@@ -12,19 +12,19 @@
 
 void prbf_tb()
 {
-    type_field a(type_field::local, 0, type_field::MPA);
-    type_field test_element_type;
+    prbf_element_type a(prbf_element_type::local, 0, prbf_element_type::MPA);
+    prbf_element_type test_element_type;
 
-	test_element_type = type_field::eof;
-	a = type_field::sof;
+	test_element_type = prbf_element_type::eof;
+	a = prbf_element_type::sof;
 
-	std::cout << "a is SOF: " << (a == type_field::sof) << std::endl;
+	std::cout << "a is SOF: " << (a == prbf_element_type::sof) << std::endl;
 
-	a.set_chip_type(type_field::CBC);
+	a.set_chip_type(prbf_element_type::CBC);
 	a.set_tower_ID(2);
-	a.set_tower_type(type_field::adjacent);
+	a.set_tower_type(prbf_element_type::adjacent);
 
-	std::cout << "a is EOF: " << (a == type_field::eof) << std::endl;
+	std::cout << "a is EOF: " << (a == prbf_element_type::eof) << std::endl;
 
 	return;
 }

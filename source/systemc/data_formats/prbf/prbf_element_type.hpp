@@ -1,5 +1,5 @@
 /*!
- * @file type_field.hpp
+ * @file prbf_element_type.hpp
  * @author Christian Amstutz
  * @date March 31, 2015
  *
@@ -13,10 +13,8 @@
 
 #pragma once
 
-#include <systemc.h>
-
 // *****************************************************************************
-class type_field
+class prbf_element_type
 {
 public:
     typedef enum
@@ -31,11 +29,11 @@ public:
         CBC = 0x1,
     } chip_type_t;
 
-    static const type_field sof;
-    static const type_field eof;
+    static const prbf_element_type sof;
+    static const prbf_element_type eof;
 
-    type_field();
-    type_field(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
+    prbf_element_type();
+    prbf_element_type(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
 private:
     void init(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
 
@@ -47,7 +45,7 @@ public:
     void set_chip_type(chip_type_t chip_type);
     chip_type_t get_chip_type() const;
 
-    bool operator== (const type_field& rhs) const;
+    bool operator== (const prbf_element_type& rhs) const;
 
 private:
     tower_type_t tower_type;

@@ -15,6 +15,6 @@
 
 #include <iostream>
 
-#include "../data_formats/prbf/type_field.hpp"
+#include "../data_formats/prbf/prbf_element_type.hpp"
 
 void prbf_tb();
