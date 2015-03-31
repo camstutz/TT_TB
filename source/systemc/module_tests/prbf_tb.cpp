@@ -28,12 +28,16 @@ void prbf_tb()
 
 	prbf_header header1;
 	prbf_trailer trailer1;
+	prbf_stub<unsigned int> stub1;
 
 	header1.set_type_field(prbf_element_type::sof);
 	header1.set_bunch_crossing_ID(1);
 
 	trailer1.set_type_field(prbf_element_type::eof);
 	trailer1.set_stub_count(4);
+
+	stub1.get_type_field();
+
 
 	return;
 }
