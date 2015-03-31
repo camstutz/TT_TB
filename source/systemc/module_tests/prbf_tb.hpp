@@ -16,5 +16,8 @@
 #include <iostream>
 
 #include "../data_formats/prbf/prbf_element_type.hpp"
+#include "../data_formats/prbf/prbf_element.hpp"
+#include "../data_formats/prbf/prbf_header.hpp"
+#include "../data_formats/prbf/prbf_trailer.hpp"
 
 void prbf_tb();

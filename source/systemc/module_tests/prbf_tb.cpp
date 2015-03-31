@@ -26,5 +26,14 @@ void prbf_tb()
 
 	std::cout << "a is EOF: " << (a == prbf_element_type::eof) << std::endl;
 
+	prbf_header header1;
+	prbf_trailer trailer1;
+
+	header1.set_type_field(prbf_element_type::sof);
+	header1.set_bunch_crossing_ID(1);
+
+	trailer1.set_type_field(prbf_element_type::eof);
+	trailer1.set_stub_count(4);
+
 	return;
 }
