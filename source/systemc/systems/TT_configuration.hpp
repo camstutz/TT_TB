@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date March 30, 2015
  *
  * @brief
  *
@@ -84,6 +84,7 @@
 #define DC_output_delay 2
 #define DO_output_delay 5
 #define AM_CHIP_LATENCY 10
+#define PATTERN_MEMORY_LATENCY 2
 
 // Signal types used between modules
 #include "../data_formats/stub_sb.hpp"

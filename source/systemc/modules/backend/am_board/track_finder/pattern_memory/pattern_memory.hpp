@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.hpp
  * @author Christian Amstutz
- * @date February 17, 2015
+ * @date March 30, 2015
  *
  * @brief
  */
@@ -13,8 +13,9 @@
 #include <map>
 
 #include <systemc.h>
-#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
+#include "../../../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
+#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../pattern_bank/pattern_bank.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
 
@@ -30,6 +31,7 @@ public:
     sc_map_linear<sc_out<superstrip_t> > superstrip_outputs;
 
     // ----- Local Channel Declarations ----------------------------------------
+    sc_map_linear<sc_signal<superstrip_t> > superstrip_outputs_sig;
 
     // ----- Process Declarations ----------------------------------------------
     void lookup_road();
@@ -37,6 +39,7 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
+    sc_map_linear<sc_delay_signal<superstrip_t, PATTERN_MEMORY_LATENCY> > delay_superstrip_outputs;
 
     // ----- Constructor -------------------------------------------------------
     /*!

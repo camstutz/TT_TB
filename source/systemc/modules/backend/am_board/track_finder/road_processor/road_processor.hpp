@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.hpp
  * @author Christian Amstutz
- * @date February 17, 2015
+ * @date March 31, 2015
  *
  * @brief
  */
@@ -14,6 +14,7 @@
 
 #include <systemc.h>
 
+#include "../../../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
@@ -42,15 +43,19 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_fifo<road_stream> command_buffer;
+    sc_buffer<road_stream> command_buffer_write_sig;
+    sc_buffer<road_stream> command_buffer_delayed_sig;
 
     // ----- Process Declarations ----------------------------------------------
     void process_incoming_roads();
+    void write_FIFO();
     void lookup_superstrips();
     void output_result();
 
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
+    sc_delay_signal<road_stream, PATTERN_MEMORY_LATENCY> pattern_mem_delay_compensation;
 
     // ----- Constructor -------------------------------------------------------
     /*!
