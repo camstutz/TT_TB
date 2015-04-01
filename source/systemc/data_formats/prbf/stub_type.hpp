@@ -1,5 +1,5 @@
 /*!
- * @file stub_PRBF.hpp
+ * @file stub_type.hpp
  * @author Christian Amstutz
  * @date April 1, 2015
  *
@@ -13,12 +13,16 @@
 
 #pragma once
 
-#include "stub_PRBF.hpp"
-
 // *****************************************************************************
-class PRBF
+namespace PRBF
+{
+
+class stub_type
 {
 public:
-    PRBF();
+    stub_type();
+
 private:
 };
+
+} // namespace PRBF

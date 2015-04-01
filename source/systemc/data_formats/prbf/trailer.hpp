@@ -1,7 +1,7 @@
 /*!
- * @file prbf_trailer.hpp
+ * @file trailer.hpp
  * @author Christian Amstutz
- * @date March 31, 2015
+ * @date April 1, 2015
  *
  * @brief
  *
@@ -13,15 +13,18 @@
 
 #pragma once
 
-#include "prbf_element.hpp"
+#include "frame_element.hpp"
 
 // *****************************************************************************
-class prbf_trailer : public prbf_element
+namespace PRBF
+{
+
+class trailer : public frame_element
 {
 public:
     typedef unsigned int stub_count_t;
 
-    prbf_trailer();
+    trailer();
 
     void set_stub_count(stub_count_t stub_count);
     stub_count_t get_stub_count() const;
@@ -29,3 +32,5 @@ public:
 private:
     stub_count_t stub_count;
 };
+
+} // namespace PRBF

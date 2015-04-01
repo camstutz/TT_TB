@@ -1,7 +1,7 @@
 /*!
  * @file prbf_element_type.cpp
  * @author Christian Amstutz
- * @date March 31, 2015
+ * @date April 1, 2015
  *
  * @brief
  *
@@ -11,15 +11,17 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "prbf_element_type.hpp"
+#include "element_type.hpp"
+
+using namespace PRBF;
 
 // *****************************************************************************
 
-const prbf_element_type prbf_element_type::sof = prbf_element_type(prbf_element_type::local, 2, prbf_element_type::MPA);
-const prbf_element_type prbf_element_type::eof = prbf_element_type(prbf_element_type::local, 1, prbf_element_type::MPA);
+const element_type element_type::sof = element_type(element_type::local, 2, element_type::MPA);
+const element_type element_type::eof = element_type(element_type::local, 1, element_type::MPA);
 
 // *****************************************************************************
-prbf_element_type::prbf_element_type()
+element_type::element_type()
 {
 	set(local, 0, MPA);
 
@@ -27,7 +29,7 @@ prbf_element_type::prbf_element_type()
 }
 
 // *****************************************************************************
-prbf_element_type::prbf_element_type(tower_type_t tower_type,
+element_type::element_type(tower_type_t tower_type,
 		tower_ID_t tower_ID, chip_type_t chip_type)
 {
 	set(tower_type, tower_ID, chip_type);
@@ -36,7 +38,7 @@ prbf_element_type::prbf_element_type(tower_type_t tower_type,
 }
 
 // *****************************************************************************
-void prbf_element_type::set(tower_type_t tower_type, tower_ID_t tower_ID,
+void element_type::set(tower_type_t tower_type, tower_ID_t tower_ID,
         chip_type_t chip_type)
 {
 	set_tower_type(tower_type);
@@ -47,7 +49,7 @@ void prbf_element_type::set(tower_type_t tower_type, tower_ID_t tower_ID,
 }
 
 // *****************************************************************************
-void prbf_element_type::set_tower_type(tower_type_t tower_type)
+void element_type::set_tower_type(tower_type_t tower_type)
 {
 	this->tower_type = tower_type;
 
@@ -55,13 +57,13 @@ void prbf_element_type::set_tower_type(tower_type_t tower_type)
 }
 
 // *****************************************************************************
-prbf_element_type::tower_type_t prbf_element_type::get_tower_type() const
+element_type::tower_type_t element_type::get_tower_type() const
 {
 	return (tower_type);
 }
 
 // *****************************************************************************
-void prbf_element_type::set_tower_ID(tower_ID_t tower_ID)
+void element_type::set_tower_ID(tower_ID_t tower_ID)
 {
 	this->tower_ID = tower_ID;
 
@@ -69,13 +71,13 @@ void prbf_element_type::set_tower_ID(tower_ID_t tower_ID)
 }
 
 // *****************************************************************************
-prbf_element_type::tower_ID_t prbf_element_type::get_tower_ID() const
+element_type::tower_ID_t element_type::get_tower_ID() const
 {
 	return (tower_ID);
 }
 
 // *****************************************************************************
-void prbf_element_type::set_chip_type(chip_type_t chip_type)
+void element_type::set_chip_type(chip_type_t chip_type)
 {
 	this->chip_type = chip_type;
 
@@ -83,13 +85,13 @@ void prbf_element_type::set_chip_type(chip_type_t chip_type)
 }
 
 // *****************************************************************************
-prbf_element_type::chip_type_t prbf_element_type::get_chip_type() const
+element_type::chip_type_t element_type::get_chip_type() const
 {
     return (chip_type);
 }
 
 // *****************************************************************************
-bool prbf_element_type::operator== (const prbf_element_type& rhs) const
+bool element_type::operator== (const element_type& rhs) const
 {
     bool equal = true;
 

@@ -1,7 +1,7 @@
 /*!
- * @file prbf_trailer.cpp
+ * @file trailer.cpp
  * @author Christian Amstutz
- * @date March 31, 2015
+ * @date April 1, 2015
  *
  * @brief
  *
@@ -11,18 +11,20 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "prbf_trailer.hpp"
+#include "trailer.hpp"
+
+using namespace PRBF;
 
 // *****************************************************************************
-prbf_trailer::prbf_trailer()
+trailer::trailer()
 {
-    type_field = prbf_element_type::eof;
+    type_field = element_type::eof;
     stub_count = 0;
 
     return;
 }
 // *****************************************************************************
-void prbf_trailer::set_stub_count(stub_count_t stub_count)
+void trailer::set_stub_count(stub_count_t stub_count)
 {
     this->stub_count = stub_count;
 
@@ -30,7 +32,7 @@ void prbf_trailer::set_stub_count(stub_count_t stub_count)
 }
 
 // *****************************************************************************
-prbf_trailer::stub_count_t prbf_trailer::get_stub_count() const
+trailer::stub_count_t trailer::get_stub_count() const
 {
     return (stub_count);
 }

@@ -13,10 +13,12 @@
 
 #pragma once
 
-#include "prbf_stub_type.hpp"
+#include "stub_type.hpp"
+
+using namespace PRBF;
 
 // *****************************************************************************
-class stub_PRBF : public prbf_stub_type
+class stub_PRBF : public stub_type
 {
 public:
     typedef unsigned int fe_module_t;

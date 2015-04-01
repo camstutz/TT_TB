@@ -1,5 +1,5 @@
 /*!
- * @file prbf_element_type.hpp
+ * @file element_type.hpp
  * @author Christian Amstutz
  * @date April 1, 2015
  *
@@ -14,7 +14,10 @@
 #pragma once
 
 // *****************************************************************************
-class prbf_element_type
+namespace PRBF
+{
+
+class element_type
 {
 public:
     typedef enum
@@ -29,11 +32,11 @@ public:
         CBC = 0x1,
     } chip_type_t;
 
-    static const prbf_element_type sof;
-    static const prbf_element_type eof;
+    static const element_type sof;
+    static const element_type eof;
 
-    prbf_element_type();
-    prbf_element_type(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
+    element_type();
+    element_type(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
 
     void set(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
 
@@ -44,10 +47,12 @@ public:
     void set_chip_type(chip_type_t chip_type);
     chip_type_t get_chip_type() const;
 
-    bool operator== (const prbf_element_type& rhs) const;
+    bool operator== (const element_type& rhs) const;
 
 private:
     tower_type_t tower_type;
     tower_ID_t tower_ID;
     chip_type_t chip_type;
 };
+
+} // namespace PRBF

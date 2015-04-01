@@ -1,7 +1,7 @@
 /*!
  * @file prbf_tb.hpp
  * @author Christian
- * @date March 31, 2015
+ * @date April 1, 2015
  *
  * @brief
  *
@@ -15,11 +15,11 @@
 
 #include <iostream>
 
-#include "../data_formats/prbf/prbf_element_type.hpp"
-#include "../data_formats/prbf/prbf_element.hpp"
-#include "../data_formats/prbf/prbf_header.hpp"
-#include "../data_formats/prbf/prbf_trailer.hpp"
-#include "../data_formats/prbf/prbf_stub_element.hpp"
+#include "../data_formats/prbf/header.hpp"
+#include "../data_formats/prbf/element_type.hpp"
+#include "../data_formats/prbf/frame_element.hpp"
+#include "../data_formats/prbf/stub_element.hpp"
 #include "../data_formats/prbf/stub_PRBF0.hpp"
+#include "../data_formats/prbf/trailer.hpp"
 
 void prbf_tb();

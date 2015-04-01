@@ -1,5 +1,5 @@
 /*!
- * @file prbf_stub_element.cpp
+ * @file PRBF_frame.hpp
  * @author Christian Amstutz
  * @date April 1, 2015
  *
@@ -11,12 +11,19 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "prbf_stub_element.hpp"
+#pragma once
+
+#include "header.hpp"
+#include "trailer.hpp"
+#include "stub_element.hpp"
+
+using namespace PRBF;
 
 // *****************************************************************************
-prbf_stub_element::prbf_stub_element()
+class PRBF_frame
 {
-    set_type_field(prbf_element_type(prbf_element_type::local, 0, prbf_element_type::MPA));
+public:
+    PRBF_frame();
 
-    return;
-}
+private:
+};

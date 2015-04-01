@@ -1,5 +1,5 @@
 /*!
- * @file prbf_stub_element.hpp
+ * @file stub_element.hpp
  * @author Christian Amstutz
  * @date April 1, 2015
  *
@@ -13,13 +13,19 @@
 
 #pragma once
 
-#include "prbf_element.hpp"
+#include "frame_element.hpp"
+
+using namespace PRBF;
 
 // *****************************************************************************
-class prbf_stub_element : public prbf_element
+namespace PRBF {
+
+class stub_element : public frame_element
 {
 public:
-    prbf_stub_element();
+    stub_element();
 
 private:
 };
+
+}  // namespace PRBF
