@@ -52,7 +52,7 @@ public:
 
     bool operator== (const element_type& rhs) const;
 
-    std::string get_string();
+    std::string get_string() const;
 
 private:
     tower_type_t tower_type;

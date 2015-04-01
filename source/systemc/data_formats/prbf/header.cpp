@@ -44,7 +44,7 @@ void header::set_type_field(element_type type_field)
 // *****************************************************************************
 void header::set_bunch_crossing_ID(bunch_crossing_ID_t bunch_crossing)
 {
-    this->bunch_crossing_ID = bunch_crossing;
+    payload = bunch_crossing;
 
     return;
 }
@@ -52,5 +52,5 @@ void header::set_bunch_crossing_ID(bunch_crossing_ID_t bunch_crossing)
 // *****************************************************************************
 header::bunch_crossing_ID_t header::get_bunch_crossing_ID() const
 {
-    return (bunch_crossing_ID);
+    return (payload);
 }

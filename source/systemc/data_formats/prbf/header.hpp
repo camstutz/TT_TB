@@ -18,14 +18,18 @@
 #include "frame_element.hpp"
 #include "element_type.hpp"
 
+using namespace PRBF;
+
 // *****************************************************************************
 namespace PRBF
 {
 
-class header : public frame_element
+typedef unsigned int bunch_crossing_ID_type;
+
+class header : public frame_element<bunch_crossing_ID_type>
 {
 public:
-    typedef unsigned int bunch_crossing_ID_t;
+    typedef bunch_crossing_ID_type bunch_crossing_ID_t;
 
     header();
     header(bunch_crossing_ID_t bunch_crossing);
@@ -35,7 +39,6 @@ public:
     bunch_crossing_ID_t get_bunch_crossing_ID() const;
 
 private:
-    bunch_crossing_ID_t bunch_crossing_ID;
 };
 
 } // namespace PRBF

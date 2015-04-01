@@ -16,15 +16,20 @@
 #include <iostream>
 
 #include "frame_element.hpp"
+#include "element_type.hpp"
+
+using namespace PRBF;
 
 // *****************************************************************************
 namespace PRBF
 {
 
-class trailer : public frame_element
+typedef unsigned int stub_count_type;
+
+class trailer : public frame_element<stub_count_type>
 {
 public:
-    typedef unsigned int stub_count_t;
+    typedef stub_count_type stub_count_t;
 
     trailer();
 
@@ -33,7 +38,6 @@ public:
     stub_count_t get_stub_count() const;
 
 private:
-    stub_count_t stub_count;
 };
 
 } // namespace PRBF

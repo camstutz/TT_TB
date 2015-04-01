@@ -56,6 +56,8 @@ void prbf_tb()
 	std::cout << "size: " << sizeof(frame) << std::endl;
 
 	std::cout << frame.get_header().get_type_field().get_string() << std::endl;
+	std::cout << "Header: " << frame.get_header().get_string() << std::endl;
+	std::cout << "Trailer: " << frame.get_trailer().get_string() << std::endl;
 
 	return;
 }

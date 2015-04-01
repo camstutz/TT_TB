@@ -19,7 +19,7 @@ using namespace PRBF;
 trailer::trailer()
 {
     type_field = element_type::eof;
-    stub_count = 0;
+    payload = 0;
 
     return;
 }
@@ -36,7 +36,7 @@ void trailer::set_type_field(element_type type_field)
 // *****************************************************************************
 void trailer::set_stub_count(stub_count_t stub_count)
 {
-    this->stub_count = stub_count;
+    payload = stub_count;
 
     return;
 }
@@ -44,5 +44,5 @@ void trailer::set_stub_count(stub_count_t stub_count)
 // *****************************************************************************
 trailer::stub_count_t trailer::get_stub_count() const
 {
-    return (stub_count);
+    return (payload);
 }

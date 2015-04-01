@@ -21,7 +21,7 @@ using namespace PRBF;
 namespace PRBF {
 
 template <typename stub_type>
-class stub_element : public frame_element
+class stub_element : public frame_element<stub_type>
 {
 public:
     typedef stub_type stub_t;
@@ -41,7 +41,7 @@ private:
 template <typename stub_type>
 stub_element<stub_type>::stub_element()
 {
-    set_type_field(element_type(element_type::local, 0, element_type::MPA));
+    this->set_type_field(element_type(element_type::local, 0, element_type::MPA));
 
     return;
 }

@@ -103,7 +103,7 @@ bool element_type::operator== (const element_type& rhs) const
 }
 
 // *****************************************************************************
-std::string element_type::get_string()
+std::string element_type::get_string() const
 {
     std::stringstream out_string;
 
