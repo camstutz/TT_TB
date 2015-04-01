@@ -1,5 +1,5 @@
 /*!
- * @file PRBF:frame.cpp
+ * @file PRBF_frame.cpp
  * @author Christian Amstutz
  * @date April 1, 2015
  *
@@ -13,8 +13,4 @@
 
 #include "PRBF_frame.hpp"
 
-// *****************************************************************************
-PRBF_frame::PRBF_frame()
-{
-    return;
-}
+using namespace PRBF;

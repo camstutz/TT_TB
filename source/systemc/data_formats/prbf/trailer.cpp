@@ -23,6 +23,16 @@ trailer::trailer()
 
     return;
 }
+
+// *****************************************************************************
+void trailer::set_type_field(element_type type_field)
+{
+    std::cerr << "Error: PRBF::trailer - Type field cannot be altered."
+              << std::endl;
+
+    return;
+}
+
 // *****************************************************************************
 void trailer::set_stub_count(stub_count_t stub_count)
 {

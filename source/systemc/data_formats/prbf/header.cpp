@@ -19,7 +19,24 @@ using namespace PRBF;
 header::header()
 {
     type_field = element_type::sof;
-    bunch_crossing_ID = 0;
+    set_bunch_crossing_ID(0);
+
+    return;
+}
+
+// *****************************************************************************
+header::header(bunch_crossing_ID_t bunch_crossing)
+{
+    set_bunch_crossing_ID(bunch_crossing);
+
+    return;
+}
+
+// *****************************************************************************
+void header::set_type_field(element_type type_field)
+{
+    std::cerr << "Error: PRBF::header - Type field cannot be altered."
+              << std::endl;
 
     return;
 }

@@ -22,4 +22,6 @@
 #include "../data_formats/prbf/stub_PRBF0.hpp"
 #include "../data_formats/prbf/trailer.hpp"
 
+#include "../data_formats/prbf/PRBF_frame.hpp"
+
 void prbf_tb();

@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include <iostream>
+
 #include "frame_element.hpp"
 
 // *****************************************************************************
@@ -26,6 +28,7 @@ public:
 
     trailer();
 
+    void set_type_field(element_type type_field);
     void set_stub_count(stub_count_t stub_count);
     stub_count_t get_stub_count() const;
 

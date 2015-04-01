@@ -30,9 +30,8 @@ void prbf_tb()
 
 	header header1;
 	trailer trailer1;
-	stub_element stub_element;
+	stub_element<stub_PRBF0> stub_element;
 
-	header1.set_type_field(element_type::sof);
 	header1.set_bunch_crossing_ID(1);
 
 	trailer1.set_type_field(element_type::eof);
@@ -44,6 +43,8 @@ void prbf_tb()
 
 	stub2.set_strip(2);
 	stub2.set_bend(5);
+
+	PRBF_frame<stub_PRBF0> frame(12);
 
 	return;
 }
