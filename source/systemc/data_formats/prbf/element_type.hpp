@@ -13,6 +13,9 @@
 
 #pragma once
 
+#include <string>
+#include <sstream>
+
 // *****************************************************************************
 namespace PRBF
 {
@@ -48,6 +51,8 @@ public:
     chip_type_t get_chip_type() const;
 
     bool operator== (const element_type& rhs) const;
+
+    std::string get_string();
 
 private:
     tower_type_t tower_type;

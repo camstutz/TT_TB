@@ -101,3 +101,35 @@ bool element_type::operator== (const element_type& rhs) const
 
     return (equal);
 }
+
+// *****************************************************************************
+std::string element_type::get_string()
+{
+    std::stringstream out_string;
+
+    out_string << "[";
+
+    if (tower_type == local)
+    {
+        out_string << "tt=L,";
+    }
+    else
+    {
+        out_string << "tt=A,";
+    }
+
+    out_string << "id=" << tower_ID << ",";
+
+    if (chip_type == MPA)
+    {
+        out_string << "c=MPA";
+    }
+    else
+    {
+        out_string << "c=CBC";
+    }
+
+    out_string << "]";
+
+    return (out_string.str());
+}
