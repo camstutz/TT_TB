@@ -1,7 +1,7 @@
 /*!
  * @file prbf_element_type.hpp
  * @author Christian Amstutz
- * @date March 31, 2015
+ * @date April 1, 2015
  *
  * @brief
  *
@@ -34,10 +34,9 @@ public:
 
     prbf_element_type();
     prbf_element_type(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
-private:
-    void init(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
 
-public:
+    void set(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
+
     void set_tower_type(tower_type_t tower_type);
     tower_type_t get_tower_type() const;
     void set_tower_ID(tower_ID_t tower_ID);

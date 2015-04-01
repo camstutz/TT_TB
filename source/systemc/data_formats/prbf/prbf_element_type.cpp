@@ -21,7 +21,7 @@ const prbf_element_type prbf_element_type::eof = prbf_element_type(prbf_element_
 // *****************************************************************************
 prbf_element_type::prbf_element_type()
 {
-	init(local, 0, MPA);
+	set(local, 0, MPA);
 
 	return;
 }
@@ -30,14 +30,14 @@ prbf_element_type::prbf_element_type()
 prbf_element_type::prbf_element_type(tower_type_t tower_type,
 		tower_ID_t tower_ID, chip_type_t chip_type)
 {
-	init(tower_type, tower_ID, chip_type);
+	set(tower_type, tower_ID, chip_type);
 
 	return;
 }
 
 // *****************************************************************************
-void prbf_element_type::init(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t
-        chip_type)
+void prbf_element_type::set(tower_type_t tower_type, tower_ID_t tower_ID,
+        chip_type_t chip_type)
 {
 	set_tower_type(tower_type);
 	set_tower_ID(tower_ID);
