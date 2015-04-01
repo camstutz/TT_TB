@@ -1,5 +1,5 @@
 /*!
- * @file prbf_stub_type.hpp
+ * @file stub_PRBF0.cpp
  * @author Christian Amstutz
  * @date April 1, 2015
  *
@@ -11,13 +11,10 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#pragma once
+#include "stub_PRBF0.hpp"
 
 // *****************************************************************************
-class prbf_stub_type
+stub_PRBF0::stub_PRBF0()
 {
-public:
-    prbf_stub_type();
-
-private:
-};
+    return;
+}

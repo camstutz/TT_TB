@@ -19,6 +19,7 @@
 #include "../data_formats/prbf/prbf_element.hpp"
 #include "../data_formats/prbf/prbf_header.hpp"
 #include "../data_formats/prbf/prbf_trailer.hpp"
-#include "../data_formats/prbf/prbf_stub.hpp"
+#include "../data_formats/prbf/prbf_stub_element.hpp"
+#include "../data_formats/prbf/stub_PRBF0.hpp"
 
 void prbf_tb();
