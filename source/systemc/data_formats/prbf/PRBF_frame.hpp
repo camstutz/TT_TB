@@ -80,7 +80,8 @@ trailer PRBF_frame<stub_type>::get_trailer() const
 template <typename stub_type>
 void PRBF_frame<stub_type>::add_stub(stub_t stub)
 {
-    stub_vector.push(stub);
+    stub_vector.push_back(stub);
+    trailer_element.set_stub_count(stub_vector.size());
 
     return;
 }

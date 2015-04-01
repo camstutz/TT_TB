@@ -44,7 +44,17 @@ void prbf_tb()
 	stub2.set_strip(2);
 	stub2.set_bend(5);
 
-	PRBF_frame<stub_PRBF0> frame(12);
+	PRBF_0 frame(12);
+	PRBF_0::stub_t stub;
+	stub.set(1,0,3,4,2);
+	frame.add_stub(stub);
+	stub.set(1,0,3,4,2);
+	frame.add_stub(stub);
+
+	std::cout << frame.get_trailer().get_stub_count() << std::endl;
+
+	std::cout << "size: " << sizeof(frame) << std::endl;
+
 
 	return;
 }

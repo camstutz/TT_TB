@@ -24,4 +24,6 @@
 
 #include "../data_formats/prbf/PRBF_frame.hpp"
 
+#include "../data_formats/prbf/PRBF.hpp"
+
 void prbf_tb();
