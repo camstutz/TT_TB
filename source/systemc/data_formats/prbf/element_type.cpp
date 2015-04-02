@@ -130,7 +130,7 @@ std::string element_type::get_string() const
             out_string << "tt=A,";
         }
 
-        out_string << "id=" << tower_ID << ",";
+        out_string << "id=0x" << std::hex << tower_ID << ",";
 
         if (chip_type == MPA)
         {
