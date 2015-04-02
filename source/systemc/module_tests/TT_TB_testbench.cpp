@@ -27,6 +27,7 @@
 //#include "am_system_tb.hpp"
 //#include "trigger_tower_tb.hpp"
 #include "prbf_tb.hpp"
+#include "cic_format_tb.hpp"
 
 int sc_main(int argc, char *agv[])
 {
@@ -53,7 +54,8 @@ int sc_main(int argc, char *agv[])
 //	  am_system_tb am_system_tb("AM_System");
 //    am_board_tb am_board_tb("AM_board_TB");
 //    trigger_tower_tb("trigger_tower_tb");
-    prbf_tb();
+//    prbf_tb();
+      cic_format_tb();
 
     // ----- Time unit / resolution setup --------------------------------------
 
