@@ -1,7 +1,7 @@
 /*!
  * @file stub_type.hpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 2, 2015
  *
  * @brief
  *
@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include <string>
+
 // *****************************************************************************
 namespace PRBF
 {
@@ -20,7 +22,11 @@ namespace PRBF
 class stub_type
 {
 public:
-    stub_type();
+    virtual ~stub_type();
+
+    virtual std::string get_string() const =0;
+
+    friend std::ostream& operator<< (std::ostream& stream, const stub_type& stub);
 
 private:
 };

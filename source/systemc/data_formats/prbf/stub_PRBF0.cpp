@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF0.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 2, 2015
  *
  * @brief
  *
@@ -14,7 +14,11 @@
 #include "stub_PRBF0.hpp"
 
 // *****************************************************************************
-stub_PRBF0::stub_PRBF0()
+std::string stub_PRBF0::get_string() const
 {
-    return;
+    std::stringstream out_string;
+
+    out_string << "[" << get_PRBF_string() << "]";
+
+    return (out_string.str());
 }

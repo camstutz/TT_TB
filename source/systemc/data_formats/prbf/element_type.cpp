@@ -111,24 +111,35 @@ std::string element_type::get_string() const
 
     out_string << "[";
 
-    if (tower_type == local)
+    if (*this == element_type::sof)
     {
-        out_string << "tt=L,";
+        out_string << std::setw(15) << std::left << "SOF";
+    }
+    else if (*this == element_type::eof)
+    {
+        out_string << std::setw(15) << std::left << "EOF";
     }
     else
     {
-        out_string << "tt=A,";
-    }
+        if (tower_type == local)
+        {
+            out_string << "tt=L,";
+        }
+        else
+        {
+            out_string << "tt=A,";
+        }
 
-    out_string << "id=" << tower_ID << ",";
+        out_string << "id=" << tower_ID << ",";
 
-    if (chip_type == MPA)
-    {
-        out_string << "c=MPA";
-    }
-    else
-    {
-        out_string << "c=CBC";
+        if (chip_type == MPA)
+        {
+            out_string << "c=MPA";
+        }
+        else
+        {
+            out_string << "c=CBC";
+        }
     }
 
     out_string << "]";

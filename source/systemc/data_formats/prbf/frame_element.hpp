@@ -67,6 +67,7 @@ std::string frame_element<payload_type>::get_string() const
 
     out_string << "[";
     out_string << get_type_field().get_string();
+    out_string << "-";
     out_string << payload;
     out_string << "]";
 

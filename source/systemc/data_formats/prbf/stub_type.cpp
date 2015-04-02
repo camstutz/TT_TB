@@ -1,7 +1,7 @@
 /*!
  * @file stub_type.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 2, 2015
  *
  * @brief
  *
@@ -15,9 +15,20 @@
 
 using namespace PRBF;
 
+// *****************************************************************************
+stub_type::~stub_type()
+{}
 
 // *****************************************************************************
-stub_type::stub_type()
+namespace PRBF
 {
-    return;
+
+std::ostream& operator<< (std::ostream& stream, const stub_type& stub)
+{
+    stream << stub.get_string();
+
+    return (stream);
 }
+
+}  // namespace PRBF
+

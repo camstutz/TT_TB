@@ -46,18 +46,23 @@ void prbf_tb()
 
 	PRBF_0 frame(12);
 	PRBF_0::stub_t stub;
-	stub.set(1,0,3,4,2);
-	frame.add_stub(stub);
-	stub.set(1,0,3,4,2);
-	frame.add_stub(stub);
+	stub.set(0x1,0x0,0x3,0x4,0x2,0x3);
+    PRBF_0::stub_element_t stub_cont(element_type::local_CBC, stub);
+	frame.add_stub(stub_cont);
+	stub.set(0x2,0x0,0x3,0x23,0x6);
+	stub_cont.set_stub(stub);
+	frame.add_stub(stub_cont);
 
 	std::cout << frame.get_trailer().get_stub_count() << std::endl;
-
-	std::cout << "size: " << sizeof(frame) << std::endl;
 
 	std::cout << frame.get_header().get_type_field().get_string() << std::endl;
 	std::cout << "Header: " << frame.get_header().get_string() << std::endl;
 	std::cout << "Trailer: " << frame.get_trailer().get_string() << std::endl;
+
+    std::cout << std::endl;
+	std::cout << frame.get_string() << std::endl;
+    std::cout << "Size: " << sizeof(frame) << std::endl;
+    std::cout << std::endl;
 
 	return;
 }

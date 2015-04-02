@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF0.hpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 2, 2015
  *
  * @brief
  *
@@ -15,11 +15,14 @@
 
 #include "stub_PRBF.hpp"
 
+#include <string>
+#include <sstream>
+
 // *****************************************************************************
 class stub_PRBF0 : public stub_PRBF
 {
 public:
-    stub_PRBF0();
+    virtual std::string get_string() const;
 
 private:
 };

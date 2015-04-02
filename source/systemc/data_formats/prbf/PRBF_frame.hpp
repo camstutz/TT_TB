@@ -1,7 +1,7 @@
 /*!
  * @file PRBF_frame.hpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 2, 2015
  *
  * @brief
  *
@@ -14,6 +14,8 @@
 #pragma once
 
 #include <vector>
+#include <sstream>
+#include <string>
 
 #include "header.hpp"
 #include "trailer.hpp"
@@ -27,6 +29,8 @@ class PRBF_frame
 {
 public:
     typedef stub_type stub_t;
+    typedef stub_element<stub_t> stub_element_t;
+    typedef std::vector<stub_element_t> stub_vector_t;
 
     PRBF_frame(header::bunch_crossing_ID_t bunch_crossing);
 
@@ -34,12 +38,19 @@ public:
     header get_header() const;
     trailer get_trailer() const;
 
-    void add_stub(stub_t stub);
+    void add_stub(stub_element_t stub);
+    typename stub_vector_t::size_type stub_count() const;
+    void reset_stub_ptr();
+    bool get_stub(stub_element_t *stub) const;
+
+    std::string get_string() const;
 
 private:
     header header_element;
-    std::vector<stub_t> stub_vector;
+    stub_vector_t stub_vector;
     trailer trailer_element;
+
+    typename stub_vector_t::iterator stub_it;
 };
 
 // *****************************************************************************
@@ -49,7 +60,9 @@ template <typename stub_type>
 PRBF_frame<stub_type>::PRBF_frame(header::bunch_crossing_ID_t bunch_crossing) :
     header_element(bunch_crossing)
 {
-   return;
+    reset_stub_ptr();
+
+    return;
 }
 
 // *****************************************************************************
@@ -78,10 +91,67 @@ trailer PRBF_frame<stub_type>::get_trailer() const
 
 // *****************************************************************************
 template <typename stub_type>
-void PRBF_frame<stub_type>::add_stub(stub_t stub)
+void PRBF_frame<stub_type>::add_stub(stub_element_t stub)
 {
     stub_vector.push_back(stub);
     trailer_element.set_stub_count(stub_vector.size());
 
     return;
+}
+
+// *****************************************************************************
+template <typename stub_type>
+typename PRBF_frame<stub_type>::stub_vector_t::size_type
+        PRBF_frame<stub_type>::stub_count() const
+{
+    return (stub_vector.size());
+}
+
+// *****************************************************************************
+template <typename stub_type>
+void PRBF_frame<stub_type>::reset_stub_ptr()
+{
+    stub_it = stub_vector.begin();
+
+    return;
+}
+
+// *****************************************************************************
+template <typename stub_type>
+bool PRBF_frame<stub_type>::get_stub(stub_element_t *stub) const
+{
+    bool valid = false;
+
+    if (stub_it != stub_vector.end())
+    {
+        stub = *stub_it;
+        ++stub_it;
+
+        valid = true;
+    }
+    else
+    {
+        stub = NULL;
+
+        valid = false;
+    }
+
+    return (valid);
+}
+
+// *****************************************************************************
+template <typename stub_type>
+std::string PRBF_frame<stub_type>::get_string() const
+{
+    std::stringstream out_string;
+
+    out_string << header_element.get_string() << std::endl;
+    typename stub_vector_t::const_iterator local_stub_it = stub_vector.begin();
+    for(; local_stub_it != stub_vector.end(); ++local_stub_it)
+    {
+        out_string << local_stub_it->get_string() << std::endl;
+    }
+    out_string << trailer_element.get_string();
+
+    return (out_string.str());
 }

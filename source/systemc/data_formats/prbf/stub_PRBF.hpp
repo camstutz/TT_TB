@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF.hpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 2, 2015
  *
  * @brief
  *
@@ -14,6 +14,10 @@
 #pragma once
 
 #include "stub_type.hpp"
+
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 using namespace PRBF;
 
@@ -31,6 +35,7 @@ public:
     stub_PRBF();
     stub_PRBF(fe_module_t, concentrator_ID_t, fe_chip_ID_t, strip_t, bend_t);
     stub_PRBF(fe_module_t, concentrator_ID_t, fe_chip_ID_t, strip_t, bend_t, z_t);
+    virtual ~stub_PRBF();
 
     void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
     void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
@@ -48,6 +53,8 @@ public:
     void set_z(z_t z);
     z_t get_z() const;
 
+    virtual std::string get_string() const =0;
+
 protected:
     fe_module_t fe_module;
     concentrator_ID_t concentrator_ID;
@@ -55,4 +62,6 @@ protected:
     strip_t strip;
     bend_t bend;
     z_t z;
+
+    std::string get_PRBF_string() const;
 };

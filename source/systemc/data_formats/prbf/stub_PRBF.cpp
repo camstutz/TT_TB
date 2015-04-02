@@ -39,6 +39,10 @@ stub_PRBF::stub_PRBF(fe_module_t fe_module, concentrator_ID_t concentrator_ID,
 }
 
 // *****************************************************************************
+stub_PRBF::~stub_PRBF()
+{}
+
+// *****************************************************************************
 void stub_PRBF::set(fe_module_t fe_module, concentrator_ID_t concentrator_ID,
         fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend)
 {
@@ -50,11 +54,11 @@ void stub_PRBF::set(fe_module_t fe_module, concentrator_ID_t concentrator_ID,
         fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z)
 {
     set_fe_module(fe_module);
-    set_concentrator_ID(0);
-    set_fe_chip_ID(0);
-    set_strip(0);
-    set_bend(0);
-    set_z(0);
+    set_concentrator_ID(concentrator_ID);
+    set_fe_chip_ID(fe_chip_ID);
+    set_strip(strip);
+    set_bend(bend);
+    set_z(z);
 
     return;
 }
@@ -141,4 +145,22 @@ void stub_PRBF::set_z(z_t z)
 stub_PRBF::z_t stub_PRBF::get_z() const
 {
     return (z);
+}
+
+// *****************************************************************************
+std::string stub_PRBF::get_PRBF_string() const
+{
+    std::stringstream out_string;
+
+    out_string << std::hex
+               << std::internal
+               << std::setfill('0');
+    out_string << "fe=0x" << std::setw(2) << fe_module << ",";
+    out_string << "cc=0x" << std::setw(1) << concentrator_ID << ",";
+    out_string << "cp=0x" << std::setw(1) << fe_chip_ID << ",";
+    out_string << "s=0x"  << std::setw(2) << strip << ",";
+    out_string << "b=0x"  << std::setw(1) << bend << ",";
+    out_string << "z=0x"  << std::setw(1) << z;
+
+    return (out_string.str());
 }

@@ -27,12 +27,12 @@ public:
     typedef stub_type stub_t;
 
     stub_element();
+    stub_element(element_type type_field, stub_t stub);
 
     void set_stub(stub_t stub);
-    stub_t get_stub();
+    stub_t get_stub() const;
 
 private:
-    stub_t stub;
 };
 
 }  // namespace PRBF
@@ -48,18 +48,26 @@ stub_element<stub_type>::stub_element()
 
 // *****************************************************************************
 template <typename stub_type>
-void stub_element<stub_type>::set_stub(stub_t stub)
+stub_element<stub_type>::stub_element(element_type type_field, stub_t stub)
 {
-    this->stub = stub;
+    this->set_type_field(type_field);
+    set_stub(stub);
 
     return;
 }
 
 // *****************************************************************************
+template <typename stub_type>
+void stub_element<stub_type>::set_stub(stub_t stub)
+{
+    this->payload = stub;
+
+    return;
+}
 
 // *****************************************************************************
 template <typename stub_type>
-typename stub_element<stub_type>::stub_t stub_element<stub_type>::get_stub()
+typename stub_element<stub_type>::stub_t stub_element<stub_type>::get_stub() const
 {
-    return (stub);
+    return (this->payload);
 }
