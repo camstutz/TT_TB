@@ -27,6 +27,7 @@ header::header()
 // *****************************************************************************
 header::header(bunch_crossing_ID_t bunch_crossing)
 {
+    type_field = element_type::sof;
     set_bunch_crossing_ID(bunch_crossing);
 
     return;
