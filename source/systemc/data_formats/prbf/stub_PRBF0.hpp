@@ -22,6 +22,9 @@
 class stub_PRBF0 : public stub_PRBF
 {
 public:
+    void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
+    void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
+
     virtual std::string get_string() const;
 
 private:

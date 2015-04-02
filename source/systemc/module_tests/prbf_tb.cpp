@@ -44,25 +44,52 @@ void prbf_tb()
 	stub2.set_strip(2);
 	stub2.set_bend(5);
 
-	PRBF_0 frame(12);
+	PRBF_0 frame0(0x12);
 	PRBF_0::stub_t stub;
 	stub.set(0x1,0x0,0x3,0x4,0x2,0x3);
     PRBF_0::stub_element_t stub_cont(element_type::local_CBC, stub);
-	frame.add_stub(stub_cont);
+	frame0.add_stub(stub_cont);
 	stub.set(0x2,0x0,0x3,0x23,0x6);
 	stub_cont.set_stub(stub);
-	frame.add_stub(stub_cont);
+	frame0.add_stub(stub_cont);
 
-	std::cout << frame.get_trailer().get_stub_count() << std::endl;
+	std::cout << frame0.get_trailer().get_stub_count() << std::endl;
 
-	std::cout << frame.get_header().get_type_field().get_string() << std::endl;
-	std::cout << "Header: " << frame.get_header().get_string() << std::endl;
-	std::cout << "Trailer: " << frame.get_trailer().get_string() << std::endl;
+	std::cout << frame0.get_header().get_type_field().get_string() << std::endl;
+	std::cout << "Header: " << frame0.get_header().get_string() << std::endl;
+	std::cout << "Trailer: " << frame0.get_trailer().get_string() << std::endl;
 
     std::cout << std::endl;
-	std::cout << frame.get_string() << std::endl;
-    std::cout << "Size: " << sizeof(frame) << std::endl;
+	std::cout << frame0.get_string() << std::endl;
+    std::cout << "Size: " << sizeof(frame0) << std::endl;
     std::cout << std::endl;
+
+    PRBF_1 frame1(0x14);
+    PRBF_1::stub_t stub_1;
+    stub_1.set(0x5, 0x1, 0x0, 0x3, 0x4, 0x2, 0x3);
+    PRBF_1::stub_element_t stub_cont_1(element_type::local_MPA, stub_1);
+    frame1.add_stub(stub_cont_1);
+    stub_1.set(0x6, 0x1, 0x0, 0x3, 0x4, 0x2, 0x3);
+    stub_cont_1.set_stub(stub_1);
+    frame1.add_stub(stub_cont_1);
+
+    std::cout << frame1.get_string() << std::endl;
+    std::cout << "Size: " << sizeof(frame1);
+    std::cout << std::endl << std::endl;
+
+    PRBF_2 frame2(0xA);
+    PRBF_2::stub_t stub_2;
+    stub_2.set(0x1, 0x5, 0x1, 0x0, 0x3, 0x4, 0x2, 0x3);
+    PRBF_2::stub_element_t stub_cont_2(element_type::local_MPA, stub_2);
+    frame2.add_stub(stub_cont_2);
+    stub_2.set(0x3, 0x6, 0x1, 0x0, 0x3, 0x4, 0x2, 0x3);
+    stub_cont_2.set_stub(stub_2);
+    frame2.add_stub(stub_cont_2);
+
+    std::cout << frame2.get_string() << std::endl;
+    std::cout << "Size: " << sizeof(frame2);
+    std::cout << std::endl << std::endl;
+
 
 	return;
 }

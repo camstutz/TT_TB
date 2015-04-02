@@ -37,9 +37,6 @@ public:
     stub_PRBF(fe_module_t, concentrator_ID_t, fe_chip_ID_t, strip_t, bend_t, z_t);
     virtual ~stub_PRBF();
 
-    void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
-    void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
-
     void set_fe_module(fe_module_t fe_module);
     fe_module_t get_fe_module() const;
     void set_concentrator_ID(concentrator_ID_t concentrator_ID);
@@ -62,6 +59,9 @@ protected:
     strip_t strip;
     bend_t bend;
     z_t z;
+
+    void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
+    void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
 
     std::string get_PRBF_string() const;
 };
