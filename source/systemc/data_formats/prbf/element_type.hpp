@@ -32,8 +32,8 @@ public:
     typedef unsigned int tower_ID_t;
     typedef enum
     {
-		MPA = 0x0,
-        CBC = 0x1,
+	    CBC = 0x0,
+        MPA = 0x1,
     } chip_type_t;
 
     static const element_type sof;
