@@ -19,6 +19,8 @@ using namespace PRBF;
 
 const element_type element_type::sof = element_type(element_type::local, 2, element_type::MPA);
 const element_type element_type::eof = element_type(element_type::local, 1, element_type::MPA);
+const element_type element_type::local_CBC = element_type(element_type::local, 0, element_type::CBC);
+const element_type element_type::local_MPA = element_type(element_type::local, 0, element_type::MPA);
 
 // *****************************************************************************
 element_type::element_type()

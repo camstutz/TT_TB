@@ -37,6 +37,8 @@ public:
 
     static const element_type sof;
     static const element_type eof;
+    static const element_type local_CBC;
+    static const element_type local_MPA;
 
     element_type();
     element_type(tower_type_t tower_type, tower_ID_t tower_ID, chip_type_t chip_type);
