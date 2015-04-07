@@ -1,7 +1,7 @@
 /*!
  * @file trailer.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 7, 2015
  *
  * @brief
  *
@@ -13,7 +13,9 @@
 
 #include "trailer.hpp"
 
-using namespace PRBF;
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
 trailer::trailer()
@@ -46,3 +48,6 @@ trailer::stub_count_t trailer::get_stub_count() const
 {
     return (payload);
 }
+
+// *****************************************************************************
+} // namespace PRBF

@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF2.cpp
  * @author Christian Amstutz
- * @date April 2, 2015
+ * @date April 7, 2015
  *
  * @brief
  *
@@ -12,6 +12,9 @@
  */
 
 #include "stub_PRBF2.hpp"
+
+// *****************************************************************************
+namespace PRBF {
 
 // *****************************************************************************
 stub_PRBF2::stub_PRBF2() : stub_PRBF1()
@@ -92,3 +95,6 @@ std::string stub_PRBF2::get_string() const
 
     return (out_string.str());
 }
+
+// *****************************************************************************
+}  // namespace PRBF

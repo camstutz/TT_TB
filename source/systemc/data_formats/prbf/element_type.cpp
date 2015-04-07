@@ -1,7 +1,7 @@
 /*!
  * @file prbf_element_type.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 7, 2015
  *
  * @brief
  *
@@ -13,7 +13,9 @@
 
 #include "element_type.hpp"
 
-using namespace PRBF;
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
 
@@ -146,3 +148,6 @@ std::string element_type::get_string() const
 
     return (out_string.str());
 }
+
+// *****************************************************************************
+} // namespace PRBF

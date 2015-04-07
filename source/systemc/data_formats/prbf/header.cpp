@@ -1,7 +1,7 @@
 /*!
  * @file header.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 7, 2015
  *
  * @brief
  *
@@ -13,7 +13,8 @@
 
 #include "header.hpp"
 
-using namespace PRBF;
+namespace PRBF
+{
 
 // *****************************************************************************
 header::header()
@@ -55,3 +56,6 @@ header::bunch_crossing_ID_t header::get_bunch_crossing_ID() const
 {
     return (payload);
 }
+
+// *****************************************************************************
+} // namespace PRBF

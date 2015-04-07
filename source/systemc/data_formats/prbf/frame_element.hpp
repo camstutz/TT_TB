@@ -18,11 +18,11 @@
 
 #include "element_type.hpp"
 
-using namespace PRBF;
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
-namespace PRBF {
-
 template <typename payload_type>
 class frame_element
 {
@@ -38,8 +38,6 @@ protected:
     element_type type_field;
     payload_t payload;
 };
-
-} // namespace PRBF
 
 // *****************************************************************************
 
@@ -73,3 +71,6 @@ std::string frame_element<payload_type>::get_string() const
 
     return (out_string.str());
 }
+
+// *****************************************************************************
+} // namespace PRBF

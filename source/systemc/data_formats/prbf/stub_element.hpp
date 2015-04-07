@@ -15,11 +15,11 @@
 
 #include "frame_element.hpp"
 
-using namespace PRBF;
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
-namespace PRBF {
-
 template <typename stub_type>
 class stub_element : public frame_element<stub_type>
 {
@@ -31,11 +31,9 @@ public:
 
     void set_stub(stub_t stub);
     stub_t get_stub() const;
-
-private:
 };
 
-}  // namespace PRBF
+// *****************************************************************************
 
 // *****************************************************************************
 template <typename stub_type>
@@ -71,3 +69,6 @@ typename stub_element<stub_type>::stub_t stub_element<stub_type>::get_stub() con
 {
     return (this->payload);
 }
+
+// *****************************************************************************
+} // namespace PRBF

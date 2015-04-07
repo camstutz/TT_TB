@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF.hpp
  * @author Christian Amstutz
- * @date April 2, 2015
+ * @date April 7, 2015
  *
  * @brief
  *
@@ -19,7 +19,9 @@
 #include <sstream>
 #include <iomanip>
 
-using namespace PRBF;
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
 class stub_PRBF : public stub_type
@@ -65,3 +67,6 @@ protected:
 
     std::string get_PRBF_string() const;
 };
+
+// *****************************************************************************
+} // namespace PRBF

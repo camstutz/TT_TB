@@ -14,6 +14,9 @@
 #include "stub_PRBF0.hpp"
 
 // *****************************************************************************
+namespace PRBF {
+
+// *****************************************************************************
 void stub_PRBF0::set(fe_module_t fe_module, concentrator_ID_t concentrator_ID,
         fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend)
 {
@@ -41,3 +44,5 @@ std::string stub_PRBF0::get_string() const
     return (out_string.str());
 }
 
+// *****************************************************************************
+} // namespace PRBF

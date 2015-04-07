@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF2.hpp
  * @author Christian Amstutz
- * @date April 2, 2015
+ * @date April 7, 2015
  *
  * @brief
  *
@@ -17,6 +17,10 @@
 
 #include <string>
 #include <sstream>
+
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
 class stub_PRBF2 : public stub_PRBF1
@@ -42,3 +46,6 @@ public:
 protected:
     prb_t prb;
 };
+
+// *****************************************************************************
+} // namespace PRBF

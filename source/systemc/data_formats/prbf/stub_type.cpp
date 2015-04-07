@@ -13,16 +13,15 @@
 
 #include "stub_type.hpp"
 
-using namespace PRBF;
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
 stub_type::~stub_type()
 {}
 
 // *****************************************************************************
-namespace PRBF
-{
-
 std::ostream& operator<< (std::ostream& stream, const stub_type& stub)
 {
     stream << stub.get_string();
@@ -30,5 +29,6 @@ std::ostream& operator<< (std::ostream& stream, const stub_type& stub)
     return (stream);
 }
 
+// *****************************************************************************
 }  // namespace PRBF
 

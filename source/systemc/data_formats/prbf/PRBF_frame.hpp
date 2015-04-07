@@ -21,7 +21,9 @@
 #include "trailer.hpp"
 #include "stub_element.hpp"
 
-using namespace PRBF;
+// *****************************************************************************
+namespace PRBF
+{
 
 // *****************************************************************************
 template <typename stub_type>
@@ -155,3 +157,6 @@ std::string PRBF_frame<stub_type>::get_string() const
 
     return (out_string.str());
 }
+
+// *****************************************************************************
+} // namespace PRBF

@@ -18,6 +18,8 @@
 #include "stub_PRBF1.hpp"
 #include "stub_PRBF2.hpp"
 
+using namespace PRBF;
+
 typedef PRBF_frame<stub_PRBF0> PRBF_0;
 typedef PRBF_frame<stub_PRBF1> PRBF_1;
 typedef PRBF_frame<stub_PRBF2> PRBF_2;
