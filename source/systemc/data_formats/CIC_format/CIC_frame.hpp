@@ -134,13 +134,13 @@ std::string CIC_frame<stub_type>::get_string() const
 {
     std::stringstream out_string;
 
-    out_string << header_element.get_string() << std::endl;
+    out_string << header_element << std::endl;
     typename stub_vector_t::const_iterator local_stub_it = stub_vector.begin();
     for(; local_stub_it != stub_vector.end(); ++local_stub_it)
     {
         out_string << local_stub_it->get_string() << std::endl;
     }
-    out_string << trailer_element.get_string();
+    out_string << trailer_element;
 
     return (out_string.str());
 }

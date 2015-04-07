@@ -18,11 +18,11 @@ void cic_format_tb()
     trailer my_trailer;
 
     std::cout << "CIC format test bench" << std::endl;
-    std::cout << my_header.get_string() << std::endl;
-    std::cout << my_trailer.get_string() << std::endl << std::endl;
+    std::cout << my_header << std::endl;
+    std::cout << my_trailer << std::endl << std::endl;
 
     header my_header2(header::MPA, header::fe_0_ERROR, 4);
-    std::cout << my_header2.get_string() << std::endl << std::endl;
+    std::cout << my_header2 << std::endl << std::endl;
 
     stub_CBC stub1(1,1,1,1);
     stub_MPA stub2(2,2,2,2,2);

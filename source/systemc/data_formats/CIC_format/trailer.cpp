@@ -28,3 +28,16 @@ std::string trailer::get_string() const
 {
     return ("[-]");
 }
+
+// *****************************************************************************
+namespace CIC
+{
+
+std::ostream& operator<< (std::ostream& stream, const trailer& trail)
+{
+    stream << trail.get_string();
+
+    return (stream);
+}
+
+} // namespace CIC

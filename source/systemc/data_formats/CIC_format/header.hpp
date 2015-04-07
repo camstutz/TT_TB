@@ -71,6 +71,8 @@ private:
 // TODO: remove public, friend class declaration does not work
 public:
     void set_stub_count(stub_count_t stub_count);
+
+friend std::ostream& operator<< (std::ostream& stream, const header& head);
 };
 
 } // namespace CIC
