@@ -24,7 +24,7 @@ trailer::trailer()
 }
 
 // *****************************************************************************
-std::string trailer::get_string()
+std::string trailer::get_string() const
 {
-    return ("-");
+    return ("[-]");
 }

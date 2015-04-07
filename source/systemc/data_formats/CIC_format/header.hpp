@@ -18,6 +18,9 @@
 #include <iomanip>
 #include <bitset>
 
+//template <typename stub_type>
+//class CIC_frame;
+
 // *****************************************************************************
 namespace CIC
 {
@@ -57,7 +60,7 @@ public:
     bunch_crossing_t get_bunch_crossing() const;
     stub_count_t get_stub_count() const;
 
-    std::string get_string();
+    std::string get_string() const;
 
 private:
     fe_type_t fe_type;
@@ -65,6 +68,8 @@ private:
     bunch_crossing_t bunch_crossing;
     stub_count_t stub_count;
 
+// TODO: remove public, friend class declaration does not work
+public:
     void set_stub_count(stub_count_t stub_count);
 };
 

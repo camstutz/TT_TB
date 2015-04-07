@@ -107,7 +107,7 @@ header::stub_count_t header::get_stub_count() const
 }
 
 // *****************************************************************************
-std::string header::get_string()
+std::string header::get_string() const
 {
     std::stringstream out_string;
 
