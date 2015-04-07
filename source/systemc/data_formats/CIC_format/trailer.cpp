@@ -13,7 +13,9 @@
 
 #include "trailer.hpp"
 
-using namespace CIC;
+// *****************************************************************************
+namespace CIC
+{
 
 // *****************************************************************************
 trailer::trailer()
@@ -30,9 +32,6 @@ std::string trailer::get_string() const
 }
 
 // *****************************************************************************
-namespace CIC
-{
-
 std::ostream& operator<< (std::ostream& stream, const trailer& trail)
 {
     stream << trail.get_string();
@@ -40,4 +39,5 @@ std::ostream& operator<< (std::ostream& stream, const trailer& trail)
     return (stream);
 }
 
+// *****************************************************************************
 } // namespace CIC

@@ -20,13 +20,11 @@
 #include <sstream>
 #include <iomanip>
 
-using namespace CIC;
-
 // *****************************************************************************
-
 namespace CIC
 {
 
+// *****************************************************************************
 class stub_MPA : public stub_CBC
 {
 public:
@@ -47,4 +45,5 @@ protected:
     void set(bunch_crossing_t bunch_crossing, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
 };
 
+// *****************************************************************************
 } // namespace CIC

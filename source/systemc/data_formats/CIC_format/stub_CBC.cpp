@@ -13,7 +13,9 @@
 
 #include "stub_CBC.hpp"
 
-using namespace CIC;
+// *****************************************************************************
+namespace CIC
+{
 
 // *****************************************************************************
 stub_CBC::stub_CBC()
@@ -31,10 +33,6 @@ stub_CBC::stub_CBC(bunch_crossing_t bunch_crossing, fe_chip_ID_t fe_chip_ID,
 
     return;
 }
-
-// *****************************************************************************
-stub_CBC::~stub_CBC()
-{}
 
 // *****************************************************************************
 void stub_CBC::set(bunch_crossing_t bunch_crossing, fe_chip_ID_t fe_chip_ID,
@@ -131,3 +129,6 @@ std::string stub_CBC::get_base_string() const
 
     return (out_string.str());
 }
+
+// *****************************************************************************
+} // namespace CIC

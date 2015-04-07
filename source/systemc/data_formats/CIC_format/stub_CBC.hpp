@@ -19,7 +19,9 @@
 #include <sstream>
 #include <iomanip>
 
-using namespace CIC;
+// *****************************************************************************
+namespace CIC
+{
 
 // *****************************************************************************
 class stub_CBC : public CIC::stub_type
@@ -32,7 +34,6 @@ public:
 
     stub_CBC();
     stub_CBC(bunch_crossing_t, fe_chip_ID_t, strip_t, bend_t);
-    virtual ~stub_CBC();
 
     void set_bunch_crossing(bunch_crossing_t bunch_crossing);
     bunch_crossing_t get_bunch_crossing() const;
@@ -55,3 +56,6 @@ protected:
 
     std::string get_base_string() const;
 };
+
+// *****************************************************************************
+} // namespace CIC

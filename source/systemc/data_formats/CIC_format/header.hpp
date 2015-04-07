@@ -18,13 +18,11 @@
 #include <iomanip>
 #include <bitset>
 
-//template <typename stub_type>
-//class CIC_frame;
-
 // *****************************************************************************
 namespace CIC
 {
 
+// *****************************************************************************
 class header
 {
 public:
@@ -71,8 +69,9 @@ private:
 // TODO: remove public, friend class declaration does not work
 public:
     void set_stub_count(stub_count_t stub_count);
-
-friend std::ostream& operator<< (std::ostream& stream, const header& head);
 };
 
+std::ostream& operator<< (std::ostream& stream, const header& head);
+
+// *****************************************************************************
 } // namespace CIC

@@ -19,6 +19,7 @@
 namespace CIC
 {
 
+// *****************************************************************************
 class trailer
 {
 public:
@@ -30,8 +31,9 @@ public:
 
 private:
     trailer_value_t trailer_value;
-
-friend std::ostream& operator<< (std::ostream& stream, const trailer& trail);
 };
 
+std::ostream& operator<< (std::ostream& stream, const trailer& trail);
+
+// *****************************************************************************
 } // namespace CIC

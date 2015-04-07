@@ -13,7 +13,9 @@
 
 #include "header.hpp"
 
-using namespace CIC;
+// *****************************************************************************
+namespace CIC
+{
 
 // *****************************************************************************
 
@@ -141,9 +143,6 @@ void header::set_stub_count(stub_count_t stub_count)
 }
 
 // *****************************************************************************
-namespace CIC
-{
-
 std::ostream& operator<< (std::ostream& stream, const header& head)
 {
     stream << head.get_string();
@@ -151,4 +150,5 @@ std::ostream& operator<< (std::ostream& stream, const header& head)
     return (stream);
 }
 
+// *****************************************************************************
 } // namespace CIC

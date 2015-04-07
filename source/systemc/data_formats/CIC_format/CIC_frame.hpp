@@ -20,7 +20,9 @@
 #include "header.hpp"
 #include "trailer.hpp"
 
-using namespace CIC;
+// *****************************************************************************
+namespace CIC
+{
 
 // *****************************************************************************
 template <typename stub_type>
@@ -50,6 +52,10 @@ private:
 
     typename stub_vector_t::iterator stub_it;
 };
+
+template <typename stub_type>
+std::ostream& operator<< (std::ostream& stream, const CIC_frame<stub_type>&
+        frame);
 
 // *****************************************************************************
 
@@ -144,3 +150,16 @@ std::string CIC_frame<stub_type>::get_string() const
 
     return (out_string.str());
 }
+
+// *****************************************************************************
+template <typename stub_type>
+std::ostream& operator<< (std::ostream& stream, const CIC_frame<stub_type>&
+        frame)
+{
+    stream << frame.get_string();
+
+    return (stream);
+}
+
+// *****************************************************************************
+} // namespace CIC
