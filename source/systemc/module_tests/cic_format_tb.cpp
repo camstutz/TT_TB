@@ -22,7 +22,13 @@ void cic_format_tb()
     std::cout << my_trailer.get_string() << std::endl << std::endl;
 
     header my_header2(header::MPA, header::fe_0_ERROR, 4);
-    std::cout << my_header2.get_string() << std::endl;
+    std::cout << my_header2.get_string() << std::endl << std::endl;
+
+    stub_CBC stub1(1,1,1,1);
+    stub_MPA stub2(2,2,2,2,2);
+
+    std::cout << stub1 << std::endl;
+    std::cout << stub2 << std::endl;
 
 	return;
 }
