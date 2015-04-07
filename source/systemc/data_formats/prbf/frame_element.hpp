@@ -1,7 +1,7 @@
 /*!
  * @file frame_element.hpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 7, 2015
  *
  * @brief
  *
@@ -39,6 +39,9 @@ protected:
     payload_t payload;
 };
 
+template <typename payload_type>
+std::ostream& operator<< (std::ostream& stream, const frame_element<payload_type>& element);
+
 // *****************************************************************************
 
 // *****************************************************************************
@@ -70,6 +73,16 @@ std::string frame_element<payload_type>::get_string() const
     out_string << "]";
 
     return (out_string.str());
+}
+
+// *****************************************************************************
+template <typename payload_type>
+std::ostream& operator<< (std::ostream& stream, const
+        frame_element<payload_type>& element)
+{
+    stream << element.get_string();
+
+    return (stream);
 }
 
 // *****************************************************************************

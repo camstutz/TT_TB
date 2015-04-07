@@ -150,4 +150,12 @@ std::string element_type::get_string() const
 }
 
 // *****************************************************************************
+std::ostream& operator<< (std::ostream& stream, const element_type& type_field)
+{
+    stream << type_field.get_string();
+
+    return (stream);
+}
+
+// *****************************************************************************
 } // namespace PRBF

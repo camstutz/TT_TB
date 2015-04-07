@@ -55,6 +55,9 @@ private:
     typename stub_vector_t::iterator stub_it;
 };
 
+template <typename stub_type>
+std::ostream& operator<< (std::ostream& stream, const PRBF_frame<stub_type>& frame);
+
 // *****************************************************************************
 
 // *****************************************************************************
@@ -156,6 +159,16 @@ std::string PRBF_frame<stub_type>::get_string() const
     out_string << trailer_element.get_string();
 
     return (out_string.str());
+}
+
+// *****************************************************************************
+template <typename stub_type>
+std::ostream& operator<< (std::ostream& stream, const PRBF_frame<stub_type>&
+        frame)
+{
+    stream << frame.get_string();
+
+    return (stream);
 }
 
 // *****************************************************************************

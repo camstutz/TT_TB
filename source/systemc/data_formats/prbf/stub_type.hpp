@@ -26,11 +26,9 @@ public:
     virtual ~stub_type();
 
     virtual std::string get_string() const =0;
-
-    friend std::ostream& operator<< (std::ostream& stream, const stub_type& stub);
-
-private:
 };
+
+std::ostream& operator<< (std::ostream& stream, const stub_type& stub);
 
 // *****************************************************************************
 } // namespace PRBF

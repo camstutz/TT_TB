@@ -64,5 +64,7 @@ private:
     chip_type_t chip_type;
 };
 
+std::ostream& operator<< (std::ostream& stream, const element_type& type_field);
+
 // *****************************************************************************
 } // namespace PRBF

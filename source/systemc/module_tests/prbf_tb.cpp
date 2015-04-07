@@ -55,25 +55,26 @@ void prbf_tb()
 
 	std::cout << frame0.get_trailer().get_stub_count() << std::endl;
 
-	std::cout << frame0.get_header().get_type_field().get_string() << std::endl;
-	std::cout << "Header: " << frame0.get_header().get_string() << std::endl;
-	std::cout << "Trailer: " << frame0.get_trailer().get_string() << std::endl;
+	std::cout << frame0.get_header().get_type_field() << std::endl;
+	std::cout << "Header: " << frame0.get_header() << std::endl;
+	std::cout << "Trailer: " << frame0.get_trailer() << std::endl;
 
     std::cout << std::endl;
-	std::cout << frame0.get_string() << std::endl;
+	std::cout << frame0 << std::endl;
     std::cout << "Size: " << sizeof(frame0) << std::endl;
     std::cout << std::endl;
 
     PRBF_1 frame1(0x14);
     PRBF_1::stub_t stub_1;
     stub_1.set(0x5, 0x1, 0x0, 0x3, 0x4, 0x2, 0x3);
+    std::cout << "STUB: " << stub_1 << std::endl;
     PRBF_1::stub_element_t stub_cont_1(element_type::local_MPA, stub_1);
     frame1.add_stub(stub_cont_1);
     stub_1.set(0x6, 0x1, 0x0, 0x3, 0x4, 0x2, 0x3);
     stub_cont_1.set_stub(stub_1);
     frame1.add_stub(stub_cont_1);
 
-    std::cout << frame1.get_string() << std::endl;
+    std::cout << frame1 << std::endl;
     std::cout << "Size: " << sizeof(frame1);
     std::cout << std::endl << std::endl;
 
@@ -86,7 +87,7 @@ void prbf_tb()
     stub_cont_2.set_stub(stub_2);
     frame2.add_stub(stub_cont_2);
 
-    std::cout << frame2.get_string() << std::endl;
+    std::cout << frame2 << std::endl;
     std::cout << "Size: " << sizeof(frame2);
     std::cout << std::endl << std::endl;
 
