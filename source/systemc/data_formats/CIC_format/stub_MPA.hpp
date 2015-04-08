@@ -1,7 +1,7 @@
 /*!
  * @file stub_MPA.hpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 8, 2015
  *
  * @brief
  *
@@ -36,6 +36,8 @@ public:
 
     void set_z(z_t bend);
     z_t get_z() const;
+
+    bool operator== (const stub_MPA& rhs) const;
 
     virtual std::string get_string() const;
 

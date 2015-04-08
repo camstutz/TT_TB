@@ -1,7 +1,7 @@
 /*!
  * @file stub_MPA.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 8, 2015
  *
  * @brief
  *
@@ -61,6 +61,17 @@ void stub_MPA::set_z(z_t z)
 stub_MPA::z_t stub_MPA::get_z() const
 {
     return (z);
+}
+
+// *****************************************************************************
+bool stub_MPA::operator== (const stub_MPA& rhs) const
+{
+    bool equal = true;
+
+    equal &= (stub_CBC::operator== (rhs));
+    equal &= (rhs.z == z);
+
+    return (equal);
 }
 
 // *****************************************************************************

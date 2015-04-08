@@ -1,7 +1,7 @@
 /*!
  * @file CIC_frame.hpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 8, 2015
  *
  * @brief
  *
@@ -13,12 +13,15 @@
 
 #pragma once
 
+#include "header.hpp"
+#include "trailer.hpp"
+
+#include "systemc.h"
+
 #include <vector>
 #include <sstream>
 #include <string>
-
-#include "header.hpp"
-#include "trailer.hpp"
+#include <algorithm>
 
 // *****************************************************************************
 namespace CIC
@@ -43,6 +46,9 @@ public:
     void reset_stub_ptr();
     bool get_stub(stub_t *stub) const;
 
+    bool operator== (const CIC_frame<stub_type>& rhs) const;
+    CIC_frame<stub_type>& operator= (const CIC_frame<stub_type>& rhs);
+
     std::string get_string() const;
 
 private:
@@ -51,6 +57,9 @@ private:
     CIC::trailer trailer_element;
 
     typename stub_vector_t::iterator stub_it;
+
+    template <typename stub_t>
+    friend void sc_trace(sc_trace_file* tf, const CIC_frame<stub_t>& v, const std::string& name);
 };
 
 template <typename stub_type>
@@ -64,6 +73,7 @@ template <typename stub_type>
 CIC_frame<stub_type>::CIC_frame()
 {
     header_element = CIC::header();
+    stub_vector.clear();
     reset_stub_ptr();
     trailer_element = CIC::trailer();
 
@@ -136,6 +146,37 @@ bool CIC_frame<stub_type>::get_stub(stub_t *stub) const
 
 // *****************************************************************************
 template <typename stub_type>
+bool CIC_frame<stub_type>::operator== (const CIC_frame<stub_type>& rhs) const
+{
+    bool equal = true;
+
+    equal &= (rhs.header_element == header_element);
+    equal &= (rhs.trailer_element == trailer_element);
+
+    // tests for equal length, as the length is part of header
+    if (equal)
+    {
+        equal &= std::equal(stub_vector.begin(), stub_vector.end(), rhs.stub_vector.begin());
+    }
+
+    return (equal);
+}
+
+// *****************************************************************************
+template <typename stub_type>
+CIC_frame<stub_type>& CIC_frame<stub_type>::operator= (const
+        CIC_frame<stub_type>& rhs)
+{
+    header_element = rhs.header_element;
+    trailer_element = rhs.trailer_element;
+
+    stub_vector = rhs.stub_vector;
+
+    return (*this);
+}
+
+// *****************************************************************************
+template <typename stub_type>
 std::string CIC_frame<stub_type>::get_string() const
 {
     std::stringstream out_string;
@@ -159,6 +200,16 @@ std::ostream& operator<< (std::ostream& stream, const CIC_frame<stub_type>&
     stream << frame.get_string();
 
     return (stream);
+}
+
+// *****************************************************************************
+template <typename stub_type>
+void sc_trace(sc_trace_file* tf, const CIC_frame<stub_type>& v,
+        const std::string& name)
+{
+    std::cerr << "CIC_frame: sc_trace() not implemented." << std::endl;
+
+    return;
 }
 
 // *****************************************************************************

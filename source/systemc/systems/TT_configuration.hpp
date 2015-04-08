@@ -47,8 +47,8 @@
 // Duration in cycles of the window in the data concentrator
 #define NR_DC_WINDOW_CYCLES        8
 // Number of stubs transmitted by the data concentrator
-#define NR_DC_CBC_OUT_STUBS       ((DC_OUTPUT_WIDTH-2)*NR_DC_WINDOW_CYCLES)/(1+DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS)
-#define NR_DC_MPA_OUT_STUBS       ((DC_OUTPUT_WIDTH-2)*NR_DC_WINDOW_CYCLES)/(1+DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_MPA_STUB_PIXEL_BITS+FE_MPA_STUB_STRIP_BITS+FE_MPA_STUB_BEND_BITS)
+#define NR_DC_CBC_OUT_STUBS       12
+#define NR_DC_MPA_OUT_STUBS       10
 #define NR_DO_OUT_STUBS           12
 
 #define NR_AM_BOARDS               4
@@ -81,6 +81,8 @@
 #define START_EVENT 0xFFFE
 
 // Signal types used between modules
+#include "../data_formats/CIC_format/CIC_format.hpp"
+
 #include "../data_formats/stub_sb.hpp"
 #include "../data_formats/stub_vbxfsb.hpp"
 #include "../data_formats/stub_bxpsb.hpp"
@@ -100,21 +102,9 @@ typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
                    FE_MPA_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+
                    FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_mpa_stub_t;
 
-typedef stub_vbxfsb<DC_STUB_BX_BITS,
-                    DC_STUB_FE_BITS,
-                    FE_CBC_STUB_STRIP_BITS,
-                    FE_CBC_STUB_BEND_BITS,
-                    DC_STUB_BX_BITS+DC_STUB_FE_BITS+FE_CBC_STUB_STRIP_BITS
-                    +FE_CBC_STUB_BEND_BITS> dc_cbc_stub_t;
+typedef CIC_frame_CBC dc_cbc_out_t;
 
-typedef stub_vbxpfsb<DC_STUB_BX_BITS,
-                     FE_MPA_STUB_PIXEL_BITS,
-                     DC_STUB_FE_BITS,
-                     FE_MPA_STUB_STRIP_BITS,
-                     FE_MPA_STUB_BEND_BITS,
-                     DC_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+DC_STUB_FE_BITS+
-                     FE_MPA_STUB_STRIP_BITS+FE_MPA_STUB_BEND_BITS>
-                     dc_mpa_stub_t;
+typedef CIC_frame_MPA dc_mpa_out_t;
 
 typedef dc_out_word<DC_OUT_HEADER_BITS, DC_OUTPUT_WIDTH-DC_OUT_HEADER_BITS,
                     DC_OUTPUT_WIDTH> dc_out_t;

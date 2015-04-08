@@ -1,7 +1,7 @@
 /*!
  * @file stub_CBC.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 8, 2015
  *
  * @brief
  *
@@ -100,6 +100,19 @@ void stub_CBC::set_bend(bend_t bend)
 stub_CBC::bend_t stub_CBC::get_bend() const
 {
     return (bend);
+}
+
+// *****************************************************************************
+bool stub_CBC::operator== (const stub_CBC& rhs) const
+{
+    bool equal = true;
+
+    equal &= (rhs.bunch_crossing == bunch_crossing);
+    equal &= (rhs.fe_chip_ID == fe_chip_ID);
+    equal &= (rhs.strip == strip);
+    equal &= (rhs.bend == bend);
+
+    return (equal);
 }
 
 // *****************************************************************************

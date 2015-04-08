@@ -27,6 +27,8 @@ public:
 
     trailer();
 
+    bool operator== (const trailer& rhs) const;
+
     std::string get_string() const;
 
 private:

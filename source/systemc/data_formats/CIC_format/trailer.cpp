@@ -26,6 +26,16 @@ trailer::trailer()
 }
 
 // *****************************************************************************
+bool trailer::operator== (const trailer& rhs) const
+{
+    bool equal = true;
+
+    equal &= (rhs.trailer_value == trailer_value);
+
+    return (equal);
+}
+
+// *****************************************************************************
 std::string trailer::get_string() const
 {
     return ("[-]");

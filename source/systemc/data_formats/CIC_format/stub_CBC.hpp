@@ -1,7 +1,7 @@
 /*!
  * @file stub_CBC.hpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 8, 2015
  *
  * @brief
  *
@@ -35,6 +35,7 @@ public:
     stub_CBC();
     stub_CBC(bunch_crossing_t, fe_chip_ID_t, strip_t, bend_t);
 
+    void set(bunch_crossing_t bunch_crossing, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
     void set_bunch_crossing(bunch_crossing_t bunch_crossing);
     bunch_crossing_t get_bunch_crossing() const;
     void set_fe_chip_ID(fe_chip_ID_t fe_chip_ID);
@@ -44,6 +45,8 @@ public:
     void set_bend(bend_t bend);
     bend_t get_bend() const;
 
+    bool operator== (const stub_CBC& rhs) const;
+
     virtual std::string get_string() const;
 
 protected:
@@ -51,8 +54,6 @@ protected:
     fe_chip_ID_t fe_chip_ID;
     strip_t strip;
     bend_t bend;
-
-    void set(bunch_crossing_t bunch_crossing, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
 
     std::string get_base_string() const;
 };

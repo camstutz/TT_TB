@@ -63,26 +63,26 @@ void data_concentrator_cbc_tb::generate_hit_data()
     fe_signals.write_all(data_concentrator_cbc::fe_stub_t());
 
     wait(25, SC_NS);
-    write_fe(0,0,255,0);
+    write_fe(0,0,255,1);
 
     wait(25,SC_NS);
     release_fe(0,0);
 
     wait(400, SC_NS);
-    write_fe(0,0,255,0);
-    write_fe(0,1,255,0);
-    write_fe(0,2,255,0);
-    write_fe(1,0,255,0);
-    write_fe(2,1,255,0);
-    write_fe(2,2,255,0);
-    write_fe(2,0,255,0);
-    write_fe(3,1,255,0);
-    write_fe(3,2,255,0);
-    write_fe(3,0,255,0);
-    write_fe(4,1,255,0);
-    write_fe(4,2,255,0);
-    write_fe(4,0,255,0);
-    write_fe(5,1,255,0);
+    write_fe(0,0,255,2);
+    write_fe(0,1,255,3);
+    write_fe(0,2,255,4);
+    write_fe(1,0,255,5);
+    write_fe(2,1,255,6);
+    write_fe(2,2,255,7);
+    write_fe(2,0,255,8);
+    write_fe(3,1,255,9);
+    write_fe(3,2,255,10);
+    write_fe(3,0,255,11);
+    write_fe(4,1,255,12);
+    write_fe(4,2,255,13);
+    write_fe(4,0,255,14);
+    write_fe(5,1,255,15);
 
     wait(25,SC_NS);
     release_fe(0,0);
@@ -109,7 +109,10 @@ void data_concentrator_cbc_tb::print_output()
     while(1)
     {
          wait();
-         log_buffer << sc_time_stamp() << ": " << dc_output.read() << std::endl;
+
+         log_buffer << std::endl;
+         log_buffer << sc_time_stamp() <<": " << std::endl;
+         log_buffer << dc_output << std::endl;
     }
 }
 

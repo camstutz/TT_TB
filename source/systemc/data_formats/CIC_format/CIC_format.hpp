@@ -13,11 +13,11 @@
 
 #pragma once
 
-using namespace CIC;
-
 #include "CIC_frame.hpp"
 #include "stub_CBC.hpp"
 #include "stub_MPA.hpp"
+
+using namespace CIC;
 
 typedef CIC_frame<stub_CBC> CIC_frame_CBC;
 typedef CIC_frame<stub_MPA> CIC_frame_MPA;

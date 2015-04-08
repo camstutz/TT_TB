@@ -109,6 +109,19 @@ header::stub_count_t header::get_stub_count() const
 }
 
 // *****************************************************************************
+bool header::operator== (const header& rhs) const
+{
+    bool equal = true;
+
+    equal &= (rhs.fe_type == fe_type);
+    equal &= (rhs.hw_status == hw_status);
+    equal &= (rhs.bunch_crossing == bunch_crossing);
+    equal &= (rhs.stub_count == stub_count);
+
+    return (equal);
+}
+
+// *****************************************************************************
 std::string header::get_string() const
 {
     std::stringstream out_string;

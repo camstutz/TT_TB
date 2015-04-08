@@ -58,6 +58,8 @@ public:
     bunch_crossing_t get_bunch_crossing() const;
     stub_count_t get_stub_count() const;
 
+    bool operator== (const header& rhs) const;
+
     std::string get_string() const;
 
 private:
