@@ -34,7 +34,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_linear<sc_signal<gbt_cbc::frame_t> > input_streams;
+    sc_map_linear<sc_buffer<gbt_cbc::frame_t> > input_streams;
     sc_signal<gbt_cbc::output_t> optical_link;
 
     // ----- Process Declarations ----------------------------------------------

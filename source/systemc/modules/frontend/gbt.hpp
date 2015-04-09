@@ -70,6 +70,7 @@ gbt<FRAME_TYPE>::gbt(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(combine_inputs);
         sensitive << clk.pos();
+
     // ----- Module variable initialization ------------------------------------
 
     // ----- Module instance / channel binding ---------------------------------

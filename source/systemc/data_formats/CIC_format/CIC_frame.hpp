@@ -1,7 +1,7 @@
 /*!
  * @file CIC_frame.hpp
  * @author Christian Amstutz
- * @date April 8, 2015
+ * @date April 9, 2015
  *
  * @brief
  *
@@ -32,14 +32,16 @@ template <typename stub_type>
 class CIC_frame
 {
 public:
+    typedef CIC::header header_t;
+    typedef CIC::trailer trailer_t;
     typedef stub_type stub_t;
     typedef std::vector<stub_t> stub_vector_t;
 
     CIC_frame();
 
-    void set_header(CIC::header new_header);
-    CIC::header get_header() const;
-    CIC::trailer get_trailer() const;
+    void set_header(header_t new_header);
+    header_t get_header() const;
+    trailer_t get_trailer() const;
 
     void add_stub(stub_t stub);
     typename stub_vector_t::size_type stub_count() const;
@@ -52,9 +54,9 @@ public:
     std::string get_string() const;
 
 private:
-    CIC::header header_element;
+    header_t header_element;
     stub_vector_t stub_vector;
-    CIC::trailer trailer_element;
+    trailer_t trailer_element;
 
     typename stub_vector_t::iterator stub_it;
 
@@ -72,24 +74,33 @@ std::ostream& operator<< (std::ostream& stream, const CIC_frame<stub_type>&
 template <typename stub_type>
 CIC_frame<stub_type>::CIC_frame()
 {
-    header_element = CIC::header();
+    header_element = header_t();
     stub_vector.clear();
     reset_stub_ptr();
-    trailer_element = CIC::trailer();
+    trailer_element = trailer_t();
 
     return;
 }
 
 // *****************************************************************************
 template <typename stub_type>
-CIC::header CIC_frame<stub_type>::get_header() const
+void CIC_frame<stub_type>::set_header(header_t new_header)
+{
+    header_element = new_header;
+
+    return;
+}
+
+// *****************************************************************************
+template <typename stub_type>
+typename CIC_frame<stub_type>::header_t CIC_frame<stub_type>::get_header() const
 {
     return (header_element);
 }
 
 // *****************************************************************************
 template <typename stub_type>
-CIC::trailer CIC_frame<stub_type>::get_trailer() const
+typename CIC_frame<stub_type>::trailer_t CIC_frame<stub_type>::get_trailer() const
 {
     return (trailer_element);
 }
