@@ -21,7 +21,7 @@
 #include "../libraries/systemc_helpers/sc_map/sc_map_square.hpp"
 
 #include "../systems/TT_configuration.hpp"
-#include "../modules/frontend_mpa/data_concentrator_mpa.hpp"
+#include "../modules/frontend/data_concentrator.hpp"
 
 
 /*!

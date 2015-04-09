@@ -66,7 +66,13 @@ public:
      */
     sensor_module(const sc_module_name _name);
 };
+// *****************************************************************************
 
+typedef sensor_module<frontend_chip_cbc, data_concentrator_cbc, gbt_cbc,
+        NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP> sensor_module_CBC;
+
+typedef sensor_module<frontend_chip_mpa, data_concentrator_mpa, gbt_mpa,
+        NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP> sensor_module_MPA;
 
 // *****************************************************************************
 

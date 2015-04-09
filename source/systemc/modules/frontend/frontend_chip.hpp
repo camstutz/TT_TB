@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date February 23, 2015
+ * @date April 9, 2015
  *
  * @brief
  *
@@ -70,6 +70,14 @@ private:
 
     void prioritize_hits();
 };
+
+// *****************************************************************************
+
+typedef frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t, MAX_HITS_PER_CBC_FE_CHIP,
+        COLLECTION_CYCLES_CBC_FE_CHIP> frontend_chip_cbc;
+
+typedef frontend_chip<fe_mpa_stub_t, fe_mpa_stub_t, MAX_HITS_PER_MPA_FE_CHIP,
+        COLLECTION_CYCLES_MPA_FE_CHIP> frontend_chip_mpa;
 
 // *****************************************************************************
 

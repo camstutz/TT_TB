@@ -1,14 +1,14 @@
 /*!
  * @file frontend_chip_mpa_tb.hpp
  * @author Christian Amstutz
- * @date December 19, 2014
+ * @date April 9, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -21,7 +21,7 @@
 #include "../libraries/systemc_helpers/sc_map/sc_map_linear.hpp"
 
 #include "../systems/TT_configuration.hpp"
-#include "../modules/frontend_mpa/frontend_chip_mpa.hpp"
+#include "../modules/frontend/frontend_chip.hpp"
 
 /*!
  * @brief
