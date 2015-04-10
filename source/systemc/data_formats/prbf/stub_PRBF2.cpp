@@ -79,7 +79,18 @@ void stub_PRBF2::set_prb(prb_t prb)
 // *****************************************************************************
 stub_PRBF2::prb_t stub_PRBF2::get_prb() const
 {
-    return (prb);
+    return prb;
+}
+
+// *****************************************************************************
+bool stub_PRBF2::operator== (const stub_PRBF2& rhs) const
+{
+    bool equal = true;
+
+    equal &= stub_PRBF1::operator==(rhs);
+    equal &= (rhs.prb == prb);
+
+    return equal;
 }
 
 // *****************************************************************************
@@ -93,7 +104,7 @@ std::string stub_PRBF2::get_string() const
     out_string << get_PRBF_string();
     out_string << "]";
 
-    return (out_string.str());
+    return out_string.str();
 }
 
 // *****************************************************************************

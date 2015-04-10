@@ -1,7 +1,7 @@
 /*!
  * @file stub_type.cpp
  * @author Christian Amstutz
- * @date April 2, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -26,7 +26,7 @@ std::ostream& operator<< (std::ostream& stream, const stub_type& stub)
 {
     stream << stub.get_string();
 
-    return (stream);
+    return stream;
 }
 
 // *****************************************************************************

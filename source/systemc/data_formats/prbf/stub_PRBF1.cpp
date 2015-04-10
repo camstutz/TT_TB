@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF1.cpp
  * @author Christian Amstutz
- * @date April 2, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -74,7 +74,18 @@ void stub_PRBF1::set_dtc(dtc_t dtc)
 // *****************************************************************************
 stub_PRBF1::dtc_t stub_PRBF1::get_dtc() const
 {
-    return (dtc);
+    return dtc;
+}
+
+// *****************************************************************************
+bool stub_PRBF1::operator== (const stub_PRBF1& rhs) const
+{
+    bool equal = true;
+
+    equal &= stub_PRBF::operator==(rhs);
+    equal &= (rhs.dtc == dtc);
+
+    return equal;
 }
 
 // *****************************************************************************
@@ -87,7 +98,7 @@ std::string stub_PRBF1::get_string() const
     out_string << get_PRBF_string();
     out_string << "]";
 
-    return (out_string.str());
+    return out_string.str();
 }
 
 // *****************************************************************************

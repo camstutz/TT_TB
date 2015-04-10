@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF2.hpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -40,6 +40,8 @@ public:
     void set(prb_t prb, dtc_t dtc, fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
     void set_prb(prb_t prb);
     prb_t get_prb() const;
+
+    bool operator== (const stub_PRBF2& rhs) const;
 
     virtual std::string get_string() const;
 

@@ -1,7 +1,7 @@
 /*!
  * @file PRBF_frame.hpp
  * @author Christian Amstutz
- * @date April 2, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -13,17 +13,27 @@
 
 #pragma once
 
-#include <vector>
-#include <sstream>
-#include <string>
-
 #include "header.hpp"
 #include "trailer.hpp"
 #include "stub_element.hpp"
 
+#include "systemc.h"
+
+#include <vector>
+#include <sstream>
+#include <string>
+
 // *****************************************************************************
 namespace PRBF
 {
+
+// *****************************************************************************
+
+template <typename stub_type>
+class PRBF_frame;
+
+template <typename stub_type>
+void sc_trace (sc_trace_file* tf, const PRBF_frame<stub_type>& v, const std::string& name);
 
 // *****************************************************************************
 template <typename stub_type>
@@ -45,6 +55,9 @@ public:
     void reset_stub_ptr();
     bool get_stub(stub_element_t *stub) const;
 
+    bool operator== (const PRBF_frame& rhs) const;
+    PRBF_frame& operator= (const PRBF_frame& rhs);
+
     std::string get_string() const;
 
 private:
@@ -53,6 +66,9 @@ private:
     trailer trailer_element;
 
     typename stub_vector_t::iterator stub_it;
+
+friend void sc_trace <> (sc_trace_file* tf, const PRBF_frame& v, const std::string& name);
+
 };
 
 template <typename stub_type>
@@ -84,14 +100,14 @@ void PRBF_frame<stub_type>::set_bunch_crossing(header::bunch_crossing_ID_t
 template <typename stub_type>
 header PRBF_frame<stub_type>::get_header() const
 {
-    return (header_element);
+    return header_element;
 }
 
 // *****************************************************************************
 template <typename stub_type>
 trailer PRBF_frame<stub_type>::get_trailer() const
 {
-    return (trailer_element);
+    return trailer_element;
 }
 
 // *****************************************************************************
@@ -109,7 +125,7 @@ template <typename stub_type>
 typename PRBF_frame<stub_type>::stub_vector_t::size_type
         PRBF_frame<stub_type>::stub_count() const
 {
-    return (stub_vector.size());
+    return stub_vector.size();
 }
 
 // *****************************************************************************
@@ -141,7 +157,38 @@ bool PRBF_frame<stub_type>::get_stub(stub_element_t *stub) const
         valid = false;
     }
 
-    return (valid);
+    return valid;
+}
+
+// *****************************************************************************
+template <typename stub_type>
+bool PRBF_frame<stub_type>::operator== (const PRBF_frame& rhs) const
+{
+    bool equal = true;
+
+    equal &= (rhs.header_element == header_element);
+    equal &= (rhs.trailer_element == trailer_element);
+
+    // tests for equal length, as the length is part of the header
+    if (equal)
+    {
+        equal &= std::equal(stub_vector.begin(), stub_vector.end(), rhs.stub_vector.begin());
+    }
+
+    return equal;
+}
+
+// *****************************************************************************
+template <typename stub_type>
+typename PRBF_frame<stub_type>::PRBF_frame&
+        PRBF_frame<stub_type>::operator= (const PRBF_frame& rhs)
+{
+    header_element = rhs.header_element;
+    trailer_element = rhs.trailer_element;
+
+    stub_vector = rhs.stub_vector;
+
+    return *this;
 }
 
 // *****************************************************************************
@@ -158,7 +205,17 @@ std::string PRBF_frame<stub_type>::get_string() const
     }
     out_string << trailer_element.get_string();
 
-    return (out_string.str());
+    return out_string.str();
+}
+
+// *****************************************************************************
+template <typename stub_type>
+void sc_trace (sc_trace_file* tf, const PRBF_frame<stub_type>& v,
+        const std::string& name)
+{
+    std::cerr << "No implementation of PRBF_frame.sc_trace()" << std::endl;
+
+    return;
 }
 
 // *****************************************************************************
@@ -168,7 +225,7 @@ std::ostream& operator<< (std::ostream& stream, const PRBF_frame<stub_type>&
 {
     stream << frame.get_string();
 
-    return (stream);
+    return stream;
 }
 
 // *****************************************************************************

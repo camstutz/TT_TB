@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF.hpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -51,6 +51,8 @@ public:
     bend_t get_bend() const;
     void set_z(z_t z);
     z_t get_z() const;
+
+    bool operator== (const stub_PRBF& rhs) const;
 
     virtual std::string get_string() const =0;
 

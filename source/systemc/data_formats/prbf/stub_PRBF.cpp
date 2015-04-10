@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF.cpp
  * @author Christian Amstutz
- * @date April 1, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -79,7 +79,7 @@ void stub_PRBF::set_fe_module(fe_module_t fe_module)
 // *****************************************************************************
 stub_PRBF::fe_module_t stub_PRBF::get_fe_module() const
 {
-    return (fe_module);
+    return fe_module;
 }
 
 // *****************************************************************************
@@ -93,7 +93,7 @@ void stub_PRBF::set_concentrator_ID(concentrator_ID_t concentrator_ID)
 // *****************************************************************************
 stub_PRBF::concentrator_ID_t stub_PRBF::get_concentrator_ID() const
 {
-    return (concentrator_ID);
+    return concentrator_ID;
 }
 
 // *****************************************************************************
@@ -107,7 +107,7 @@ void stub_PRBF::set_fe_chip_ID(fe_chip_ID_t fe_chip_ID)
 // *****************************************************************************
 stub_PRBF::fe_chip_ID_t stub_PRBF::get_fe_chip_ID() const
 {
-    return (fe_chip_ID);
+    return fe_chip_ID;
 }
 
 // *****************************************************************************
@@ -121,7 +121,7 @@ void stub_PRBF::set_strip(strip_t strip)
 // *****************************************************************************
 stub_PRBF::strip_t stub_PRBF::get_strip() const
 {
-    return (strip);
+    return strip;
 }
 
 // *****************************************************************************
@@ -135,7 +135,7 @@ void stub_PRBF::set_bend(bend_t bend)
 // *****************************************************************************
 stub_PRBF::bend_t stub_PRBF::get_bend() const
 {
-    return (bend);
+    return bend;
 }
 
 // *****************************************************************************
@@ -149,7 +149,22 @@ void stub_PRBF::set_z(z_t z)
 // *****************************************************************************
 stub_PRBF::z_t stub_PRBF::get_z() const
 {
-    return (z);
+    return z;
+}
+
+// *****************************************************************************
+bool stub_PRBF::operator== (const stub_PRBF& rhs) const
+{
+    bool equal = true;
+
+    equal &= (rhs.fe_module == fe_module);
+    equal &= (rhs.concentrator_ID == concentrator_ID);
+    equal &= (rhs.fe_chip_ID == fe_chip_ID);
+    equal &= (rhs.strip == strip);
+    equal &= (rhs.bend == bend);
+    equal &= (rhs.z == z);
+
+    return equal;
 }
 
 // *****************************************************************************
@@ -167,7 +182,7 @@ std::string stub_PRBF::get_PRBF_string() const
     out_string << "b=0x"  << std::setw(1) << bend << ",";
     out_string << "z=0x"  << std::setw(1) << z;
 
-    return (out_string.str());
+    return out_string.str();
 }
 
 // *****************************************************************************
