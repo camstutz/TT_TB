@@ -28,8 +28,7 @@
 #include <algorithm>
 
 // *****************************************************************************
-namespace CIC
-{
+using namespace CIC;
 
 // *****************************************************************************
 class CIC_frame
@@ -71,6 +70,3 @@ friend void sc_trace(sc_trace_file* tf, const CIC_frame& v, const std::string& n
 };
 
 std::ostream& operator<< (std::ostream& stream, const CIC_frame& frame);
-
-// *****************************************************************************
-} // namespace CIC
