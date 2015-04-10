@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa.hpp
  * @author Christian Amstutz
- * @date April 9, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -23,20 +23,22 @@
 
 #include "../../systems/TT_configuration.hpp"
 
+#include "../../data_formats/CIC_format/CIC_format.hpp"
+
 /*!
  * @brief
  */
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 class data_concentrator : public sc_module
 {
 public:
 	// ----- Configuration -----------------------------------------------------
 	typedef IN_T fe_stub_t;
-	typedef OUT_T output_t;
-	typedef typename output_t::stub_t output_stub_t;
+	typedef CIC_frame output_t;
+	typedef OUT_STUB_T output_stub_t;
 
 	static const unsigned int nr_fe_chips;
 	static const unsigned int max_in_stubs_per_cycle;
@@ -85,11 +87,11 @@ private:
 // *****************************************************************************
 
 typedef data_concentrator<fe_cbc_stub_t, NR_FE_CHIP_PER_MODULE,
-        MAX_HITS_PER_CBC_FE_CHIP, COLLECTION_CYCLES_CBC_FE_CHIP, dc_cbc_out_t,
+        MAX_HITS_PER_CBC_FE_CHIP, COLLECTION_CYCLES_CBC_FE_CHIP, CIC::stub_CBC,
         NR_DC_CBC_OUT_STUBS, NR_DC_WINDOW_CYCLES> data_concentrator_cbc;
 
 typedef data_concentrator<fe_mpa_stub_t, NR_FE_CHIP_PER_MODULE,
-        MAX_HITS_PER_MPA_FE_CHIP, COLLECTION_CYCLES_MPA_FE_CHIP, dc_mpa_out_t,
+        MAX_HITS_PER_MPA_FE_CHIP, COLLECTION_CYCLES_MPA_FE_CHIP, CIC::stub_MPA,
         NR_DC_MPA_OUT_STUBS, NR_DC_WINDOW_CYCLES> data_concentrator_mpa;
 
 // *****************************************************************************
@@ -98,42 +100,42 @@ typedef data_concentrator<fe_mpa_stub_t, NR_FE_CHIP_PER_MODULE,
 
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::nr_fe_chips = NR_FE_CHIPS;
 
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::max_in_stubs_per_cycle = MAX_IN_STUBS_PER_CYCLE;
 
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::collection_cycles = IN_COLLECTION_CYCLES;
 
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::max_output_stubs = MAX_OUT_STUBS;
 
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::output_window_cycles = COLLECTION_CYCLES;
 
 // *****************************************************************************
@@ -144,9 +146,11 @@ const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
  */
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
-data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE, IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS, COLLECTION_CYCLES>::data_concentrator(sc_module_name _name) :
+data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
+        COLLECTION_CYCLES>::data_concentrator(sc_module_name _name) :
         sc_module(_name) ,
         clk("clk"),
         data_valid(nr_fe_chips, max_in_stubs_per_cycle, "data_valid"),
@@ -180,10 +184,10 @@ data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE, IN_COLLECTION_CYCLE
 // *****************************************************************************
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::read_FE_chips()
 {
     while(1)
@@ -218,10 +222,10 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 // *****************************************************************************
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::controller()
 {
     while (1)
@@ -245,10 +249,10 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 // *****************************************************************************
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::write_output()
 {
     while(1)
@@ -267,10 +271,10 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 // *****************************************************************************
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::create_output_buffer()
 {
     output_buffer = output_t();
@@ -303,13 +307,13 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 // *****************************************************************************
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_T, unsigned int MAX_OUT_STUBS,
+        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
 typename data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::output_stub_t::bunch_crossing_t
 data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_T, MAX_OUT_STUBS,
+        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::calculate_bx(clock_phase_t clock_phase,
 		typename fe_stub_t::bx_t stub_bx)
 {

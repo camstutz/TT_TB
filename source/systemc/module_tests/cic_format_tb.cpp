@@ -30,13 +30,13 @@ void cic_format_tb()
     std::cout << stub1 << std::endl;
     std::cout << stub2 << std::endl << std::endl;
 
-    CIC_frame_CBC my_frame1;
+    CIC_frame my_frame1;
     std::cout << my_frame1 << std::endl;
 
     my_frame1.add_stub(stub_CBC(1,2,3,4));
     std::cout << my_frame1 << std::endl << std::endl;
 
-    CIC_frame_MPA my_frame2;
+    CIC_frame my_frame2;
     my_frame2.add_stub(stub_MPA(2,3,4,5,3));
     my_frame2.add_stub(stub_MPA(5,6,7,8,9));
     my_frame2.add_stub(stub_MPA(8,7,6,5,4));

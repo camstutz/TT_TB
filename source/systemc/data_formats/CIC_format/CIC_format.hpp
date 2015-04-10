@@ -19,5 +19,5 @@
 
 using namespace CIC;
 
-typedef CIC_frame<stub_CBC> CIC_frame_CBC;
-typedef CIC_frame<stub_MPA> CIC_frame_MPA;
+//typedef CIC_frame<stub_CBC> CIC_frame_CBC;
+//typedef CIC_frame<stub_MPA> CIC_frame_MPA;

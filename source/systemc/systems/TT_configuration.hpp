@@ -1,7 +1,7 @@
 /*!
  * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date April 10, 2015
  *
  * @brief
  *
@@ -101,10 +101,6 @@ typedef stub_bxpsb<FE_MPA_STUB_BX_BITS,
                    FE_MPA_STUB_BEND_BITS,
                    FE_MPA_STUB_BX_BITS+FE_MPA_STUB_PIXEL_BITS+
                    FE_CBC_STUB_STRIP_BITS+FE_CBC_STUB_BEND_BITS> fe_mpa_stub_t;
-
-typedef CIC_frame_CBC dc_cbc_out_t;
-
-typedef CIC_frame_MPA dc_mpa_out_t;
 
 typedef dc_out_word<DC_OUT_HEADER_BITS, DC_OUTPUT_WIDTH-DC_OUT_HEADER_BITS,
                     DC_OUTPUT_WIDTH> dc_out_t;

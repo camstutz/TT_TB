@@ -34,8 +34,8 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_linear<sc_buffer<gbt_cbc::frame_t> > input_streams;
-    sc_signal<gbt_cbc::output_t> optical_link;
+    sc_map_linear<sc_buffer<gbt::input_t> > input_streams;
+    sc_signal<gbt::output_t> optical_link;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_cic_data();
@@ -45,7 +45,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    gbt_cbc  gbt_cbc_dut;
+    gbt  gbt_dut;
 
     // ----- Constructor -------------------------------------------------------
     /*!
