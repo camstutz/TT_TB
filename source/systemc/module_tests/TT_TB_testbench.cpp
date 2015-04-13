@@ -21,6 +21,7 @@
 //#include "data_concentrator_cbc_tb.hpp"
 //#include "data_concentrator_mpa_tb.hpp"
 //#include "gbt_tb.hpp"
+#include "dtc_input_unit_tb.hpp"
 //#include "data_organizer_tb.hpp"
 //#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
@@ -28,7 +29,7 @@
 //#include "am_system_tb.hpp"
 //#include "trigger_tower_tb.hpp"
 //#include "prbf_tb.hpp"
-#include "cic_format_tb.hpp"
+//#include "cic_format_tb.hpp"
 
 int sc_main(int argc, char *agv[])
 {
@@ -50,6 +51,7 @@ int sc_main(int argc, char *agv[])
 //    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
 //    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
 //    gbt_tb gbt_TB("GBT_TB");
+      dtc_input_unit_tb dtc_IU_TB("DTC_input_unit_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 //    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
@@ -57,7 +59,7 @@ int sc_main(int argc, char *agv[])
 //    am_board_tb am_board_tb("AM_board_TB");
 //    trigger_tower_tb("trigger_tower_tb");
 //    prbf_tb();
-    cic_format_tb();
+//    cic_format_tb();
 
     // ----- Time unit / resolution setup --------------------------------------
 

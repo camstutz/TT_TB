@@ -1,7 +1,7 @@
 /*!
  * @file CIC_frame.cpp
  * @author Christian Amstutz
- * @date April 10, 2015
+ * @date April 13, 2015
  *
  * @brief
  *
@@ -33,7 +33,6 @@ void CIC_frame::set_header(header_t new_header)
 }
 
 // *****************************************************************************
-
 CIC_frame::header_t CIC_frame::get_header() const
 {
     return header_element;
@@ -185,6 +184,8 @@ CIC_frame& CIC_frame::operator= (const
     trailer_element = rhs.trailer_element;
 
     stub_vector = rhs.stub_vector;
+
+    reset_stub_ptr();
 
     return (*this);
 }
