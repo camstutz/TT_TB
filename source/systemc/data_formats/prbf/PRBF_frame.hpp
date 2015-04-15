@@ -44,6 +44,7 @@ public:
     typedef stub_element<stub_t> stub_element_t;
     typedef std::vector<stub_element_t> stub_vector_t;
 
+    PRBF_frame();
     PRBF_frame(header::bunch_crossing_ID_t bunch_crossing);
 
     void set_bunch_crossing(header::bunch_crossing_ID_t bunch_crossing);
@@ -75,6 +76,15 @@ template <typename stub_type>
 std::ostream& operator<< (std::ostream& stream, const PRBF_frame<stub_type>& frame);
 
 // *****************************************************************************
+
+// *****************************************************************************
+template <typename stub_type>
+PRBF_frame<stub_type>::PRBF_frame()
+{
+    reset_stub_ptr();
+
+    return;
+}
 
 // *****************************************************************************
 template <typename stub_type>

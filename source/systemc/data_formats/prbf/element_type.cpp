@@ -115,11 +115,11 @@ std::string element_type::get_string() const
 
     if (*this == element_type::sof)
     {
-        out_string << std::setw(15) << std::left << "SOF";
+        out_string << std::setw(17) << std::left << "SOF";
     }
     else if (*this == element_type::eof)
     {
-        out_string << std::setw(15) << std::left << "EOF";
+        out_string << std::setw(17) << std::left << "EOF";
     }
     else
     {

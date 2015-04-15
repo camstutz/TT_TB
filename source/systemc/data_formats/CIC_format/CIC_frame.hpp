@@ -34,8 +34,8 @@ using namespace CIC;
 class CIC_frame
 {
 public:
-    typedef header header_t;
-    typedef trailer trailer_t;
+    typedef CIC::header header_t;
+    typedef CIC::trailer trailer_t;
     typedef boost::variant<stub_CBC, stub_MPA> stub_t;
     typedef std::vector<stub_t> stub_vector_t;
 

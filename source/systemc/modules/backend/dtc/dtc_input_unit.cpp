@@ -1,5 +1,5 @@
 /*!
- * @dtc_input_unit.cpp
+ * @file dtc_input_unit.cpp
  * @author Christian Amstutz
  * @date April 13, 2015
  *
