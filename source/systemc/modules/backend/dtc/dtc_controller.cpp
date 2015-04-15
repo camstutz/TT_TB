@@ -29,7 +29,8 @@ dtc_controller::dtc_controller(sc_module_name _name) :
         clk("clk"),
         bunch_crossing("bunch_crossing"),
         write_buffer("write_buffer"),
-        read_buffer("read_buffer")
+        read_buffer("read_buffer"),
+        bx_counter(-1)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(update_signals);
@@ -45,8 +46,6 @@ dtc_controller::dtc_controller(sc_module_name _name) :
 // *****************************************************************************
 void dtc_controller::update_signals()
 {
-    bx_counter = -1;
-
     while (1)
     {
         ++bx_counter;
