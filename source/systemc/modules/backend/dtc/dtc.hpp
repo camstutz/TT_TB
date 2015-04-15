@@ -20,6 +20,7 @@
 #include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 
 #include "systemc.h"
 
@@ -44,6 +45,7 @@ public:
     sc_signal<unsigned int> bx_sig;
     sc_signal<unsigned int> read_buffer_sig;
     sc_signal<unsigned int> write_buffer_sig;
+    sc_buffer<output_t> tower_output_sig;
 
     // ----- Process Declarations ----------------------------------------------
 
@@ -53,6 +55,7 @@ public:
     dtc_controller controller;
     sc_map_linear<dtc_input_unit> input_units;
     dtc_output_unit output_unit;
+    sc_delay_signal<output_t, DTC_latency> delay_output;
 
     // ----- Constructor -------------------------------------------------------
     /*!

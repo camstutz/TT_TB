@@ -1,5 +1,5 @@
 /*!
- * @file TT_configuration.hpp
+  * @file TT_configuration.hpp
  * @author Christian Amstutz
  * @date April 10, 2015
  *
@@ -79,6 +79,8 @@
 
 #define IDLE_EVENT  0xFFFF
 #define START_EVENT 0xFFFE
+
+#define DTC_latency 3
 
 // Signal types used between modules
 #include "../data_formats/CIC_format/CIC_format.hpp"

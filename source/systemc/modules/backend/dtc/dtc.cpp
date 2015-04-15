@@ -30,9 +30,11 @@ dtc::dtc(sc_module_name _name) :
         bx_sig("bx_sig"),
         read_buffer_sig("read_buffer_sig"),
         write_buffer_sig("write_buffer_sig"),
+        tower_output_sig("tower_output_sig"),
         controller("controller"),
         input_units(input_nr, "input_unit"),
-        output_unit("output_unit")
+        output_unit("output_unit"),
+        delay_output("delay_output")
 {
     // ----- Creation and binding of signals -----------------------------------
 
@@ -63,7 +65,11 @@ dtc::dtc(sc_module_name _name) :
     output_unit.read_buffer.bind(read_buffer_sig);
     output_unit.write_buffer.bind(write_buffer_sig);
     output_unit.bx_sorted_stubs.bind(bx_sorted_inputs);
-    output_unit.tower_out_stream.bind(tower_output);
+    output_unit.tower_out_stream.bind(tower_output_sig);
+
+    delay_output.clk.bind(clk);
+    delay_output.input.bind(tower_output_sig);
+    delay_output.delayed.bind(tower_output);
 
     return;
 }
