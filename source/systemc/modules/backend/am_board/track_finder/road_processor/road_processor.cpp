@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.cpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date March 31, 2015
  *
  * @brief
  */
@@ -26,19 +26,26 @@ road_processor::road_processor(const sc_module_name _name) :
         superstrip_lookup(LAYER_NUMBER, "superstrip_lookup"),
         hit_lookup_result(LAYER_NUMBER, "hit_lookup_result"),
         hit_output(LAYER_NUMBER, "hit_output"),
-        command_buffer("command_buffer")
+        command_buffer("command_buffer"),
+		command_buffer_write_sig("command_buffer_write_sig"),
+		command_buffer_delayed_sig("command_buffer_delayed_sig"),
+		pattern_mem_delay_compensation("pattern_mem_delay_compensation")
 {
 	// ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_roads);
         sensitive << road_input;
+    SC_THREAD(write_FIFO);
+    	sensitive << command_buffer_delayed_sig;
     SC_THREAD(lookup_superstrips);
         sensitive << command_buffer.data_written_event();
         found_pattern.make_sensitive(sensitive);
     SC_THREAD(output_result);
         hit_lookup_result.make_sensitive(sensitive);
 
-
     // ----- Module channel/variable initialization ----------------------------
+    pattern_mem_delay_compensation.clk.bind(clk);
+    pattern_mem_delay_compensation.input.bind(command_buffer_write_sig);
+    pattern_mem_delay_compensation.delayed.bind(command_buffer_delayed_sig);
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -48,7 +55,7 @@ road_processor::road_processor(const sc_module_name _name) :
 // *****************************************************************************
 void road_processor::process_incoming_roads()
 {
-	while(1)
+	while (1)
 	{
 		wait();
 
@@ -57,15 +64,26 @@ void road_processor::process_incoming_roads()
 		{
 		    road_lookup.write(stream_value.get_value());
 		}
-		command_buffer.write(stream_value);
+		command_buffer_write_sig.write(stream_value);
 	}
 
 }
 
 // *****************************************************************************
+void road_processor::write_FIFO()
+{
+	while (1)
+	{
+		wait();
+
+		command_buffer.write(command_buffer_delayed_sig.read());
+	}
+}
+
+// *****************************************************************************
 void road_processor::lookup_superstrips()
 {
-    while(1)
+    while (1)
     {
         wait();
 
@@ -81,7 +99,7 @@ void road_processor::lookup_superstrips()
             }
             else
             {
-                wait(found_pattern[0].value_changed_event());
+                // wait(found_pattern[0].value_changed_event());
 
                 for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
                 {

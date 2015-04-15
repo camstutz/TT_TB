@@ -1,7 +1,7 @@
 /*!
-  * @file TT_configuration.hpp
+ * @file TT_configuration.hpp
  * @author Christian Amstutz
- * @date April 10, 2015
+ * @date April 15, 2015
  *
  * @brief
  *
@@ -80,7 +80,12 @@
 #define IDLE_EVENT  0xFFFF
 #define START_EVENT 0xFFFE
 
+// Define delays
+#define DC_output_delay 4
 #define DTC_latency 3
+#define DO_output_delay 5
+#define AM_CHIP_LATENCY 10
+#define PATTERN_MEMORY_LATENCY 2
 
 // Signal types used between modules
 #include "../data_formats/CIC_format/CIC_format.hpp"

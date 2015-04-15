@@ -17,9 +17,9 @@
 #include <vector>
 
 #include <systemc.h>
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "../../../libraries/systemc_helpers/nbits.hpp"
 
+#include "../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
+#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../../systems/TT_configuration.hpp"
 
 /*!
@@ -56,9 +56,11 @@ public:
     sc_in<unsigned int> z;
 
 // ----- Local Channel Declarations --------------------------------------------
-
     /** Intermediate buffer for the incoming data */
     sc_buffer<dc_out_t::payload_t> input_buffer;
+
+    sc_map_linear<sc_signal<bool> > dv_sig;
+    sc_map_linear<sc_signal<do_out_t> > stub_out_sig;
 
 // ----- Local Storage Declarations --------------------------------------------
     /** Two tables for the re-arranged stubs. Each table can contain a defined
@@ -68,7 +70,6 @@ public:
 
     sc_bv<2*dc_out_t::total_width> concat_buffer;
     unsigned int cc_buf_write_ptr;
-
 
 // ----- Process Declarations --------------------------------------------------
     void read_input();
@@ -80,6 +81,8 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
+    sc_map_linear<sc_delay_signal<bool, DO_output_delay> > delay_dv;
+    sc_map_linear<sc_delay_signal<do_out_t, DO_output_delay> > delay_stub_out;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

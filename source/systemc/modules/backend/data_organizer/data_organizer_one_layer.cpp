@@ -30,7 +30,12 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
         dv(NR_DO_OUT_STUBS, "dv"),
         stub_out(NR_DO_OUT_STUBS, "stub_out"),
         phi("phi"),
-        z("z")
+        z("z"),
+	    input_buffer("input_buffer"),
+		dv_sig(NR_DO_OUT_STUBS, "dv_sig"),
+	    stub_out_sig(NR_DO_OUT_STUBS, "stub_out_sig"),
+	    delay_dv(NR_DO_OUT_STUBS, "delay_dv"),
+	    delay_stub_out(NR_DO_OUT_STUBS, "delay_stub_out")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
@@ -50,6 +55,32 @@ data_organizer_one_layer::data_organizer_one_layer(sc_module_name _name) :
     for (; stub_table_it != stub_table.end(); ++stub_table_it)
     {
         stub_table_it->resize(NR_DC_WINDOW_CYCLES);
+    }
+
+    sc_map_linear<sc_delay_signal<bool, DO_output_delay> >::iterator delay_dv_it = delay_dv.begin();
+    sc_map_linear<sc_signal<bool> >::iterator dv_sig_it = dv_sig.begin();
+    sc_map_linear<sc_out<bool> >::iterator dv_it = dv.begin();
+    for (; delay_dv_it != delay_dv.end(); ++delay_dv_it)
+    {
+    	delay_dv_it->clk.bind(clk);
+    	delay_dv_it->input.bind(*dv_sig_it);
+    	delay_dv_it->delayed.bind(*dv_it);
+
+    	++dv_sig_it;
+    	++dv_it;
+    }
+
+    sc_map_linear<sc_delay_signal<do_out_t, DO_output_delay> >::iterator delay_stub_out_it = delay_stub_out.begin();
+    sc_map_linear<sc_signal<do_out_t> >::iterator stub_out_sig_it = stub_out_sig.begin();
+    sc_map_linear<sc_out<do_out_t> >::iterator stub_out_it = stub_out.begin();
+    for (; delay_stub_out_it != delay_stub_out.end(); ++delay_stub_out_it)
+    {
+    	delay_stub_out_it->clk.bind(clk);
+    	delay_stub_out_it->input.bind(*stub_out_sig_it);
+    	delay_stub_out_it->delayed.bind(*stub_out_it);
+
+    	++stub_out_sig_it;
+    	++stub_out_it;
     }
 
     return;
@@ -118,8 +149,8 @@ void data_organizer_one_layer::write_stubs()
             do_stub_t output_stub = stub_vector.back();
             stub_vector.pop_back();
 
-            dv[output_cnt].write(true);
-            stub_out[output_cnt].write(output_stub);
+            dv_sig[output_cnt].write(true);
+            stub_out_sig[output_cnt].write(output_stub);
 
             ++output_cnt;
         }
@@ -127,8 +158,8 @@ void data_organizer_one_layer::write_stubs()
         do_stub_t empty_stub;
         while (output_cnt < NR_DO_OUT_STUBS)
         {
-            dv[output_cnt].write(false);
-            stub_out[output_cnt].write(empty_stub);
+            dv_sig[output_cnt].write(false);
+            stub_out_sig[output_cnt].write(empty_stub);
             ++output_cnt;
         }
     }

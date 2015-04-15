@@ -1,13 +1,13 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date December 8, 2014
+ * @date March 30, 2015
  *
  * @brief File containing the implementation of the AM board.
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "am_chip.hpp"
@@ -24,22 +24,18 @@ am_chip::am_chip(sc_module_name _name, pattern_bank *p_bank) :
         output_roads_buffer_empty("output_roads_buffer_empty"),
         process_roads_sig("process_roads_sig"),
         write_roads_sig("write_roads_sig"),
-        output_data_ready_no_delay("output_data_ready_no_delay"),
-        output_road_no_delay("output_road_no_delay"),
+		road_output_sig("road_output_sig"),
         detected_roads_buffer("detected_roads_buffer"),
         read_controller("read_controller"),
         write_controller("write_controller"),
+		delay_road_output("delay_road_output"),
         patterns(p_bank)
-        //latency_correction_data_ready("latency_correction_data_ready"),
-        //latency_correction_road("latency_correction_road")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_hits);
         hit_inputs.make_sensitive(sensitive);
     SC_THREAD(detect_roads);
         sensitive << process_roads_sig;
-    SC_THREAD(write_roads);
-        sensitive << clk.pos() << write_roads_sig.posedge_event();
     SC_THREAD(check_detected_road_buffer);
         sensitive << detected_roads_buffer.data_written_event()
                 << detected_roads_buffer.data_read_event();
@@ -57,15 +53,11 @@ am_chip::am_chip(sc_module_name _name, pattern_bank *p_bank) :
     read_controller.clk.bind(clk);
     read_controller.roads_detected.bind(roads_detected);
     read_controller.road_input(detected_roads_buffer);
-    read_controller.road_output(road_output);
+    read_controller.road_output(road_output_sig);
 
-//    latency_correction_data_ready.clk.bind(clk);
-//    latency_correction_data_ready.input.bind(output_data_ready_no_delay);
-//    latency_correction_data_ready.delayed.bind(data_ready);
-//
-//    latency_correction_road.clk.bind(clk);
-//    latency_correction_road.input.bind(output_road_no_delay);
-//    latency_correction_road.delayed.bind(road_output);
+    delay_road_output.clk.bind(clk);
+    delay_road_output.input.bind(road_output_sig);
+    delay_road_output.delayed.bind(road_output);
 
     return;
 }
@@ -132,28 +124,6 @@ void am_chip::detect_roads()
         }
 
         clear_match_table();
-    }
-
-}
-
-// *****************************************************************************
-void am_chip::write_roads()
-{
-    while (1)
-    {
-        wait();
-
-        output_data_ready_no_delay.write(false);
-
-        if (write_roads_sig)
-        {
-            if (!output_roads_buffer_empty)
-            {
-                road_addr_t road = detected_roads_buffer.read();
-                output_data_ready_no_delay.write(true);
-                output_road_no_delay.write(road);
-            }
-        }
     }
 
 }
