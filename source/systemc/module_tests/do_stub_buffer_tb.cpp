@@ -65,17 +65,17 @@ void do_stub_buffer_tb::write_stubs()
     wait(50, SC_NS);
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
-    stub.set(1, 1, 1, 1, 1);
+    stub.set(1, 1, 1, 1, 1, 1);
     stub_element.set_stub(stub);
     stub_input_fifo.write(do_stub_buffer::input_pair(6, stub_element));
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
-    stub.set(1, 1, 1, 1, 2);
+    stub.set(1, 1, 1, 1, 1, 2);
     stub_element.set_stub(stub);
     stub_input_fifo.write(do_stub_buffer::input_pair(6, stub_element));
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
-    stub.set(1, 1, 1, 1, 3);
+    stub.set(1, 1, 1, 1, 1, 3);
     stub_element.set_stub(stub);
     stub_input_fifo.write(do_stub_buffer::input_pair(8, stub_element));
 

@@ -31,9 +31,10 @@
 class do_stub_buffer : public sc_module
 {
 public:
-    typedef PRBF_0::header_t::bunch_crossing_ID_t bunch_crossing_t;
+    typedef PRBF_1 frame_t;
+    typedef frame_t::header_t::bunch_crossing_ID_t bunch_crossing_t;
     typedef bunch_crossing_t index_t;
-    typedef PRBF_0::stub_element_t element_t;
+    typedef frame_t::stub_element_t element_t;
     typedef element_t output_t;
     typedef std::map<index_t, std::vector<element_t> > buffer_t;
 
