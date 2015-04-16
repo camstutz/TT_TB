@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF0.hpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 16, 2015
  *
  * @brief
  *
@@ -24,6 +24,8 @@ namespace PRBF {
 // *****************************************************************************
 class stub_PRBF0 : public stub_PRBF
 {
+friend class stub_PRBF1;
+
 public:
     void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
     void set(fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);

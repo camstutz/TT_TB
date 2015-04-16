@@ -37,10 +37,11 @@ template <typename payload_type>
 class frame_element
 {
 public:
+    typedef element_type type_field_t;
     typedef payload_type payload_t;
 
-    void set_type_field(element_type type_field);
-    element_type get_type_field() const;
+    void set_type_field(type_field_t type_field);
+    type_field_t get_type_field() const;
 
     bool operator== (const frame_element& rhs) const;
     frame_element& operator= (const frame_element& rhs);
@@ -48,7 +49,7 @@ public:
     std::string get_string() const;
 
 protected:
-    element_type type_field;
+    type_field_t type_field;
     payload_t payload;
 
 friend void sc_trace <> (sc_trace_file* tf, const frame_element& v, const std::string& name);

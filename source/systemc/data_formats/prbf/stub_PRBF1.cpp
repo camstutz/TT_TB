@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF1.cpp
  * @author Christian Amstutz
- * @date April 10, 2015
+ * @date April 16, 2015
  *
  * @brief
  *
@@ -39,6 +39,16 @@ stub_PRBF1::stub_PRBF1(dtc_t dtc, fe_module_t fe_module, concentrator_ID_t
         concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend,
         z_t z) :
         stub_PRBF(fe_module, concentrator_ID, fe_chip_ID, strip, bend, z)
+{
+    set_dtc(dtc);
+
+    return;
+}
+
+// *****************************************************************************
+stub_PRBF1::stub_PRBF1(dtc_t dtc, stub_PRBF0 base_PRBF) : stub_PRBF(
+        base_PRBF.fe_module, base_PRBF.concentrator_ID, base_PRBF.fe_chip_ID,
+        base_PRBF.strip, base_PRBF.bend, base_PRBF.z)
 {
     set_dtc(dtc);
 

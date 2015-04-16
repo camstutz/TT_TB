@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF2.cpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 16, 2015
  *
  * @brief
  *
@@ -40,6 +40,23 @@ stub_PRBF2::stub_PRBF2(prb_t prb, dtc_t dtc, fe_module_t fe_module,
         concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t
         strip, bend_t bend, z_t z) :
         stub_PRBF1(dtc, fe_module, concentrator_ID, fe_chip_ID, strip, bend, z)
+{
+    set_prb(prb);
+
+    return;
+}
+
+// *****************************************************************************
+stub_PRBF2::stub_PRBF2(prb_t prb, stub_PRBF1 base_PRBF) : stub_PRBF1(base_PRBF)
+{
+    set_prb(prb);
+
+    return;
+}
+
+// *****************************************************************************
+stub_PRBF2::stub_PRBF2(prb_t prb, dtc_t dtc, stub_PRBF0 base_PRBF) :
+        stub_PRBF1(dtc, base_PRBF)
 {
     set_prb(prb);
 

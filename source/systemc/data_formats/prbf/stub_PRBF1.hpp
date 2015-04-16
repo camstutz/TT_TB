@@ -1,7 +1,7 @@
 /*!
  * @file stub_PRBF1.hpp
  * @author Christian Amstutz
- * @date April 10, 2015
+ * @date April 16, 2015
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include "stub_PRBF.hpp"
+#include "stub_PRBF0.hpp"
 
 #include <string>
 #include <sstream>
@@ -31,6 +32,7 @@ public:
     stub_PRBF1();
     stub_PRBF1(dtc_t dtc, fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
     stub_PRBF1(dtc_t dtc, fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
+    stub_PRBF1(dtc_t dtc, stub_PRBF0 base_PRBF);
 
     void set(dtc_t dtc, fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend);
     void set(dtc_t dtc, fe_module_t fe_module, concentrator_ID_t concentrator_ID, fe_chip_ID_t fe_chip_ID, strip_t strip, bend_t bend, z_t z);
