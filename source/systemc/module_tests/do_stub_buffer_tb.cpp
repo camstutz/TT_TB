@@ -42,7 +42,7 @@ do_stub_buffer_tb::do_stub_buffer_tb(sc_module_name _name) :
 
 
     log_buffer << std::endl
-            << "Simulation Output of DTC output unit TB:" << std::endl
+            << "Simulation Output of DO stub buffer TB:" << std::endl
             << "***************************************" << std::endl;
 
     return;
