@@ -13,12 +13,12 @@
 
 #pragma once
 
-#include "../modules/backend/data_organizer/do_input_collector.hpp"
-#include "../systems/TT_configuration.hpp"
+#include "../../modules/backend/data_organizer/do_input_collector.hpp"
+#include "../../systems/TT_configuration.hpp"
 
-#include "../data_formats/prbf/PRBF.hpp"
+#include "../../data_formats/prbf/PRBF.hpp"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "systemc.h"
 
