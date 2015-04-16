@@ -40,6 +40,8 @@ template <typename stub_type>
 class PRBF_frame
 {
 public:
+    typedef header header_t;
+    typedef trailer trailer_t;
     typedef stub_type stub_t;
     typedef stub_element<stub_t> stub_element_t;
     typedef std::vector<stub_element_t> stub_vector_t;
@@ -54,7 +56,7 @@ public:
     void add_stub(stub_element_t stub);
     typename stub_vector_t::size_type stub_count() const;
     void reset_stub_ptr();
-    bool get_stub(stub_element_t *stub) const;
+    bool get_stub(stub_element_t& stub);
 
     bool operator== (const PRBF_frame& rhs) const;
     PRBF_frame& operator= (const PRBF_frame& rhs);
@@ -149,7 +151,7 @@ void PRBF_frame<stub_type>::reset_stub_ptr()
 
 // *****************************************************************************
 template <typename stub_type>
-bool PRBF_frame<stub_type>::get_stub(stub_element_t *stub) const
+bool PRBF_frame<stub_type>::get_stub(stub_element_t& stub)
 {
     bool valid = false;
 
@@ -162,8 +164,6 @@ bool PRBF_frame<stub_type>::get_stub(stub_element_t *stub) const
     }
     else
     {
-        stub = NULL;
-
         valid = false;
     }
 
