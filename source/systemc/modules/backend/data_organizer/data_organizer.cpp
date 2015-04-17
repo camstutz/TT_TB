@@ -51,8 +51,11 @@ data_organizer::data_organizer(sc_module_name _name) :
 
     demultiplexer.clk.bind(clk);
     demultiplexer.bunch_crossing_request.bind(bunch_request_sig);
-    demultiplexer.stub_input.bind(stub_buffer_output_fifo);
-    demultiplexer.proc_unit_outputs.bind(proc_unit_outputs);
+    demultiplexer.stub_input[0].bind(stub_buffer_output_fifo);
+    for (unsigned int proc_unit_id = 0; proc_unit_id < proc_unit_nr; ++proc_unit_id)
+    {
+        demultiplexer.proc_unit_outputs.at(0, proc_unit_id).bind(proc_unit_outputs[proc_unit_id]);
+    }
 
     return;
 }

@@ -1,5 +1,5 @@
 /*!
- * @file do_demux_tb.hpp
+ * @file data_organizer_tb.hpp
  * @author Christian Amstutz
  * @date April 17, 2015
  *
@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../../modules/backend/common/time_demux.hpp"
+#include "../../modules/backend/processor_organizer/processor_organizer.hpp"
 #include "../../systems/TT_configuration.hpp"
 
 #include "../../data_formats/prbf/PRBF.hpp"
@@ -28,35 +28,32 @@
 /*!
  * @brief
  */
-class time_demux_tb : public sc_module
+class processor_organizer_tb : public sc_module
 {
 public:
-    typedef time_demux<PRBF_1, 1, 2> do_demux;
-
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_buffer<do_demux::bunch_crossing_t> bunch_crossing_request_sig;
-    sc_fifo<do_demux::input_t> stub_input_sig;
-    sc_map_square<sc_buffer<do_demux::output_t> > proc_unit_output_sigs;
+    sc_map_linear<sc_buffer<processor_organizer::do_input_t> > do_input_sigs;
+    sc_map_square<sc_buffer<processor_organizer::processor_output_t> > processor_output_sigs;
 
     // ----- Process Declarations ----------------------------------------------
-    void write_stubs();
+    void write_frames();
     void print_output();
 
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    do_demux dut_do_demux;
+    processor_organizer dut_processor_organizer;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    time_demux_tb(sc_module_name _name);
-    SC_HAS_PROCESS(time_demux_tb);
-    ~time_demux_tb();
+    processor_organizer_tb(sc_module_name _name);
+    SC_HAS_PROCESS(processor_organizer_tb);
+    ~processor_organizer_tb();
 
 private:
     std::ostringstream log_buffer;

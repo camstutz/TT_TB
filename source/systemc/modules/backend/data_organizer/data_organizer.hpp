@@ -32,7 +32,7 @@ class data_organizer : public sc_module
 public:
     typedef input_collector<PRBF_0, PRBF_1, 2> do_input_collector;
     typedef bx_stub_buffer<PRBF_1> do_stub_buffer;
-    typedef time_demux<PRBF_1, 4> do_demux;
+    typedef time_demux<PRBF_1, 1, 4> do_demux;
 
     typedef PRBF_0 dtc_input_t;
     typedef PRBF_1 proc_unit_output_t;

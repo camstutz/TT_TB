@@ -21,7 +21,7 @@ const unsigned int processor_organizer::processor_output_nr = 2;
 // *****************************************************************************
 
 /*!
- * @class dtc_input_unit
+ * @class process_organizer
  *
  * The module is sensitive to ...
  */
@@ -34,8 +34,10 @@ processor_organizer::processor_organizer(sc_module_name _name) :
         stub_buffer_input_fifo("stub_buffer_input_fifo"),
         bunch_request_sig("bunch_request_sig"),
         stub_buffer_output_fifo("stub_buffer_output"),
+        splitted_stubs_fifos(layer_nr, "splitted_stubs_fifo"),
         in_collector("in_collector"),
         stub_buffer("stub_buffer"),
+        layer_splitter("layer_splitter"),
         demultiplexer("demultiplexer")
 {
     // ----- Process registration ----------------------------------------------
@@ -50,9 +52,12 @@ processor_organizer::processor_organizer(sc_module_name _name) :
     stub_buffer.bunch_crossing_select.bind(bunch_request_sig);
     stub_buffer.stub_output.bind(stub_buffer_output_fifo);
 
+    layer_splitter.input_stubs.bind(stub_buffer_output_fifo);
+    layer_splitter.splitted_stubs.bind(splitted_stubs_fifos);
+
     demultiplexer.clk.bind(clk);
     demultiplexer.bunch_crossing_request.bind(bunch_request_sig);
-    demultiplexer.stub_input.bind(stub_buffer_output_fifo);
+    demultiplexer.stub_input.bind(splitted_stubs_fifos);
     demultiplexer.proc_unit_outputs.bind(processor_outputs);
 
     return;

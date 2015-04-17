@@ -15,7 +15,7 @@ time_demux_tb::time_demux_tb(sc_module_name _name) :
         sc_module(_name),
         bunch_crossing_request_sig("unch_crossing_request_sig"),
         stub_input_sig("stub_input_sig"),
-        proc_unit_output_sigs(do_demux::proc_unit_output_nr, "proc_unit_output_sigs"),
+        proc_unit_output_sigs(do_demux::layer_nr, do_demux::proc_unit_output_nr, "proc_unit_output_sigs"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         dut_do_demux("DUT_do_dmux")
 {
@@ -32,7 +32,7 @@ time_demux_tb::time_demux_tb(sc_module_name _name) :
     // ----- Module instance / channel binding ---------------------------------
     dut_do_demux.clk.bind(LHC_clock);
     dut_do_demux.bunch_crossing_request.bind(bunch_crossing_request_sig);
-    dut_do_demux.stub_input.bind(stub_input_sig);
+    dut_do_demux.stub_input[0].bind(stub_input_sig);
     dut_do_demux.proc_unit_outputs.bind(proc_unit_output_sigs);
 
     log_buffer << std::endl

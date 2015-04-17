@@ -24,7 +24,7 @@
 /*!
  * @brief
  */
-template <typename FRAME_T, unsigned int PROC_OUT_NR>
+template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR>
 class time_demux : public sc_module
 {
 public:
@@ -34,15 +34,16 @@ public:
     typedef typename frame_t::header_t::bunch_crossing_ID_t bunch_crossing_t;
     typedef bunch_crossing_t request_t;
 
+    static const unsigned int layer_nr;
     static const unsigned int proc_unit_output_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
 
     sc_out<request_t> bunch_crossing_request;
-    sc_fifo_in<input_t> stub_input;
+    sc_map_linear<sc_fifo_in<input_t> > stub_input;
 
-    sc_map_linear<sc_out<output_t> > proc_unit_outputs;
+    sc_map_square<sc_out<output_t> > proc_unit_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_signal<bunch_crossing_t> bx_counter;
@@ -68,17 +69,20 @@ public:
 
 // *****************************************************************************
 
-template <typename FRAME_T, unsigned int PROC_OUT_NR>
-const unsigned int time_demux<FRAME_T, PROC_OUT_NR>::proc_unit_output_nr = PROC_OUT_NR;
+template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR>
+const unsigned int time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR>::layer_nr = LAYER_NR;
+
+template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR>
+const unsigned int time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR>::proc_unit_output_nr = PROC_OUT_NR;
 
 // *****************************************************************************
-template <typename FRAME_T, unsigned int PROC_OUT_NR>
-time_demux<FRAME_T, PROC_OUT_NR>::time_demux(sc_module_name _name) :
+template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR>
+time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR>::time_demux(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         bunch_crossing_request("bunch_crossing_request"),
-        stub_input("stub_input"),
-        proc_unit_outputs(proc_unit_output_nr, "remote_proc_unit_output"),
+        stub_input(layer_nr, "stub_input"),
+        proc_unit_outputs(proc_unit_output_nr, layer_nr, "remote_proc_unit_output"),
         bx_counter("bx_counter")
 {
     // ----- Process registration ----------------------------------------------
@@ -94,8 +98,8 @@ time_demux<FRAME_T, PROC_OUT_NR>::time_demux(sc_module_name _name) :
 }
 
 // *****************************************************************************
-template <typename FRAME_T, unsigned int PROC_OUT_NR>
-void time_demux<FRAME_T, PROC_OUT_NR>::transfer_stubs()
+template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR>
+void time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR>::transfer_stubs()
 {
     while (1)
     {
@@ -103,14 +107,17 @@ void time_demux<FRAME_T, PROC_OUT_NR>::transfer_stubs()
 
         bunch_crossing_request.write(bx_counter.read());
 
-        frame_t output_frame(bx_counter.read()-1);
-        while (stub_input.num_available() > 0)
+        for(unsigned int layer_id = 0; layer_id < layer_nr; ++layer_id)
         {
-            output_frame.add_stub(stub_input.read());
-        }
-        proc_unit_outputs[bx_counter.read()%proc_unit_output_nr].write(output_frame);
+            frame_t output_frame(bx_counter.read()-1);
+            while (stub_input[layer_id].num_available() > 0)
+            {
+                output_frame.add_stub(stub_input[layer_id].read());
+            }
+            proc_unit_outputs.at(bx_counter.read()%proc_unit_output_nr, layer_id).write(output_frame);
 
-        bx_counter.write(bx_counter.read() + 1);
+            bx_counter.write(bx_counter.read() + 1);
+        }
     }
 
 }

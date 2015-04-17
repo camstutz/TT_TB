@@ -28,7 +28,8 @@
 //#include "backend_common/input_collector_tb.hpp"
 //#include "backend_common/time_demux_tb.hpp"
 //#include "data_organizer/data_organizer_tb.hpp"
-#include "processor_organizer/po_layer_splitter_tb.hpp"
+//#include "processor_organizer/po_layer_splitter_tb.hpp"
+#include "processor_organizer/processor_organizer_tb.hpp"
 //#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
 //#include "am_board_tb.hpp"
@@ -64,7 +65,8 @@ int sc_main(int argc, char *agv[])
 //    input_collector_tb do_input_collector_TB("DO_input_collector_TB");
 //    time_demux_tb do_demux_TB("DO_dmux_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
-    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB");
+//    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB");
+    processor_organizer_tb processor_organizer_TB("processor_organizer_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 //    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
 //	  am_system_tb am_system_tb("AM_System");
