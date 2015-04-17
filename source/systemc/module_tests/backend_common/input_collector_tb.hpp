@@ -1,5 +1,5 @@
 /*!
- * @file do_input_collector_tb.hpp
+ * @file input_collector_tb.hpp
  * @author Christian Amstutz
  * @date April 16, 2015
  *
@@ -13,10 +13,10 @@
 
 #pragma once
 
-#include "../../modules/backend/data_organizer/do_input_collector.hpp"
-#include "../../systems/TT_configuration.hpp"
-
+#include "../../data_formats/sc_pair/sc_pair.hpp"
 #include "../../data_formats/prbf/PRBF.hpp"
+
+#include "../../systems/TT_configuration.hpp"
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -24,18 +24,21 @@
 
 #include <iostream>
 #include <sstream>
+#include "../../modules/backend/common/input_collector.hpp"
 
 /*!
  * @brief
  */
-class do_input_collector_tb : public sc_module
+class input_collector_tb : public sc_module
 {
 public:
+    typedef input_collector<PRBF_0, PRBF_1, 2> do_input_collector;
+
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_linear<sc_buffer<do_input_collector::input_t> > dtc_input_sig;
-    sc_fifo<do_input_collector::output_t> stub_output_fifo;
+    sc_fifo<typename do_input_collector::output_t> stub_output_fifo;
 
     // ----- Process Declarations ----------------------------------------------
     void write_frames();
@@ -44,15 +47,15 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
-    do_input_collector dut_do_input_collector;
+    do_input_collector dut_input_collector;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    do_input_collector_tb(sc_module_name _name);
-    SC_HAS_PROCESS(do_input_collector_tb);
-    ~do_input_collector_tb();
+    input_collector_tb(sc_module_name _name);
+    SC_HAS_PROCESS(input_collector_tb);
+    ~input_collector_tb();
 
 private:
     std::ostringstream log_buffer;

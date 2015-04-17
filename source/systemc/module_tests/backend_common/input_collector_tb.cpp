@@ -1,5 +1,5 @@
 /*!
- * @file do_input_collector_tb.cpp
+ * @file input_collector_tb.cpp
  * @author Christian Amstutz
  * @date April 16, 2015
  */
@@ -8,22 +8,22 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "do_input_collector_tb.hpp"
+#include "input_collector_tb.hpp"
 
 // *****************************************************************************
 
 // *****************************************************************************
 
 /*!
- * @class do_input_collector_tb
+ * @class input_collector_tb
  * The module is sensitive to ...
  */
 
-do_input_collector_tb::do_input_collector_tb(sc_module_name _name) :
+input_collector_tb::input_collector_tb(sc_module_name _name) :
         sc_module(_name),
-        dtc_input_sig(do_input_collector::dtc_input_nr, "dtc_input_sig"),
+        dtc_input_sig(do_input_collector::input_nr, "dtc_input_sig"),
         stub_output_fifo("stub_output_fifo"),
-        dut_do_input_collector("DUT_do_input_collector")
+        dut_input_collector("DUT_input_collector")
 {
     // ----- Creation and binding of signals -----------------------------------
 
@@ -35,8 +35,8 @@ do_input_collector_tb::do_input_collector_tb(sc_module_name _name) :
     // ----- Module variable initialization ------------------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-    dut_do_input_collector.dtc_inputs.bind(dtc_input_sig);
-    dut_do_input_collector.stub_output.bind(stub_output_fifo);
+    dut_input_collector.frame_inputs.bind(dtc_input_sig);
+    dut_input_collector.stub_output.bind(stub_output_fifo);
 
 
     log_buffer << std::endl
@@ -47,7 +47,7 @@ do_input_collector_tb::do_input_collector_tb(sc_module_name _name) :
 }
 
 // *****************************************************************************
-do_input_collector_tb::~do_input_collector_tb()
+input_collector_tb::~input_collector_tb()
 {
     std::cout << log_buffer.str();
 
@@ -55,7 +55,7 @@ do_input_collector_tb::~do_input_collector_tb()
 }
 
 // *****************************************************************************
-void do_input_collector_tb::write_frames()
+void input_collector_tb::write_frames()
 {
 
     do_input_collector::input_frame_t data_frame(4);
@@ -99,7 +99,7 @@ void do_input_collector_tb::write_frames()
 }
 
 // *****************************************************************************
-void do_input_collector_tb::print_output()
+void input_collector_tb::print_output()
 {
     while(1)
     {
