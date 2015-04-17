@@ -1,7 +1,7 @@
 /*!
- * @file do_stub_buffer_tb.hpp
+ * @file do_demux_tb.hpp
  * @author Christian Amstutz
- * @date April 16, 2015
+ * @date April 17, 2015
  *
  * @brief
  *
@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../../modules/backend/data_organizer/do_stub_buffer.hpp"
+#include "../../modules/backend/common/time_demux.hpp"
 #include "../../systems/TT_configuration.hpp"
 
 #include "../../data_formats/prbf/PRBF.hpp"
@@ -28,15 +28,17 @@
 /*!
  * @brief
  */
-class do_stub_buffer_tb : public sc_module
+class time_demux_tb : public sc_module
 {
 public:
+    typedef time_demux<PRBF_1, 2> do_demux;
+
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_fifo<do_stub_buffer::input_pair> stub_input_fifo;
-    sc_buffer<do_stub_buffer::bunch_crossing_t> bunch_crossing_select_sig;
-    sc_fifo<do_stub_buffer::output_t> output_fifo;
+    sc_buffer<do_demux::bunch_crossing_t> bunch_crossing_request_sig;
+    sc_fifo<do_demux::input_t> stub_input_sig;
+    sc_map_linear<sc_buffer<do_demux::output_t> > proc_unit_output_sigs;
 
     // ----- Process Declarations ----------------------------------------------
     void write_stubs();
@@ -45,15 +47,16 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
-    do_stub_buffer dut_do_stub_buffer;
+    sc_clock LHC_clock;
+    do_demux dut_do_demux;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    do_stub_buffer_tb(sc_module_name _name);
-    SC_HAS_PROCESS(do_stub_buffer_tb);
-    ~do_stub_buffer_tb();
+    time_demux_tb(sc_module_name _name);
+    SC_HAS_PROCESS(time_demux_tb);
+    ~time_demux_tb();
 
 private:
     std::ostringstream log_buffer;

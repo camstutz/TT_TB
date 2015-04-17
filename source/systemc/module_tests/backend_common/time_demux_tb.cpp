@@ -8,16 +8,10 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "do_demux_tb.hpp"
+#include "time_demux_tb.hpp"
 
 // *****************************************************************************
-
-/*!
- * @class do_input_collector_tb
- * The module is sensitive to ...
- */
-
-do_demux_tb::do_demux_tb(sc_module_name _name) :
+time_demux_tb::time_demux_tb(sc_module_name _name) :
         sc_module(_name),
         bunch_crossing_request_sig("unch_crossing_request_sig"),
         stub_input_sig("stub_input_sig"),
@@ -49,7 +43,7 @@ do_demux_tb::do_demux_tb(sc_module_name _name) :
 }
 
 // *****************************************************************************
-do_demux_tb::~do_demux_tb()
+time_demux_tb::~time_demux_tb()
 {
     std::cout << log_buffer.str();
 
@@ -57,7 +51,7 @@ do_demux_tb::~do_demux_tb()
 }
 
 // *****************************************************************************
-void do_demux_tb::write_stubs()
+void time_demux_tb::write_stubs()
 {
     do_demux::input_t stub_element;
     do_demux::input_t::stub_t stub;
@@ -103,7 +97,7 @@ void do_demux_tb::write_stubs()
 }
 
 // *****************************************************************************
-void do_demux_tb::print_output()
+void time_demux_tb::print_output()
 {
     while(1)
     {
