@@ -1,5 +1,5 @@
 /*!
- * @file data_organizer.hpp
+ * @file processor_organizer.hpp
  * @author Christian Amstutz
  * @date April 17, 2015
  *
@@ -27,29 +27,30 @@
 /*!
  * @brief
  */
-class data_organizer : public sc_module
+class processor_organizer : public sc_module
 {
 public:
-    typedef input_collector<PRBF_0, PRBF_1, 2> do_input_collector;
-    typedef bx_stub_buffer<PRBF_1> do_stub_buffer;
-    typedef time_demux<PRBF_1, 4> do_demux;
+    typedef input_collector<PRBF_1, PRBF_2, 4> po_input_collector;
+    typedef bx_stub_buffer<PRBF_2> po_stub_buffer;
+    typedef time_demux<PRBF_2, 2> po_demux;
 
-    typedef PRBF_0 dtc_input_t;
-    typedef PRBF_1 proc_unit_output_t;
+    typedef PRBF_1 do_input_t;
+    typedef PRBF_2 processor_output_t;
 
-    static const unsigned int dtc_input_nr;
-    static const unsigned int proc_unit_nr;
+    static const unsigned int do_input_nr;
+    static const unsigned int layer_nr;
+    static const unsigned int processor_output_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
-    sc_map_linear<sc_in<dtc_input_t> > dtc_inputs;
+    sc_map_linear<sc_in<do_input_t> > do_inputs;
 
-    sc_map_linear<sc_out<proc_unit_output_t> > proc_unit_outputs;
+    sc_map_square<sc_out<processor_output_t> > processor_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_fifo<do_input_collector::output_t> stub_buffer_input_fifo;
-    sc_buffer<do_stub_buffer::bunch_crossing_t> bunch_request_sig;
-    sc_fifo<do_stub_buffer::output_t> stub_buffer_output_fifo;
+    sc_fifo<po_input_collector::output_t> stub_buffer_input_fifo;
+    sc_buffer<po_stub_buffer::bunch_crossing_t> bunch_request_sig;
+    sc_fifo<po_stub_buffer::output_t> stub_buffer_output_fifo;
 
 // ----- Local Storage Declarations --------------------------------------------
 
@@ -58,13 +59,13 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
-    do_input_collector in_collector;
-    do_stub_buffer stub_buffer;
-    do_demux demultiplexer;
+    po_input_collector in_collector;
+    po_stub_buffer stub_buffer;
+    po_demux demultiplexer;
 
 // ----- Constructor -----------------------------------------------------------
     /*!
      * Constructor:
      */
-    data_organizer(sc_module_name _name);
+    processor_organizer(sc_module_name _name);
 };
