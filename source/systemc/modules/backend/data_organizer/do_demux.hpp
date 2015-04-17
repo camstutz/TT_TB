@@ -1,5 +1,5 @@
 /*!
- * @file do_input_collector.hpp
+ * @file do_demux.hpp
  * @author Christian Amstutz
  * @date April 16, 2015
  *
@@ -13,7 +13,6 @@
 
 #pragma once
 
-#include "do_stub_buffer.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
 
 #include "../../../systems/TT_configuration.hpp"
@@ -25,28 +24,32 @@
 /*!
  * @brief
  */
-class do_input_collector : public sc_module
+class do_demux : public sc_module
 {
 public:
-    typedef PRBF_0 input_frame_t;
-    typedef input_frame_t input_t;
-    typedef PRBF_1 output_frame_t;
-    typedef do_stub_buffer::input_pair output_t;
-    typedef input_frame_t::header_t::bunch_crossing_ID_t bunch_crossing_t;
+    typedef PRBF_1 frame_t;
+    typedef frame_t::stub_element_t input_t;
+    typedef frame_t output_t;
+    typedef frame_t::header_t::bunch_crossing_ID_t bunch_crossing_t;
+    typedef bunch_crossing_t request_t;
 
-    static const unsigned int dtc_input_nr;
+    static const unsigned int proc_unit_output_nr;
 
 // ----- Port Declarations -----------------------------------------------------
-    sc_map_linear<sc_in<input_t> > dtc_inputs;
+    sc_in<bool> clk;
 
-    sc_fifo_out<output_t> stub_output;
+    sc_out<request_t> bunch_crossing_request;
+    sc_fifo_in<input_t> stub_input;
+
+    sc_map_linear<sc_out<output_t> > proc_unit_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
+    sc_signal<bunch_crossing_t> bx_counter;
 
 // ----- Local Storage Declarations --------------------------------------------
 
 // ----- Process Declarations --------------------------------------------------
-    void process_incoming_frame();
+    void transfer_stubs();
 
 // ----- Other Method Declarations ---------------------------------------------
 
@@ -56,6 +59,6 @@ public:
     /*!
      * Constructor:
      */
-    do_input_collector(sc_module_name _name);
-    SC_HAS_PROCESS(do_input_collector);
+    do_demux(sc_module_name _name);
+    SC_HAS_PROCESS(do_demux);
 };

@@ -25,8 +25,9 @@
 //#include "dtc_output_unit_tb.hpp"
 //#include "dtc_tb.hpp"
 //#include "data_organizer_tb.hpp"
-#include "data_organizer/do_stub_buffer_tb.hpp"
-#include "data_organizer/do_input_collector_tb.hpp"
+//#include "data_organizer/do_stub_buffer_tb.hpp"
+//#include "data_organizer/do_input_collector_tb.hpp"
+#include "data_organizer/do_demux_tb.hpp"
 //#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
 //#include "am_board_tb.hpp"
@@ -59,8 +60,9 @@ int sc_main(int argc, char *agv[])
 //    dtc_output_unit_tb dtc_OUTU_TB("DTC_output_unit_TB");
 //    dtc_tb DTC_TB("DTC_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
-    do_stub_buffer_tb do_stub_buffer_TB("DO_stub_buffer_TB");
-    do_input_collector_tb do_input_collector_TB("DO_input_collector_TB");
+//    do_stub_buffer_tb do_stub_buffer_TB("DO_stub_buffer_TB");
+//    do_input_collector_tb do_input_collector_TB("DO_input_collector_TB");
+    do_demux_tb do_demux_TB("DO_dmux_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 //    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
 //	  am_system_tb am_system_tb("AM_System");
