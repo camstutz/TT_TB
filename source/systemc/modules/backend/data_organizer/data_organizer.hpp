@@ -14,15 +14,14 @@
 #pragma once
 
 #include "../../../data_formats/prbf/PRBF.hpp"
-#include "do_input_collector.hpp"
-#include "do_stub_buffer.hpp"
-#include "do_demux.hpp"
-
+#include "../common/input_collector.hpp"
+#include "../common/bx_stub_buffer.hpp"
 #include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include <systemc.h>
+#include "../common/time_demux.hpp"
 
 /*!
  * @brief
@@ -30,6 +29,10 @@
 class data_organizer : public sc_module
 {
 public:
+    typedef input_collector<PRBF_0, PRBF_1, 2> do_input_collector;
+    typedef bx_stub_buffer<PRBF_1> do_stub_buffer;
+    typedef time_demux<PRBF_1, 4> do_demux;
+
     typedef PRBF_0 dtc_input_t;
     typedef PRBF_1 proc_unit_output_t;
 
@@ -54,7 +57,7 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
-    do_input_collector input_collector;
+    do_input_collector in_collector;
     do_stub_buffer stub_buffer;
     do_demux demultiplexer;
 

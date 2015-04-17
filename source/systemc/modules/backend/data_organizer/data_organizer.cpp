@@ -26,13 +26,14 @@ const unsigned int data_organizer::proc_unit_nr = 4;
  */
 
 data_organizer::data_organizer(sc_module_name _name) :
+        sc_module(_name),
         clk("clk"),
         dtc_inputs(dtc_input_nr, "dtc_inputs"),
         proc_unit_outputs(proc_unit_nr, "proc_unit_output"),
         stub_buffer_input_fifo("stub_buffer_input_fifo"),
         bunch_request_sig("bunch_request_sig"),
         stub_buffer_output_fifo("stub_buffer_output"),
-        input_collector("input_collector"),
+        in_collector("in_collector"),
         stub_buffer("stub_buffer"),
         demultiplexer("demultiplexer")
 {
@@ -41,8 +42,8 @@ data_organizer::data_organizer(sc_module_name _name) :
     // ----- Module channel/variable initialization ----------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-    input_collector.dtc_inputs.bind(dtc_inputs);
-    input_collector.stub_output.bind(stub_buffer_input_fifo);
+    in_collector.frame_inputs.bind(dtc_inputs);
+    in_collector.stub_output.bind(stub_buffer_input_fifo);
 
     stub_buffer.stub_input.bind(stub_buffer_input_fifo);
     stub_buffer.bunch_crossing_select.bind(bunch_request_sig);

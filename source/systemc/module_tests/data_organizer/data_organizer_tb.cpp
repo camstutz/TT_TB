@@ -59,9 +59,9 @@ data_organizer_tb::~data_organizer_tb()
 void data_organizer_tb::write_frames()
 {
 
-    do_input_collector::input_frame_t data_frame(4);
-    do_input_collector::input_frame_t::stub_element_t stub_element;
-    do_input_collector::input_frame_t::stub_t stub;
+    data_organizer::do_input_collector::input_frame_t data_frame(4);
+    data_organizer::do_input_collector::input_frame_t::stub_element_t stub_element;
+    data_organizer::do_input_collector::input_frame_t::stub_t stub;
 
     wait(50, SC_NS);
 
@@ -110,7 +110,7 @@ void data_organizer_tb::print_output()
          log_buffer << sc_time_stamp() <<": " << std::endl;
 
          unsigned int output_id = 0;
-         sc_map_linear<sc_buffer<do_demux::output_t> >::iterator proc_output_it = proc_output_sigs.begin();
+         sc_map_linear<sc_buffer<data_organizer::do_demux::output_t> >::iterator proc_output_it = proc_output_sigs.begin();
          for (; proc_output_it != proc_output_sigs.end(); ++proc_output_it)
          {
              if (proc_output_it->event())
