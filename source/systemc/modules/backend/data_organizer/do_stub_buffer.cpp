@@ -21,6 +21,7 @@
  */
 
 do_stub_buffer::do_stub_buffer(sc_module_name _name) :
+        sc_module(_name),
         stub_input("stub_input"),
         bunch_crossing_select("bunch_crossing_select"),
         stub_output("stub_output")
@@ -47,7 +48,7 @@ void do_stub_buffer::write_frame()
 
         while (stub_input.num_available() > 0)
         {
-            input_pair input_stub = stub_input.read();
+            input_pair_t input_stub = stub_input.read();
             bx_buffer[input_stub.first].push_back(input_stub.second);
         }
     }
@@ -77,26 +78,4 @@ void do_stub_buffer::read_frame()
         }
     }
 
-}
-
-// *****************************************************************************
-do_stub_buffer::input_pair::input_pair() :
-        pair(index_t(), element_t())
-{}
-
-// *****************************************************************************
-do_stub_buffer::input_pair::input_pair(index_t index, element_t element) :
-        pair(index, element)
-{}
-
-// *****************************************************************************
-std::ostream& operator<< (std::ostream& stream, const do_stub_buffer::input_pair& pair)
-{
-    stream << "[";
-    stream << pair.first;
-    stream << ",";
-    stream << pair.second;
-    stream << "]";
-
-    return stream;
 }
