@@ -24,10 +24,11 @@
 //#include "dtc_input_unit_tb.hpp"
 //#include "dtc_output_unit_tb.hpp"
 //#include "dtc_tb.hpp"
-#include "data_organizer/data_organizer_tb.hpp"
 //#include "backend_common/bx_stub_buffer_tb.hpp"
 //#include "backend_common/input_collector_tb.hpp"
 //#include "backend_common/time_demux_tb.hpp"
+//#include "data_organizer/data_organizer_tb.hpp"
+#include "processor_organizer/po_layer_splitter_tb.hpp"
 //#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
 //#include "am_board_tb.hpp"
@@ -59,10 +60,11 @@ int sc_main(int argc, char *agv[])
 //    dtc_input_unit_tb dtc_INU_TB("DTC_input_unit_TB");
 //    dtc_output_unit_tb dtc_OUTU_TB("DTC_output_unit_TB");
 //    dtc_tb DTC_TB("DTC_TB");
-    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
 //    bx_stub_buffer_tb bx_stub_buffer_TB("bx_stub_buffer_TB");
 //    input_collector_tb do_input_collector_TB("DO_input_collector_TB");
 //    time_demux_tb do_demux_TB("DO_dmux_TB");
+//    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
+    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 //    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
 //	  am_system_tb am_system_tb("AM_System");
