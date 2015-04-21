@@ -14,6 +14,10 @@
 
 // *****************************************************************************
 
+const unsigned int am_board::layer_nr = NR_DETECTOR_LAYERS;
+
+// *****************************************************************************
+
 /*!
  * @class am_lane
  */
@@ -21,40 +25,16 @@
 am_board::am_board(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        clk_fifo("clk_fifo"),
-        fifo_write_en(NR_DETECTOR_LAYERS, "fifo_write_ens"),
-        fifo_inputs(NR_DETECTOR_LAYERS, "fifo_inputs"),
+        frame_inputs(NR_DETECTOR_LAYERS, "frame_inputs"),
         hit_output(NR_DETECTOR_LAYERS, "hit_output"),
-        fifo_not_empty_sig(NR_DETECTOR_LAYERS, "fifo_not_empty_sig"),
-        fifo_read_en_sig(NR_DETECTOR_LAYERS, "fifo_read_en_sig"),
-        fifo_stub_out_sig(NR_DETECTOR_LAYERS, "fifo_stub_out_sig"),
         track_finder_in_signal(NR_DETECTOR_LAYERS, "track_finder_in_signal"),
-        stub_fifo_array(NR_DETECTOR_LAYERS, "stub_fifo"),
-        AMcontroller("AM_controller"),
+        AM_InputModule("AM_input_module"),
         TrackFinder("track_finder")
 {
     // ----- Module instance / channel binding ---------------------------------
-    unsigned int layer = 0;
-    sc_map_linear<stub_fifo<STUB_FIFO_DEPTH> >::iterator fifo_it = stub_fifo_array.begin();
-    for (; fifo_it != stub_fifo_array.end(); ++fifo_it)
-    {
-        fifo_it->clk_write.bind(clk_fifo);
-        fifo_it->clk_read.bind(clk);
-        fifo_it->write_en.bind(fifo_write_en[layer]);
-        fifo_it->stub_in.bind(fifo_inputs[layer]);
-        fifo_it->not_empty.bind(fifo_not_empty_sig[layer]);
-        fifo_it->read_en.bind(fifo_read_en_sig[layer]);
-        fifo_it->stub_out.bind(fifo_stub_out_sig[layer]);
-
-        ++layer;
-    }
-
-    AMcontroller.clk.bind(clk);
-    AMcontroller.fifo_not_empty.bind(fifo_not_empty_sig);
-    AMcontroller.fifo_write_en.bind(fifo_write_en);
-    AMcontroller.fifo_read_en.bind(fifo_read_en_sig);
-    AMcontroller.stub_inputs.bind(fifo_stub_out_sig);
-    AMcontroller.stub_outputs.bind(track_finder_in_signal);
+    AM_InputModule.clk.bind(clk);
+    AM_InputModule.frame_inputs.bind(frame_inputs);
+    AM_InputModule.stub_stream_outputs.bind(track_finder_in_signal);
 
     TrackFinder.clk.bind(clk);
     TrackFinder.hit_input.bind(track_finder_in_signal);

@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date April 20, 2015
  *
  * @brief
  */
@@ -29,9 +29,11 @@
 //#include "backend_common/time_demux_tb.hpp"
 //#include "data_organizer/data_organizer_tb.hpp"
 //#include "processor_organizer/po_layer_splitter_tb.hpp"
-#include "processor_organizer/processor_organizer_tb.hpp"
+//#include "processor_organizer/processor_organizer_tb.hpp"
 //#include "fifo_manager_tb.hpp"
 //#include "fifo_manager_datapath_tb.hpp"
+//#include "am_board/am_input_module_one_layer_tb.hpp"
+#include "am_board/am_input_module_tb.hpp"
 //#include "am_board_tb.hpp"
 //#include "am_system_tb.hpp"
 //#include "trigger_tower_tb.hpp"
@@ -66,9 +68,11 @@ int sc_main(int argc, char *agv[])
 //    time_demux_tb do_demux_TB("DO_dmux_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
 //    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB");
-    processor_organizer_tb processor_organizer_TB("processor_organizer_TB");
+//    processor_organizer_tb processor_organizer_TB("processor_organizer_TB");
 //    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
 //    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
+//    am_input_module_one_layer_tb am_in_mod_one_layer_TB("AM_input_module_one_layer_TB");
+    am_input_module_tb am_in_mod_TB("AM_input_module_TB");
 //	  am_system_tb am_system_tb("AM_System");
 //    am_board_tb am_board_tb("AM_board_TB");
 //    trigger_tower_tb("trigger_tower_tb");
@@ -141,6 +145,11 @@ int sc_main(int argc, char *agv[])
 //    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(2,0), "fifo_out-2-0");
 //    sc_trace(trace_file, fifo_manager_tb.dut_fifo_manager.fifo_out.at(3,0), "fifo_out-3-0");
 
+    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.clk, "clk");
+    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.current_state, "current_state");
+    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.frame_available, "frame_available");
+    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.frame_processing, "frame_processing");
+    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.init_processing, "init_processing");
 
     // ----- Start simulation --------------------------------------------------
 

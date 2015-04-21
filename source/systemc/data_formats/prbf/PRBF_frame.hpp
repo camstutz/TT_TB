@@ -83,6 +83,10 @@ std::ostream& operator<< (std::ostream& stream, const PRBF_frame<stub_type>& fra
 template <typename stub_type>
 PRBF_frame<stub_type>::PRBF_frame()
 {
+    header_element = header();
+    trailer_element = trailer();
+
+    stub_vector.clear();
     reset_stub_ptr();
 
     return;
@@ -93,6 +97,10 @@ template <typename stub_type>
 PRBF_frame<stub_type>::PRBF_frame(header::bunch_crossing_ID_t bunch_crossing) :
     header_element(bunch_crossing)
 {
+    header_element = header();
+    trailer_element = trailer();
+
+    stub_vector.clear();
     reset_stub_ptr();
 
     return;
