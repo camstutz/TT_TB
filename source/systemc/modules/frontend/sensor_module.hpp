@@ -28,8 +28,7 @@
  * Combines the front end chips and the data concentrator.
  */
 
-template <typename FE_CHIP_TYPE, typename CIC_TYPE,
-        unsigned int NR_FE_CHIPS, unsigned int HITS_PER_CYCLE>
+template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int HITS_PER_CYCLE>
 class sensor_module : public sc_module
 {
 public:
@@ -71,32 +70,26 @@ public:
 };
 // *****************************************************************************
 
-typedef sensor_module<frontend_chip_cbc, data_concentrator_cbc,
-        NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP> sensor_module_CBC;
+typedef sensor_module<frontend_chip_cbc, data_concentrator_cbc, MAX_HITS_PER_CBC_FE_CHIP> sensor_module_CBC;
 
-typedef sensor_module<frontend_chip_mpa, data_concentrator_mpa,
-        NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP> sensor_module_MPA;
+typedef sensor_module<frontend_chip_mpa, data_concentrator_mpa, MAX_HITS_PER_MPA_FE_CHIP> sensor_module_MPA;
 
 // *****************************************************************************
 
 // *****************************************************************************
 
-template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int NR_FE_CHIPS,
-        unsigned int HITS_PER_CYCLE>
-const unsigned int sensor_module<FE_CHIP_TYPE, CIC_TYPE, NR_FE_CHIPS, HITS_PER_CYCLE>::sides = 2;
+template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int HITS_PER_CYCLE>
+const unsigned int sensor_module<FE_CHIP_TYPE, CIC_TYPE, HITS_PER_CYCLE>::sides = NR_FE_CHIP_SIDES;
 
-template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int NR_FE_CHIPS,
-        unsigned int HITS_PER_CYCLE>
-const unsigned int sensor_module<FE_CHIP_TYPE, CIC_TYPE, NR_FE_CHIPS, HITS_PER_CYCLE>::fe_chips_per_side = NR_FE_CHIPS;
+template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int HITS_PER_CYCLE>
+const unsigned int sensor_module<FE_CHIP_TYPE, CIC_TYPE, HITS_PER_CYCLE>::fe_chips_per_side = NR_FE_CHIP_PER_SIDE;
 
-template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int NR_FE_CHIPS,
-        unsigned int HITS_PER_CYCLE>
-const unsigned int sensor_module<FE_CHIP_TYPE, CIC_TYPE, NR_FE_CHIPS, HITS_PER_CYCLE>::hits_per_fe_chip = HITS_PER_CYCLE;
+template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int HITS_PER_CYCLE>
+const unsigned int sensor_module<FE_CHIP_TYPE, CIC_TYPE, HITS_PER_CYCLE>::hits_per_fe_chip = HITS_PER_CYCLE;
 
 // *****************************************************************************
-template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int NR_FE_CHIPS,
-        unsigned int HITS_PER_CYCLE>
-sensor_module<FE_CHIP_TYPE, CIC_TYPE, NR_FE_CHIPS, HITS_PER_CYCLE>::sensor_module(
+template <typename FE_CHIP_TYPE, typename CIC_TYPE, unsigned int HITS_PER_CYCLE>
+sensor_module<FE_CHIP_TYPE, CIC_TYPE, HITS_PER_CYCLE>::sensor_module(
         const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),

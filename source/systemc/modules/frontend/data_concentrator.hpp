@@ -105,7 +105,7 @@ template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int COLLECTION_CYCLES>
 const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
         IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::nr_fe_chips = NR_FE_CHIPS;
+        COLLECTION_CYCLES>::nr_fe_chips = NR_FE_CHIP_PER_SIDE;
 
 template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,

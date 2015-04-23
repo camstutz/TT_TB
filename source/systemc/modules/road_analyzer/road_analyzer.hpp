@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.hpp
  * @author Christian Amstutz
- * @date February 19, 2015
+ * @date April 23, 2015
  *
  * @brief
  */
@@ -12,16 +12,18 @@
 
 #pragma once
 
+#include "../backend/am_board/track_finder/track_finder.hpp"
+#include "../../systems/TT_configuration.hpp"
+
+#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+
+#include <systemc.h>
+
 #include <string>
 #include <sstream>
 #include <fstream>
 
-#include <systemc.h>
-#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-
-#include "../backend/am_board/track_finder/track_finder.hpp"
-#include "../../systems/TT_configuration.hpp"
-
+// *****************************************************************************
 /*!
  * @brief
  */
@@ -32,7 +34,7 @@ public:
 
 // ----- Port Declarations -----------------------------------------------------
 	sc_in<unsigned int> hit_cnt;
-	sc_map_cube<sc_in<track_finder::hit_stream> > filtered_hits;
+	sc_map_square<sc_in<track_finder::hit_stream> > filtered_hits;
 
 // ----- Local Channel Declarations --------------------------------------------
 

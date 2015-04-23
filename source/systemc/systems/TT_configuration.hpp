@@ -55,13 +55,14 @@
 #define NR_PRB_PER_TRIGGER_TOWER   2
 #define NR_AM_BOARDS               2
 
-#define NR_NEIGHBOURING_TOWERS     2
-#define NR_DETECTOR_MPA_LAYERS     1  // Number of layers with PS modules existing in the detector
-#define NR_DETECTOR_CBC_LAYERS     1  // Number of layers with 2S modules existing in the detector
+#define NR_DETECTOR_MPA_LAYERS     3  // Number of layers with PS modules existing in the detector
+#define NR_DETECTOR_CBC_LAYERS     3  // Number of layers with 2S modules existing in the detector
 #define NR_DETECTOR_LAYERS         NR_DETECTOR_CBC_LAYERS + NR_DETECTOR_MPA_LAYERS
-#define NR_DETECTOR_PHI            2  // Number of sensors in the circumference of the detector
-#define NR_DETECTOR_Z              2  // Number of sensors on length of the detector
-#define NR_FE_CHIP_PER_MODULE      8  // Number of front-end chips per sensor module
+#define NR_DETECTOR_PHI            1  // Number of sensors in the circumference of the detector
+#define NR_DETECTOR_Z              1  // Number of sensors on length of the detector
+#define NR_FE_CHIP_SIDES           2
+#define NR_FE_CHIP_PER_SIDE        8
+#define NR_FE_CHIP_PER_MODULE      NR_FE_CHIP_SIDES * NR_FE_CHIP_PER_SIDE  // Number of front-end chips per sensor module
 
 #define NR_TRIGGER_TOWERS NR_DETECTOR_PHI*NR_DETECTOR_Z
 #define NR_TOWER_CONNECTIONS 4
@@ -79,11 +80,11 @@
 #define SS_BIT_WIDTH 2
 
 // Define delays
-#define DC_output_delay 4
-#define DTC_latency 3
-#define DO_output_delay 5
+#define DC_output_delay 0
+#define DTC_latency 0
+#define DO_output_delay 0
 #define AM_CHIP_LATENCY 0
-#define PATTERN_MEMORY_LATENCY 2
+#define PATTERN_MEMORY_LATENCY 0
 
 // Signal types used between modules
 #include "../data_formats/CIC_format/CIC_format.hpp"

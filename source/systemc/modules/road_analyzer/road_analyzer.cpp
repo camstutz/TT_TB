@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.cpp
  * @author Christian Amstutz
- * @date February 19, 2015
+ * @date April 23, 2015
  *
  * @brief
  */
@@ -20,7 +20,7 @@ const std::string road_analyzer::filename = "data/roads.txt";
 road_analyzer::road_analyzer(sc_module_name _name) :
         sc_module(_name),
         hit_cnt("hit_cnt"),
-        filtered_hits(NR_TRIGGER_TOWERS, NR_AM_BOARDS, NR_DETECTOR_LAYERS, "filtered_hits"),
+        filtered_hits(NR_PRB_PER_TRIGGER_TOWER * NR_AM_BOARDS, NR_DETECTOR_LAYERS, "filtered_hits"),
         hit_counter(0),
         filtered_hits_cnt(0)
 {
@@ -58,26 +58,22 @@ void road_analyzer::detect_hits()
 	{
 		wait();
 
-		for (unsigned int trigger_tower = 0; trigger_tower < NR_TRIGGER_TOWERS; ++trigger_tower)
-		{
-			for (unsigned int am_id = 0; am_id < NR_AM_BOARDS; ++am_id)
-			{
-		        for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
-		        {
-		            if (filtered_hits.at(trigger_tower, am_id, layer).event())
-		            {
-		                track_finder::hit_stream read_hit;
-		                read_hit = filtered_hits.at(trigger_tower, am_id, layer).read();
-		                if (!read_hit.is_opcode())
-		                {
-		                    road_file << sc_time_stamp() << " @ " << trigger_tower << ": " <<  std::hex << read_hit.get_value() << std::endl;
-		                    ++filtered_hits_cnt;
-		                }
-		            }
-
-		        }
-			}
-		}
+        for (unsigned int input_id = 0; input_id < (NR_PRB_PER_TRIGGER_TOWER * NR_AM_BOARDS); ++input_id)
+        {
+            for (unsigned int layer = 0; layer < NR_DETECTOR_LAYERS; ++layer)
+            {
+                if (filtered_hits.at(input_id, layer).event())
+                {
+                    track_finder::hit_stream read_hit;
+                    read_hit = filtered_hits.at(input_id, layer).read();
+                    if (!read_hit.is_opcode())
+                    {
+                        road_file << sc_time_stamp() << " @ " << input_id << ": " <<  std::hex << read_hit.get_value() << std::endl;
+                        ++filtered_hits_cnt;
+                    }
+                }
+            }
+        }
 	}
 
 }

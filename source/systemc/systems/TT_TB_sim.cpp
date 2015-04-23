@@ -37,15 +37,6 @@ int sc_main(int argc, char *agv[])
     //trace_file->delta_cycles(true);
 
     sc_trace(trace_file, testbench.LHC_clock, "LHC_clock");
-    sc_trace(trace_file, testbench.LHCx4_clock, "LHCx4_clock");
-    sc_trace(trace_file, testbench.AM_clock, "AM_clock");
-
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].TrackFinder.road_proc.road_input, "road_in0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].TrackFinder.road_proc.command_buffer_write_sig, "write_sig0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].TrackFinder.road_proc.command_buffer_delayed_sig, "delayed_sig0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].TrackFinder.road_proc.found_pattern, "found_pattern0");
-    sc_trace(trace_file, testbench.trigger_tower_0_0.am_board_array[0].TrackFinder.road_proc.superstrip_lookup, "superstrip_lookup0");
-    //sc_trace(trace_file, testbench.trigger_tower_0_0.road_output, "out0");
 
     // ----- Start simulation --------------------------------------------------
 
@@ -54,7 +45,7 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.register_simulation_start();
-    sc_start(3000, SC_NS);
+    sc_start(10000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);

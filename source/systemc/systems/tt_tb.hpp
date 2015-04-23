@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.hpp
  * @author Christian Amstutz
- * @date January 5, 2015
+ * @date April 23, 2015
  *
  * @brief
  */
@@ -10,21 +10,22 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include <utility>
-
-#include <systemc.h>
-
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../modules/hit_generator/hit_generator.hpp"
+#include "../modules/frontend/sensor_module.hpp"
+#include "../modules/backend/dtc/dtc.hpp"
+#include "../modules/backend/trigger_tower.hpp"
+#include "../modules/road_analyzer/road_analyzer.hpp"
+#include "TT_configuration.hpp"
 
 #include "../data_formats/fm_out_data.hpp"
 
-#include "TT_configuration.hpp"
-#include "../modules/hit_generator/hit_generator.hpp"
-#include "../modules/frontend_cbc/sensor_module_cbc.hpp"
-#include "../modules/frontend_mpa/sensor_module_mpa.hpp"
-#include "../modules/backend/trigger_tower.hpp"
-#include "../modules/road_analyzer/road_analyzer.hpp"
+#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
+#include <systemc.h>
+
+#include <utility>
+
+// *****************************************************************************
 /*!
  * @brief
  */
@@ -35,19 +36,14 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_clock LHC_clock;
-    sc_clock LHCx4_clock;
-    sc_clock AM_clock;
     sc_signal<bool> true_sig;
     sc_map_4d<sc_fifo<hit_generator::mpa_stub_t> > hit_fifos_mpa;
     sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> > hit_fifos_cbc;
-    sc_map_cube<sc_signal<sensor_module_cbc::dc_out_t> > fe_signals;
-
-    sc_map_cube<sc_buffer<track_finder::hit_stream> > result_hits;
+    sc_map_cube<sc_buffer<gbt_link_format> > gbt_links;
+    sc_map_linear<sc_buffer<dtc::output_t> > dtc_links;
+    sc_map_square<sc_buffer<track_finder::hit_stream> > result_hits;
 
     sc_signal<unsigned int> hit_cnt_sig;
-
-    sc_map_cube<sc_signal<bool> > neighbour_dv_sig;
-    sc_map_cube<sc_signal<do_stub_t> > neighbour_stub_sig;
 
     // ----- Process Declarations ----------------------------------------------
 
@@ -55,12 +51,10 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     hit_generator hitGenerator;
-    sc_map_cube<sensor_module_mpa> sensor_modules_mpa;
-    sc_map_cube<sensor_module_cbc> sensor_modules_cbc;
-    trigger_tower trigger_tower_0_0;
-    trigger_tower trigger_tower_0_1;
-    trigger_tower trigger_tower_1_0;
-    trigger_tower trigger_tower_1_1;
+    sc_map_cube<sensor_module_MPA> sensor_modules_mpa;
+    sc_map_cube<sensor_module_CBC> sensor_modules_cbc;
+    sc_map_linear<dtc> DTCs;
+    trigger_tower trigger_tower_0;
     road_analyzer roadAnalyzer;
 
     // ----- Constructor -------------------------------------------------------
