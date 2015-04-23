@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory_lookup_ctrl.hpp
  * @author Christian Amstutz
- * @date Febraury 17, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -27,6 +27,8 @@ public:
     typedef unsigned int fsm_states;
     static const fsm_states IDLE;
     static const fsm_states RX_HIT;
+
+    static const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock

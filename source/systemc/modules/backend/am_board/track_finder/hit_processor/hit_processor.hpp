@@ -1,7 +1,7 @@
 /*!
  * @file hit_processor.hpp
  * @author Christian Amstutz
- * @date February 17, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -29,6 +29,8 @@ public:
     typedef simple_stream_protocol<hit_t> hit_stream;
     typedef simple_stream_protocol<hit_t> superstrip_stream;
     typedef simple_stream_protocol<hit_t> substrip_stream;
+
+    static const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;

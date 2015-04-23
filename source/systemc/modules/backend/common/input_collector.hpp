@@ -130,5 +130,3 @@ void input_collector<IN_FRAME, OUT_FRAME, IN_NR>::process_incoming_frame()
     }
 
 }
-
-

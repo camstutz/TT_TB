@@ -35,9 +35,9 @@ public:
     static const unsigned int layer_nr;
     static const unsigned int processor_output_nr;
 
-    typedef input_collector<PRBF_1, PRBF_2, 4> po_input_collector;
+    typedef input_collector<PRBF_1, PRBF_2, NR_PRB_PER_TRIGGER_TOWER> po_input_collector;
     typedef bx_stub_buffer<PRBF_2> po_stub_buffer;
-    typedef time_demux<PRBF_2, 6, 2> po_demux;
+    typedef time_demux<PRBF_2, NR_DETECTOR_LAYERS, NR_AM_BOARDS, -20> po_demux;
 
     typedef PRBF_1 do_input_t;
     typedef PRBF_2 processor_output_t;
@@ -70,5 +70,5 @@ public:
     /*!
      * Constructor:
      */
-    processor_organizer(sc_module_name _name);
+    processor_organizer(sc_module_name _name, unsigned int id);
 };

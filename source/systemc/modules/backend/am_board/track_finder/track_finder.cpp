@@ -1,7 +1,7 @@
 /*!
  * @file tracak_finder.cpp
  * @author Christian Amstutz
- * @date February 13, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -18,20 +18,24 @@ SC_MODULE_EXPORT(track_finder);
 
 // *****************************************************************************
 
+const unsigned int track_finder::layer_nr = NR_DETECTOR_LAYERS;
+
+// *****************************************************************************
+
 track_finder::track_finder(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        hit_input(LAYER_NUMBER, "hit_input"),
-        hit_output(LAYER_NUMBER, "hit_output"),
-        hit_buffer_ss_store_sig(LAYER_NUMBER, "hit_buffer_ss_subs_sig"),
-        hit_buffer_subs_store_sig(LAYER_NUMBER, "hit_buffer_store_subs_sig"),
-        am_input_sig(LAYER_NUMBER, "am_input_sig"),
+        hit_input(layer_nr, "hit_input"),
+        hit_output(layer_nr, "hit_output"),
+        hit_buffer_ss_store_sig(layer_nr, "hit_buffer_ss_subs_sig"),
+        hit_buffer_subs_store_sig(layer_nr, "hit_buffer_store_subs_sig"),
+        am_input_sig(layer_nr, "am_input_sig"),
         am_output_sig("am_output_sig"),
         pattern_mem_addr_sig("pattern_mem_addr_sig"),
-        pattern_mem_out_sig(LAYER_NUMBER, "pattern_mem_out_sig"),
-        hit_search_sig(LAYER_NUMBER, "hit_search_sig"),
-        hit_result_sig(LAYER_NUMBER, "hit_result_sig"),
-        patterns(LAYER_NUMBER),
+        pattern_mem_out_sig(layer_nr, "pattern_mem_out_sig"),
+        hit_search_sig(layer_nr, "hit_search_sig"),
+        hit_result_sig(layer_nr, "hit_result_sig"),
+        patterns(layer_nr),
         hit_proc("hit_processor"),
         hit_buffer("hit_buffer"),
         road_lookup("road_lookup", &patterns),

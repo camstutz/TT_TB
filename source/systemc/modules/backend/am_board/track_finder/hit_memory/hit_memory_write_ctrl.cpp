@@ -1,13 +1,13 @@
 /*!
  * @file hit_memory_read_ctrl.cpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date April 22, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "hit_memory_write_ctrl.hpp"
@@ -16,6 +16,8 @@
 
 const hit_memory_write_ctrl::fsm_states hit_memory_write_ctrl::IDLE = 0x01;
 const hit_memory_write_ctrl::fsm_states hit_memory_write_ctrl::RX_HIT = 0x02;
+
+const unsigned int hit_memory_write_ctrl::layer_nr = NR_DETECTOR_LAYERS;
 
 // *****************************************************************************
 
@@ -27,8 +29,8 @@ const hit_memory_write_ctrl::fsm_states hit_memory_write_ctrl::RX_HIT = 0x02;
 hit_memory_write_ctrl::hit_memory_write_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        hit_inputs(LAYER_NUMBER, "hit_inputs"),
-        process_hits(LAYER_NUMBER, "process_hit"),
+        hit_inputs(layer_nr, "hit_inputs"),
+        process_hits(layer_nr, "process_hit"),
         event_begin("event_begin"),
         event_end("event_end"),
         current_state("current_state")
@@ -71,7 +73,7 @@ void hit_memory_write_ctrl::controller()
             if (!wait_flag)
             {
                 current_state.write(RX_HIT);
-                for (unsigned int i=0; i<LAYER_NUMBER; ++i)
+                for (unsigned int i=0; i<layer_nr; ++i)
                 {
                     event_begin.write(true);
                     process_hits.write_all(true);

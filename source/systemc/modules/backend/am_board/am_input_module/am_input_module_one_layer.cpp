@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer.cpp
  * @author Christian Amstutz
- * @date April 21, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -17,8 +17,10 @@ am_input_module_one_layer::am_input_module_one_layer(const sc_module_name _name)
         sc_module(_name),
         clk("clk"),
         start_process_frame("start_process_frame"),
+        delete_frame("delete_frame"),
         frame_input("frame_input"),
         frame_available("frame_available"),
+        frame_empty("frame_empty"),
         frame_processing("frame_processing"),
         stub_stream_output("stream_output")
 {
@@ -29,8 +31,9 @@ am_input_module_one_layer::am_input_module_one_layer(const sc_module_name _name)
         sensitive << frame_input;
     SC_THREAD(update_control_output);
         sensitive << clk.pos();
-    SC_THREAD(accept_frame);
+    SC_THREAD(process_one_frame);
         sensitive << start_process_frame.pos();
+        sensitive << delete_frame.pos();
     SC_THREAD(create_stream);
         sensitive << clk.pos();
 
@@ -46,7 +49,7 @@ void am_input_module_one_layer::read_frames()
     {
         wait();
 
-        PRBF_2 in_frame = frame_input.read();
+        frame_t in_frame = frame_input.read();
         input_frame_buffer.push(in_frame);
     }
 }
@@ -55,6 +58,7 @@ void am_input_module_one_layer::read_frames()
 void am_input_module_one_layer::update_control_output()
 {
     frame_available.write(false);
+    frame_empty.write(true);
 
     while (1)
     {
@@ -63,26 +67,42 @@ void am_input_module_one_layer::update_control_output()
         if (!input_frame_buffer.empty())
         {
             frame_available.write(true);
+            if (input_frame_buffer.back().stub_count() == 0)
+            {
+                frame_empty.write(true);
+            }
+            else
+            {
+                frame_empty.write(false);
+            }
         }
         else
         {
             frame_available.write(false);
+            frame_empty.write(true);
         }
     }
 
 }
 
 // *****************************************************************************
-void am_input_module_one_layer::accept_frame()
+void am_input_module_one_layer::process_one_frame()
 {
     while (1)
     {
         wait();
 
-        processed_frame = input_frame_buffer.back();
-        input_frame_buffer.pop();
+        if (start_process_frame.read() == true)
+        {
+            processed_frame = input_frame_buffer.front();
+            input_frame_buffer.pop();
 
-        processed_frame.reset_stub_ptr();
+            processed_frame.reset_stub_ptr();
+        }
+        else if (delete_frame.read() == true)
+        {
+            input_frame_buffer.pop();
+        }
     }
 
 }
@@ -90,18 +110,18 @@ void am_input_module_one_layer::accept_frame()
 // *****************************************************************************
 void am_input_module_one_layer::create_stream()
 {
-    stub_stream_output.write(track_finder::hit_stream(IDLE_EVENT, 0));
+    stub_stream_output.write(track_finder::hit_stream::IDLE);
 
     while (1)
     {
         wait();
 
         frame_processing.write(false);
-        stub_stream_output.write(track_finder::hit_stream(IDLE_EVENT, 0));
+        stub_stream_output.write(track_finder::hit_stream::IDLE);
 
         if (start_process_frame.read() == true)
         {
-            stub_stream_output.write(track_finder::hit_stream(START_EVENT, 0));
+            stub_stream_output.write(track_finder::hit_stream::START_WORD);
 
             frame_processing.write(true);
         }

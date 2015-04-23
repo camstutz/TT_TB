@@ -28,6 +28,8 @@ public:
     static const fsm_states IDLE;
     static const fsm_states RX_HIT;
 
+    static const unsigned int layer_nr;
+
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock
      *

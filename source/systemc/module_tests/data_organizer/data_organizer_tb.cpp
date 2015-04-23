@@ -58,7 +58,6 @@ data_organizer_tb::~data_organizer_tb()
 // *****************************************************************************
 void data_organizer_tb::write_frames()
 {
-
     data_organizer::do_input_collector::input_frame_t data_frame(4);
     data_organizer::do_input_collector::input_frame_t::stub_element_t stub_element;
     data_organizer::do_input_collector::input_frame_t::stub_t stub;
@@ -84,7 +83,7 @@ void data_organizer_tb::write_frames()
 
     wait(500, SC_NS);
 
-    dtc_input_sigs[1].write(data_frame);
+    dtc_input_sigs[0].write(data_frame);
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
     stub.set(1, 1, 1, 1, 1, 4);
@@ -93,8 +92,6 @@ void data_organizer_tb::write_frames()
 
     data_frame.set_bunch_crossing(7);
     dtc_input_sigs[0].write(data_frame);
-
-
 
     return;
 }

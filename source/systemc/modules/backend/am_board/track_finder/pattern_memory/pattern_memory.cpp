@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.cpp
  * @author Christian Amstutz
- * @date March 30, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -18,13 +18,16 @@ SC_MODULE_EXPORT(pattern_memory);
 
 // *****************************************************************************
 
+const unsigned int pattern_memory::layer_nr = NR_DETECTOR_LAYERS;
+
+// *****************************************************************************
 pattern_memory::pattern_memory(const sc_module_name _name, pattern_bank *p_bank) :
         sc_module(_name),
         clk("clk"),
         road_input("road_input"),
-        superstrip_outputs(LAYER_NUMBER, "superstrip_outputs"),
-		superstrip_outputs_sig(LAYER_NUMBER, "superstrip_outputs_sig"),
-		delay_superstrip_outputs(LAYER_NUMBER, "delay_superstrip_outputs"),
+        superstrip_outputs(layer_nr, "superstrip_outputs"),
+		superstrip_outputs_sig(layer_nr, "superstrip_outputs_sig"),
+		delay_superstrip_outputs(layer_nr, "delay_superstrip_outputs"),
         patterns(p_bank)
 {
     // ----- Process registration ----------------------------------------------
@@ -68,7 +71,7 @@ void pattern_memory::lookup_road()
 
 		if (pattern.first)
 		{
-			for(unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+			for(unsigned int layer = 0; layer < layer_nr; ++layer)
 			{
 				superstrip_outputs_sig[layer].write(pattern.second[layer]);
 			}

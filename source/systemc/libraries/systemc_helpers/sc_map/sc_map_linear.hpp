@@ -123,7 +123,11 @@ bool sc_map_linear<object_type>::bind(sc_map_linear<signal_type>& signals_map)
 {
     if (sc_map_base<object_type>::size() !=  signals_map.size())
     {
-        std::cout << "Error: Binding of port with signal of different dimension."
+        std::cerr << "Error: Binding of port ("
+                << this->name()
+                << ") with signal ("
+                << signals_map.name()
+                << ") of different dimension."
                 << std::endl;
         return(false);
     }

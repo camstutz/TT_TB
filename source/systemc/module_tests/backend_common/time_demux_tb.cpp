@@ -13,11 +13,11 @@
 // *****************************************************************************
 time_demux_tb::time_demux_tb(sc_module_name _name) :
         sc_module(_name),
-        bunch_crossing_request_sig("unch_crossing_request_sig"),
+        bunch_crossing_request_sig("bunch_crossing_request_sig"),
         stub_input_sig("stub_input_sig"),
-        proc_unit_output_sigs(do_demux::layer_nr, do_demux::proc_unit_output_nr, "proc_unit_output_sigs"),
+        proc_unit_output_sigs(do_demux::proc_unit_output_nr, do_demux::layer_nr, "proc_unit_output_sigs"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_do_demux("DUT_do_dmux")
+        dut_do_demux("DUT_do_demux", 2, 0)
 {
     // ----- Creation and binding of signals -----------------------------------
 
@@ -56,7 +56,7 @@ void time_demux_tb::write_stubs()
     do_demux::input_t stub_element;
     do_demux::input_t::stub_t stub;
 
-    while (bunch_crossing_request_sig.read() != 5)
+    while (bunch_crossing_request_sig.read() != 6)
     {
         wait();
     }
@@ -76,7 +76,7 @@ void time_demux_tb::write_stubs()
     stub_element.set_stub(stub);
     stub_input_sig.write(stub_element);
 
-    while (bunch_crossing_request_sig.read() != 7)
+    while (bunch_crossing_request_sig.read() != 8)
     {
         wait();
     }

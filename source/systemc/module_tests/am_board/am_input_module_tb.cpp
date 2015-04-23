@@ -65,7 +65,7 @@ void am_input_module_tb::write_frames()
     data_frame[0].add_stub(stub_element);
     frame_in_sigs[0].write(data_frame[0]);
 
-    for(unsigned int layer = 1; layer < 6; ++layer)
+    for(unsigned int layer = 1; layer < am_input_module::layer_nr; ++layer)
     {
         data_frame[layer] = data_frame[layer-1];
         data_frame[layer].set_bunch_crossing(8);
@@ -84,7 +84,7 @@ void am_input_module_tb::write_frames()
     data_frame[0].add_stub(stub_element);
     frame_in_sigs[0].write(data_frame[0]);
 
-    for(unsigned int layer = 1; layer < 6; ++layer)
+    for(unsigned int layer = 1; layer < am_input_module::layer_nr; ++layer)
     {
         data_frame[layer] = data_frame[layer-1];
         data_frame[layer].set_bunch_crossing(8);
@@ -96,6 +96,15 @@ void am_input_module_tb::write_frames()
     }
 
     wait(400, SC_NS);
+
+    am_input_module_one_layer::frame_t empty_frame(32);
+
+    for(unsigned int layer = 0; layer < am_input_module::layer_nr; ++layer)
+    {
+        frame_in_sigs[layer].write(empty_frame);
+    }
+
+    wait(200, SC_NS);
 
    return;
 }

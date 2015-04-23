@@ -1,13 +1,13 @@
 /*!
  * @file hit_memory_output_ctrl.cpp
  * @author Christian Amstutz
- * @date December 3, 2014
+ * @date April 22, 2015
  *
  * @brief File contains the implementation of the AM board FSM.
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "hit_memory_output_ctrl.hpp"
@@ -17,6 +17,8 @@
 const hit_memory_output_ctrl::fsm_states hit_memory_output_ctrl::IDLE = 0x01;
 const hit_memory_output_ctrl::fsm_states hit_memory_output_ctrl::START = 0x02;
 const hit_memory_output_ctrl::fsm_states hit_memory_output_ctrl::TX_ROAD = 0x03;
+
+const unsigned int hit_memory_output_ctrl::layer_nr = NR_DETECTOR_LAYERS;
 
 // *****************************************************************************
 
@@ -29,8 +31,8 @@ hit_memory_output_ctrl::hit_memory_output_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         start_transmission("start_transmission"),
-        hit_input(LAYER_NUMBER, "hit_input"),
-        hit_output(LAYER_NUMBER, "hit_output")
+        hit_input(layer_nr, "hit_input"),
+        hit_output(layer_nr, "hit_output")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
@@ -71,7 +73,7 @@ void hit_memory_output_ctrl::controller()
 
         case TX_ROAD:
             finished_layer = 0;
-            for (unsigned int layer=0; layer < LAYER_NUMBER; ++layer)
+            for (unsigned int layer=0; layer < layer_nr; ++layer)
             {
                 if (hit_input[layer].num_available() > 0)
                 {
@@ -83,7 +85,7 @@ void hit_memory_output_ctrl::controller()
                     ++finished_layer;
                 }
             }
-            if (finished_layer >= LAYER_NUMBER)
+            if (finished_layer >= layer_nr)
             {
                 current_state = IDLE;
             }

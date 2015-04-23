@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date March 30, 2015
+ * @date April 22, 2015
  *
  * @brief File containing the implementation of the AM board.
  */
@@ -14,12 +14,16 @@
 
 // *****************************************************************************
 
+const unsigned int am_chip::layer_nr = NR_DETECTOR_LAYERS;
+
+// *****************************************************************************
+
 am_chip::am_chip(sc_module_name _name, pattern_bank *p_bank) :
         sc_module(_name),
         clk("clk"),
-        hit_inputs(LAYER_NUMBER, "hit_input"),
+        hit_inputs(layer_nr, "hit_input"),
         road_output("road_output"),
-        process_hits(LAYER_NUMBER, "process_hits"),
+        process_hits(layer_nr, "process_hits"),
         roads_detected("roads_detected"),
         output_roads_buffer_empty("output_roads_buffer_empty"),
         process_roads_sig("process_roads_sig"),
@@ -69,7 +73,7 @@ void am_chip::process_incoming_hits()
     {
         wait();
 
-        for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+        for (unsigned int layer = 0; layer < layer_nr; ++layer)
         {
             if(process_hits[layer].read() & !hit_inputs[layer].read().is_opcode())
             {
@@ -80,7 +84,7 @@ void am_chip::process_incoming_hits()
                 std::vector<pattern_bank::pattern_id_t>::iterator road_it = roads.begin();
                 for (; road_it != roads.end(); ++road_it)
                 {
-                    match_table[*road_it].resize(LAYER_NUMBER);
+                    match_table[*road_it].resize(layer_nr, false);
                     match_table[*road_it][layer] = true;
                 }
             }
@@ -95,7 +99,7 @@ void am_chip::detect_roads()
     while (1)
     {
         wait();
-        if (process_roads_sig.read())
+        if (process_roads_sig.read() == true)
         {
             unsigned int road_nr = 0;
 
@@ -112,7 +116,7 @@ void am_chip::detect_roads()
                     }
                 }
 
-                if (road_hits >= AM_HITS_PER_ROAD_THRESHOLD)
+                if ((road_hits == layer_nr) | (road_hits >= AM_HITS_PER_ROAD_THRESHOLD))
                 {
                     detected_roads_buffer.write(road_addr_t(match_line_it->first));
                 }

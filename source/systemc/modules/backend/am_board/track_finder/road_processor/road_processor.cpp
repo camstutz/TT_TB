@@ -17,15 +17,19 @@ SC_MODULE_EXPORT(road_processor);
 #endif
 
 // *****************************************************************************
+
+const unsigned int road_processor::layer_nr = NR_DETECTOR_LAYERS;
+
+// *****************************************************************************
 road_processor::road_processor(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         road_input("road_input"),
         road_lookup("road_lookup"),
-        found_pattern(LAYER_NUMBER, "found_pattern"),
-        superstrip_lookup(LAYER_NUMBER, "superstrip_lookup"),
-        hit_lookup_result(LAYER_NUMBER, "hit_lookup_result"),
-        hit_output(LAYER_NUMBER, "hit_output"),
+        found_pattern(layer_nr, "found_pattern"),
+        superstrip_lookup(layer_nr, "superstrip_lookup"),
+        hit_lookup_result(layer_nr, "hit_lookup_result"),
+        hit_output(layer_nr, "hit_output"),
         command_buffer("command_buffer"),
 		command_buffer_write_sig("command_buffer_write_sig"),
 		command_buffer_delayed_sig("command_buffer_delayed_sig"),
@@ -92,7 +96,7 @@ void road_processor::lookup_superstrips()
             road_stream actual_command = command_buffer.read();
             if (actual_command.is_opcode())
             {
-                for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+                for (unsigned int layer = 0; layer < layer_nr; ++layer)
                 {
                     superstrip_lookup[layer].write(actual_command);
                 }
@@ -101,7 +105,7 @@ void road_processor::lookup_superstrips()
             {
                 // wait(found_pattern[0].value_changed_event());
 
-                for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+                for (unsigned int layer = 0; layer < layer_nr; ++layer)
                 {
                     superstrip_lookup[layer].write(found_pattern[layer].read());
                 }
@@ -118,7 +122,7 @@ void road_processor::output_result()
     {
         wait();
 
-        for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+        for (unsigned int layer = 0; layer < layer_nr; ++layer)
         {
             if (hit_lookup_result[layer].event())
             {

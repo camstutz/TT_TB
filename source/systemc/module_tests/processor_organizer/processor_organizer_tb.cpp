@@ -18,7 +18,7 @@ processor_organizer_tb::processor_organizer_tb(sc_module_name _name) :
         do_input_sigs(processor_organizer::do_input_nr, "do_input_sig"),
         processor_output_sigs(processor_organizer::processor_output_nr, processor_organizer::layer_nr, "processor_output_sig"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_processor_organizer("DUT_processor_organizer")
+        dut_processor_organizer("DUT_processor_organizer", 0)
 {
     // ----- Creation and binding of signals -----------------------------------
 

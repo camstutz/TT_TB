@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer.hpp
  * @author Christian Amstutz
- * @date April 20, 2015
+ * @date April 22, 2015
  *
  * @brief
  *
@@ -33,8 +33,10 @@ public:
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_in<bool> start_process_frame;
+    sc_in<bool> delete_frame;
     sc_in<frame_t> frame_input;
     sc_out<bool> frame_available;
+    sc_out<bool> frame_empty;
     sc_out<bool> frame_processing;
     sc_out<track_finder::hit_stream> stub_stream_output;
 
@@ -43,7 +45,7 @@ public:
     // ----- Process Declarations ----------------------------------------------
     void read_frames();
     void update_control_output();
-    void accept_frame();
+    void process_one_frame();
     void create_stream();
 
     // ----- Other Method Declarations -----------------------------------------
@@ -58,10 +60,10 @@ public:
     am_input_module_one_layer(const sc_module_name _name);
     SC_HAS_PROCESS(am_input_module_one_layer);
 
-    PRBF_2 processed_frame;
+    frame_t processed_frame;
 
 private:
-    typedef std::queue<PRBF_2> frame_buffer_t;
+    typedef std::queue<frame_t> frame_buffer_t;
 
     frame_buffer_t input_frame_buffer;
 };

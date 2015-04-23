@@ -39,7 +39,8 @@ public:
     typedef std::pair<bool, std::list<substrip_t> > superstrip_table_element_t;
     typedef std::map<superstrip_t, superstrip_table_element_t> superstrip_table_t;
     typedef std::vector<superstrip_table_t> event_set_t;
-    std::queue<event_set_t> hit_storage;
+
+    static const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -56,6 +57,8 @@ public:
 
     sc_map_linear<sc_buffer<superstrip_t> > pure_superstrips;
     sc_map_linear<sc_fifo<hit_t> > output_buffer;
+
+    std::queue<event_set_t> hit_storage;
 
     // ----- Process Declarations ----------------------------------------------
     void initialize_event();

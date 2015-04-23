@@ -14,8 +14,8 @@
 
 // *****************************************************************************
 
-const unsigned int data_organizer::dtc_input_nr = 2;
-const unsigned int data_organizer::proc_unit_nr = 4;
+const unsigned int data_organizer::dtc_input_nr = NR_DTC_PER_PRB;
+const unsigned int data_organizer::proc_unit_nr = NR_PRB_PER_TRIGGER_TOWER;
 
 // *****************************************************************************
 
@@ -35,7 +35,7 @@ data_organizer::data_organizer(sc_module_name _name) :
         stub_buffer_output_fifo("stub_buffer_output"),
         in_collector("in_collector"),
         stub_buffer("stub_buffer"),
-        demultiplexer("demultiplexer")
+        demultiplexer("demultiplexer", 1, 0)
 {
     // ----- Process registration ----------------------------------------------
 
@@ -52,9 +52,13 @@ data_organizer::data_organizer(sc_module_name _name) :
     demultiplexer.clk.bind(clk);
     demultiplexer.bunch_crossing_request.bind(bunch_request_sig);
     demultiplexer.stub_input[0].bind(stub_buffer_output_fifo);
-    for (unsigned int proc_unit_id = 0; proc_unit_id < proc_unit_nr; ++proc_unit_id)
+    sc_map_linear<sc_out<proc_unit_output_t> >::iterator proc_unit_out_it = proc_unit_outputs.begin();
+    sc_map_linear<sc_out<typename do_demux::output_t> >::iterator demux_out_it = demultiplexer.proc_unit_outputs.begin();
+    for (; demux_out_it != demultiplexer.proc_unit_outputs.end(); ++demux_out_it)
     {
-        demultiplexer.proc_unit_outputs.at(0, proc_unit_id).bind(proc_unit_outputs[proc_unit_id]);
+        demux_out_it->bind(*proc_unit_out_it);
+
+        ++proc_unit_out_it;
     }
 
     return;

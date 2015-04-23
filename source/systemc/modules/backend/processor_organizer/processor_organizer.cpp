@@ -14,9 +14,9 @@
 
 // *****************************************************************************
 
-const unsigned int processor_organizer::do_input_nr = 4;
-const unsigned int processor_organizer::layer_nr = 6;
-const unsigned int processor_organizer::processor_output_nr = 2;
+const unsigned int processor_organizer::do_input_nr = NR_PRB_PER_TRIGGER_TOWER;
+const unsigned int processor_organizer::layer_nr = NR_DETECTOR_LAYERS;
+const unsigned int processor_organizer::processor_output_nr = NR_AM_BOARDS;
 
 // *****************************************************************************
 
@@ -26,7 +26,7 @@ const unsigned int processor_organizer::processor_output_nr = 2;
  * The module is sensitive to ...
  */
 
-processor_organizer::processor_organizer(sc_module_name _name) :
+processor_organizer::processor_organizer(sc_module_name _name, unsigned int id) :
         sc_module(_name),
         clk("clk"),
         do_inputs(do_input_nr, "do_inputs"),
@@ -38,7 +38,7 @@ processor_organizer::processor_organizer(sc_module_name _name) :
         in_collector("in_collector"),
         stub_buffer("stub_buffer"),
         layer_splitter("layer_splitter"),
-        demultiplexer("demultiplexer")
+        demultiplexer("demultiplexer", do_input_nr, id)
 {
     // ----- Process registration ----------------------------------------------
 

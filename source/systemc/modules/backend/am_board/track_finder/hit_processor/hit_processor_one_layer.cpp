@@ -42,8 +42,8 @@ hit_processor_one_layer::hit_processor_one_layer(const sc_module_name _name) :
 // *****************************************************************************
 void hit_processor_one_layer::write_outputs()
 {
-    am_superstrip_out.write(IDLE_EVENT);
-    hitbuf_superstrip_out.write(IDLE_EVENT);
+    am_superstrip_out.write(superstrip_stream::IDLE);
+    hitbuf_superstrip_out.write(superstrip_stream::IDLE);
 
     while(1)
     {

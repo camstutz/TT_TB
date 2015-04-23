@@ -51,11 +51,13 @@
 #define NR_DC_MPA_OUT_STUBS       10
 #define NR_DO_OUT_STUBS           12
 
-#define NR_AM_BOARDS               4
+#define NR_DTC_PER_PRB             1
+#define NR_PRB_PER_TRIGGER_TOWER   2
+#define NR_AM_BOARDS               2
 
 #define NR_NEIGHBOURING_TOWERS     2
-#define NR_DETECTOR_MPA_LAYERS     3  // Number of layers with PS modules existing in the detector
-#define NR_DETECTOR_CBC_LAYERS     3  // Number of layers with 2S modules existing in the detector
+#define NR_DETECTOR_MPA_LAYERS     1  // Number of layers with PS modules existing in the detector
+#define NR_DETECTOR_CBC_LAYERS     1  // Number of layers with 2S modules existing in the detector
 #define NR_DETECTOR_LAYERS         NR_DETECTOR_CBC_LAYERS + NR_DETECTOR_MPA_LAYERS
 #define NR_DETECTOR_PHI            2  // Number of sensors in the circumference of the detector
 #define NR_DETECTOR_Z              2  // Number of sensors on length of the detector
@@ -74,17 +76,13 @@
 #define AM_BOARD_PATTERN_NR        1280
 
 #define AMEXP_CLOCK_PERIOD_NS 10
-#define LAYER_NUMBER 6
 #define SS_BIT_WIDTH 2
-
-#define IDLE_EVENT  0xFFFF
-#define START_EVENT 0xFFFE
 
 // Define delays
 #define DC_output_delay 4
 #define DTC_latency 3
 #define DO_output_delay 5
-#define AM_CHIP_LATENCY 10
+#define AM_CHIP_LATENCY 0
 #define PATTERN_MEMORY_LATENCY 2
 
 // Signal types used between modules

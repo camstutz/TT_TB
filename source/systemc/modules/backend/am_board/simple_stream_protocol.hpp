@@ -32,10 +32,10 @@ public:
 
 // *****************************************************************************
 template <typename value_type>
-const simple_stream_protocol<value_type> simple_stream_protocol<value_type>::IDLE = simple_stream_protocol<value_type>(0xFF,0);
+const simple_stream_protocol<value_type> simple_stream_protocol<value_type>::IDLE = simple_stream_protocol<value_type>(0xFF, 0);
 
 template <typename value_type>
-const simple_stream_protocol<value_type> simple_stream_protocol<value_type>::START_WORD = simple_stream_protocol<value_type>(0xFE,0);
+const simple_stream_protocol<value_type> simple_stream_protocol<value_type>::START_WORD = simple_stream_protocol<value_type>(0xFE, 0);
 
 // *****************************************************************************
 template <typename value_type>

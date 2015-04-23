@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.cpp
  * @author Christian Amstutz
- * @date February 19, 2015
+ * @date April 21, 2015
  *
  * @brief
  */
@@ -14,61 +14,79 @@
 
 // *****************************************************************************
 
-const unsigned int trigger_tower::number_neighbour_towers = NR_NEIGHBOURING_TOWERS;
-const unsigned int trigger_tower::number_AM_boards = NR_AM_BOARDS;
-const unsigned int trigger_tower::detector_layers = NR_DETECTOR_LAYERS;
-const unsigned int trigger_tower::nr_DO_out_stubs = NR_DO_OUT_STUBS;
+const unsigned int trigger_tower::detector_layer_nr = NR_DETECTOR_LAYERS;
+const unsigned int trigger_tower::prb_nr = NR_PRB_PER_TRIGGER_TOWER;
+const unsigned int trigger_tower::dtc_per_prb = NR_DTC_PER_PRB;
+const unsigned int trigger_tower::AM_boards_per_proc_unit = NR_AM_BOARDS;
 
 // *****************************************************************************
-trigger_tower::trigger_tower(const sc_module_name _name, unsigned int phi, unsigned int z) :
-		phi(phi),
-		z(z),
-		clk_LHC("clk_LHC"),
-		clk_x4("clk_x4"),
-		clk_AM("clk_AM"),
-		stream_in(detector_layers, "stream_in"),
-		neighbour_dv_in(number_neighbour_towers, detector_layers, "neighbour_dv_in"),
-		neighbour_stub_in(number_neighbour_towers, detector_layers, "neighbour_stub_in"),
-		neighbour_dv_out(number_neighbour_towers, detector_layers, "nighbour_dv_out"),
-		neighbour_stub_out(number_neighbour_towers, detector_layers, "neighbour_stub_out"),
-		road_output(number_AM_boards, detector_layers, "road_output"),
-		do_dv_sigs(detector_layers, nr_DO_out_stubs, "do_dv_sigs"),
-		do_stub_out_sigs(detector_layers, nr_DO_out_stubs, "do_stub_out_sigs"),
-		am_fifo_write_en_sigs(number_AM_boards, detector_layers, "am_fifo_write_en_sigs"),
-		am_fifo_input_sigs(number_AM_boards, detector_layers, "am_fifo_input_sigs"),
-		dataOrganizer("dataOrganizer", phi, z),
-		fifoManager("fifoManager"),
-		am_board_array(number_AM_boards, "AM_board_array")
+trigger_tower::trigger_tower(const sc_module_name _name) :
+        sc_module(_name),
+        clk("clk"),
+        dtc_inputs(prb_nr, dtc_per_prb, "dtc_input"),
+        hit_outputs(prb_nr, AM_boards_per_proc_unit, detector_layer_nr, "hit_output"),
+        trigger_tower_interconnect(prb_nr, prb_nr, "trigger_tower_interconnect"),
+        am_board_in_sig(prb_nr, AM_boards_per_proc_unit, detector_layer_nr, "am_board_sig"),
+        dataOrganizers(prb_nr, "dataOrganizer"),
+        //processorOrganizers(prb_nr, "processorOrganizer"),
+        amBoards(prb_nr, AM_boards_per_proc_unit, "AM_Board")
 {
-	dataOrganizer.clk.bind(clk_LHC);
-	dataOrganizer.stream_in.bind(stream_in);
-	dataOrganizer.dv.bind(do_dv_sigs);
-	dataOrganizer.stub_out.bind(do_stub_out_sigs);
-
-	fifoManager.clk.bind(clk_x4);
-	fifoManager.dv_in.bind(do_dv_sigs);
-	fifoManager.stub_in.bind(do_stub_out_sigs);
-	fifoManager.neighbour_dv_in.bind(neighbour_dv_in);
-	fifoManager.neighbour_stub_in.bind(neighbour_stub_in);
-	fifoManager.neighbour_dv_out.bind(neighbour_dv_out);
-	fifoManager.neighbour_stub_out.bind(neighbour_stub_out);
-	fifoManager.dv_out.bind(am_fifo_write_en_sigs);
-	fifoManager.fifo_out.bind(am_fifo_input_sigs);
-
-    unsigned int am_cnt = 0;
-    sc_map_linear<am_board>::iterator am_board_it = am_board_array.begin();
-    for (; am_board_it != am_board_array.end(); ++am_board_it)
+    unsigned int do_nr = 0;
+    sc_map_linear<data_organizer>::iterator data_organizer_it = dataOrganizers.begin();
+    for (; data_organizer_it != dataOrganizers.end(); ++data_organizer_it)
     {
-    	am_board_it->clk.bind(clk_AM);
-    	am_board_it->clk_fifo(clk_x4);
-    	sc_map_square<sc_signal<bool> >::square_iterator write_en_it = am_fifo_write_en_sigs.begin_partial(am_cnt, false, 0, true);
-    	am_board_it->fifo_write_en.bind_by_iter(write_en_it);
-    	sc_map_square<sc_signal<am_board::fifo_in_t> >::square_iterator fifo_sig_it = am_fifo_input_sigs.begin_partial(am_cnt, false, 0, true);
-    	am_board_it->fifo_inputs.bind_by_iter(fifo_sig_it);
-    	sc_map_square<sc_out<track_finder::hit_stream> >::square_iterator road_output_it = road_output.begin_partial(am_cnt, false, 0, true);
-    	am_board_it->hit_output.bind_by_iter(road_output_it);
+        data_organizer_it->clk.bind(clk);
+        sc_map_square<sc_in<data_organizer::dtc_input_t> >::square_iterator
+                dtc_input_it = dtc_inputs.begin_partial(do_nr, false, 0, true);
+        data_organizer_it->dtc_inputs.bind_by_iter(dtc_input_it);
+        sc_map_square<sc_buffer<data_organizer::proc_unit_output_t > >::square_iterator
+                intercon_it = trigger_tower_interconnect.begin_partial(do_nr, false, 0, true);
+        data_organizer_it->proc_unit_outputs.bind_by_iter(intercon_it);
 
-    	++am_cnt;
+        ++do_nr;
+    }
+
+    for (unsigned int po_id=0; po_id < prb_nr; ++po_id)
+    {
+        std::stringstream po_name;
+        po_name << "processorOrganizer_" << po_id;
+        processorOrganizers[po_id] = new processor_organizer(po_name.str().c_str(), po_id);
+        processorOrganizers[po_id]->clk.bind(clk);
+        sc_map_square<sc_buffer<data_organizer::proc_unit_output_t > >::square_iterator
+                intercon_it = trigger_tower_interconnect.begin_partial(0, true, po_id, false);
+        processorOrganizers[po_id]->do_inputs.bind_by_iter(intercon_it);
+        sc_map_cube<sc_buffer<processor_organizer::processor_output_t> >::cube_iterator
+                am_board_it = am_board_in_sig.begin_partial(po_id, false, 0, true, 0, true);
+        processorOrganizers[po_id]->processor_outputs.bind_by_iter(am_board_it);
+    }
+
+//    unsigned int po_nr = 0;
+//    sc_map_linear<processor_organizer>::iterator processor_organizer_it = processorOrganizers.begin();
+//    for (; processor_organizer_it != processorOrganizers.end(); ++processor_organizer_it)
+//    {
+//        processor_organizer_it->clk.bind(clk);
+//        sc_map_square<sc_buffer<data_organizer::proc_unit_output_t > >::square_iterator
+//                intercon_it = trigger_tower_interconnect.begin_partial(0, true, po_nr, false);
+//        processor_organizer_it->do_inputs.bind_by_iter(intercon_it);
+//        sc_map_cube<sc_buffer<processor_organizer::processor_output_t> >::cube_iterator
+//                am_board_it = am_board_in_sig.begin_partial(po_nr, false, 0, true, 0, true);
+//        processor_organizer_it->processor_outputs.bind_by_iter(am_board_it);
+//
+//        ++po_nr;
+//    }
+
+    sc_map_square<am_board>::iterator am_board_it = amBoards.begin();
+    for (; am_board_it != amBoards.end(); ++am_board_it)
+    {
+        sc_map_square<am_board>::full_key_type am_board_key = amBoards.get_key(*am_board_it).second;
+
+        am_board_it->clk.bind(clk);
+        sc_map_cube<sc_buffer<processor_organizer::processor_output_t> >::cube_iterator
+                input_it = am_board_in_sig.begin_partial(am_board_key.Y_dim, false, am_board_key.X_dim, false, 0, true);
+        am_board_it->frame_inputs.bind_by_iter(input_it);
+        sc_map_cube<sc_out<am_board::output_stream_t> >::cube_iterator
+                hit_output_it = hit_outputs.begin_partial(am_board_key.Y_dim, false, am_board_key.X_dim, false, 0, true);
+        am_board_it->hit_output.bind_by_iter(hit_output_it);
     }
 
 	return;

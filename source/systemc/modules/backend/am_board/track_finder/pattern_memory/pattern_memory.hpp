@@ -25,6 +25,8 @@
 class pattern_memory : public sc_module
 {
 public:
+    static const unsigned int layer_nr;
+
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_in<road_t> road_input;

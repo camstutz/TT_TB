@@ -32,6 +32,8 @@ public:
     typedef simple_stream_protocol<road_t> road_stream;
     typedef simple_stream_protocol<superstrip_t> superstrip_stream;
 
+    static const unsigned int layer_nr;
+
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
     sc_in<road_stream> road_input;

@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter.cpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -14,7 +14,7 @@
 
 // *****************************************************************************
 
-const unsigned int po_layer_splitter::layer_nr = 6;
+const unsigned int po_layer_splitter::layer_nr = NR_DETECTOR_LAYERS;
 
 // *****************************************************************************
 

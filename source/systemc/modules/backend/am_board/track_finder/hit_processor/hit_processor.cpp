@@ -1,13 +1,13 @@
 /*!
  * @file hit_processor.cpp
  * @author Christian Amstutz
- * @date November 17, 2014
+ * @date April 22, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "hit_processor.hpp"
@@ -18,14 +18,18 @@ SC_MODULE_EXPORT(hit_processor);
 
 // *****************************************************************************
 
+const unsigned int hit_processor::layer_nr = NR_DETECTOR_LAYERS;
+
+// *****************************************************************************
+
 hit_processor::hit_processor(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        hit_input(LAYER_NUMBER, "hit_input"),
-        am_superstrip_out(LAYER_NUMBER, "am_superstrip_out"),
-        hitbuf_superstrip_out(LAYER_NUMBER, "hitbuf_superstrip_out"),
-        hitbuf_substrip_out(LAYER_NUMBER, "hitbuf_substrip_out"),
-        hit_processors(LAYER_NUMBER, "hit_processors")
+        hit_input(layer_nr, "hit_input"),
+        am_superstrip_out(layer_nr, "am_superstrip_out"),
+        hitbuf_superstrip_out(layer_nr, "hitbuf_superstrip_out"),
+        hitbuf_substrip_out(layer_nr, "hitbuf_substrip_out"),
+        hit_processors(layer_nr, "hit_processors")
 {
 
 //#ifdef MTI_SYSTEMC

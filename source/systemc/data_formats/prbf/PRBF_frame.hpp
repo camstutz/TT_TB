@@ -97,7 +97,7 @@ template <typename stub_type>
 PRBF_frame<stub_type>::PRBF_frame(header::bunch_crossing_ID_t bunch_crossing) :
     header_element(bunch_crossing)
 {
-    header_element = header();
+    header_element = header(bunch_crossing);
     trailer_element = trailer();
 
     stub_vector.clear();
@@ -231,7 +231,7 @@ template <typename stub_type>
 void sc_trace (sc_trace_file* tf, const PRBF_frame<stub_type>& v,
         const std::string& name)
 {
-    std::cerr << "No implementation of PRBF_frame.sc_trace()" << std::endl;
+    sc_trace(tf, v.get_header().get_bunch_crossing_ID() , name + ".header_bx");
 
     return;
 }

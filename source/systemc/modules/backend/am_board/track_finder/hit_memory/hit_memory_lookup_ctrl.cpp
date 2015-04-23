@@ -17,6 +17,8 @@
 const hit_memory_lookup_ctrl::fsm_states hit_memory_lookup_ctrl::IDLE = 0x01;
 const hit_memory_lookup_ctrl::fsm_states hit_memory_lookup_ctrl::RX_HIT = 0x02;
 
+const unsigned int hit_memory_lookup_ctrl::layer_nr = NR_DETECTOR_LAYERS;
+
 // *****************************************************************************
 
 /*!
@@ -27,8 +29,8 @@ const hit_memory_lookup_ctrl::fsm_states hit_memory_lookup_ctrl::RX_HIT = 0x02;
 hit_memory_lookup_ctrl::hit_memory_lookup_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        superstrip_inputs(LAYER_NUMBER, "superstrip_inputs"),
-        lookup_superstrips(LAYER_NUMBER, "lookup_superstrips"),
+        superstrip_inputs(layer_nr, "superstrip_inputs"),
+        lookup_superstrips(layer_nr, "lookup_superstrips"),
         event_end("event_end"),
         current_state("current_state")
 {
@@ -57,7 +59,7 @@ void hit_memory_lookup_ctrl::controller()
         {
         case IDLE:
             wait_flag = false;
-            for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+            for (unsigned int layer = 0; layer < layer_nr; ++layer)
             {
                 if (superstrip_inputs[layer].read() != superstrip_stream::START_WORD)
                 {
@@ -72,7 +74,7 @@ void hit_memory_lookup_ctrl::controller()
 
         case RX_HIT:
             finished_layers = 0;
-            for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+            for (unsigned int layer = 0; layer < layer_nr; ++layer)
             {
                 if (superstrip_inputs[layer].read() != superstrip_stream::IDLE)
                 {
@@ -85,7 +87,7 @@ void hit_memory_lookup_ctrl::controller()
                 }
             }
 
-            if (finished_layers == LAYER_NUMBER)
+            if (finished_layers == layer_nr)
             {
                 current_state.write(IDLE);
                 event_end.write(true);

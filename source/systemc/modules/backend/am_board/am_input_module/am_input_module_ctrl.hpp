@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_ctrl.hpp
  * @author Christian Amstutz
- * @date April 20, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -29,6 +29,9 @@ public:
     static const fsm_states INIT;
     static const fsm_states PROCESS1;
     static const fsm_states PROCESSING;
+    static const fsm_states DELETE;
+
+    static const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock
@@ -37,9 +40,11 @@ public:
      */
     sc_in<bool> clk;
     sc_map_linear<sc_in<bool> > frame_available;
+    sc_map_linear<sc_in<bool> > frame_empty;
     sc_map_linear<sc_in<bool> > frame_processing;
 
     sc_out<bool> init_processing;
+    sc_out<bool> delete_frame;
 
 // ----- Local Channel Declarations --------------------------------------------
     /** @brief Signal containing the current FSM state. */

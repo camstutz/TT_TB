@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module.hpp
  * @author Christian Amstutz
- * @date April 20, 2015
+ * @date April 22, 2015
  *
  * @brief
  *
@@ -41,7 +41,9 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_buffer<bool> init_processing_sig;
+    sc_buffer<bool> delete_frame_sig;
     sc_map_linear<sc_signal<bool> > frame_available_sigs;
+    sc_map_linear<sc_signal<bool> > frame_empty_sigs;
     sc_map_linear<sc_signal<bool> > frame_processing_sigs;
 
     // ----- Process Declarations ----------------------------------------------

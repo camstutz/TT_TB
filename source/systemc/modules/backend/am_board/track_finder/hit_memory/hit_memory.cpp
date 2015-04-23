@@ -1,13 +1,13 @@
 /*!
  * @file hit_memory.cpp
  * @author Christian Amstutz
- * @date December 3, 2014
+ * @date April 22, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "hit_memory.hpp"
@@ -17,18 +17,22 @@ SC_MODULE_EXPORT(hit_memory);
 #endif
 
 // *****************************************************************************
+
+const unsigned int hit_memory::layer_nr = NR_DETECTOR_LAYERS;
+
+// *****************************************************************************
 hit_memory::hit_memory(const sc_module_name _name) :
         sc_module(_name),
-        superstrip_inputs(LAYER_NUMBER, "superstrip_input"),
-        substrip_inputs(LAYER_NUMBER, "substrip_input"),
-        superstrip_search(LAYER_NUMBER, "superstrip_search"),
-        hit_outputs(LAYER_NUMBER, "hit_output"),
-        process_hits(LAYER_NUMBER, "process_hits"),
+        superstrip_inputs(layer_nr, "superstrip_input"),
+        substrip_inputs(layer_nr, "substrip_input"),
+        superstrip_search(layer_nr, "superstrip_search"),
+        hit_outputs(layer_nr, "hit_output"),
+        process_hits(layer_nr, "process_hits"),
         write_event_begin("write_event_begin"),
         write_event_end("write_event_end"),
         transmit_event_begin("transmit_event_begin"),
-        pure_superstrips(LAYER_NUMBER, "pure_superstrips"),
-        output_buffer(LAYER_NUMBER, "output_buffer"),
+        pure_superstrips(layer_nr, "pure_superstrips"),
+        output_buffer(layer_nr, "output_buffer"),
         write_controller("write_controller"),
         lookup_controller("lookup_controller"),
         output_controller("output_controller")
@@ -85,7 +89,7 @@ void hit_memory::initialize_event()
         wait();
 
         event_set_t empty_table;
-        empty_table.resize(LAYER_NUMBER);
+        empty_table.resize(layer_nr);
         hit_storage.push(empty_table);
     }
 }
@@ -97,7 +101,7 @@ void hit_memory::write_buffer()
     {
         wait();
 
-        for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+        for (unsigned int layer = 0; layer < layer_nr; ++layer)
         {
             if (process_hits[layer].read() &
                 (superstrip_inputs[layer].event() |
@@ -124,11 +128,11 @@ void hit_memory::search_hits()
     {
         wait();
 
-        for (unsigned int layer = 0; layer < LAYER_NUMBER; ++layer)
+        for (unsigned int layer = 0; layer < layer_nr; ++layer)
         {
             superstrip_stream actual_superstrip = superstrip_search[layer]->read();
-            if ((actual_superstrip != IDLE_EVENT) &
-                (actual_superstrip != START_EVENT))
+            if ((actual_superstrip != superstrip_stream::IDLE) &
+                (actual_superstrip != superstrip_stream::START_WORD))
             {
                 superstrip_table_t::iterator found_strips = hit_storage.front()[layer].find(actual_superstrip.get_value());
                 if (found_strips != hit_storage.front()[layer].end())

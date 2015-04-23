@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date March 30, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -47,13 +47,7 @@ public:
     /** @brief Data type of the road at the output of the AM board */
     typedef road_t road_addr_t;
 
-    /** @brief configures the additional cycles of latency needed.
-     *
-     * The actual SysatemC model of the AM board has a latency of three clock
-     * cycles. To model the real chip additional cycles are needed. This
-     * constant configures the additional cycles needed.
-     */
-    //static const unsigned int additonal_latency = AM_BOARD_LATENCY - 3;
+    static const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock

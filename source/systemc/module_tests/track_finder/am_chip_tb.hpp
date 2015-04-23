@@ -1,7 +1,7 @@
 /*!
- * @file do_demux_tb.hpp
+ * @file am_chip_tb.hpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date April 23, 2015
  *
  * @brief
  *
@@ -13,10 +13,9 @@
 
 #pragma once
 
-#include "../../modules/backend/common/time_demux.hpp"
+#include "../../modules/backend/am_board/track_finder/am_chip/am_chip.hpp"
+#include "../../modules/backend/am_board/track_finder/pattern_bank/pattern_bank.hpp"
 #include "../../systems/TT_configuration.hpp"
-
-#include "../../data_formats/prbf/PRBF.hpp"
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -28,35 +27,33 @@
 /*!
  * @brief
  */
-class time_demux_tb : public sc_module
+class am_chip_tb : public sc_module
 {
 public:
-    typedef time_demux<PRBF_1, 1, 4, -10> do_demux;
-
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_buffer<do_demux::bunch_crossing_t> bunch_crossing_request_sig;
-    sc_fifo<do_demux::input_t> stub_input_sig;
-    sc_map_square<sc_buffer<do_demux::output_t> > proc_unit_output_sigs;
+    sc_map_linear<sc_buffer<am_chip::superstrip_stream> > hit_input_sigs;
+    sc_buffer<am_chip::road_stream> road_output_sig;
 
     // ----- Process Declarations ----------------------------------------------
-    void write_stubs();
+    void write_streams();
     void print_output();
 
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    do_demux dut_do_demux;
+    pattern_bank patterns;
+    am_chip dut_AM_chip;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    time_demux_tb(sc_module_name _name);
-    SC_HAS_PROCESS(time_demux_tb);
-    ~time_demux_tb();
+    am_chip_tb(sc_module_name _name);
+    SC_HAS_PROCESS(am_chip_tb);
+    ~am_chip_tb();
 
 private:
     std::ostringstream log_buffer;

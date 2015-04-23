@@ -1,7 +1,7 @@
 /*!
  * @file hit_memory_output_ctrl.hpp
  * @author Christian Amstutz
- * @date February 17, 2015
+ * @date April 22, 2015
  *
  * @brief
  */
@@ -28,6 +28,8 @@ public:
     static const fsm_states IDLE;
     static const fsm_states START;
     static const fsm_states TX_ROAD;
+
+    static const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock

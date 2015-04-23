@@ -18,6 +18,9 @@ const am_input_module_ctrl::fsm_states am_input_module_ctrl::IDLE = 0x01;
 const am_input_module_ctrl::fsm_states am_input_module_ctrl::INIT = 0x02;
 const am_input_module_ctrl::fsm_states am_input_module_ctrl::PROCESS1 = 0x03;
 const am_input_module_ctrl::fsm_states am_input_module_ctrl::PROCESSING = 0x04;
+const am_input_module_ctrl::fsm_states am_input_module_ctrl::DELETE = 0x05;
+
+const unsigned int am_input_module_ctrl::layer_nr = NR_DETECTOR_LAYERS;
 
 // *****************************************************************************
 
@@ -29,9 +32,11 @@ const am_input_module_ctrl::fsm_states am_input_module_ctrl::PROCESSING = 0x04;
 am_input_module_ctrl::am_input_module_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        frame_available(NR_DETECTOR_LAYERS, "frame_available"),
-        frame_processing(NR_DETECTOR_LAYERS, "frame_processing"),
-        init_processing("init_processing")
+        frame_available(layer_nr, "frame_available"),
+        frame_empty(layer_nr, "frame_empty"),
+        frame_processing(layer_nr, "frame_processing"),
+        init_processing("init_processing"),
+        delete_frame("delete_frame")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
@@ -56,6 +61,7 @@ void am_input_module_ctrl::controller()
         wait();
 
         bool frames_ready = true;
+        bool frames_empty = true;
         bool all_frames = true;
         sc_map_linear<sc_in<bool> >::iterator input_it = frame_available.begin();
 
@@ -73,8 +79,23 @@ void am_input_module_ctrl::controller()
 
             if (frames_ready)
             {
-                init_processing.write(true);
-                current_state = INIT;
+                frames_empty = true;
+                input_it = frame_empty.begin();
+                for (; input_it != frame_empty.end(); ++input_it)
+                {
+                    frames_empty &= input_it->read();
+                }
+
+                if (frames_empty)
+                {
+                    delete_frame.write(true);
+                    current_state = DELETE;
+                }
+                else
+                {
+                    init_processing.write(true);
+                    current_state = INIT;
+                }
             }
             break;
 
@@ -104,6 +125,12 @@ void am_input_module_ctrl::controller()
             {
                 current_state = IDLE;
             }
+
+            break;
+
+        case DELETE:
+            delete_frame.write(false);
+            current_state = IDLE;
 
             break;
 

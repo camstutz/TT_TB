@@ -17,6 +17,8 @@
 const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::IDLE = 0x01;
 const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::RX_HIT = 0x02;
 
+const unsigned int am_chip_write_ctrl::layer_nr = NR_DETECTOR_LAYERS;
+
 // *****************************************************************************
 
 /*!
@@ -27,8 +29,8 @@ const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::RX_HIT = 0x02;
 am_chip_write_ctrl::am_chip_write_ctrl(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        hit_inputs(LAYER_NUMBER, "hit_inputs"),
-        process_hits(LAYER_NUMBER, "process_hit"),
+        hit_inputs(layer_nr, "hit_inputs"),
+        process_hits(layer_nr, "process_hit"),
         process_roads("process_roads"),
         current_state("current_state")
 {
@@ -57,10 +59,13 @@ void am_chip_write_ctrl::controller()
         bool wait_flag;
         sc_map_linear<sc_in<superstrip_stream> >::iterator hit_input_it = hit_inputs.begin();
         sc_map_linear<sc_out<bool> >::iterator process_hit_it = process_hits.begin();
+
         switch (current_state)
         {
         case IDLE:
             wait_flag = false;
+
+            // Keep waiting as long one of the hit_inputs is not START_WORD
             hit_input_it = hit_inputs.begin();
             for (; hit_input_it != hit_inputs.end(); ++hit_input_it)
             {
@@ -72,7 +77,7 @@ void am_chip_write_ctrl::controller()
             if (!wait_flag)
             {
                 current_state.write(RX_HIT);
-                for (unsigned int i=0; i<LAYER_NUMBER; ++i)
+                for (unsigned int i=0; i<layer_nr; ++i)
                 {
                     process_hits.write_all(true);
                 }
