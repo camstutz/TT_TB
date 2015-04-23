@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.cpp
  * @author Christian Amstutz
- * @date April 21, 2015
+ * @date April 23, 2015
  *
  * @brief
  */
@@ -24,7 +24,7 @@ trigger_tower::trigger_tower(const sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
         dtc_inputs(prb_nr, dtc_per_prb, "dtc_input"),
-        hit_outputs(prb_nr, AM_boards_per_proc_unit, detector_layer_nr, "hit_output"),
+        hit_outputs(prb_nr * AM_boards_per_proc_unit, detector_layer_nr, "hit_output"),
         trigger_tower_interconnect(prb_nr, prb_nr, "trigger_tower_interconnect"),
         am_board_in_sig(prb_nr, AM_boards_per_proc_unit, detector_layer_nr, "am_board_sig"),
         dataOrganizers(prb_nr, "dataOrganizer"),
@@ -76,6 +76,7 @@ trigger_tower::trigger_tower(const sc_module_name _name) :
 //    }
 
     sc_map_square<am_board>::iterator am_board_it = amBoards.begin();
+    unsigned int am_board_id = 0;
     for (; am_board_it != amBoards.end(); ++am_board_it)
     {
         sc_map_square<am_board>::full_key_type am_board_key = amBoards.get_key(*am_board_it).second;
@@ -84,9 +85,11 @@ trigger_tower::trigger_tower(const sc_module_name _name) :
         sc_map_cube<sc_buffer<processor_organizer::processor_output_t> >::cube_iterator
                 input_it = am_board_in_sig.begin_partial(am_board_key.Y_dim, false, am_board_key.X_dim, false, 0, true);
         am_board_it->frame_inputs.bind_by_iter(input_it);
-        sc_map_cube<sc_out<am_board::output_stream_t> >::cube_iterator
-                hit_output_it = hit_outputs.begin_partial(am_board_key.Y_dim, false, am_board_key.X_dim, false, 0, true);
+        sc_map_square<sc_out<am_board::output_stream_t> >::square_iterator
+                hit_output_it = hit_outputs.begin_partial(am_board_id, false, 0, true);
         am_board_it->hit_output.bind_by_iter(hit_output_it);
+
+        ++am_board_id;
     }
 
 	return;
