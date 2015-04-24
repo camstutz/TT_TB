@@ -15,10 +15,12 @@
 
 #include "../../../data_formats/prbf/PRBF.hpp"
 #include "../../../data_formats/sc_pair/sc_pair.hpp"
-
 #include "../../../systems/TT_configuration.hpp"
+#include "../../../systems/tt_tb_logger.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+
+#include <boost/log/sources/record_ostream.hpp>
 
 #include <systemc.h>
 
@@ -108,6 +110,8 @@ void input_collector<IN_FRAME, OUT_FRAME, IN_NR>::process_incoming_frame()
         {
             if (input_it->event())
             {
+                SYSTEMC_LOG << "Packet received :-)";
+
                 input_frame_t input_frame = input_it->read();
 
                 bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();

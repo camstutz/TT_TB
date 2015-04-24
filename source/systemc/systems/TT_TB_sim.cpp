@@ -11,18 +11,19 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
+#include "tt_tb.hpp"
+
+#include "../libraries/systemc_helpers/sc_analyzer/sc_analyzer.hpp"
+
+#include <systemc.h>
+
 #include <iostream>
 #include <sstream>
 #include <utility>
 
-#include <systemc.h>
-
-#include "../libraries/systemc_helpers/sc_analyzer/sc_analyzer.hpp"
-
-#include "tt_tb.hpp"
-
 int sc_main(int argc, char *agv[])
 {
+    // Setting up analyzer for SystemC simulation
     sc_analyzer analyzer;
     analyzer.register_model_setup_start();
 
@@ -55,6 +56,6 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.print_report();
-  
+
     return (0);
 }
