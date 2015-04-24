@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit.hpp
  * @author Christian Amstutz
- * @date April 10, 2015
+ * @date April 24, 2015
  *
  * @brief
  *
@@ -42,6 +42,7 @@ public:
     sc_in<bool> clk;
     sc_in<input_t> gbt_input;
 
+    sc_map_linear<sc_out<input_frame_t::header_t::bunch_crossing_t> > bx_buffer;
     sc_map_linear<sc_fifo_out<output_t> > bx_sorted_stubs;
 
 // ----- Local Channel Declarations --------------------------------------------

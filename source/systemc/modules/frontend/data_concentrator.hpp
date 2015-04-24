@@ -278,7 +278,9 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 
             if (output_frame.stub_count())
             {
-                SYSTEMC_LOG << "Frame " << output_frame.get_header().get_bunch_crossing() << " transmitted.";
+                SYSTEMC_LOG << "Frame transmitted @ bx=" << output_frame.get_header().get_bunch_crossing()
+                        << " with "
+                        << output_frame.get_header().get_stub_count() << " stubs.";
             }
         }
     }
@@ -299,13 +301,14 @@ typename data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
     output_t::header_t output_header;
     // TODO: output_header.set_fe_type();
     output_header.set_hw_status(output_t::header_t::status_OK);
-    output_header.set_bunch_crossing(LHC_bunch_crossing.read());
+    output_header.set_bunch_crossing(LHC_bunch_crossing.read() - output_window_cycles);
 
     output_t output_frame;
     output_frame.set_header(output_header);
 
     if (stub_buffer[stub_buffer_read_sel].size() > max_output_stubs)
     {
+        // TODO: put this to logging
         std::cerr << sc_time_stamp()
         		  << ": data_concentrator - Stub buffer overflow! ("
         		  << stub_buffer[stub_buffer_read_sel].size() << "/"

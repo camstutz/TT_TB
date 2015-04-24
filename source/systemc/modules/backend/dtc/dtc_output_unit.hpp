@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.hpp
  * @author Christian Amstutz
- * @date April 14, 2015
+ * @date April 24, 2015
  *
  * @brief
  *
@@ -13,8 +13,8 @@
 
 #pragma once
 
+#include "../../../systems/tt_tb_logger.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
-
 #include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
@@ -36,9 +36,10 @@ public:
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
-    sc_in<unsigned int> bunch_crossing;
+    sc_in<unsigned int> relative_bx;
     sc_in<unsigned int> read_buffer;
     sc_in<unsigned int> write_buffer;
+    sc_map_linear<sc_in<output_t::header_t::bunch_crossing_ID_t> > bx_buffers;
     sc_map_linear<sc_fifo_in<input_t> > bx_sorted_stubs;
 
     sc_out<output_t> tower_out_stream;
@@ -61,6 +62,7 @@ public:
      */
     dtc_output_unit(sc_module_name _name);
     SC_HAS_PROCESS(dtc_output_unit);
+
 private:
     std::vector<std::vector<std::vector<input_t> > > output_buffer;
 };

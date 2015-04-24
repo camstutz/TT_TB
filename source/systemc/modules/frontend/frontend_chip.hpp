@@ -207,6 +207,7 @@ void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>
 
     if (output_stub_it != ordered_stubs.rend())
     {
+        // TODO: put this to log
         std::cerr << sc_time_stamp() << ": Front End Chip received more than "
                   << total_collected_stubs << " hits in " << collection_cycles
                   << " cycles." << std::endl;

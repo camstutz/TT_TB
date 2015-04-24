@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit.cpp
  * @author Christian Amstutz
- * @date April 13, 2015
+ * @date April 24, 2015
  *
  * @brief
  */
@@ -29,7 +29,8 @@ dtc_input_unit::dtc_input_unit(sc_module_name _name) :
         fe_id(0xFF),
         clk("clk"),
         gbt_input("gbt_input"),
-        bx_sorted_stubs(fe_collect_cycles, "back_end_link")
+        bx_buffer(fe_collect_cycles, "bx_buffer"),
+        bx_sorted_stubs(fe_collect_cycles, "bx_sorted_stubs")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_stubs);
@@ -74,8 +75,12 @@ void dtc_input_unit::process_stubs()
                     output_t output_element;
                     output_element.set_type_field(PRBF::element_type::local_CBC);
                     output_element.set_stub(output_stub);
-                    CIC::stub_CBC::bunch_crossing_t bx = input_stub.get_bunch_crossing();
-                    bx_sorted_stubs[bx].write(output_element);
+
+                    CIC::stub_CBC::bunch_crossing_t frame_bx, relative_bx;
+                    frame_bx = input_frame[in_frame_id].get_header().get_bunch_crossing();
+                    relative_bx = input_stub.get_bunch_crossing();
+                    bx_buffer[relative_bx].write(frame_bx + relative_bx);
+                    bx_sorted_stubs[relative_bx].write(output_element);
                 }
             }
             else if (input_frame[in_frame_id].get_header().get_fe_type() == CIC::header::MPA)
@@ -96,8 +101,12 @@ void dtc_input_unit::process_stubs()
                     output_t output_element;
                     output_element.set_type_field(PRBF::element_type::local_MPA);
                     output_element.set_stub(output_stub);
-                    CIC::stub_CBC::bunch_crossing_t bx = input_stub.get_bunch_crossing();
-                    bx_sorted_stubs[bx].write(output_element);
+
+                    CIC::stub_CBC::bunch_crossing_t frame_bx, relative_bx;
+                    frame_bx = input_frame[in_frame_id].get_header().get_bunch_crossing();
+                    relative_bx = input_stub.get_bunch_crossing();
+                    bx_buffer[relative_bx].write(frame_bx + relative_bx);
+                    bx_sorted_stubs[relative_bx].write(output_element);
                 }
             }
         }

@@ -1,7 +1,7 @@
 /*!
  * @file dtc.hpp
  * @author Christian Amstutz
- * @date April 14, 2015
+ * @date April 24, 2015
  *
  * @brief
  *
@@ -41,8 +41,9 @@ public:
     sc_out<output_t> tower_output;
 
     // ----- Local Channel Declarations ----------------------------------------
+    sc_map_linear<sc_buffer<input_t::frame_t::header_t::bunch_crossing_t> > bx_buffers;
     sc_map_linear<sc_fifo<dtc_output_unit::input_t> > bx_sorted_inputs;
-    sc_signal<unsigned int> bx_sig;
+    sc_signal<unsigned int> relative_bx_sig;
     sc_signal<unsigned int> read_buffer_sig;
     sc_signal<unsigned int> write_buffer_sig;
     sc_buffer<output_t> tower_output_sig;

@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.cpp
  * @author Christian Amstutz
- * @date April 13, 2015
+ * @date April 24, 2015
  *
  * @brief
  */
@@ -27,9 +27,10 @@ const unsigned int dtc_output_unit::fe_collect_cycles = NR_DC_WINDOW_CYCLES;
 dtc_output_unit::dtc_output_unit(sc_module_name _name) :
         sc_module(_name),
         clk("clk"),
-        bunch_crossing("bunch_crossing"),
+        relative_bx("relative_bx"),
         read_buffer("read_buffer"),
         write_buffer("write_buffer"),
+        bx_buffers(fe_collect_cycles, "bx_buffers"),
         bx_sorted_stubs(fe_collect_cycles, "bx_sorted_stubs"),
         tower_out_stream("tower_out_stream")
 {
@@ -57,7 +58,7 @@ void dtc_output_unit::read_input()
     {
         wait();
 
-        if (bunch_crossing.read() == 0)
+        if (relative_bx.read() == 0)
         {
             for (unsigned bx = 0; bx < fe_collect_cycles; ++bx)
             {
@@ -78,17 +79,21 @@ void dtc_output_unit::generate_frame()
     {
         wait();
 
-        PRBF_0 output_frame(bunch_crossing);
-        while (!output_buffer[read_buffer][bunch_crossing].empty())
+        PRBF_0 output_frame(bx_buffers[relative_bx].read());
+        while (!output_buffer[read_buffer][relative_bx].empty())
         {
-            PRBF_0::stub_element_t stub_element = output_buffer[read_buffer][bunch_crossing].back();
+            PRBF_0::stub_element_t stub_element = output_buffer[read_buffer][relative_bx].back();
             output_frame.add_stub(stub_element);
-            output_buffer[read_buffer][bunch_crossing].pop_back();
+            output_buffer[read_buffer][relative_bx].pop_back();
         }
 
-        if (output_frame.get_trailer().get_stub_count() > 0)
+        if (output_frame.stub_count() > 0)
         {
             tower_out_stream.write(output_frame);
+
+            SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
+                    << " transmitted with "
+                    << output_frame.stub_count() << " stubs.";
         }
     }
 

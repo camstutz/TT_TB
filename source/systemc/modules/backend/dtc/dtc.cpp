@@ -26,8 +26,9 @@ dtc::dtc(sc_module_name _name) :
         clk("clk"),
         gbt_inputs(input_nr, "gbt_input"),
         tower_output("tower_output"),
+        bx_buffers(NR_DC_WINDOW_CYCLES, "bx_buffers"),
         bx_sorted_inputs(NR_DC_WINDOW_CYCLES, "bx_sorted_inputs"),
-        bx_sig("bx_sig"),
+        relative_bx_sig("bx_sig"),
         read_buffer_sig("read_buffer_sig"),
         write_buffer_sig("write_buffer_sig"),
         tower_output_sig("tower_output_sig"),
@@ -45,7 +46,7 @@ dtc::dtc(sc_module_name _name) :
     // ----- Module instance / channel binding ---------------------------------
 
     controller.clk.bind(clk);
-    controller.bunch_crossing.bind(bx_sig);
+    controller.bunch_crossing.bind(relative_bx_sig);
     controller.read_buffer.bind(read_buffer_sig);
     controller.write_buffer.bind(write_buffer_sig);
 
@@ -55,15 +56,17 @@ dtc::dtc(sc_module_name _name) :
     {
         input_unit_it->clk.bind(clk);
         input_unit_it->gbt_input.bind(*gbt_input_it);
+        input_unit_it->bx_buffer.bind(bx_buffers);
         input_unit_it->bx_sorted_stubs.bind(bx_sorted_inputs);
 
         ++gbt_input_it;
     }
 
     output_unit.clk.bind(clk);
-    output_unit.bunch_crossing.bind(bx_sig);
+    output_unit.relative_bx.bind(relative_bx_sig);
     output_unit.read_buffer.bind(read_buffer_sig);
     output_unit.write_buffer.bind(write_buffer_sig);
+    output_unit.bx_buffers.bind(bx_buffers);
     output_unit.bx_sorted_stubs.bind(bx_sorted_inputs);
     output_unit.tower_out_stream.bind(tower_output_sig);
 
