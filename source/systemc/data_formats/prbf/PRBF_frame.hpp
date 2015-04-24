@@ -49,8 +49,9 @@ public:
     PRBF_frame();
     PRBF_frame(header::bunch_crossing_ID_t bunch_crossing);
 
-    void set_bunch_crossing(header::bunch_crossing_ID_t bunch_crossing);
     header get_header() const;
+    void set_bunch_crossing(header::bunch_crossing_ID_t bunch_crossing);
+    header::bunch_crossing_ID_t get_bunch_crossing() const;
     trailer get_trailer() const;
 
     void add_stub(stub_element_t stub);
@@ -108,6 +109,13 @@ PRBF_frame<stub_type>::PRBF_frame(header::bunch_crossing_ID_t bunch_crossing) :
 
 // *****************************************************************************
 template <typename stub_type>
+header PRBF_frame<stub_type>::get_header() const
+{
+    return header_element;
+}
+
+// *****************************************************************************
+template <typename stub_type>
 void PRBF_frame<stub_type>::set_bunch_crossing(header::bunch_crossing_ID_t
         bunch_crossing)
 {
@@ -118,9 +126,12 @@ void PRBF_frame<stub_type>::set_bunch_crossing(header::bunch_crossing_ID_t
 
 // *****************************************************************************
 template <typename stub_type>
-header PRBF_frame<stub_type>::get_header() const
+header::bunch_crossing_ID_t PRBF_frame<stub_type>::get_bunch_crossing() const
 {
-    return header_element;
+    header frame_header = get_header();
+    header::bunch_crossing_ID_t bx = frame_header.get_bunch_crossing_ID();
+
+    return bx;
 }
 
 // *****************************************************************************

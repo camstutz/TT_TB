@@ -1,7 +1,7 @@
 /*!
  * @file do_input_collector.hpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date April 24, 2015
  *
  * @brief
  *
@@ -15,8 +15,8 @@
 
 #include "../../../data_formats/prbf/PRBF.hpp"
 #include "../../../data_formats/sc_pair/sc_pair.hpp"
-#include "../../../systems/TT_configuration.hpp"
 #include "../../../systems/tt_tb_logger.hpp"
+#include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -110,9 +110,12 @@ void input_collector<IN_FRAME, OUT_FRAME, IN_NR>::process_incoming_frame()
         {
             if (input_it->event())
             {
-                SYSTEMC_LOG << "Packet received :-)";
-
                 input_frame_t input_frame = input_it->read();
+
+                if (input_frame.stub_count() > 0)
+                {
+                    SYSTEMC_LOG << "Frame " << input_frame.get_bunch_crossing() << " reveived.";
+                }
 
                 bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();
 

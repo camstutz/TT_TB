@@ -1,7 +1,7 @@
 /*!
  * @file stub_type.cpp
  * @author Christian Amstutz
- * @date April 7, 2015
+ * @date April 24, 2015
  *
  * @brief
  *

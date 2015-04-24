@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa.hpp
  * @author Christian Amstutz
- * @date April 15, 2015
+ * @date April 24, 2015
  *
  * @brief
  *
@@ -20,6 +20,7 @@
 
 #include "../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../systems/tt_tb_logger.hpp"
 #include "../../systems/TT_configuration.hpp"
 
 #include "../../data_formats/CIC_format/CIC_format.hpp"
@@ -48,6 +49,7 @@ public:
 	// -------------------------------------------------------------------------
 
     typedef std::vector<output_stub_t> stub_buffer_type;
+    typedef output_t::header_t::bunch_crossing_t bunch_crossing_t;
     typedef unsigned int clock_phase_t;
 
     // ----- Port Declarations -------------------------------------------------
@@ -57,8 +59,8 @@ public:
     sc_out<output_t> dc_out;
 
     // ----- Local Channel Declarations ----------------------------------------
+    sc_signal<bunch_crossing_t> LHC_bunch_crossing;
     sc_signal<clock_phase_t> clock_phase;
-    output_t output_buffer;
     std::vector<stub_buffer_type> stub_buffer;
     sc_signal<output_t> dc_out_sig;
 
@@ -72,6 +74,7 @@ public:
     void write_output();
 
     // ----- Other Method Declarations -----------------------------------------
+    output_t create_output_buffer();
 
     // ----- Module Instantiations ---------------------------------------------
     sc_delay_signal<output_t, DC_output_delay> delay_output;
@@ -81,7 +84,6 @@ public:
     SC_HAS_PROCESS(data_concentrator);
 
 private:
-    void create_output_buffer();
     typename output_stub_t::bunch_crossing_t calculate_bx(clock_phase_t clock_phase, typename fe_stub_t::bx_t stub_bx);
 };
 
@@ -234,9 +236,13 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
         IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::controller()
 {
+    LHC_bunch_crossing.write(0);
+
     while (1)
     {
         wait();
+
+        LHC_bunch_crossing.write(LHC_bunch_crossing.read() + 1);
 
         if (clock_phase.read() == output_window_cycles-1)
         {
@@ -267,8 +273,13 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 
         if (clock_phase.read() == 0)
         {
-            create_output_buffer();
-            dc_out_sig.write(output_buffer);
+            output_t output_frame = create_output_buffer();
+            dc_out_sig.write(output_frame);
+
+            if (output_frame.stub_count())
+            {
+                SYSTEMC_LOG << "Frame " << output_frame.get_header().get_bunch_crossing() << " transmitted.";
+            }
         }
     }
 
@@ -279,11 +290,19 @@ template <typename IN_T, unsigned int NR_FE_CHIPS,
         unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
         typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
         unsigned int COLLECTION_CYCLES>
-void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
+typename data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
         IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
+        COLLECTION_CYCLES>::output_t data_concentrator<IN_T, NR_FE_CHIPS,
+        MAX_IN_STUBS_PER_CYCLE, IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
         COLLECTION_CYCLES>::create_output_buffer()
 {
-    output_buffer = output_t();
+    output_t::header_t output_header;
+    // TODO: output_header.set_fe_type();
+    output_header.set_hw_status(output_t::header_t::status_OK);
+    output_header.set_bunch_crossing(LHC_bunch_crossing.read());
+
+    output_t output_frame;
+    output_frame.set_header(output_header);
 
     if (stub_buffer[stub_buffer_read_sel].size() > max_output_stubs)
     {
@@ -302,12 +321,12 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
     typename stub_buffer_type::iterator stub_buffer_it = stub_buffer[stub_buffer_read_sel].begin();
     for(; stub_buffer_it != stub_buffer[stub_buffer_read_sel].end(); ++stub_buffer_it)
     {
-        output_buffer.add_stub(*stub_buffer_it);
+        output_frame.add_stub(*stub_buffer_it);
     }
 
     stub_buffer[stub_buffer_read_sel].clear();
 
-    return;
+    return output_frame;
 }
 
 // *****************************************************************************

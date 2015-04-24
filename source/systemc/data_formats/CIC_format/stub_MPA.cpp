@@ -1,7 +1,7 @@
 /*!
  * @file stub_MPA.cpp
  * @author Christian Amstutz
- * @date April 8, 2015
+ * @date April 24, 2015
  *
  * @brief
  *
@@ -18,7 +18,8 @@ namespace CIC
 {
 
 // *****************************************************************************
-stub_MPA::stub_MPA() : stub_CBC(0, 0, 0, 0)
+stub_MPA::stub_MPA() :
+        stub_CBC(0, 0, 0, 0)
 {
     set_z(0);
 
