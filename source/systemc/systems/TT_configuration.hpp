@@ -51,6 +51,9 @@
 #define NR_DC_MPA_OUT_STUBS       10
 #define NR_DO_OUT_STUBS           12
 
+#define DO_COUNTER_CORRECTION    -25
+#define PO_COUNTER_CORRECTION    -27
+
 #define NR_DTC_PER_PRB             1
 #define NR_PRB_PER_TRIGGER_TOWER   2
 #define NR_AM_BOARDS               2

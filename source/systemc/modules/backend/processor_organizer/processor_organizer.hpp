@@ -37,7 +37,7 @@ public:
 
     typedef input_collector<PRBF_1, PRBF_2, NR_PRB_PER_TRIGGER_TOWER> po_input_collector;
     typedef bx_stub_buffer<PRBF_2> po_stub_buffer;
-    typedef time_demux<PRBF_2, NR_DETECTOR_LAYERS, NR_AM_BOARDS, -150> po_demux;
+    typedef time_demux<PRBF_2, NR_DETECTOR_LAYERS, NR_AM_BOARDS, PO_COUNTER_CORRECTION> po_demux;
 
     typedef PRBF_1 do_input_t;
     typedef PRBF_2 processor_output_t;
