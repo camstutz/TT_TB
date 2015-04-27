@@ -128,6 +128,14 @@ void time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR, TIMER_START>::transfer_stubs()
                     output_frame.add_stub(stub_input[layer_id].read());
                 }
                 proc_unit_outputs.at(((bx_counter.read() - bx_offset) / bx_divider)%proc_unit_output_nr, layer_id).write(output_frame);
+
+                if (output_frame.stub_count() > 0)
+                {
+                    SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
+                            << " with " << output_frame.stub_count() << " stubs sent to "
+                            << "(out=" << (((bx_counter.read() - bx_offset) / bx_divider)%proc_unit_output_nr)
+                            << ", layer=" << layer_id << ").";
+                }
             }
         }
 
