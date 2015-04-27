@@ -60,6 +60,12 @@ void dtc_input_unit::process_stubs()
         {
             if (input_frame[in_frame_id].get_header().get_fe_type() == CIC::header::CBC)
             {
+                unsigned int stub_nr = input_frame[in_frame_id].stub_count();
+                if (stub_nr > 0)
+                {
+                    SYSTEMC_LOG << "CBC frame with " << stub_nr << " stubs received.";
+                }
+
                 CIC::stub_CBC input_stub;
                 while (input_frame[in_frame_id].get_stub(input_stub))
                 {
@@ -85,6 +91,12 @@ void dtc_input_unit::process_stubs()
             }
             else if (input_frame[in_frame_id].get_header().get_fe_type() == CIC::header::MPA)
             {
+                unsigned int stub_nr = input_frame[in_frame_id].stub_count();
+                if (stub_nr > 0)
+                {
+                    SYSTEMC_LOG << "MPA frame with " << stub_nr << " stubs received.";
+                }
+
                 CIC::stub_MPA input_stub;
                 while (input_frame[in_frame_id].get_stub(input_stub))
                 {

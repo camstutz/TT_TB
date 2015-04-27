@@ -16,7 +16,7 @@
 #include "../../../data_formats/gbt_link_format.hpp"
 #include "../../../data_formats/CIC_format/CIC_format.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
-
+#include "../../../systems/tt_tb_logger.hpp"
 #include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"

@@ -278,9 +278,9 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 
             if (output_frame.stub_count())
             {
-                SYSTEMC_LOG << "Frame transmitted @ bx=" << output_frame.get_header().get_bunch_crossing()
+                SYSTEMC_LOG << "Frame @ bx=" << output_frame.get_header().get_bunch_crossing()
                         << " with "
-                        << output_frame.get_header().get_stub_count() << " stubs.";
+                        << output_frame.get_header().get_stub_count() << " stubs transmitted.";
             }
         }
     }

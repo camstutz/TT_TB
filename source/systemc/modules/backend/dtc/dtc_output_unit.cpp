@@ -92,8 +92,8 @@ void dtc_output_unit::generate_frame()
             tower_out_stream.write(output_frame);
 
             SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
-                    << " transmitted with "
-                    << output_frame.stub_count() << " stubs.";
+                    << " with " << output_frame.stub_count() << " stubs transmitted.";
+            SYSTEMC_LOG << output_frame;
         }
     }
 

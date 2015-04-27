@@ -20,7 +20,7 @@
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
-#include <boost/log/sources/record_ostream.hpp>
+//#include <boost/log/sources/record_ostream.hpp>
 
 #include <systemc.h>
 
@@ -114,7 +114,8 @@ void input_collector<IN_FRAME, OUT_FRAME, IN_NR>::process_incoming_frame()
 
                 if (input_frame.stub_count() > 0)
                 {
-                    SYSTEMC_LOG << "Frame " << input_frame.get_bunch_crossing() << " reveived.";
+                    SYSTEMC_LOG << "Frame " << input_frame.get_bunch_crossing()
+                            << " with " << input_frame.stub_count() << " stubs reveived.";
                 }
 
                 bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();
