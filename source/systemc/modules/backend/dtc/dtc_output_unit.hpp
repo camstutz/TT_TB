@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.hpp
  * @author Christian Amstutz
- * @date April 24, 2015
+ * @date April 27, 2015
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../../../systems/tt_tb_logger.hpp"
+#include "dtc_buffer_element.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
 #include "../../../systems/TT_configuration.hpp"
 
@@ -32,15 +33,14 @@ public:
     typedef PRBF_0::stub_element_t input_t;
     typedef PRBF_0 output_t;
 
+    static const unsigned int dtc_input_nr;
     static const unsigned int fe_collect_cycles;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
     sc_in<unsigned int> relative_bx;
     sc_in<unsigned int> read_buffer;
-    sc_in<unsigned int> write_buffer;
-    sc_map_linear<sc_in<output_t::header_t::bunch_crossing_ID_t> > bx_buffers;
-    sc_map_linear<sc_fifo_in<input_t> > bx_sorted_stubs;
+    sc_map_cube<sc_fifo_in<dtc_buffer_element> > bx_buffer_inputs;
 
     sc_out<output_t> tower_out_stream;
 
@@ -49,7 +49,6 @@ public:
 // ----- Local Storage Declarations --------------------------------------------
 
 // ----- Process Declarations --------------------------------------------------
-    void read_input();
     void generate_frame();
 
 // ----- Other Method Declarations ---------------------------------------------

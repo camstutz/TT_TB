@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit.hpp
  * @author Christian Amstutz
- * @date April 24, 2015
+ * @date April 27, 2015
  *
  * @brief
  *
@@ -12,6 +12,8 @@
  */
 
 #pragma once
+
+#include "dtc_buffer_element.hpp"
 
 #include "../../../data_formats/gbt_link_format.hpp"
 #include "../../../data_formats/CIC_format/CIC_format.hpp"
@@ -33,7 +35,7 @@ class dtc_input_unit : public sc_module
 public:
     typedef gbt_link_format input_t;
     typedef CIC_frame input_frame_t;
-    typedef PRBF_0::stub_element_t output_t;
+    typedef dtc_buffer_element::second_type output_element_t;
 
     static const unsigned int fe_collect_cycles;
     const unsigned int fe_id;
@@ -41,9 +43,9 @@ public:
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
     sc_in<input_t> gbt_input;
+    sc_in<unsigned int> write_buffer_select;
 
-    sc_map_linear<sc_out<input_frame_t::header_t::bunch_crossing_t> > bx_buffer;
-    sc_map_linear<sc_fifo_out<output_t> > bx_sorted_stubs;
+    sc_map_square<sc_fifo_out<dtc_buffer_element> > bx_buffer_out;
 
 // ----- Local Channel Declarations --------------------------------------------
 

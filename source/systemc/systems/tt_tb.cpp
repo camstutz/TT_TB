@@ -73,6 +73,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
         sc_map_cube<sc_buffer<gbt_link_format> >::cube_iterator
                 link_it = gbt_links.begin_partial(3*dtc_id, 3*dtc_id+2, true, 0, 0, true, 0, 0, true);
         dtc_it->gbt_inputs.bind_by_iter(link_it);
+
         dtc_it->tower_output.bind(dtc_links[dtc_id]);
 
         ++dtc_id;

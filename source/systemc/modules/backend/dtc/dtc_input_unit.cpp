@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit.cpp
  * @author Christian Amstutz
- * @date April 24, 2015
+ * @date April 27, 2015
  *
  * @brief
  */
@@ -29,8 +29,8 @@ dtc_input_unit::dtc_input_unit(sc_module_name _name) :
         fe_id(0xFF),
         clk("clk"),
         gbt_input("gbt_input"),
-        bx_buffer(fe_collect_cycles, "bx_buffer"),
-        bx_sorted_stubs(fe_collect_cycles, "bx_sorted_stubs")
+        write_buffer_select("write_buffer_select"),
+        bx_buffer_out(2, fe_collect_cycles, "bx_sorted_stubs")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_stubs);
@@ -69,24 +69,26 @@ void dtc_input_unit::process_stubs()
                 CIC::stub_CBC input_stub;
                 while (input_frame[in_frame_id].get_stub(input_stub))
                 {
-                    output_t::stub_t output_stub;
+                    output_element_t::stub_t output_stub;
 
                     output_stub.set_fe_module(fe_id);
                     output_stub.set_concentrator_ID(in_frame_id);
-
                     output_stub.set_fe_chip_ID(input_stub.get_fe_chip_ID());
                     output_stub.set_strip(input_stub.get_strip());
                     output_stub.set_bend(input_stub.get_bend());
 
-                    output_t output_element;
+                    output_element_t output_element;
                     output_element.set_type_field(PRBF::element_type::local_CBC);
                     output_element.set_stub(output_stub);
 
-                    CIC::stub_CBC::bunch_crossing_t frame_bx, relative_bx;
+                    dtc_buffer_element::first_type frame_bx, relative_bx;
                     frame_bx = input_frame[in_frame_id].get_header().get_bunch_crossing();
                     relative_bx = input_stub.get_bunch_crossing();
-                    bx_buffer[relative_bx].write(frame_bx + relative_bx);
-                    bx_sorted_stubs[relative_bx].write(output_element);
+                    dtc_buffer_element buffer_element;
+                    buffer_element.first = frame_bx + relative_bx;
+                    buffer_element.second = output_element;
+
+                    bx_buffer_out.at(write_buffer_select.read(), relative_bx).write(buffer_element);
                 }
             }
             else if (input_frame[in_frame_id].get_header().get_fe_type() == CIC::header::MPA)
@@ -100,7 +102,7 @@ void dtc_input_unit::process_stubs()
                 CIC::stub_MPA input_stub;
                 while (input_frame[in_frame_id].get_stub(input_stub))
                 {
-                    output_t::stub_t output_stub;
+                    output_element_t::stub_t output_stub;
 
                     output_stub.set_fe_module(fe_id);
                     output_stub.set_concentrator_ID(in_frame_id);
@@ -110,15 +112,18 @@ void dtc_input_unit::process_stubs()
                     output_stub.set_bend(input_stub.get_bend());
                     output_stub.set_z(input_stub.get_z());
 
-                    output_t output_element;
+                    output_element_t output_element;
                     output_element.set_type_field(PRBF::element_type::local_MPA);
                     output_element.set_stub(output_stub);
 
-                    CIC::stub_CBC::bunch_crossing_t frame_bx, relative_bx;
+                    dtc_buffer_element::first_type frame_bx, relative_bx;
                     frame_bx = input_frame[in_frame_id].get_header().get_bunch_crossing();
                     relative_bx = input_stub.get_bunch_crossing();
-                    bx_buffer[relative_bx].write(frame_bx + relative_bx);
-                    bx_sorted_stubs[relative_bx].write(output_element);
+                    dtc_buffer_element buffer_element;
+                    buffer_element.first = frame_bx + relative_bx;
+                    buffer_element.second = output_element;
+
+                    bx_buffer_out.at(write_buffer_select.read(), relative_bx).write(buffer_element);
                 }
             }
         }

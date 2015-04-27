@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.cpp
  * @author Christian Amstutz
- * @date April 24, 2015
+ * @date April 27, 2015
  *
  * @brief
  */
@@ -14,6 +14,7 @@
 
 // *****************************************************************************
 
+const unsigned int dtc_output_unit::dtc_input_nr = 3;
 const unsigned int dtc_output_unit::fe_collect_cycles = NR_DC_WINDOW_CYCLES;
 
 // *****************************************************************************
@@ -29,14 +30,10 @@ dtc_output_unit::dtc_output_unit(sc_module_name _name) :
         clk("clk"),
         relative_bx("relative_bx"),
         read_buffer("read_buffer"),
-        write_buffer("write_buffer"),
-        bx_buffers(fe_collect_cycles, "bx_buffers"),
-        bx_sorted_stubs(fe_collect_cycles, "bx_sorted_stubs"),
+        bx_buffer_inputs(dtc_input_nr, 2, fe_collect_cycles, "bx_buffer_input"),
         tower_out_stream("tower_out_stream")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(read_input);
-        sensitive << clk.pos();
     SC_THREAD(generate_frame);
         sensitive << clk.pos();
 
@@ -44,32 +41,7 @@ dtc_output_unit::dtc_output_unit(sc_module_name _name) :
 
     // ----- Module instance / channel binding ---------------------------------
 
-    output_buffer.resize(2);
-    output_buffer[0].resize(8);
-    output_buffer[1].resize(8);
-
     return;
-}
-
-// *****************************************************************************
-void dtc_output_unit::read_input()
-{
-    while (1)
-    {
-        wait();
-
-        if (relative_bx.read() == 0)
-        {
-            for (unsigned bx = 0; bx < fe_collect_cycles; ++bx)
-            {
-                output_buffer[write_buffer][bx].clear();
-                while (bx_sorted_stubs[bx].num_available() > 0)
-                {
-                    output_buffer[write_buffer][bx].push_back(bx_sorted_stubs[bx].read());
-                }
-            }
-        }
-    }
 }
 
 // *****************************************************************************
@@ -79,21 +51,26 @@ void dtc_output_unit::generate_frame()
     {
         wait();
 
-        PRBF_0 output_frame(bx_buffers[relative_bx].read());
-        while (!output_buffer[read_buffer][relative_bx].empty())
+        output_t::header_t::bunch_crossing_ID_t bx;
+        output_t output_frame;
+        for (unsigned int input_id = 0; input_id < dtc_input_nr; ++input_id)
         {
-            PRBF_0::stub_element_t stub_element = output_buffer[read_buffer][relative_bx].back();
-            output_frame.add_stub(stub_element);
-            output_buffer[read_buffer][relative_bx].pop_back();
+            while (bx_buffer_inputs.at(input_id, read_buffer.read(), relative_bx.read()).num_available() > 0)
+            {
+                dtc_buffer_element stub_element;
+                stub_element= bx_buffer_inputs.at(input_id, read_buffer.read(), relative_bx.read()).read();
+                output_frame.add_stub(stub_element.second);
+                bx = stub_element.first;
+            }
         }
 
         if (output_frame.stub_count() > 0)
         {
+            output_frame.set_bunch_crossing(bx);
             tower_out_stream.write(output_frame);
 
             SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
                     << " with " << output_frame.stub_count() << " stubs transmitted.";
-            SYSTEMC_LOG << output_frame;
         }
     }
 

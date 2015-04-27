@@ -1,7 +1,7 @@
 /*!
  * @file dtc.cpp
  * @author Christian Amstutz
- * @date April 15, 2015
+ * @date April 27, 2015
  */
 
 /*
@@ -12,7 +12,9 @@
 
 // *****************************************************************************
 
-const unsigned int dtc::input_nr = 1;
+const unsigned int dtc::input_nr = 3;
+
+const unsigned int dtc::collection_cycles = NR_DC_WINDOW_CYCLES;
 
 // *****************************************************************************
 
@@ -26,8 +28,7 @@ dtc::dtc(sc_module_name _name) :
         clk("clk"),
         gbt_inputs(input_nr, "gbt_input"),
         tower_output("tower_output"),
-        bx_buffers(NR_DC_WINDOW_CYCLES, "bx_buffers"),
-        bx_sorted_inputs(NR_DC_WINDOW_CYCLES, "bx_sorted_inputs"),
+        bx_sorted_buffer(input_nr, 2, collection_cycles, "bx_sorted_inputs"),
         relative_bx_sig("bx_sig"),
         read_buffer_sig("read_buffer_sig"),
         write_buffer_sig("write_buffer_sig"),
@@ -50,24 +51,24 @@ dtc::dtc(sc_module_name _name) :
     controller.read_buffer.bind(read_buffer_sig);
     controller.write_buffer.bind(write_buffer_sig);
 
+    unsigned int input_id = 0;
     sc_map_linear<dtc_input_unit>::iterator input_unit_it = input_units.begin();
-    sc_map_linear<sc_in<input_t> >::iterator gbt_input_it = gbt_inputs.begin();
     for (; input_unit_it != input_units.end(); ++input_unit_it)
     {
         input_unit_it->clk.bind(clk);
-        input_unit_it->gbt_input.bind(*gbt_input_it);
-        input_unit_it->bx_buffer.bind(bx_buffers);
-        input_unit_it->bx_sorted_stubs.bind(bx_sorted_inputs);
+        input_unit_it->gbt_input.bind(gbt_inputs[input_id]);
+        input_unit_it->write_buffer_select.bind(write_buffer_sig);
+        sc_map_cube<sc_fifo<dtc_buffer_element> >::cube_iterator
+                bx_buffer_it = bx_sorted_buffer.begin_partial(input_id, false, 0, true, 0, true);
+        input_unit_it->bx_buffer_out.bind_by_iter(bx_buffer_it);
 
-        ++gbt_input_it;
+        ++input_id;
     }
 
     output_unit.clk.bind(clk);
     output_unit.relative_bx.bind(relative_bx_sig);
     output_unit.read_buffer.bind(read_buffer_sig);
-    output_unit.write_buffer.bind(write_buffer_sig);
-    output_unit.bx_buffers.bind(bx_buffers);
-    output_unit.bx_sorted_stubs.bind(bx_sorted_inputs);
+    output_unit.bx_buffer_inputs.bind(bx_sorted_buffer);
     output_unit.tower_out_stream.bind(tower_output_sig);
 
     delay_output.clk.bind(clk);
