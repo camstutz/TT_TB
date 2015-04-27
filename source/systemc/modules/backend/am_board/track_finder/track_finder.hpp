@@ -1,7 +1,7 @@
 /*!
  * @file track_finder.hpp
  * @author Christian Amstutz
- * @date February 17, 2015
+ * @date April 27, 2015
  *
  * @brief
  */
@@ -12,19 +12,21 @@
 
 #pragma once
 
-#include <systemc.h>
-
-#include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "../simple_stream_protocol.hpp"
-
 #include "../../../../systems/TT_configuration.hpp"
 #include "hit_processor/hit_processor.hpp"
-#include "hit_memory/hit_memory.hpp"
 #include "pattern_bank/pattern_bank.hpp"
 #include "am_chip/am_chip.hpp"
+#include "hit_buffer/hit_buffer.hpp"
 #include "pattern_memory/pattern_memory.hpp"
 #include "road_processor/road_processor.hpp"
 
+#include "../simple_stream_protocol.hpp"
+
+#include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+
+#include <systemc.h>
+
+// *****************************************************************************
 /*!
  * @brief
  */
@@ -60,7 +62,7 @@ public:
     // ----- Module Instantiations ---------------------------------------------
     pattern_bank patterns;
     hit_processor hit_proc;
-    hit_memory hit_buffer;
+    hit_buffer temp_hit_buffer;
     am_chip road_lookup;
     pattern_memory pattern_lookup;
     road_processor road_proc;

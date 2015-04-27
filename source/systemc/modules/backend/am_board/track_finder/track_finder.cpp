@@ -1,7 +1,7 @@
 /*!
  * @file tracak_finder.cpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date April 27, 2015
  *
  * @brief
  */
@@ -37,7 +37,7 @@ track_finder::track_finder(const sc_module_name _name) :
         hit_result_sig(layer_nr, "hit_result_sig"),
         patterns(layer_nr),
         hit_proc("hit_processor"),
-        hit_buffer("hit_buffer"),
+        temp_hit_buffer("temp_hit_buffer"),
         road_lookup("road_lookup", &patterns),
         pattern_lookup("pattern_lookup", &patterns),
         road_proc("road_processor")
@@ -51,11 +51,11 @@ track_finder::track_finder(const sc_module_name _name) :
     hit_proc.hitbuf_superstrip_out.bind(hit_buffer_ss_store_sig);
     hit_proc.hitbuf_substrip_out.bind(hit_buffer_subs_store_sig);
 
-    hit_buffer.clk.bind(clk);
-    hit_buffer.superstrip_inputs.bind(hit_buffer_ss_store_sig);
-    hit_buffer.substrip_inputs.bind(hit_buffer_subs_store_sig);
-    hit_buffer.superstrip_search.bind(hit_search_sig);
-    hit_buffer.hit_outputs.bind(hit_result_sig);
+    temp_hit_buffer.clk.bind(clk);
+    temp_hit_buffer.superstrip_inputs.bind(hit_buffer_ss_store_sig);
+    temp_hit_buffer.substrip_inputs.bind(hit_buffer_subs_store_sig);
+    temp_hit_buffer.superstrip_search.bind(hit_search_sig);
+    temp_hit_buffer.hit_outputs.bind(hit_result_sig);
 
     road_lookup.clk.bind(clk);
     road_lookup.hit_inputs.bind(am_input_sig);
