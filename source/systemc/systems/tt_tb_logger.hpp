@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb_logger.hpp
  * @author Christian Amstutz
- * @date April 24, 2015
+ * @date April 27, 2015
  *
  * @brief
  *
@@ -34,8 +34,8 @@ BOOST_LOG_GLOBAL_LOGGER(sysC_logger, boost::log::sources::logger)
 
 unsigned int sim_time_nano_seconds();
 
-#define SYSTEMC_LOG                                                      \
-        BOOST_LOG(sysC_logger::get())                                    \
-                << std::setw(6) << sim_time_nano_seconds() << " ns"      \
-                << " @ " << this->name   ()                              \
+#define SYSTEMC_LOG                                                                  \
+        BOOST_LOG(sysC_logger::get())                                                \
+                << std::right << std::setw(6) << sim_time_nano_seconds() << " ns"    \
+                << " @ " <<  std::left << std::setw(55) << this->name()              \
                 << ": "
