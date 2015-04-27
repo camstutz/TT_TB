@@ -1,7 +1,7 @@
 /*!
  * @file gbt.hpp
  * @author Christian Amstutz
- * @date April 10, 2015
+ * @date April 27, 2015
  *
  * @brief
  *
@@ -16,6 +16,7 @@
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../data_formats/CIC_format/CIC_format.hpp"
 #include "../../data_formats/gbt_link_format.hpp"
+#include "../../systems/tt_tb_logger.hpp"
 
 #include <systemc.h>
 
@@ -34,7 +35,6 @@ public:
     typedef gbt_link_format output_t;
 
     // ----- Port Declarations -------------------------------------------------
-    sc_in<bool> clk;
     sc_map_linear<sc_in<input_t> > cic_in;
 
     sc_out<output_t> optical_link;

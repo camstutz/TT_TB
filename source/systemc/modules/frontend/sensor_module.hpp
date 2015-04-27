@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.hpp
  * @author Christian Amstutz
- * @date April 23, 2015
+ * @date April 27, 2015
  *
  * @brief
  *
@@ -138,7 +138,6 @@ sensor_module<FE_CHIP_TYPE, CIC_TYPE, HITS_PER_CYCLE>::sensor_module(
         ++side_selector;
     }
 
-    gbt_unit.clk.bind(clk);
     gbt_unit.cic_in.bind(cic_out_signals);
     gbt_unit.optical_link.bind(gbt_link);
 
