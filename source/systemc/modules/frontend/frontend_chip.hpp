@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date April 9, 2015
+ * @date May 5, 2015
  *
  * @brief
  *
@@ -168,8 +168,8 @@ void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>
 
             wait(clk.posedge_event());
 
-            data_valid.write_all(0);
-            stub_outputs.write_all(output_stub_t());
+            data_valid.write(0);
+            stub_outputs.write(output_stub_t());
         }
     }
 

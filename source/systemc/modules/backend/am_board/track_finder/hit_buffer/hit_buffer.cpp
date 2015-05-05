@@ -41,10 +41,10 @@ hit_buffer::hit_buffer(const sc_module_name _name) :
     SC_THREAD(initialize_event);
         sensitive << write_event_begin;
     SC_THREAD(write_buffer);
-        superstrip_inputs.make_sensitive(sensitive);
-        substrip_inputs.make_sensitive(sensitive);
+        sensitive << superstrip_inputs;
+        sensitive << substrip_inputs;
     SC_THREAD(search_hits);
-        pure_superstrips.make_sensitive(sensitive);
+        sensitive << pure_superstrips;
     SC_THREAD(memory_monitor);
         sensitive << clk.pos();
 

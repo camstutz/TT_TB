@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.hpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date May 5, 2015
  *
  * @brief
  *
@@ -117,10 +117,8 @@ sensor_module<FE_CHIP_TYPE, CIC_TYPE, HITS_PER_CYCLE>::sensor_module(
             fe_chip_t& fe_chip = front_end_chips.at(side, fe_chip_nr);
             fe_chip.clk.bind(clk);
             fe_chip.stub_input.bind(stub_inputs.at(side, fe_chip_nr));
-            typename sc_map_cube<sc_signal<bool> >::cube_iterator data_valid_sig_it = fe_data_valid_signals.begin_partial(side, false, fe_chip_nr, false, 0, true);
-            fe_chip.data_valid.bind_by_iter(data_valid_sig_it);
-            typename sc_map_cube<sc_signal<fe_stub_t> >::cube_iterator fe_out_sig_it = fe_out_signals.begin_partial(side, false, fe_chip_nr, false, 0, true);
-            fe_chip.stub_outputs.bind_by_iter(fe_out_sig_it);
+            fe_chip.data_valid.bind(fe_data_valid_signals(side, side, fe_chip_nr, fe_chip_nr, 0, sc_map::max));
+            fe_chip.stub_outputs.bind(fe_out_signals(side, side, fe_chip_nr, fe_chip_nr, 0, sc_map::max));
         }
     }
 
@@ -129,10 +127,8 @@ sensor_module<FE_CHIP_TYPE, CIC_TYPE, HITS_PER_CYCLE>::sensor_module(
     for (; cic_it != concentrators.end(); ++cic_it)
     {
         cic_it->clk.bind(clk);
-        typename sc_map_cube<sc_signal<bool> >::cube_iterator data_valid_sig_it = fe_data_valid_signals.begin_partial(side_selector, false, 0, true, 0, true);
-        cic_it->data_valid.bind_by_iter(data_valid_sig_it);
-        typename sc_map_cube<sc_signal<fe_stub_t> >::cube_iterator fe_out_sig_it = fe_out_signals.begin_partial(side_selector, false, 0, true, 0, true);
-        cic_it->fe_stub_in.bind_by_iter(fe_out_sig_it);
+        cic_it->data_valid.bind(fe_data_valid_signals(side_selector, side_selector, 0, sc_map::max, 0, sc_map::max));
+        cic_it->fe_stub_in.bind(fe_out_signals(side_selector, side_selector, 0, sc_map::max, 0, sc_map::max));
         cic_it->dc_out.bind(cic_out_signals[side_selector]);
 
         ++side_selector;

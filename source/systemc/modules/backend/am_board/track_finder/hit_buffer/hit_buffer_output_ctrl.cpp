@@ -1,7 +1,7 @@
 /*!
  * @file hit_buffer_output_ctrl.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date May 5, 2015
  *
  * @brief File contains the implementation of the AM board FSM.
  */
@@ -49,7 +49,7 @@ hit_buffer_output_ctrl::hit_buffer_output_ctrl(sc_module_name _name) :
 void hit_buffer_output_ctrl::controller()
 {
     current_state = IDLE;
-    hit_output.write_all(hit_stream::IDLE);
+    hit_output.write(hit_stream::IDLE);
 
     while (1)
     {
@@ -61,13 +61,13 @@ void hit_buffer_output_ctrl::controller()
         case IDLE:
             if (start_transmission.event())
             {
-                hit_output.write_all(hit_stream::IDLE);
+                hit_output.write(hit_stream::IDLE);
                 current_state = START;
             }
             break;
 
         case START:
-            hit_output.write_all(hit_stream::START_WORD);
+            hit_output.write(hit_stream::START_WORD);
             current_state = TX_ROAD;
             break;
 

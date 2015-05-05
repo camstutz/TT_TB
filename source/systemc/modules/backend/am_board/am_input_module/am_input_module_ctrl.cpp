@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_ctrl.cpp
  * @author Christian Amstutz
- * @date April 20, 2014
+ * @date May 5, 2014
  *
  * @brief File contains the implementation of the AM board FSM.
  */
@@ -41,8 +41,8 @@ am_input_module_ctrl::am_input_module_ctrl(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
         sensitive << clk.pos();
-        frame_available.make_sensitive(sensitive);
-        frame_processing.make_sensitive(sensitive);
+        sensitive << frame_available;
+        sensitive << frame_processing;
 
     // ----- Module channel/variable initialization ----------------------------
 

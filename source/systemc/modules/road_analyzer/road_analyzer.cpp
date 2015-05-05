@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.cpp
  * @author Christian Amstutz
- * @date April 23, 2015
+ * @date May 5, 2015
  *
  * @brief
  */
@@ -26,7 +26,7 @@ road_analyzer::road_analyzer(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
 	SC_THREAD(detect_hits);
-		filtered_hits.make_sensitive(sensitive);
+		sensitive << filtered_hits;
 	SC_THREAD(update_hit_cnt)
 	    sensitive << hit_cnt;
 

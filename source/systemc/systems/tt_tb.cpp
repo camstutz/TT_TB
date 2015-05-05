@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.cpp
  * @author Christian Amstutz
- * @date April 23, 2015
+ * @date May 5, 2015
  *
  * @brief
  */
@@ -48,9 +48,10 @@ tt_tb::tt_tb(const sc_module_name _name) :
     {
         sc_map_cube<sensor_module_MPA>::full_key_type module_key = sensor_modules_mpa.get_key(*mpa_module_it).second;
         mpa_module_it->clk.bind(LHC_clock);
-        sc_map_4d<sc_fifo<hit_generator::mpa_stub_t> >::_4d_iterator
-                hit_fifo_it = hit_fifos_mpa.begin_partial(module_key.Z_dim, false, module_key.Y_dim, false, module_key.X_dim, false, 0, true);
-        mpa_module_it->stub_inputs.bind_by_iter(hit_fifo_it);
+        mpa_module_it->stub_inputs.bind(hit_fifos_mpa(module_key.Z_dim, module_key.Z_dim,
+                module_key.Y_dim, module_key.Y_dim,
+                module_key.X_dim, module_key.X_dim,
+                0, sc_map::max));
         mpa_module_it->gbt_link.bind(gbt_links.at(module_key.Z_dim, module_key.Y_dim, module_key.X_dim));
     }
 
@@ -59,9 +60,10 @@ tt_tb::tt_tb(const sc_module_name _name) :
     {
         sc_map_cube<sensor_module_CBC>::full_key_type module_key = sensor_modules_cbc.get_key(*cbc_module_it).second;
         cbc_module_it->clk.bind(LHC_clock);
-        sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> >::_4d_iterator
-                hit_fifo_it = hit_fifos_cbc.begin_partial(module_key.Z_dim, false, module_key.Y_dim, false, module_key.X_dim, false, 0, true);
-        cbc_module_it->stub_inputs.bind_by_iter(hit_fifo_it);
+        cbc_module_it->stub_inputs.bind(hit_fifos_cbc(module_key.Z_dim, module_key.Z_dim,
+                module_key.Y_dim, module_key.Y_dim,
+                module_key.X_dim, module_key.X_dim,
+                0, sc_map::max));
         cbc_module_it->gbt_link.bind(gbt_links.at(module_key.Z_dim, module_key.Y_dim, module_key.X_dim));
     }
 
@@ -70,9 +72,7 @@ tt_tb::tt_tb(const sc_module_name _name) :
     for (; dtc_it != DTCs.end(); ++dtc_it)
     {
         dtc_it->clk.bind(LHC_clock);
-        sc_map_cube<sc_buffer<gbt_link_format> >::cube_iterator
-                link_it = gbt_links.begin_partial(3*dtc_id, 3*dtc_id+2, true, 0, 0, true, 0, 0, true);
-        dtc_it->gbt_inputs.bind_by_iter(link_it);
+        dtc_it->gbt_inputs.bind(gbt_links(3*dtc_id, 3*dtc_id+2, 0, 0, 0, 0));
 
         dtc_it->tower_output.bind(dtc_links[dtc_id]);
 

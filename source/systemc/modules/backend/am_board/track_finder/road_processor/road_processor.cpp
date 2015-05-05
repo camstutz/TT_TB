@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.cpp
  * @author Christian Amstutz
- * @date March 31, 2015
+ * @date May 5, 2015
  *
  * @brief
  */
@@ -42,9 +42,9 @@ road_processor::road_processor(const sc_module_name _name) :
     	sensitive << command_buffer_delayed_sig;
     SC_THREAD(lookup_superstrips);
         sensitive << command_buffer.data_written_event();
-        found_pattern.make_sensitive(sensitive);
+        sensitive << found_pattern;
     SC_THREAD(output_result);
-        hit_lookup_result.make_sensitive(sensitive);
+        sensitive << hit_lookup_result;
 
     // ----- Module channel/variable initialization ----------------------------
     pattern_mem_delay_compensation.clk.bind(clk);

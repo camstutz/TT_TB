@@ -1,7 +1,7 @@
 /*!
  * @file hit_buffer_read_ctrl.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date May 5, 2015
  *
  * @brief
  */
@@ -37,8 +37,8 @@ hit_buffer_write_ctrl::hit_buffer_write_ctrl(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
-        hit_inputs.make_sensitive(sensitive);
-        process_hits.make_sensitive(sensitive);
+        sensitive << hit_inputs;
+        sensitive << process_hits;
 
     // ----- Module channel/variable initialization ----------------------------
     current_state = IDLE;
@@ -76,7 +76,7 @@ void hit_buffer_write_ctrl::controller()
                 for (unsigned int i=0; i<layer_nr; ++i)
                 {
                     event_begin.write(true);
-                    process_hits.write_all(true);
+                    process_hits.write(true);
                 }
             }
             break;

@@ -1,7 +1,7 @@
 /*!
  * @file do_input_collector.hpp
  * @author Christian Amstutz
- * @date April 24, 2015
+ * @date May 5, 2015
  *
  * @brief
  *
@@ -87,7 +87,7 @@ input_collector<IN_FRAME, OUT_FRAME, IN_NR>::input_collector(sc_module_name _nam
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_frame);
-        frame_inputs.make_sensitive(sensitive);
+        sensitive << frame_inputs;
 
     // ----- Module channel/variable initialization ----------------------------
 

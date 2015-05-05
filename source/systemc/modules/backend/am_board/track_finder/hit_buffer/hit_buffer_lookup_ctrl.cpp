@@ -1,7 +1,7 @@
 /*!
  * @file hit_buffer_lookup_ctrl.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date May 5, 2015
  *
  * @brief
  */
@@ -36,7 +36,7 @@ hit_buffer_lookup_ctrl::hit_buffer_lookup_ctrl(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
-        superstrip_inputs.make_sensitive(sensitive);
+        sensitive << superstrip_inputs;
 
     // ----- Module channel/variable initialization ----------------------------
     current_state = IDLE;

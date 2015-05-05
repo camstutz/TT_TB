@@ -37,7 +37,7 @@ am_chip::am_chip(sc_module_name _name, pattern_bank *p_bank) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_hits);
-        hit_inputs.make_sensitive(sensitive);
+        sensitive << hit_inputs;
     SC_THREAD(detect_roads);
         sensitive << process_roads_sig;
     SC_THREAD(check_detected_road_buffer);

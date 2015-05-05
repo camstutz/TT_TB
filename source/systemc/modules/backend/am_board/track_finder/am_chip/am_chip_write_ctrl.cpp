@@ -36,8 +36,8 @@ am_chip_write_ctrl::am_chip_write_ctrl(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(controller);
-        hit_inputs.make_sensitive(sensitive);
-        process_hits.make_sensitive(sensitive);
+        sensitive << hit_inputs;
+        sensitive << process_hits;
 
     // ----- Module channel/variable initialization ----------------------------
     current_state = IDLE;
@@ -79,7 +79,7 @@ void am_chip_write_ctrl::controller()
                 current_state.write(RX_HIT);
                 for (unsigned int i=0; i<layer_nr; ++i)
                 {
-                    process_hits.write_all(true);
+                    process_hits.write(true);
                 }
             }
             break;

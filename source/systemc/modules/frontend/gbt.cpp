@@ -1,7 +1,7 @@
 /*!
  * @file gbt.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date May 5, 2015
  *
  * @brief
  *
@@ -21,7 +21,7 @@ gbt::gbt(sc_module_name _name) :
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(combine_inputs);
-        cic_in.make_sensitive(sensitive);
+        sensitive << cic_in;
 
     // ----- Module variable initialization ------------------------------------
 
