@@ -1,7 +1,7 @@
 /*!
  * @file sc_map.hpp
  * @author Christian Amstutz
- * @date Mar 12, 2014
+ * @date May 5, 2015
  *
  * @brief
  *
@@ -24,3 +24,10 @@
 #include "sc_map_iter_square.hpp"
 #include "sc_map_iter_cube.hpp"
 #include "sc_map_iter_4d.hpp"
+
+#include <limits>
+
+namespace sc_map
+{
+    const sc_map_base<bool>::key_type max = std::numeric_limits<sc_map_base<bool>::key_type>::max();
+}
