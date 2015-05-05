@@ -7,7 +7,7 @@ sink::sink(sc_module_name _name) :
         input(2, "in_port") {
 
     SC_THREAD(detect_signal);
-        input.make_sensitive(this->sensitive);
+        sensitive << input;
 
     return;
 }
@@ -34,7 +34,7 @@ sink_square::sink_square(sc_module_name _name) :
         input(3, 2, "in_port") {
 
     SC_THREAD(detect_signal);
-        input.make_sensitive(this->sensitive);
+        sensitive << input;
 
     return;
 }
@@ -62,7 +62,7 @@ sink_cube::sink_cube(sc_module_name _name) :
         input(4, 3, 2, "in_port") {
 
     SC_THREAD(detect_signal);
-        input.make_sensitive(this->sensitive);
+        sensitive << input;
 
     return;
 }
@@ -91,7 +91,7 @@ sink_4d::sink_4d(sc_module_name _name) :
         input(5, 4, 3, 2, "in_port") {
 
     SC_THREAD(detect_signal);
-        input.make_sensitive(this->sensitive);
+        sensitive << input;
 
     return;
 }

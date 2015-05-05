@@ -15,7 +15,7 @@ bind_tester::bind_tester(sc_module_name _name) :
 void bind_tester::create_data()
 {
     sc_map_square<sc_out<bool> >::square_iterator out_iter =
-            output.begin_partial(0,2,true, 0,1,true);
+            output(0,2,0,1);
 
     wait(15, SC_NS);
 
