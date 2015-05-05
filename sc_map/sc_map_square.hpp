@@ -1,66 +1,68 @@
 /*!
  * @file sc_map_square.hpp
  * @author Christian Amstutz
- * @date December 10, 2014
+ * @date May 5, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
+
+#include "sc_map_base.hpp"
+#include "sc_map_iter_square.hpp"
+
+#include <systemc.h>
 
 #include <string>
 #include <sstream>
 #include <map>
 #include <utility>
 
-#include <systemc.h>
-
-#include "sc_map_base.hpp"
-#include "sc_map_iter_square.hpp"
-
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
 class sc_map_square : public sc_map_base<object_type>
 {
+    friend class sc_map_iter_square<object_type>;
+
 public:
+    typedef sc_map_base<object_type> base;
     typedef sc_map_iter_square<object_type> square_iterator;
-    typedef typename sc_map_base<object_type>::key_type key_type;
+    typedef typename base::key_type key_type;
     typedef struct
     {
         key_type Y_dim;
         key_type X_dim;
     } full_key_type;
-    typedef typename sc_map_base<object_type>::size_type size_type;
+    typedef typename base::size_type size_type;
     typedef std::map<key_type, size_type> map_1d_type;
     typedef std::map<key_type, map_1d_type> map_type;
 
-    static const key_type default_start_id_Y = 0;
-    static const key_type default_start_id_X = 0;
+    static const key_type default_start_id_Y;
+    static const key_type default_start_id_X;
+
+    using base::bind;
+    using base::operator();
 
     sc_map_square(const size_type element_cnt_Y,
             const size_type element_cnt_X, const sc_module_name name = "",
             const key_type start_id_Y = default_start_id_Y,
             const key_type start_id_X = default_start_id_X);
+    virtual ~sc_map_square() {};
 
     size_type size_Y() const;
     size_type size_X() const;
 
     object_type& at(const key_type key_Y, const key_type key_X);
+    square_iterator operator()(const key_type Y_start, const key_type Y_stop,
+                               const key_type X_start, const key_type X_stop);
+
     std::pair<bool, full_key_type> get_key(const object_type& object) const;
-
-    square_iterator begin_partial(const key_type pos_Y, const bool iterate_Y,
-                                  const key_type pos_X, const bool iterate_X);
-    square_iterator begin_partial(
-            const key_type start_Y, const key_type stop_Y, const bool iterate_Y,
-            const key_type start_X, const key_type stop_X, const bool iterate_X);
-
-    template<typename signal_type>
-    bool bind(sc_map_square<signal_type>& signals_map);
+    virtual std::string key_string(object_type& map_element) const;
 
 private:
     const key_type start_id_Y;
@@ -80,14 +82,23 @@ private:
         object_type* operator() (const sc_module_name name,
                 sc_map_square<object_type>::key_type id);
     };
-
-    friend class sc_map_iter_square<object_type>;
 };
 
 //******************************************************************************
 
 //******************************************************************************
-template<typename object_type>
+
+template <typename object_type>
+const typename sc_map_square<object_type>::key_type
+        sc_map_square<object_type>::default_start_id_Y = 0;
+
+template <typename object_type>
+const typename sc_map_square<object_type>::key_type
+        sc_map_square<object_type>::default_start_id_X = 0;
+
+//******************************************************************************
+
+template <typename object_type>
 sc_map_square<object_type>::sc_map_square(
         const size_type element_cnt_Y, const size_type element_cnt_X,
         const sc_module_name name, const key_type start_id_Y,
@@ -101,7 +112,7 @@ sc_map_square<object_type>::sc_map_square(
 
     for (size_type y = 0; y<element_cnt_Y; ++y) {
         for (size_type x = 0; x<element_cnt_X; ++x) {
-            key_type vector_id = y*element_cnt_X + x;
+            size_type vector_id = y*element_cnt_X + x;
             objects_map[start_id_Y+y][start_id_X+x] = vector_id;
         }
     }
@@ -110,24 +121,24 @@ sc_map_square<object_type>::sc_map_square(
 }
 
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
 typename sc_map_square<object_type>::size_type
         sc_map_square<object_type>::size_Y() const
 {
-    return (objects_map.size());
+    return objects_map.size();
 }
 
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
 typename sc_map_square<object_type>::size_type
         sc_map_square<object_type>::size_X() const
 {
     typename map_type::const_iterator first_Y = objects_map.begin();
-    return (first_Y->second.size() );
+    return first_Y->second.size();
 }
 
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
 object_type& sc_map_square<object_type>::at(const key_type key_Y,
         const key_type key_X)
 {
@@ -137,7 +148,19 @@ object_type& sc_map_square<object_type>::at(const key_type key_Y,
 }
 
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
+typename sc_map_square<object_type>::square_iterator
+        sc_map_square<object_type>::operator()(
+        const key_type Y_start, const key_type Y_stop,
+        const key_type X_start, const key_type X_stop)
+{
+    sc_map_iter_square<object_type> it(*this, Y_start, Y_stop, X_start, X_stop);
+
+    return it;
+}
+
+//******************************************************************************
+template <typename object_type>
 std::pair<bool, typename sc_map_square<object_type>::full_key_type>
         sc_map_square<object_type>::get_key(const object_type& object) const
 {
@@ -163,79 +186,28 @@ std::pair<bool, typename sc_map_square<object_type>::full_key_type>
         }
     }
 
-    return (full_key);
+    return full_key;
 }
 
 //******************************************************************************
-template<typename object_type>
-typename sc_map_square<object_type>::square_iterator
-        sc_map_square<object_type>::begin_partial(
-        const key_type pos_Y, const bool iterate_Y,
-        const key_type pos_X, const bool iterate_X)
+template <typename object_type>
+std::string sc_map_square<object_type>::key_string(object_type& map_element) const
 {
-    key_type start_Y, stop_Y, start_X, stop_X;
+    std::stringstream key_sstream;
 
-    if (iterate_Y)
+    std::pair<bool, full_key_type> key_return = get_key(map_element);
+    if (key_return.first)
     {
-        start_Y = start_id_Y;
-        stop_Y = start_id_Y+size_Y()-1;
-    }
-    else
-    {
-        start_Y = pos_Y;
-        stop_Y = pos_Y;
+        full_key_type key = key_return.second;
+        key_sstream << key.Y_dim << sc_map_base<object_type>::key_sub_separator
+                    << key.X_dim;
     }
 
-    if (iterate_X)
-    {
-        start_X = start_id_X;
-        stop_X = start_id_X+size_X()-1;
-    }
-    else
-    {
-        start_X = pos_X;
-        stop_X = pos_X;
-    }
-
-    sc_map_iter_square<object_type> square_map_it(*this,
-            start_Y, stop_Y, iterate_Y,
-            start_X, stop_X, iterate_X);
-    return (square_map_it);
+    return key_sstream.str();
 }
 
 //******************************************************************************
-template<typename object_type>
-typename sc_map_square<object_type>::square_iterator
-        sc_map_square<object_type>::begin_partial(
-        const key_type start_Y, const key_type stop_Y, const bool iterate_Y,
-        const key_type start_X, const key_type stop_X, const bool iterate_X)
-{
-    sc_map_iter_square<object_type> square_map_it(*this,
-            start_Y, stop_Y, iterate_Y,
-            start_X, stop_X, iterate_X);
-    return (square_map_it);
-}
-
-//******************************************************************************
-template<typename object_type>
-template<typename signal_type>
-bool sc_map_square<object_type>::bind(sc_map_square<signal_type>& signals_map)
-{
-    if ( (this->size_Y() !=  signals_map.size_Y()) &
-            (this->size_X() !=  signals_map.size_X()) )
-    {
-        std::cout << "Error: Binding of port with signal of different dimension."
-                << std::endl;
-        return(false);
-    }
-
-    sc_map_base<object_type>::bind(signals_map);
-
-    return (true);
-}
-
-//******************************************************************************
-template<typename object_type>
+template <typename object_type>
 typename sc_map_square<object_type>::size_type
         sc_map_square<object_type>::get_vect_pos(key_type pos_Y, key_type pos_X)
 {
@@ -246,7 +218,7 @@ typename sc_map_square<object_type>::size_type
 }
 
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
 sc_map_square<object_type>::creator::creator(
         const sc_map_square<object_type>::size_type size_Y,
         const sc_map_square<object_type>::size_type size_X) :
@@ -254,7 +226,7 @@ sc_map_square<object_type>::creator::creator(
 {}
 
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
 object_type* sc_map_square<object_type>::creator::operator() (
         const sc_module_name name, sc_map_square<object_type>::key_type id)
 {
@@ -267,8 +239,9 @@ object_type* sc_map_square<object_type>::creator::operator() (
 
     std::stringstream full_name;
 
-    full_name << name << "-" << id_Y << "_" << id_X;
+    full_name << name << sc_map_square<object_type>::key_separator << id_Y
+            << sc_map_square<object_type>::key_sub_separator << id_X;
 
 
-    return (new object_type(full_name.str().c_str()));
+    return new object_type(full_name.str().c_str());
 }

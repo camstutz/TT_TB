@@ -16,8 +16,7 @@ void source::create_data() {
 
     wait(15, SC_NS);
 
-    output.at(0).write(true);
-    output.at(1).write(true);
+    output(0,1) = true;
 
     wait(85, SC_NS);
 

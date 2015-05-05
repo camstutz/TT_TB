@@ -1,74 +1,74 @@
 /*!
  * @file sc_map_cube.hpp
  * @author Christian Amstutz
- * @date December 10, 2014
+ * @date May 4, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
+
+#include "sc_map_base.hpp"
+#include "sc_map_iter_cube.hpp"
+
+#include <systemc.h>
 
 #include <string>
 #include <sstream>
 #include <map>
 #include <utility>
 
-#include <systemc.h>
-
-#include "sc_map_base.hpp"
-#include "sc_map_iter_cube.hpp"
-
 //******************************************************************************
-template<typename object_type>
+template <typename object_type>
 class sc_map_cube : public sc_map_base<object_type>
 {
+    friend class sc_map_iter_cube<object_type>;
+
 public:
+    typedef sc_map_base<object_type> base;
     typedef sc_map_iter_cube<object_type> cube_iterator;
-    typedef typename sc_map_base<object_type>::key_type key_type;
+    typedef typename base::key_type key_type;
     typedef struct
     {
         key_type Z_dim;
         key_type Y_dim;
         key_type X_dim;
     } full_key_type;
-    typedef typename sc_map_base<object_type>::size_type size_type;
+    typedef typename base::size_type size_type;
     typedef std::map<key_type, size_type> map_1d_type;
     typedef std::map<key_type, map_1d_type> map_2d_type;
     typedef std::map<key_type, map_2d_type> map_type;
 
-    static const key_type default_start_id_Z = 0;
-    static const key_type default_start_id_Y = 0;
-    static const key_type default_start_id_X = 0;
+    static const key_type default_start_id_Z;
+    static const key_type default_start_id_Y;
+    static const key_type default_start_id_X;
+
+    using base::bind;
+    using base::operator();
 
     sc_map_cube(const size_type element_cnt_Z, const size_type element_cnt_Y,
             const size_type element_cnt_X, const sc_module_name name = "",
             const key_type start_id_Z = default_start_id_Z,
             const key_type start_id_Y = default_start_id_Y,
             const key_type start_id_X = default_start_id_X);
+    virtual ~sc_map_cube() {};
 
     size_type size_Z();
     size_type size_Y();
     size_type size_X();
 
     object_type& at(const key_type key_Z, const key_type key_Y, const key_type key_X);
+    cube_iterator operator()(const key_type Z_start, const key_type Z_stop,
+                             const key_type Y_start, const key_type Y_stop,
+                             const key_type X_start, const key_type X_stop);
+
     std::pair<bool, full_key_type> get_key(object_type& object) const;
-
-    cube_iterator begin_partial(
-            const key_type pos_Z, const bool iterate_Z,
-            const key_type pos_Y, const bool iterate_Y,
-            const key_type pos_X, const bool iterate_X);
-    cube_iterator begin_partial(
-            const key_type start_Z, const key_type stop_Z, const bool iterate_Z,
-            const key_type start_Y, const key_type stop_Y, const bool iterate_Y,
-            const key_type start_X, const key_type stop_X, const bool iterate_X);
-
-    template<typename signal_type>
-    bool bind(sc_map_cube<signal_type>& signals_map);
+    virtual std::string key_string(object_type& map_element) const;
 
 private:
     const key_type start_id_Z;
@@ -90,13 +90,26 @@ private:
                 const size_type size_X);
         object_type* operator() (const sc_module_name name, size_type id);
     };
-
-    friend class sc_map_iter_cube<object_type>;
 };
 
 //******************************************************************************
 
 //******************************************************************************
+
+template<typename object_type>
+const typename sc_map_cube<object_type>::key_type
+        sc_map_cube<object_type>::default_start_id_Z = 0;
+
+template<typename object_type>
+const typename sc_map_cube<object_type>::key_type
+        sc_map_cube<object_type>::default_start_id_Y = 0;
+
+template<typename object_type>
+const typename sc_map_cube<object_type>::key_type
+        sc_map_cube<object_type>::default_start_id_X = 0;
+
+//******************************************************************************
+
 template<typename object_type>
 sc_map_cube<object_type>::sc_map_cube(
         const size_type element_cnt_Z, const size_type element_cnt_Y, const size_type element_cnt_X,
@@ -124,7 +137,7 @@ template<typename object_type>
 typename sc_map_cube<object_type>::size_type
         sc_map_cube<object_type>::size_Z()
 {
-    return (objects_map.size());
+    return objects_map.size();
 }
 
 //******************************************************************************
@@ -133,7 +146,7 @@ typename sc_map_cube<object_type>::size_type
         sc_map_cube<object_type>::size_Y()
 {
     typename map_type::iterator first_Z = objects_map.begin();
-    return (first_Z->second.size() );
+    return first_Z->second.size();
 }
 
 //******************************************************************************
@@ -143,7 +156,7 @@ typename sc_map_cube<object_type>::size_type
 {
     typename map_type::iterator first_Z = objects_map.begin();
     typename map_2d_type::iterator first_Y = first_Z->second.begin();
-    return (first_Y->second.size() );
+    return first_Y->second.size();
 }
 
 //******************************************************************************
@@ -152,7 +165,20 @@ object_type& sc_map_cube<object_type>::at(const key_type key_Z,
         const key_type key_Y, const key_type key_X)
 {
     object_type& ret_object = *this->objects[get_vect_pos(key_Z, key_Y, key_X)];
-    return (ret_object);
+    return  ret_object;
+}
+
+//******************************************************************************
+template <typename object_type>
+typename sc_map_cube<object_type>::cube_iterator sc_map_cube<object_type>::operator()(
+                         const key_type Z_start, const key_type Z_stop,
+                         const key_type Y_start, const key_type Y_stop,
+                         const key_type X_start, const key_type X_stop)
+{
+    sc_map_iter_cube<object_type> it(*this, Z_start, Z_stop, Y_start, Y_stop,
+            X_start, X_stop);
+
+    return it;
 }
 
 //******************************************************************************
@@ -188,93 +214,25 @@ std::pair<bool, typename sc_map_cube<object_type>::full_key_type>
         }
     }
 
-    return (full_key);
+    return full_key;
 }
 
 //******************************************************************************
 template<typename object_type>
-typename sc_map_cube<object_type>::cube_iterator
-        sc_map_cube<object_type>::begin_partial(
-        const key_type pos_Z, const bool iterate_Z,
-        const key_type pos_Y, const bool iterate_Y,
-        const key_type pos_X, const bool iterate_X)
+std::string sc_map_cube<object_type>::key_string(object_type& map_element) const
 {
-    key_type start_Z, stop_Z, start_Y, stop_Y, start_X, stop_X;
+    std::stringstream key_sstream;
 
-    if (iterate_Z)
+    std::pair<bool, full_key_type> key_return = get_key(map_element);
+    if (key_return.first)
     {
-        start_Z = start_id_Z;
-        stop_Z = start_id_Z+size_Z()-1;
-    }
-    else
-    {
-        start_Z = pos_Z;
-        stop_Z = pos_Z;
+        full_key_type key = key_return.second;
+        key_sstream << key.Z_dim << sc_map_base<object_type>::key_sub_separator
+                    << key.Y_dim << sc_map_base<object_type>::key_sub_separator
+                    << key.X_dim;
     }
 
-    if (iterate_Y)
-    {
-        start_Y = start_id_Y;
-        stop_Y = start_id_Y+size_Y()-1;
-    }
-    else
-    {
-        start_Y = pos_Y;
-        stop_Y = pos_Y;
-    }
-
-    if (iterate_X)
-    {
-        start_X = start_id_X;
-        stop_X = start_id_X+size_X()-1;
-    }
-    else
-    {
-        start_X = pos_X;
-        stop_X = pos_X;
-    }
-
-    sc_map_iter_cube<object_type> cube_map_it(*this,
-            start_Z, stop_Z, iterate_Z,
-            start_Y, stop_Y, iterate_Y,
-            start_X, stop_X, iterate_X);
-
-    return (cube_map_it);
-}
-
-//******************************************************************************
-template<typename object_type>
-typename sc_map_cube<object_type>::cube_iterator
-        sc_map_cube<object_type>::begin_partial(
-        const key_type start_Z, const key_type stop_Z, const bool iterate_Z,
-        const key_type start_Y, const key_type stop_Y, const bool iterate_Y,
-        const key_type start_X, const key_type stop_X, const bool iterate_X)
-{
-    sc_map_iter_cube<object_type> cube_map_it(*this,
-            start_Z, stop_Z, iterate_Z,
-            start_Y, stop_Y, iterate_Y,
-            start_X, stop_X, iterate_X);
-
-    return (cube_map_it);
-}
-
-//******************************************************************************
-template<typename object_type>
-template<typename signal_type>
-bool sc_map_cube<object_type>::bind(sc_map_cube<signal_type>& signals_map)
-{
-    if ( (this->size_Z() !=  signals_map.size_Z()) &
-            (this->size_Y() !=  signals_map.size_Y()) &
-            (this->size_X() !=  signals_map.size_X()) )
-    {
-        std::cout << "Error: Binding of port with signal of different dimension."
-                << std::endl;
-        return(false);
-    }
-
-    sc_map_base<object_type>::bind(signals_map);
-
-    return (true);
+    return key_sstream.str();
 }
 
 //******************************************************************************
@@ -286,7 +244,7 @@ typename sc_map_cube<object_type>::size_type
     // todo: at exception handling for out of range accesses
     size_type vector_pos = objects_map.at(pos_Z).at(pos_Y).at(pos_X);
 
-    return (vector_pos);
+    return vector_pos;
 }
 
 //******************************************************************************
@@ -312,7 +270,10 @@ object_type* sc_map_cube<object_type>::creator::operator() (
     std::stringstream full_name;
     full_name << name;
 
-    full_name << "-" << id_Z << "_" << id_Y << "_" << id_X;
+    full_name << sc_map_cube<object_type>::key_separator
+              << id_Z << sc_map_cube<object_type>::key_sub_separator
+              << id_Y << sc_map_cube<object_type>::key_sub_separator
+              << id_X;
 
     return (new object_type(full_name.str().c_str()));
 }
