@@ -31,7 +31,7 @@ data_organizer_tb::data_organizer_tb(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(write_frames);
     SC_THREAD(print_output);
-        proc_output_sigs.make_sensitive(sensitive);
+        sensitive << proc_output_sigs;
 
     // ----- Module variable initialization ------------------------------------
 

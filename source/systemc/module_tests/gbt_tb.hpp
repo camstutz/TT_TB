@@ -44,7 +44,6 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
-    sc_clock LHC_clock;
     gbt  gbt_dut;
 
     // ----- Constructor -------------------------------------------------------

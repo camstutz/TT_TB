@@ -25,7 +25,7 @@ am_input_module_tb::am_input_module_tb(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(write_frames);
     SC_THREAD(print_stream);
-        output_streams.make_sensitive(sensitive);
+        sensitive << output_streams;
 
     // ----- Module variable initialization ------------------------------------
 

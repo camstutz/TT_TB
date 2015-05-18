@@ -59,8 +59,8 @@ data_concentrator_cbc_tb::~data_concentrator_cbc_tb()
 // *****************************************************************************
 void data_concentrator_cbc_tb::generate_hit_data()
 {
-    data_valid.write_all(false);
-    fe_signals.write_all(data_concentrator_cbc::fe_stub_t());
+    data_valid.write(false);
+    fe_signals.write(data_concentrator_cbc::fe_stub_t());
 
     wait(25, SC_NS);
     write_fe(0,0,255,1);

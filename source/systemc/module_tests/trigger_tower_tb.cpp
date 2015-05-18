@@ -26,7 +26,7 @@ trigger_tower_tb::trigger_tower_tb(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(write_stream);
     SC_THREAD(print_output);
-        hit_output_sigs.make_sensitive(sensitive);
+        sensitive << hit_output_sigs;
 
     // ----- Module variable initialization ------------------------------------
 

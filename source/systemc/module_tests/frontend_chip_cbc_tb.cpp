@@ -20,14 +20,14 @@
  */
 
 frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
-		sc_trace_file* trace_file) :
+		sc_trace_file* trace_file, track_trigger_config configuration) :
 		sc_module(_name),
         stub_input_sig("stub_input"),
         data_valid_signals(MAX_HITS_PER_CBC_FE_CHIP, "data_valid_sig"),
         fe_out_signals(MAX_HITS_PER_CBC_FE_CHIP, "fe_out_sig"),
         LHC_clock("LHC_clock", 25, SC_NS, 0.5, 10, SC_NS, true),
-        dut_front_end_chip("Front_End_Chip_DUT") {
-
+        dut_front_end_chip("Front_End_Chip_DUT", configuration.cbc_front_end_chip)
+{
     // ----- Creation and binding of signals -----------------------------------
     dut_front_end_chip.clk.bind(LHC_clock);
     dut_front_end_chip.stub_input.bind(stub_input_sig);
@@ -48,8 +48,8 @@ frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
 
     SC_THREAD(generate_stubs);
     SC_THREAD(analyse_FE_out);
-        data_valid_signals.make_sensitive(sensitive);
-        fe_out_signals.make_sensitive(sensitive);
+        sensitive << data_valid_signals;
+        sensitive << fe_out_signals;
 
     return;
 }
@@ -65,7 +65,7 @@ frontend_chip_cbc_tb::~frontend_chip_cbc_tb()
 // *****************************************************************************
 void frontend_chip_cbc_tb::generate_stubs()
 {
-    frontend_chip_cbc::input_stub_t stim_stub;
+    frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::input_stub_t stim_stub;
 
     // at 60 ns
     wait(60, SC_NS);
@@ -130,8 +130,8 @@ void frontend_chip_cbc_tb::analyse_FE_out()
 
         for (auto& fe_out_signal : fe_out_signals)
         {
-            frontend_chip_cbc::output_stub_t read_stub = fe_out_signal.read();
-            std::pair<bool, sc_map_linear<sc_signal<frontend_chip_cbc::output_stub_t>>::full_key_type> signal_key;
+            frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::output_stub_t read_stub = fe_out_signal.read();
+            std::pair<bool, sc_map_linear<sc_signal<frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::output_stub_t>>::full_key_type> signal_key;
             signal_key = fe_out_signals.get_key(fe_out_signal);
 
             if(data_valid_signals.at(signal_key.second.X_dim).read())
@@ -162,10 +162,10 @@ void frontend_chip_cbc_tb::trace(sc_trace_file* trace_file)
 }
 
 // *****************************************************************************
-void frontend_chip_cbc_tb::write_stub(frontend_chip_cbc::input_stub_t::strip_t strip,
-        frontend_chip_cbc::input_stub_t::bend_t bend)
+void frontend_chip_cbc_tb::write_stub(frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::input_stub_t::strip_t strip,
+        frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::input_stub_t::bend_t bend)
 {
-    frontend_chip_cbc::input_stub_t stim_stub(0x00, strip, bend);
+    frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::input_stub_t stim_stub(0x00, strip, bend);
     stub_input_sig.write(stim_stub);
     log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
 

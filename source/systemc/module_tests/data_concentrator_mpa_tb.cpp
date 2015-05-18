@@ -1,11 +1,11 @@
 /*!
  * @file data_concentrator_mpa_tb.cpp
  * @author Christian Amstutz
- * @date July 7, 2014
+ * @date May 15, 2015
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "data_concentrator_mpa_tb.hpp"
@@ -60,8 +60,8 @@ data_concentrator_mpa_tb::~data_concentrator_mpa_tb()
 // *****************************************************************************
 void data_concentrator_mpa_tb::generate_hit_data()
 {
-    data_valid.write_all(false);
-    fe_signals.write_all(data_concentrator_mpa::fe_stub_t());
+    data_valid.write(false);
+    fe_signals.write(data_concentrator_mpa::fe_stub_t());
 
     wait(50, SC_NS);
     write_fe(2,0,1,3,255,4);

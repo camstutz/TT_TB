@@ -25,7 +25,7 @@ time_demux_tb::time_demux_tb(sc_module_name _name) :
     SC_THREAD(write_stubs);
         sensitive << bunch_crossing_request_sig;
     SC_THREAD(print_output);
-        proc_unit_output_sigs.make_sensitive(sensitive);
+        sensitive << proc_unit_output_sigs;
 
     // ----- Module variable initialization ------------------------------------
 

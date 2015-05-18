@@ -16,6 +16,7 @@
 #include "../../../data_formats/prbf/PRBF.hpp"
 
 #include "../../../systems/TT_configuration.hpp"
+#include "../../../systems/tt_tb_logger.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 

@@ -14,9 +14,14 @@
 #include <iostream>
 #include <string>
 
+#include "../TT_configuration/sensor_module_config/track_trigger_config.hpp"
+#include "../TT_configuration/baseline_config.hpp"
+
+#include "../systems/tt_tb_logger.hpp"
+
 //#include "hit_file_test.hpp"
 //#include "hit_generator_tb.hpp"
-//#include "frontend_chip_cbc_tb.hpp"
+#include "frontend_chip_cbc_tb.hpp"
 //#include "frontend_chip_mpa_tb.hpp"
 //#include "data_concentrator_cbc_tb.hpp"
 //#include "data_concentrator_mpa_tb.hpp"
@@ -24,18 +29,18 @@
 //#include "dtc_input_unit_tb.hpp"
 //#include "dtc_output_unit_tb.hpp"
 //#include "dtc_tb.hpp"
-#include "backend_common/bx_stub_buffer_tb.hpp"
-#include "backend_common/input_collector_tb.hpp"
-#include "backend_common/time_demux_tb.hpp"
-#include "data_organizer/data_organizer_tb.hpp"
+//#include "backend_common/bx_stub_buffer_tb.hpp"
+//#include "backend_common/input_collector_tb.hpp"
+//#include "backend_common/time_demux_tb.hpp"
+//#include "data_organizer/data_organizer_tb.hpp"
 //#include "processor_organizer/po_layer_splitter_tb.hpp"
 //#include "processor_organizer/processor_organizer_tb.hpp"
-#include "am_board/am_input_module_one_layer_tb.hpp"
-#include "am_board/am_input_module_tb.hpp"
-#include "track_finder/am_chip_tb.hpp"
+//#include "am_board/am_input_module_one_layer_tb.hpp"
+//#include "am_board/am_input_module_tb.hpp"
+//#include "track_finder/am_chip_tb.hpp"
 //#include "am_board_tb.hpp"
 //#include "am_system_tb.hpp"
-#include "trigger_tower_tb.hpp"
+//#include "trigger_tower_tb.hpp"
 //#include "prbf_tb.hpp"
 //#include "cic_format_tb.hpp"
 
@@ -47,6 +52,8 @@ int sc_main(int argc, char *agv[])
 
     //hit_file_test();
 
+    track_trigger_config configuration = baseline_config();
+
     // ----- Channel declarations ----------------------------------------------
 
     // ----- Variable declarations ---------------------------------------------
@@ -54,7 +61,7 @@ int sc_main(int argc, char *agv[])
     // ----- Module instance declarations --------------------------------------
 
 //    hit_generator_tb hit_generator_tb("Hit_Generator_TB");
-//    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file);
+    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
 //    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
 //    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
 //    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
@@ -75,7 +82,7 @@ int sc_main(int argc, char *agv[])
 //	  am_system_tb am_system_tb("AM_System");
 //    am_board_tb am_board_tb("AM_board_TB");
 //    am_chip_tb AMchip_TB("AMchip_TB");
-    trigger_tower_tb triggerTower_TB("trigger_tower_TB");
+//    trigger_tower_tb triggerTower_TB("trigger_tower_TB");
 //    prbf_tb();
 //    cic_format_tb();
 
@@ -88,20 +95,20 @@ int sc_main(int argc, char *agv[])
 //    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.init_processing, "init_processing");
 //    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.delete_frame, "delete_frame");
 
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.processorOrganizers[0]->do_inputs, "PO0_DO_in");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.processorOrganizers[1]->do_inputs, "PO1_DO_in");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.processorOrganizers[0]->do_inputs, "PO0_DO_in");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.processorOrganizers[1]->do_inputs, "PO1_DO_in");
     //sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(0,0).TrackFinder.hit_input, "AM0_frame_input");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.hit_input, "AM1_frame_input");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.clk, "clk");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.current_state, "current_state");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.frame_available, "frame_available");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.frame_empty, "frame_empty");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.init_processing, "init_processing");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.delete_frame, "delete_frame");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.stub_stream_outputs, "stub_stream_output");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.write_controller.current_state, "AM_chip.write.current_state");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.read_controller.current_state, "AM_chip.read.current_state");
-    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.hit_inputs, "AM_chip.input");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.hit_input, "AM1_frame_input");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.clk, "clk");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.current_state, "current_state");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.frame_available, "frame_available");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.frame_empty, "frame_empty");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.init_processing, "init_processing");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.delete_frame, "delete_frame");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.stub_stream_outputs, "stub_stream_output");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.write_controller.current_state, "AM_chip.write.current_state");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.read_controller.current_state, "AM_chip.read.current_state");
+//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.hit_inputs, "AM_chip.input");
 
 //    sc_trace(trace_file, AMchip_TB.dut_AM_chip.clk, "clk");
 //    sc_trace(trace_file, AMchip_TB.dut_AM_chip.hit_inputs, "AM_chip.input");

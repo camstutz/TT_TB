@@ -55,16 +55,16 @@ am_chip_tb::~am_chip_tb()
 // *****************************************************************************
 void am_chip_tb::write_streams()
 {
-    hit_input_sigs.write_all(am_chip::superstrip_stream::IDLE);
+    hit_input_sigs.write(am_chip::superstrip_stream::IDLE);
 
     wait(50, SC_NS);
-    hit_input_sigs.write_all(am_chip::superstrip_stream::START_WORD);
+    hit_input_sigs.write(am_chip::superstrip_stream::START_WORD);
 
     wait(25, SC_NS);
-    hit_input_sigs.write_all(4);
+    hit_input_sigs.write(4);
 
     wait(25, SC_NS);
-    hit_input_sigs.write_all(am_chip::superstrip_stream::IDLE);
+    hit_input_sigs.write(am_chip::superstrip_stream::IDLE);
 
     return;
 }

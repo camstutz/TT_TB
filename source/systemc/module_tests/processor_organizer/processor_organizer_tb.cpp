@@ -1,7 +1,7 @@
 /*!
  * @file processor_organizer_tb.cpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date May 15, 2015
  */
 
 /*
@@ -25,7 +25,7 @@ processor_organizer_tb::processor_organizer_tb(sc_module_name _name) :
     // ----- Process registration ----------------------------------------------
     SC_THREAD(write_frames);
     SC_THREAD(print_output);
-        processor_output_sigs.make_sensitive(sensitive);
+        sensitive << processor_output_sigs;
 
     // ----- Module variable initialization ------------------------------------
 

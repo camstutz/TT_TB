@@ -1,7 +1,7 @@
 /*!
  * @file gbt_tb.cpp
  * @author Christian Amstutz
- * @date April 10, 2015
+ * @date May 15, 2015
  *
  * @brief
  *
@@ -26,11 +26,9 @@ gbt_tb::gbt_tb(sc_module_name _name) :
         sc_module(_name),
         input_streams(2, "input_streams"),
         optical_link("optical_link"),
-        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 10, SC_NS, true),
         gbt_dut("GBT_CBC_DUT")
 {
     // ----- Creation and binding of signals -----------------------------------
-    gbt_dut.clk.bind(LHC_clock);
     gbt_dut.cic_in.bind(input_streams);
     gbt_dut.optical_link.bind(optical_link);
 

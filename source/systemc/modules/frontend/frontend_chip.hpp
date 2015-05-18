@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date May 5, 2015
+ * @date May 15, 2015
  *
  * @brief
  *
@@ -20,23 +20,20 @@
 #include <systemc.h>
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../../systems/TT_configuration.hpp"
+//#include "../../systems/TT_configuration.hpp"
+#include "frontend_chip_config.hpp"
+#include "fe_chip_output_config.hpp"
 
 /*!
  * @brief
  */
-template <typename IN_STUB_T, typename OUT_STUB_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
+template <typename IN_STUB_T, typename OUT_STUB_T>
 class frontend_chip: public sc_module
 {
 public:
 // ----- Configuration ---------------------------------------------------------
 	typedef IN_STUB_T input_stub_t;
 	typedef OUT_STUB_T output_stub_t;
-
-    static const unsigned int max_stubs_per_cycle;
-    static const unsigned int collection_cycles;
-    static const unsigned int total_collected_stubs;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
@@ -59,10 +56,14 @@ public:
     /*!
      * Constructor:
      */
-    frontend_chip(const sc_module_name _name);
+    frontend_chip(const sc_module_name _name, frontend_chip_config configuration);
     SC_HAS_PROCESS(frontend_chip);
 
 private:
+    unsigned int max_stubs_per_cycle;
+    unsigned int collection_cycles;
+    unsigned int total_collected_stubs;
+
 	typedef std::multimap<typename output_stub_t::bend_t, output_stub_t> ordering_buffer_t;
 
 	ordering_buffer_t ordered_stubs;
@@ -73,36 +74,26 @@ private:
 
 // *****************************************************************************
 
-typedef frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t, MAX_HITS_PER_CBC_FE_CHIP,
-        COLLECTION_CYCLES_CBC_FE_CHIP> frontend_chip_cbc;
+typedef frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t> frontend_chip_cbc;
 
-typedef frontend_chip<fe_mpa_stub_t, fe_mpa_stub_t, MAX_HITS_PER_MPA_FE_CHIP,
-        COLLECTION_CYCLES_MPA_FE_CHIP> frontend_chip_mpa;
+typedef frontend_chip<fe_mpa_stub_t, fe_mpa_stub_t> frontend_chip_mpa;
 
 // *****************************************************************************
 
 // *****************************************************************************
 
-template <typename IN_STUB_T, typename OUT_STUB_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-const unsigned int frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::max_stubs_per_cycle = MAX_STUBS_PER_CYCLE;
-template <typename IN_STUB_T, typename OUT_STUB_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-const unsigned int frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::collection_cycles = COLLECTION_CYCLES;
-template <typename IN_STUB_T, typename OUT_STUB_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-const unsigned int frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::total_collected_stubs = MAX_STUBS_PER_CYCLE * COLLECTION_CYCLES;
-
-// *****************************************************************************
-template <typename IN_STUB_T, typename OUT_STUB_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::frontend_chip(const sc_module_name _name) :
+template <typename IN_STUB_T, typename OUT_STUB_T>
+frontend_chip<IN_STUB_T, OUT_STUB_T>::frontend_chip(const sc_module_name _name,
+        frontend_chip_config configuration) :
         sc_module(_name),
+        max_stubs_per_cycle(configuration.max_stubs_per_cycle),
+        collection_cycles(configuration.collection_cycles),
+        total_collected_stubs(configuration.max_stubs_per_cycle * configuration.collection_cycles),
         clk("clk"),
         stub_input("stub_input"),
-        data_valid(max_stubs_per_cycle, "data_valid", 0),
-        stub_outputs(max_stubs_per_cycle, "stub_output", 0),
-        selected_stubs("selected_stubs", total_collected_stubs)
+        data_valid(configuration.max_stubs_per_cycle, "data_valid", 0),
+        stub_outputs(configuration.max_stubs_per_cycle, "stub_output", 0),
+        selected_stubs("selected_stubs", configuration.max_stubs_per_cycle * configuration.collection_cycles)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
@@ -118,9 +109,8 @@ frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::fro
 }
 
 // *****************************************************************************
-template <typename IN_STUBS_T, typename OUT_STUBS_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-void frontend_chip<IN_STUBS_T, OUT_STUBS_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::read_input()
+template <typename IN_STUB_T, typename OUT_STUB_T>
+void frontend_chip<IN_STUB_T, OUT_STUB_T>::read_input()
 {
     collection_buffer.resize(collection_cycles);
 
@@ -148,9 +138,8 @@ void frontend_chip<IN_STUBS_T, OUT_STUBS_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLE
 }
 
 // *****************************************************************************
-template <typename IN_STUB_T, typename OUT_STUB_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::write_hits()
+template <typename IN_STUB_T, typename OUT_STUB_T>
+void frontend_chip<IN_STUB_T, OUT_STUB_T>::write_hits()
 {
     while (1)
     {
@@ -176,9 +165,8 @@ void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>
 }
 
 // *****************************************************************************
-template <typename IN_STUB_T, typename OUT_STUB_T,
-          unsigned int MAX_STUBS_PER_CYCLE, unsigned int COLLECTION_CYCLES>
-void frontend_chip<IN_STUB_T, OUT_STUB_T,MAX_STUBS_PER_CYCLE, COLLECTION_CYCLES>::prioritize_hits()
+template <typename IN_STUB_T, typename OUT_STUB_T>
+void frontend_chip<IN_STUB_T, OUT_STUB_T>::prioritize_hits()
 {
 	ordered_stubs.clear();
 
