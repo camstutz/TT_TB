@@ -4,19 +4,19 @@
 //******************************************************************************
 source::source(sc_module_name _name) :
         sc_module(_name),
-        output(2, "out_port") {
-
+        output(0, 1, "out_port")
+{
     SC_THREAD(create_data);
 
     return;
 }
 
 //******************************************************************************
-void source::create_data() {
-
+void source::create_data()
+{
     wait(15, SC_NS);
 
-    output(0,1) = true;
+    output(0, 1).write(true);
 
     wait(85, SC_NS);
 

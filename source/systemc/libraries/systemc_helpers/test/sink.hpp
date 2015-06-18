@@ -1,10 +1,7 @@
 
 #include <systemc.h>
 
-#include "../sc_map/sc_map_linear.hpp"
-#include "../sc_map/sc_map_square.hpp"
-#include "../sc_map/sc_map_cube.hpp"
-#include "../sc_map/sc_map_4d.hpp"
+#include "../sc_map/sc_map.hpp"
 
 class sink : public sc_module {
 public:
@@ -44,4 +41,22 @@ public:
 
     sink_4d(sc_module_name _name);
     SC_HAS_PROCESS(sink_4d);
+};
+
+class sink_config
+{
+public:
+    unsigned int config_value;
+};
+
+class sink_configurable : public sc_module {
+public:
+    sc_in<bool> input;
+    unsigned int config_value;
+
+    void detect_signal_config();
+
+    sink_configurable(sc_module_name _name);
+    sink_configurable(sc_module_name _name, sink_config configuration);
+    SC_HAS_PROCESS(sink_configurable);
 };
