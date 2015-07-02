@@ -1,7 +1,7 @@
 /*!
  * @file do_demux_tb.cpp
  * @author Christian Amstutz
- * @date April 16, 2015
+ * @date June 18, 2015
  */
 
 /*
@@ -11,13 +11,14 @@
 #include "time_demux_tb.hpp"
 
 // *****************************************************************************
-time_demux_tb::time_demux_tb(sc_module_name _name) :
+time_demux_tb::time_demux_tb(sc_module_name _name,
+        time_demux_config configuration) :
         sc_module(_name),
         bunch_crossing_request_sig("bunch_crossing_request_sig"),
         stub_input_sig("stub_input_sig"),
-        proc_unit_output_sigs(do_demux::proc_unit_output_nr, do_demux::layer_nr, "proc_unit_output_sigs"),
+        proc_unit_output_sigs(configuration.proc_unit_nr, configuration.layer_nr, "proc_unit_output_sigs"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_do_demux("DUT_do_demux", 2, 0)
+        dut_do_demux("DUT_do_demux", configuration)
 {
     // ----- Creation and binding of signals -----------------------------------
 
@@ -107,7 +108,8 @@ void time_demux_tb::print_output()
          log_buffer << sc_time_stamp() <<": " << std::endl;
 
          unsigned int output_id = 0;
-         sc_map_linear<sc_buffer<do_demux::output_t> >::iterator proc_output_it = proc_unit_output_sigs.begin();
+         sc_map_square<sc_buffer<do_demux::output_t> >::iterator proc_output_it = proc_unit_output_sigs.begin();
+
          for (; proc_output_it != proc_unit_output_sigs.end(); ++proc_output_it)
          {
              if (proc_output_it->event())

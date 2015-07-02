@@ -1,7 +1,7 @@
 /*!
- * @file frontend_chip_config.cpp
+ * @file po_layer_splitter_config.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -11,6 +11,14 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "frontend_chip_config.hpp"
+#pragma once
 
 // *****************************************************************************
+/*!
+ * @brief
+ */
+class po_layer_splitter_config
+{
+public:
+    unsigned int layer_nr;
+};

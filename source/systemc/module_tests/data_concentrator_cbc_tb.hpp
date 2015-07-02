@@ -18,8 +18,9 @@
 
 #include "systemc.h"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map_square.hpp"
+#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
+#include "../TT_configuration/track_trigger_config.hpp"
 #include "../systems/TT_configuration.hpp"
 #include "../modules/frontend/data_concentrator.hpp"
 
@@ -55,7 +56,7 @@ public:
     /*!
      * Constructor:
      */
-    data_concentrator_cbc_tb(sc_module_name _name);
+    data_concentrator_cbc_tb(sc_module_name _name, track_trigger_config configuration);
     SC_HAS_PROCESS(data_concentrator_cbc_tb);
     ~data_concentrator_cbc_tb();
 

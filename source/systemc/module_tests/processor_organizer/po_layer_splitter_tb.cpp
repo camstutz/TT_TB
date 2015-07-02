@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter_tb.cpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date July 1, 2015
  */
 
 /*
@@ -11,11 +11,12 @@
 #include "po_layer_splitter_tb.hpp"
 
 // *****************************************************************************
-po_layer_splitter_tb::po_layer_splitter_tb(sc_module_name _name) :
+po_layer_splitter_tb::po_layer_splitter_tb(sc_module_name _name,
+        po_layer_splitter_config configuration) :
         sc_module(_name),
         stub_input_sig("stub_input_sig"),
-        stub_output_sigs(po_layer_splitter::layer_nr, "stub_output_sig"),
-        dut_po_layer_splitter("DUT_po_layer_splitter")
+        stub_output_sigs(configuration.layer_nr, "stub_output_sig"),
+        dut_po_layer_splitter("DUT_po_layer_splitter", configuration)
 {
     // ----- Creation and binding of signals -----------------------------------
 

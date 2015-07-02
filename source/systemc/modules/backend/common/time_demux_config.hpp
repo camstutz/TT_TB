@@ -1,7 +1,7 @@
 /*!
- * @file fe_chip_output_config.hpp
+ * @file time_demux_config.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -17,11 +17,12 @@
 /*!
  * @brief
  */
-class fe_chip_output_config
+class time_demux_config
 {
 public:
-    unsigned int bx_bits;
-    unsigned int strip_bits;
-    unsigned int pixel_bits;
-    unsigned int bend_bits;
+    unsigned int layer_nr;
+    unsigned int proc_unit_nr;
+    int timer_start;
+    unsigned int bx_divider;
+    unsigned int bx_offset;
 };

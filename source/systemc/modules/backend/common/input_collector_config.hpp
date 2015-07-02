@@ -1,7 +1,7 @@
 /*!
- * @file data_concentrator_config.cpp
+ * @file input_collector_config.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -11,6 +11,14 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "data_concentrator_config.hpp"
+#pragma once
 
 // *****************************************************************************
+/*!
+ * @brief
+ */
+class input_collector_config
+{
+public:
+    unsigned int input_nr;
+};

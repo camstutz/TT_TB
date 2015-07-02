@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa_tb.cpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date June 29, 2015
  */
 
 /*
@@ -19,13 +19,14 @@
  * The module is sensitive to ...
  */
 
-data_concentrator_mpa_tb::data_concentrator_mpa_tb(sc_module_name _name) :
+data_concentrator_mpa_tb::data_concentrator_mpa_tb(sc_module_name _name,
+        track_trigger_config configuration) :
         sc_module(_name),
         rst("rst"),
         data_valid(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP, "data_valid"),
         fe_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP, "fe_signal"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_data_concentrator("Data_Concentrator_MPA_DUT")
+        dut_data_concentrator("Data_Concentrator_MPA_DUT", configuration.mpa_data_concentrator)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_data_concentrator.clk.bind(LHC_clock);

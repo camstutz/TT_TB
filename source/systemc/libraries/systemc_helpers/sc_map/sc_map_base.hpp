@@ -385,7 +385,7 @@ void sc_map_base<range_T, object_T>::write(const data_type& value)
 {
     for (iterator object_it = begin(); object_it != end(); ++object_it)
     {
-        (*object_it)->write(value);
+        object_it->write(value);
     }
 
     return;

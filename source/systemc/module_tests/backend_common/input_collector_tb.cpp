@@ -1,7 +1,7 @@
 /*!
  * @file input_collector_tb.cpp
  * @author Christian Amstutz
- * @date April 16, 2015
+ * @date July 1, 2015
  */
 
 /*
@@ -19,11 +19,12 @@
  * The module is sensitive to ...
  */
 
-input_collector_tb::input_collector_tb(sc_module_name _name) :
+input_collector_tb::input_collector_tb(sc_module_name _name,
+        input_collector_config configuration) :
         sc_module(_name),
-        dtc_input_sig(do_input_collector::input_nr, "dtc_input_sig"),
+        dtc_input_sig(configuration.input_nr, "dtc_input_sig"),
         stub_output_fifo("stub_output_fifo"),
-        dut_input_collector("DUT_input_collector")
+        dut_input_collector("DUT_input_collector", configuration)
 {
     // ----- Creation and binding of signals -----------------------------------
 

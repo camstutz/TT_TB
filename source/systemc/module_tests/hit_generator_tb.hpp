@@ -1,14 +1,14 @@
 /*!
  * @file hit_generator_test.hpp
  * @author Christian
- * @date July 8, 2014
+ * @date June 18, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -18,7 +18,7 @@
 
 #include "systemc.h"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map_4d.hpp"
+#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../systems/TT_configuration.hpp"
 #include "../modules/hit_generator/hit_generator.hpp"

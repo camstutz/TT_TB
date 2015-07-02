@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter.cpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 1, 2015
  *
  * @brief
  */
@@ -14,17 +14,15 @@
 
 // *****************************************************************************
 
-const unsigned int po_layer_splitter::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-
 /*!
  * @class po_layer_splitter
  *
  * The module is sensitive to ...
  */
 
-po_layer_splitter::po_layer_splitter(sc_module_name _name) :
+po_layer_splitter::po_layer_splitter(sc_module_name _name,
+        po_layer_splitter_config configuration) :
+        layer_nr(configuration.layer_nr),
         input_stubs("input_stubs"),
         splitted_stubs(layer_nr, "splitted_stubs")
 {

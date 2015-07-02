@@ -1,7 +1,7 @@
 /*!
- * @file baseline_config.hpp
+ * @file configuration.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date June 25, 2015
  *
  * @brief
  *
@@ -13,28 +13,38 @@
 
 #pragma once
 
-#include "sensor_module_config/track_trigger_config.hpp"
+#include "track_trigger_config.hpp"
 
 track_trigger_config baseline_config()
 {
-    track_trigger_config baseline_config;
+    track_trigger_config configuration;
 
-    baseline_config.cbc_front_end_chip.max_stubs_per_cycle = 3;
-    baseline_config.cbc_front_end_chip.collection_cycles = 1;
+    configuration.cbc_frontend_chip.max_stubs_per_cycle = 3;
+    configuration.cbc_frontend_chip.collection_cycles = 1;
 
-    baseline_config.cbc_front_end_chip.output_format.bx_bits = 0;
-    baseline_config.cbc_front_end_chip.output_format.strip_bits = 8;
-    baseline_config.cbc_front_end_chip.output_format.pixel_bits = 0;
-    baseline_config.cbc_front_end_chip.output_format.bend_bits = 5;
+    configuration.cbc_frontend_chip.output_format.bx_bits = 0;
+    configuration.cbc_frontend_chip.output_format.strip_bits = 8;
+    configuration.cbc_frontend_chip.output_format.pixel_bits = 0;
+    configuration.cbc_frontend_chip.output_format.bend_bits = 5;
 
-    baseline_config.mpa_front_end_chip.max_stubs_per_cycle = 2;
-    baseline_config.mpa_front_end_chip.collection_cycles = 2;
+    configuration.cbc_data_concentrator.fe_chips_count = 8;
+    configuration.cbc_data_concentrator.frontend_chip_type = configuration.cbc_frontend_chip;
+    configuration.cbc_data_concentrator.max_output_stubs = 12;
+    configuration.cbc_data_concentrator.output_window_cycles = 8;
 
-    baseline_config.mpa_front_end_chip.output_format.bx_bits = 1;
-    baseline_config.mpa_front_end_chip.output_format.strip_bits = 8;
-    baseline_config.mpa_front_end_chip.output_format.pixel_bits = 4;
-    baseline_config.mpa_front_end_chip.output_format.bend_bits = 5;
+    configuration.mpa_frontend_chip.max_stubs_per_cycle = 2;
+    configuration.mpa_frontend_chip.collection_cycles = 2;
 
-    return baseline_config;
+    configuration.mpa_frontend_chip.output_format.bx_bits = 1;
+    configuration.mpa_frontend_chip.output_format.strip_bits = 8;
+    configuration.mpa_frontend_chip.output_format.pixel_bits = 4;
+    configuration.mpa_frontend_chip.output_format.bend_bits = 5;
+
+    configuration.mpa_data_concentrator.fe_chips_count = 8;
+    configuration.mpa_data_concentrator.frontend_chip_type = configuration.mpa_frontend_chip;
+    configuration.mpa_data_concentrator.max_output_stubs = 10;
+    configuration.mpa_data_concentrator.output_window_cycles = 8;
+
+    return configuration;
 }
 

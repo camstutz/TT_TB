@@ -1,14 +1,14 @@
 /*!
  * @file data_concentrator_mpa_tb.hpp
  * @author Christian Amstutz
- * @date July 7, 2014
+ * @date June 18, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #pragma once
@@ -18,8 +18,9 @@
 
 #include "systemc.h"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map_square.hpp"
+#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
+#include "../TT_configuration/track_trigger_config.hpp"
 #include "../systems/TT_configuration.hpp"
 #include "../modules/frontend/data_concentrator.hpp"
 
@@ -57,7 +58,7 @@ public:
     /*!
      * Constructor:
      */
-    data_concentrator_mpa_tb(sc_module_name _name);
+    data_concentrator_mpa_tb(sc_module_name _name, track_trigger_config configuration);
     SC_HAS_PROCESS(data_concentrator_mpa_tb);
     ~data_concentrator_mpa_tb();
 

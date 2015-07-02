@@ -14,7 +14,7 @@
 #pragma once
 
 #include "../../modules/backend/processor_organizer/processor_organizer.hpp"
-#include "../../systems/TT_configuration.hpp"
+//#include "../../systems/TT_configuration.hpp"
 
 #include "../../data_formats/prbf/PRBF.hpp"
 
@@ -51,7 +51,7 @@ public:
     /*!
      * Constructor:
      */
-    processor_organizer_tb(sc_module_name _name);
+    processor_organizer_tb(sc_module_name _name, processor_organizer_config configuration);
     SC_HAS_PROCESS(processor_organizer_tb);
     ~processor_organizer_tb();
 

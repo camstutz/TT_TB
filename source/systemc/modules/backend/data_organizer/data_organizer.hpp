@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -17,6 +17,7 @@
 #include "../common/bx_stub_buffer.hpp"
 #include "../common/time_demux.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
+#include "../../../modules/backend/data_organizer/data_organizer_config.hpp"
 #include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
@@ -29,15 +30,16 @@
 class data_organizer : public sc_module
 {
 public:
-    typedef input_collector<PRBF_0, PRBF_1, NR_DTC_PER_PRB> do_input_collector;
+    const unsigned int dtc_input_nr;
+    const unsigned int proc_unit_nr;
+    const unsigned int counter_correction;
+
+    typedef input_collector<PRBF_0, PRBF_1> do_input_collector;
     typedef bx_stub_buffer<PRBF_1> do_stub_buffer;
-    typedef time_demux<PRBF_1, 1, NR_PRB_PER_TRIGGER_TOWER, DO_COUNTER_CORRECTION> do_demux;
+    typedef time_demux<PRBF_1> do_demux;
 
     typedef PRBF_0 dtc_input_t;
     typedef PRBF_1 proc_unit_output_t;
-
-    static const unsigned int dtc_input_nr;
-    static const unsigned int proc_unit_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
@@ -65,5 +67,5 @@ public:
     /*!
      * Constructor:
      */
-    data_organizer(sc_module_name _name);
+    data_organizer(sc_module_name _name, data_organizer_config configuration);
 };

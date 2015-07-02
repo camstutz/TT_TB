@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date July 1, 2015
  *
  * @brief
  */
@@ -14,28 +14,27 @@
 
 // *****************************************************************************
 
-const unsigned int data_organizer::dtc_input_nr = NR_DTC_PER_PRB;
-const unsigned int data_organizer::proc_unit_nr = NR_PRB_PER_TRIGGER_TOWER;
-
-// *****************************************************************************
-
 /*!
  * @class dtc_input_unit
  *
  * The module is sensitive to ...
  */
 
-data_organizer::data_organizer(sc_module_name _name) :
+data_organizer::data_organizer(sc_module_name _name,
+        data_organizer_config configuration) :
         sc_module(_name),
+        dtc_input_nr(configuration.dtc_input_nr),
+        proc_unit_nr(configuration.proc_unit_nr),
+        counter_correction(configuration.counter_correction),
         clk("clk"),
         dtc_inputs(dtc_input_nr, "dtc_inputs"),
         proc_unit_outputs(proc_unit_nr, "proc_unit_output"),
         stub_buffer_input_fifo("stub_buffer_input_fifo"),
         bunch_request_sig("bunch_request_sig"),
         stub_buffer_output_fifo("stub_buffer_output"),
-        in_collector("in_collector"),
+        in_collector("in_collector", configuration.input_collector),
         stub_buffer("stub_buffer"),
-        demultiplexer("demultiplexer", 1, 0)
+        demultiplexer("demultiplexer", configuration.demultiplexer)
 {
     // ----- Process registration ----------------------------------------------
 
@@ -53,7 +52,8 @@ data_organizer::data_organizer(sc_module_name _name) :
     demultiplexer.bunch_crossing_request.bind(bunch_request_sig);
     demultiplexer.stub_input[0].bind(stub_buffer_output_fifo);
     sc_map_linear<sc_out<proc_unit_output_t> >::iterator proc_unit_out_it = proc_unit_outputs.begin();
-    sc_map_linear<sc_out<typename do_demux::output_t> >::iterator demux_out_it = demultiplexer.proc_unit_outputs.begin();
+
+    sc_map_square<sc_out<typename do_demux::output_t> >::iterator demux_out_it = demultiplexer.proc_unit_outputs.begin();
     for (; demux_out_it != demultiplexer.proc_unit_outputs.end(); ++demux_out_it)
     {
         demux_out_it->bind(*proc_unit_out_it);

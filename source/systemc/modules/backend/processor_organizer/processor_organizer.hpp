@@ -18,7 +18,9 @@
 #include "../common/time_demux.hpp"
 #include "po_layer_splitter.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
-#include "../../../systems/TT_configuration.hpp"
+//#include "../../../systems/TT_configuration.hpp"
+#include "processor_organizer_config.hpp"
+
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -31,16 +33,18 @@
 class processor_organizer : public sc_module
 {
 public:
-    static const unsigned int do_input_nr;
-    static const unsigned int layer_nr;
-    static const unsigned int processor_output_nr;
-
-    typedef input_collector<PRBF_1, PRBF_2, NR_PRB_PER_TRIGGER_TOWER> po_input_collector;
+    //typedef input_collector<PRBF_1, PRBF_2, NR_PRB_PER_TRIGGER_TOWER> po_input_collector;
+    typedef input_collector<PRBF_1, PRBF_2> po_input_collector;
     typedef bx_stub_buffer<PRBF_2> po_stub_buffer;
-    typedef time_demux<PRBF_2, NR_DETECTOR_LAYERS, NR_AM_BOARDS, PO_COUNTER_CORRECTION> po_demux;
+    //typedef time_demux<PRBF_2, NR_DETECTOR_LAYERS, NR_AM_BOARDS, PO_COUNTER_CORRECTION> po_demux;
+    typedef time_demux<PRBF_2> po_demux;
 
     typedef PRBF_1 do_input_t;
     typedef PRBF_2 processor_output_t;
+
+    const unsigned int do_input_nr;
+    const unsigned int layer_nr;
+    const unsigned int processor_output_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
@@ -70,5 +74,5 @@ public:
     /*!
      * Constructor:
      */
-    processor_organizer(sc_module_name _name, unsigned int id);
+    processor_organizer(sc_module_name _name, processor_organizer_config configuration);
 };

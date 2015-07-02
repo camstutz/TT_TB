@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower_tb.cpp
  * @author Christian Amstutz
- * @date April 21, 2015
+ * @date June 29, 2015
  */
 
 /*
@@ -14,12 +14,12 @@
 
 // *****************************************************************************
 
-trigger_tower_tb::trigger_tower_tb(sc_module_name _name) :
+trigger_tower_tb::trigger_tower_tb(sc_module_name _name, track_trigger_config configuration) :
         sc_module(_name),
-        dtc_input_sigs(trigger_tower::prb_nr, trigger_tower::dtc_per_prb, "dtc_input_sig"),
-        hit_output_sigs(trigger_tower::prb_nr, trigger_tower::AM_boards_per_proc_unit, trigger_tower::detector_layer_nr, "hit_output_sig"),
+        dtc_input_sigs(configuration.trigger_tower.prb_nr, configuration.trigger_tower.dtc_per_prb, "dtc_input_sig"),
+        hit_output_sigs(configuration.trigger_tower.prb_nr, configuration.trigger_tower.AM_boards_per_prb, configuration.trigger_tower.layer_nr, "hit_output_sig"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_trigger_tower("trigger_tower")
+        dut_trigger_tower("trigger_tower", configuration.trigger_tower)
 {
     // ----- Creation and binding of signals -----------------------------------
 
@@ -108,14 +108,14 @@ void trigger_tower_tb::print_output()
         sc_map_cube<sc_buffer<am_board::output_stream_t> >::iterator hit_output_it = hit_output_sigs.begin();
         for(; hit_output_it != hit_output_sigs.end(); ++hit_output_it)
         {
-            sc_map_cube<sc_buffer<am_board::output_stream_t> >::full_key_type hit_out_key = hit_output_sigs.get_key(*hit_output_it).second;
+            sc_map_cube<sc_buffer<am_board::output_stream_t> >::key_type hit_out_key = hit_output_sigs.get_key(*hit_output_it).second;
             if (hit_output_it->event())
             {
                 log_buffer << sc_time_stamp();
                 log_buffer << " - ";
-                log_buffer << hit_out_key.Z_dim << ",";
-                log_buffer << hit_out_key.Y_dim << ",";
-                log_buffer << hit_out_key.X_dim;
+                log_buffer << hit_out_key.Z << ",";
+                log_buffer << hit_out_key.Y << ",";
+                log_buffer << hit_out_key.X;
                 log_buffer << ": " << hit_output_it->read();
                 log_buffer << std::endl;
             }

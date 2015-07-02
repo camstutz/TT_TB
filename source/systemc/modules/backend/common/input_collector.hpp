@@ -1,7 +1,7 @@
 /*!
  * @file do_input_collector.hpp
  * @author Christian Amstutz
- * @date May 5, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -16,7 +16,8 @@
 #include "../../../data_formats/prbf/PRBF.hpp"
 #include "../../../data_formats/sc_pair/sc_pair.hpp"
 #include "../../../systems/tt_tb_logger.hpp"
-#include "../../../systems/TT_configuration.hpp"
+#include "input_collector_config.hpp"
+//#include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -27,7 +28,7 @@
 /*!
  * @brief
  */
-template <typename IN_FRAME, typename OUT_FRAME, unsigned int IN_NR>
+template <typename IN_FRAME, typename OUT_FRAME>
 class input_collector : public sc_module
 {
 public:
@@ -38,7 +39,7 @@ public:
     typedef sc_pair<bunch_crossing_ID_type, typename output_frame_t::stub_element_t> output_pair_t;
     typedef output_pair_t output_t;
 
-    static const unsigned int input_nr;
+    const unsigned int input_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_map_linear<sc_in<input_t> > frame_inputs;
@@ -60,16 +61,11 @@ public:
     /*!
      * Constructor:
      */
-    input_collector(sc_module_name _name);
+    input_collector(sc_module_name _name, input_collector_config configuration);
     SC_HAS_PROCESS(input_collector);
 };
 
 // *****************************************************************************
-
-// *****************************************************************************
-
-template <typename IN_FRAME, typename OUT_FRAME, unsigned int IN_NR>
-const unsigned int input_collector<IN_FRAME, OUT_FRAME, IN_NR>::input_nr = IN_NR;
 
 // *****************************************************************************
 
@@ -79,9 +75,11 @@ const unsigned int input_collector<IN_FRAME, OUT_FRAME, IN_NR>::input_nr = IN_NR
  * The module is sensitive to ...
  */
 
-template <typename IN_FRAME, typename OUT_FRAME, unsigned int IN_NR>
-input_collector<IN_FRAME, OUT_FRAME, IN_NR>::input_collector(sc_module_name _name) :
+template <typename IN_FRAME, typename OUT_FRAME>
+input_collector<IN_FRAME, OUT_FRAME>::input_collector(sc_module_name _name,
+        input_collector_config configuration) :
         sc_module(_name),
+        input_nr(configuration.input_nr),
         frame_inputs(input_nr, "frame_inputs"),
         stub_output("stub_output")
 {
@@ -97,8 +95,8 @@ input_collector<IN_FRAME, OUT_FRAME, IN_NR>::input_collector(sc_module_name _nam
 }
 
 // *****************************************************************************
-template <typename IN_FRAME, typename OUT_FRAME, unsigned int IN_NR>
-void input_collector<IN_FRAME, OUT_FRAME, IN_NR>::process_incoming_frame()
+template <typename IN_FRAME, typename OUT_FRAME>
+void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
 {
     while (1)
     {

@@ -1,7 +1,7 @@
 /*!
  * @file processor_organizer.cpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date July 1, 2015
  *
  * @brief
  */
@@ -14,20 +14,18 @@
 
 // *****************************************************************************
 
-const unsigned int processor_organizer::do_input_nr = NR_PRB_PER_TRIGGER_TOWER;
-const unsigned int processor_organizer::layer_nr = NR_DETECTOR_LAYERS;
-const unsigned int processor_organizer::processor_output_nr = NR_AM_BOARDS;
-
-// *****************************************************************************
-
 /*!
  * @class process_organizer
  *
  * The module is sensitive to ...
  */
 
-processor_organizer::processor_organizer(sc_module_name _name, unsigned int id) :
+processor_organizer::processor_organizer(sc_module_name _name,
+        processor_organizer_config configuration) :
         sc_module(_name),
+        do_input_nr(configuration.do_input_nr),
+        layer_nr(configuration.layer_nr),
+        processor_output_nr(configuration.processor_output_nr),
         clk("clk"),
         do_inputs(do_input_nr, "do_inputs"),
         processor_outputs(processor_output_nr, layer_nr, "processor_output"),
@@ -35,10 +33,10 @@ processor_organizer::processor_organizer(sc_module_name _name, unsigned int id) 
         bunch_request_sig("bunch_request_sig"),
         stub_buffer_output_fifo("stub_buffer_output"),
         splitted_stubs_fifos(layer_nr, "splitted_stubs_fifo"),
-        in_collector("in_collector"),
+        in_collector("in_collector", configuration.input_collector),
         stub_buffer("stub_buffer"),
-        layer_splitter("layer_splitter"),
-        demultiplexer("demultiplexer", do_input_nr, id)
+        layer_splitter("layer_splitter", configuration.layer_splitter),
+        demultiplexer("demultiplexer", configuration.demultiplexer)
 {
     // ----- Process registration ----------------------------------------------
 

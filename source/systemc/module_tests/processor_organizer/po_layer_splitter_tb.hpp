@@ -52,7 +52,7 @@ public:
     /*!
      * Constructor:
      */
-    po_layer_splitter_tb(sc_module_name _name);
+    po_layer_splitter_tb(sc_module_name _name, po_layer_splitter_config configuration);
     SC_HAS_PROCESS(po_layer_splitter_tb);
     ~po_layer_splitter_tb();
 

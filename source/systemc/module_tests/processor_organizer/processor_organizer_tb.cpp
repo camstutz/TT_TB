@@ -13,12 +13,13 @@
 // *****************************************************************************
 
 // *****************************************************************************
-processor_organizer_tb::processor_organizer_tb(sc_module_name _name) :
+processor_organizer_tb::processor_organizer_tb(sc_module_name _name,
+        processor_organizer_config configuration) :
         sc_module(_name),
-        do_input_sigs(processor_organizer::do_input_nr, "do_input_sig"),
-        processor_output_sigs(processor_organizer::processor_output_nr, processor_organizer::layer_nr, "processor_output_sig"),
+        do_input_sigs(configuration.do_input_nr, "do_input_sig"),
+        processor_output_sigs(configuration.processor_output_nr, configuration.layer_nr, "processor_output_sig"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_processor_organizer("DUT_processor_organizer", 0)
+        dut_processor_organizer("DUT_processor_organizer", configuration)
 {
     // ----- Creation and binding of signals -----------------------------------
 
@@ -101,9 +102,9 @@ void processor_organizer_tb::print_output()
          log_buffer << std::endl;
          log_buffer << sc_time_stamp() <<": " << std::endl;
 
-         for (unsigned int output_id = 0; output_id < processor_organizer::processor_output_nr; ++output_id)
+         for (unsigned int output_id = 0; output_id < dut_processor_organizer.processor_output_nr; ++output_id)
          {
-             for (unsigned int layer_id = 0; layer_id < processor_organizer::layer_nr; ++layer_id)
+             for (unsigned int layer_id = 0; layer_id < dut_processor_organizer.layer_nr; ++layer_id)
              {
                  if (processor_output_sigs.at(output_id, layer_id).event())
                  {

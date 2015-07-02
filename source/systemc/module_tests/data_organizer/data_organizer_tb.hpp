@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../../modules/backend/data_organizer/data_organizer.hpp"
+#include "../../TT_configuration/track_trigger_config.hpp"
 #include "../../systems/TT_configuration.hpp"
 
 #include "../../data_formats/prbf/PRBF.hpp"
@@ -51,7 +52,7 @@ public:
     /*!
      * Constructor:
      */
-    data_organizer_tb(sc_module_name _name);
+    data_organizer_tb(sc_module_name _name, track_trigger_config configuration);
     SC_HAS_PROCESS(data_organizer_tb);
     ~data_organizer_tb();
 

@@ -1,11 +1,11 @@
 /*!
  * @file hit_generator_tb.cpp
  * @author Christian Amstutz
- * @date July 8, 2014
+ * @date June 18, 2015
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "hit_generator_tb.hpp"
@@ -79,13 +79,13 @@ void hit_generator_tb::check_output()
             hit_generator::mpa_stub_t read_stub;
             while (hit_signal.nb_read(read_stub))
             {
-                std::pair<bool, sc_map_4d<sc_fifo<hit_generator::mpa_stub_t>>::full_key_type> signal_key;
+                std::pair<bool, sc_map_4d<sc_fifo<hit_generator::mpa_stub_t>>::key_type> signal_key;
                 signal_key = hit_signals_mpa.get_key(hit_signal);
                 log_buffer << sc_time_stamp () << " @ hit_generator."
-                           << "L" << signal_key.second.W_dim
-                           << "Phi" << signal_key.second.Z_dim
-                           << "Z" << signal_key.second.Y_dim
-                           << "FE" << signal_key.second.X_dim
+                           << "L" << signal_key.second.W
+                           << "Phi" << signal_key.second.Z
+                           << "Z" << signal_key.second.Y
+                           << "FE" << signal_key.second.X
                            << " (MPA): " << std::hex
                            << read_stub.get_bx() << " - "
                            << "0x" << read_stub.get_strip() << ","
@@ -99,13 +99,13 @@ void hit_generator_tb::check_output()
             hit_generator::cbc_stub_t read_stub;
             while (hit_signal.nb_read(read_stub))
             {
-                std::pair<bool, sc_map_4d<sc_fifo<hit_generator::cbc_stub_t>>::full_key_type> signal_key;
+                std::pair<bool, sc_map_4d<sc_fifo<hit_generator::cbc_stub_t>>::key_type> signal_key;
                 signal_key = hit_signals_cbc.get_key(hit_signal);
                 log_buffer << sc_time_stamp () << " @ hit_generator."
-                           << "L" << signal_key.second.W_dim
-                           << "Phi" << signal_key.second.Z_dim
-                           << "Z" << signal_key.second.Y_dim
-                           << "FE" << signal_key.second.X_dim
+                           << "L" << signal_key.second.W
+                           << "Phi" << signal_key.second.Z
+                           << "Z" << signal_key.second.Y
+                           << "FE" << signal_key.second.X
                            << " (CBC): " << std::hex
                            << "0x" << read_stub.get_strip() << " - "
                            << "0x" << read_stub.get_bend() << std::endl;

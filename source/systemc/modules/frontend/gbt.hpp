@@ -1,7 +1,7 @@
 /*!
  * @file gbt.hpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date June 29, 2015
  *
  * @brief
  *
@@ -18,6 +18,8 @@
 #include "../../data_formats/gbt_link_format.hpp"
 #include "../../systems/tt_tb_logger.hpp"
 
+#include "../../TT_configuration/sensor_module_config/gbt_config.hpp"
+
 #include <systemc.h>
 
 #include <vector>
@@ -29,6 +31,9 @@
  */
 class gbt : public sc_module
 {
+private:
+    const unsigned int input_link_count;
+
 public:
 	// ----- Configuration -----------------------------------------------------
 	typedef CIC_frame input_t;
@@ -49,6 +54,6 @@ public:
     // ----- Module Instantiations ---------------------------------------------
 
     // ----- Constructor -------------------------------------------------------
-    gbt(sc_module_name _name);
+    gbt(sc_module_name _name, gbt_config configuration);
     SC_HAS_PROCESS(gbt);
 };

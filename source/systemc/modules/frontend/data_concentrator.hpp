@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa.hpp
  * @author Christian Amstutz
- * @date April 24, 2015
+ * @date June 29, 2015
  *
  * @brief
  *
@@ -21,30 +21,29 @@
 #include "../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../systems/tt_tb_logger.hpp"
-#include "../../systems/TT_configuration.hpp"
+
+#include "../../TT_configuration/sensor_module_config/data_concentrator_config.hpp"
 
 #include "../../data_formats/CIC_format/CIC_format.hpp"
 
 /*!
  * @brief
  */
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
+template <typename IN_T, typename OUT_STUB_T>
 class data_concentrator : public sc_module
 {
+private:
+    const unsigned int nr_fe_chips;
+    const unsigned int max_in_stubs_per_cycle;
+    const unsigned int collection_cycles;
+    const unsigned int max_output_stubs;
+    const unsigned int output_window_cycles;
+
 public:
 	// ----- Configuration -----------------------------------------------------
 	typedef IN_T fe_stub_t;
 	typedef CIC_frame output_t;
 	typedef OUT_STUB_T output_stub_t;
-
-	static const unsigned int nr_fe_chips;
-	static const unsigned int max_in_stubs_per_cycle;
-	static const unsigned int collection_cycles;
-	static const unsigned int max_output_stubs;
-	static const unsigned int output_window_cycles;
 
 	// -------------------------------------------------------------------------
 
@@ -80,66 +79,19 @@ public:
     sc_delay_signal<output_t, DC_output_delay> delay_output;
 
     // ----- Constructor -------------------------------------------------------
-    data_concentrator(sc_module_name _name);
+    data_concentrator(sc_module_name _name, data_concentrator_config configuration);
     SC_HAS_PROCESS(data_concentrator);
 
-private:
     typename output_stub_t::bunch_crossing_t calculate_bx(clock_phase_t clock_phase, typename fe_stub_t::bx_t stub_bx);
 };
 
 // *****************************************************************************
 
-typedef data_concentrator<fe_cbc_stub_t, NR_FE_CHIP_PER_MODULE,
-        MAX_HITS_PER_CBC_FE_CHIP, COLLECTION_CYCLES_CBC_FE_CHIP, CIC::stub_CBC,
-        NR_DC_CBC_OUT_STUBS, NR_DC_WINDOW_CYCLES> data_concentrator_cbc;
+typedef data_concentrator<fe_cbc_stub_t, CIC::stub_CBC> data_concentrator_cbc;
 
-typedef data_concentrator<fe_mpa_stub_t, NR_FE_CHIP_PER_MODULE,
-        MAX_HITS_PER_MPA_FE_CHIP, COLLECTION_CYCLES_MPA_FE_CHIP, CIC::stub_MPA,
-        NR_DC_MPA_OUT_STUBS, NR_DC_WINDOW_CYCLES> data_concentrator_mpa;
+typedef data_concentrator<fe_mpa_stub_t, CIC::stub_MPA> data_concentrator_mpa;
 
 // *****************************************************************************
-
-// *****************************************************************************
-
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::nr_fe_chips = NR_FE_CHIP_PER_SIDE;
-
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::max_in_stubs_per_cycle = MAX_IN_STUBS_PER_CYCLE;
-
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::collection_cycles = IN_COLLECTION_CYCLES;
-
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::max_output_stubs = MAX_OUT_STUBS;
-
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::output_window_cycles = COLLECTION_CYCLES;
 
 // *****************************************************************************
 /*!
@@ -147,14 +99,14 @@ const unsigned int data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
  *
  * The module is sensitive to ....
  */
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::data_concentrator(sc_module_name _name) :
+template <typename IN_T, typename OUT_STUB_T>
+data_concentrator<IN_T, OUT_STUB_T>::data_concentrator(sc_module_name _name, data_concentrator_config configuration) :
         sc_module(_name) ,
+        nr_fe_chips(configuration.fe_chips_count),
+        max_in_stubs_per_cycle(configuration.frontend_chip_type.max_stubs_per_cycle),
+        collection_cycles(configuration.frontend_chip_type.collection_cycles),
+        max_output_stubs(configuration.max_output_stubs),
+        output_window_cycles(configuration.output_window_cycles),
         clk("clk"),
         data_valid(nr_fe_chips, max_in_stubs_per_cycle, "data_valid"),
         fe_stub_in(nr_fe_chips, max_in_stubs_per_cycle, "fe_stub_in"),
@@ -190,13 +142,8 @@ data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 }
 
 // *****************************************************************************
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::read_FE_chips()
+template <typename IN_T, typename OUT_STUB_T>
+void data_concentrator<IN_T, OUT_STUB_T>::read_FE_chips()
 {
     while(1)
     {
@@ -209,14 +156,14 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
             if (*data_valid_it == true)
             {
                 fe_stub_t fe_data = fe_in_it->read();
-                std::pair<bool, typename sc_map_square<sc_in<fe_stub_t> >::full_key_type>
+                std::pair<bool, typename sc_map_square<sc_in<fe_stub_t> >::key_type>
                         signal_key = fe_stub_in.get_key(*fe_in_it);
 
                 output_stub_t stub;
                 stub.set_strip(fe_data.get_strip());
                 stub.set_bend(fe_data.get_bend());
                 stub.set_bunch_crossing(calculate_bx(clock_phase.read(), fe_data.get_bx()));
-                stub.set_fe_chip_ID(signal_key.second.Y_dim);
+                stub.set_fe_chip_ID(signal_key.second.Y);
 
                 stub_buffer[stub_buffer_write_sel].push_back(stub);
             }
@@ -228,13 +175,8 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 }
 
 // *****************************************************************************
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::controller()
+template <typename IN_T, typename OUT_STUB_T>
+void data_concentrator<IN_T, OUT_STUB_T>::controller()
 {
     LHC_bunch_crossing.write(0);
 
@@ -259,13 +201,8 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 }
 
 // *****************************************************************************
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::write_output()
+template <typename IN_T, typename OUT_STUB_T>
+void data_concentrator<IN_T, OUT_STUB_T>::write_output()
 {
     while(1)
     {
@@ -288,15 +225,8 @@ void data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 }
 
 // *****************************************************************************
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-typename data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::output_t data_concentrator<IN_T, NR_FE_CHIPS,
-        MAX_IN_STUBS_PER_CYCLE, IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::create_output_buffer()
+template <typename IN_T, typename OUT_STUB_T>
+typename data_concentrator<IN_T, OUT_STUB_T>::output_t data_concentrator<IN_T, OUT_STUB_T>::create_output_buffer()
 {
     output_t::header_t output_header;
     // TODO: output_header.set_fe_type();
@@ -333,16 +263,9 @@ typename data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
 }
 
 // *****************************************************************************
-template <typename IN_T, unsigned int NR_FE_CHIPS,
-        unsigned int MAX_IN_STUBS_PER_CYCLE, unsigned int IN_COLLECTION_CYCLES,
-        typename OUT_STUB_T, unsigned int MAX_OUT_STUBS,
-        unsigned int COLLECTION_CYCLES>
-typename data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::output_stub_t::bunch_crossing_t
-data_concentrator<IN_T, NR_FE_CHIPS, MAX_IN_STUBS_PER_CYCLE,
-        IN_COLLECTION_CYCLES, OUT_STUB_T, MAX_OUT_STUBS,
-        COLLECTION_CYCLES>::calculate_bx(clock_phase_t clock_phase,
+template <typename IN_T, typename OUT_STUB_T>
+typename data_concentrator<IN_T, OUT_STUB_T>::output_stub_t::bunch_crossing_t
+data_concentrator<IN_T, OUT_STUB_T>::calculate_bx(clock_phase_t clock_phase,
 		typename fe_stub_t::bx_t stub_bx)
 {
     // TODO: take the real configuration value for collection cycles

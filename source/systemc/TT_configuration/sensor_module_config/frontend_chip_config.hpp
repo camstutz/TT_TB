@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_config.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date June 25, 2015
  *
  * @brief
  *
@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "fe_chip_output_config.hpp"
+#include "../../TT_configuration/sensor_module_config/fe_chip_output_config.hpp"
 
 // *****************************************************************************
 /*!

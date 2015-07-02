@@ -1,7 +1,7 @@
 /*!
  * @file fe_chip_output_config.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date June 25, 2015
  *
  * @brief
  *

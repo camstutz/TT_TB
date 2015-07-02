@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.hpp
  * @author Christian Amstutz
- * @date April 21, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -17,7 +17,8 @@
 #include "processor_organizer/processor_organizer.hpp"
 #include "am_board/am_board.hpp"
 
-#include "../../systems/TT_configuration.hpp"
+#include "../../modules/backend/trigger_tower_config.hpp"
+//#include "../../systems/TT_configuration.hpp"
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -31,10 +32,10 @@
 class trigger_tower : public sc_module
 {
 public:
-    static const unsigned int detector_layer_nr;
-    static const unsigned int prb_nr;
-    static const unsigned int dtc_per_prb;
-    static const unsigned int AM_boards_per_proc_unit;
+    const unsigned int layer_nr;
+    const unsigned int prb_nr;
+    const unsigned int dtc_per_prb;
+    const unsigned int AM_boards_per_proc_unit;
 
 // ----- Port Declarations -----------------------------------------------------
     /** Input port for the clock signal */
@@ -55,13 +56,13 @@ public:
 
 // ----- Module Instantiations -------------------------------------------------
     sc_map_linear<data_organizer> dataOrganizers;
-    //sc_map_linear<processor_organizer> processorOrganizers;
-    processor_organizer* processorOrganizers[NR_PRB_PER_TRIGGER_TOWER];
+    sc_map_linear<processor_organizer> processorOrganizers;
+    //processor_organizer* processorOrganizers[4];
     sc_map_square<am_board> amBoards;
 
 // ----- Constructor -----------------------------------------------------------
     /*!
      * Constructor:
      */
-    trigger_tower(sc_module_name _name);
+    trigger_tower(sc_module_name _name, trigger_tower_config);
 };

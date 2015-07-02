@@ -14,9 +14,10 @@
 #include "gbt.hpp"
 
 // *****************************************************************************
-gbt::gbt(sc_module_name _name) :
+gbt::gbt(sc_module_name _name, gbt_config configuration) :
     sc_module(_name),
-    cic_in(2, "cic_in"),
+    input_link_count(configuration.input_link_count),
+    cic_in(input_link_count, "cic_in"),
     optical_link("optical_link")
 {
     // ----- Process registration ----------------------------------------------
@@ -36,6 +37,8 @@ void gbt::combine_inputs()
     while (1)
     {
         wait();
+
+        // TODO: adapt to more than 2 inputs
 
         output_t out_value(cic_in[0].read(), cic_in[1].read() );
         optical_link.write(out_value);

@@ -1,7 +1,7 @@
 /*!
  * @file do_demux_tb.hpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -14,7 +14,8 @@
 #pragma once
 
 #include "../../modules/backend/common/time_demux.hpp"
-#include "../../systems/TT_configuration.hpp"
+#include "../../modules/backend/common/time_demux_config.hpp"
+//#include "../../systems/TT_configuration.hpp"
 
 #include "../../data_formats/prbf/PRBF.hpp"
 
@@ -31,7 +32,8 @@
 class time_demux_tb : public sc_module
 {
 public:
-    typedef time_demux<PRBF_1, 1, 4, -10> do_demux;
+    //typedef time_demux<PRBF_1, 1, 4, -10> do_demux;
+    typedef time_demux<PRBF_1> do_demux;
 
     // ----- Port Declarations -------------------------------------------------
 
@@ -54,7 +56,7 @@ public:
     /*!
      * Constructor:
      */
-    time_demux_tb(sc_module_name _name);
+    time_demux_tb(sc_module_name _name, time_demux_config configuration);
     SC_HAS_PROCESS(time_demux_tb);
     ~time_demux_tb();
 

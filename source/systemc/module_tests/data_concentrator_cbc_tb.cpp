@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_cbc_tb.cpp
  * @author Christian Amstutz
- * @date March 12, 2015
+ * @date June 29, 2015
  */
 
 /*
@@ -19,12 +19,12 @@
  * The module is sensitive to ...
  */
 
-data_concentrator_cbc_tb::data_concentrator_cbc_tb(sc_module_name _name) :
+data_concentrator_cbc_tb::data_concentrator_cbc_tb(sc_module_name _name, track_trigger_config configuration) :
         sc_module(_name),
         data_valid(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "data_valid"),
         fe_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "fe_signal"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_data_concentrator("Data_Concentrator_CBC_DUT")
+        dut_data_concentrator("Data_Concentrator_CBC_DUT", configuration.cbc_data_concentrator)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_data_concentrator.clk.bind(LHC_clock);

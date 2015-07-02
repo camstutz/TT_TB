@@ -22,11 +22,11 @@
  * The module is sensitive to ...
  */
 
-gbt_tb::gbt_tb(sc_module_name _name) :
+gbt_tb::gbt_tb(sc_module_name _name, gbt_config configuration) :
         sc_module(_name),
         input_streams(2, "input_streams"),
         optical_link("optical_link"),
-        gbt_dut("GBT_CBC_DUT")
+        gbt_dut("GBT_CBC_DUT", configuration)
 {
     // ----- Creation and binding of signals -----------------------------------
     gbt_dut.cic_in.bind(input_streams);

@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower_tb.hpp
  * @author Christian Amstutz
- * @date April 21, 2015
+ * @date June 29, 2015
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../modules/backend/data_organizer/data_organizer.hpp"
+#include "../TT_configuration/track_trigger_config.hpp"
 #include "../systems/TT_configuration.hpp"
 #include "../modules/backend/trigger_tower.hpp"
 #include "../data_formats/prbf/PRBF.hpp"
@@ -52,7 +53,7 @@ public:
     /*!
      * Constructor:
      */
-    trigger_tower_tb(sc_module_name _name);
+    trigger_tower_tb(sc_module_name _name, track_trigger_config configuration);
     SC_HAS_PROCESS(trigger_tower_tb);
     ~trigger_tower_tb();
 

@@ -1,7 +1,7 @@
 /*!
  * @file gbt_tb.hpp
  * @author Christian Amstutz
- * @date April 8, 2015
+ * @date June 29, 2015
  *
  * @brief
  *
@@ -17,6 +17,7 @@
 #include "../data_formats/CIC_format/CIC_format.hpp"
 #include "../data_formats/gbt_link_format.hpp"
 
+#include "../TT_configuration/sensor_module_config/gbt_config.hpp"
 #include "../systems/TT_configuration.hpp"
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -50,7 +51,7 @@ public:
     /*!
      * Constructor:
      */
-    gbt_tb(sc_module_name _name);
+    gbt_tb(sc_module_name _name, gbt_config configuration);
     SC_HAS_PROCESS(gbt_tb);
     ~gbt_tb();
 

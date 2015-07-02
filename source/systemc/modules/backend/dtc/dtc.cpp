@@ -58,7 +58,7 @@ dtc::dtc(sc_module_name _name) :
         input_unit_it->clk.bind(clk);
         input_unit_it->gbt_input.bind(gbt_inputs[input_id]);
         input_unit_it->write_buffer_select.bind(write_buffer_sig);
-        input_unit_it->bx_buffer_out.bind(bx_sorted_buffer(input_id, input_id, 0, sc_map::max, 0, sc_map::max));
+        input_unit_it->bx_buffer_out.bind(bx_sorted_buffer(sc_map_cube_key(input_id, 0, 0), sc_map_cube_key(input_id, 2, collection_cycles)) );
 
         ++input_id;
     }

@@ -1,7 +1,7 @@
 /*!
  * @file time_demux.hpp
  * @author Christian Amstutz
- * @date April 23, 2015
+ * @date July 1, 2015
  *
  * @brief
  *
@@ -15,6 +15,7 @@
 
 #include "../../../data_formats/prbf/PRBF.hpp"
 
+#include "time_demux_config.hpp"
 #include "../../../systems/TT_configuration.hpp"
 #include "../../../systems/tt_tb_logger.hpp"
 
@@ -25,7 +26,7 @@
 /*!
  * @brief
  */
-template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR, int TIMER_START>
+template <typename FRAME_T>
 class time_demux : public sc_module
 {
 public:
@@ -35,9 +36,11 @@ public:
     typedef typename frame_t::header_t::bunch_crossing_ID_t bunch_crossing_t;
     typedef bunch_crossing_t request_t;
 
-    static const unsigned int layer_nr;
-    static const unsigned int proc_unit_output_nr;
-    static const int timer_start;
+    const unsigned int layer_nr;
+    const unsigned int proc_unit_output_nr;
+    const int timer_start;
+    const unsigned int bx_divider;
+    const unsigned int bx_offset;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
@@ -63,39 +66,27 @@ public:
     /*!
      * Constructor:
      */
-    time_demux(sc_module_name _name, unsigned int bx_divider, unsigned int bx_offset);
+    time_demux(sc_module_name _name, time_demux_config configuration);
     SC_HAS_PROCESS(time_demux);
-
-private:
-    unsigned int bx_divider;
-    unsigned int bx_offset;
 };
 
 // *****************************************************************************
 
 // *****************************************************************************
-
-template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR, int TIMER_START>
-const unsigned int time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR, TIMER_START>::layer_nr = LAYER_NR;
-
-template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR, int TIMER_START>
-const unsigned int time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR, TIMER_START>::proc_unit_output_nr = PROC_OUT_NR;
-
-template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR, int TIMER_START>
-const int time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR, TIMER_START>::timer_start = TIMER_START;
-
-// *****************************************************************************
-template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR, int TIMER_START>
-time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR, TIMER_START>::time_demux(
-        sc_module_name _name, unsigned int bx_divider, unsigned int bx_offset) :
+template <typename FRAME_T>
+time_demux<FRAME_T>::time_demux(sc_module_name _name,
+        time_demux_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
+        proc_unit_output_nr(configuration.proc_unit_nr),
+        timer_start(configuration.timer_start),
+        bx_divider(configuration.bx_divider),
+        bx_offset(configuration.bx_offset),
         clk("clk"),
         bunch_crossing_request("bunch_crossing_request"),
         stub_input(layer_nr, "stub_input"),
         proc_unit_outputs(proc_unit_output_nr, layer_nr, "remote_proc_unit_output"),
-        bx_counter("bx_counter"),
-        bx_divider(bx_divider),
-        bx_offset(bx_offset)
+        bx_counter("bx_counter")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(transfer_stubs);
@@ -110,8 +101,8 @@ time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR, TIMER_START>::time_demux(
 }
 
 // *****************************************************************************
-template <typename FRAME_T, unsigned int LAYER_NR, unsigned int PROC_OUT_NR, int TIMER_START>
-void time_demux<FRAME_T, LAYER_NR, PROC_OUT_NR, TIMER_START>::transfer_stubs()
+template <typename FRAME_T>
+void time_demux<FRAME_T>::transfer_stubs()
 {
     while (1)
     {

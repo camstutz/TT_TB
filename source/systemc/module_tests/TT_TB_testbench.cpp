@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 
-#include "../TT_configuration/sensor_module_config/track_trigger_config.hpp"
+#include "../TT_configuration/track_trigger_config.hpp"
 #include "../TT_configuration/baseline_config.hpp"
 
 #include "../systems/tt_tb_logger.hpp"
@@ -22,15 +22,15 @@
 //#include "hit_file_test.hpp"
 //#include "hit_generator_tb.hpp"
 #include "frontend_chip_cbc_tb.hpp"
-//#include "frontend_chip_mpa_tb.hpp"
-//#include "data_concentrator_cbc_tb.hpp"
-//#include "data_concentrator_mpa_tb.hpp"
-//#include "gbt_tb.hpp"
+#include "frontend_chip_mpa_tb.hpp"
+#include "data_concentrator_cbc_tb.hpp"
+#include "data_concentrator_mpa_tb.hpp"
+#include "gbt_tb.hpp"
 //#include "dtc_input_unit_tb.hpp"
 //#include "dtc_output_unit_tb.hpp"
 //#include "dtc_tb.hpp"
-//#include "backend_common/bx_stub_buffer_tb.hpp"
-//#include "backend_common/input_collector_tb.hpp"
+#include "backend_common/bx_stub_buffer_tb.hpp"
+#include "backend_common/input_collector_tb.hpp"
 //#include "backend_common/time_demux_tb.hpp"
 //#include "data_organizer/data_organizer_tb.hpp"
 //#include "processor_organizer/po_layer_splitter_tb.hpp"
@@ -54,6 +54,12 @@ int sc_main(int argc, char *agv[])
 
     track_trigger_config configuration = baseline_config();
 
+    gbt_config gbt_configuration;
+    gbt_configuration.input_link_count = 2;
+
+    input_collector_config in_collector_configuration;
+    in_collector_configuration.input_nr = 1;
+
     // ----- Channel declarations ----------------------------------------------
 
     // ----- Variable declarations ---------------------------------------------
@@ -61,16 +67,16 @@ int sc_main(int argc, char *agv[])
     // ----- Module instance declarations --------------------------------------
 
 //    hit_generator_tb hit_generator_tb("Hit_Generator_TB");
-    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
-//    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file);
-//    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB");
-//    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB");
-//    gbt_tb gbt_TB("GBT_TB");
+//    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
+//    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file, configuration);
+//    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
+//    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
+//    gbt_tb gbt_TB("GBT_TB", gbt_configuration);
 //    dtc_input_unit_tb dtc_INU_TB("DTC_input_unit_TB");
 //    dtc_output_unit_tb dtc_OUTU_TB("DTC_output_unit_TB");
 //    dtc_tb DTC_TB("DTC_TB");
-//    bx_stub_buffer_tb bx_stub_buffer_TB("bx_stub_buffer_TB");
-//    input_collector_tb do_input_collector_TB("DO_input_collector_TB");
+    bx_stub_buffer_tb bx_stub_buffer_TB("bx_stub_buffer_TB");
+    input_collector_tb do_input_collector_TB("DO_input_collector_TB", in_collector_configuration);
 //    time_demux_tb do_demux_TB("DO_dmux_TB");
 //    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
 //    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB");

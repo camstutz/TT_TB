@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_tb.cpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date July 1, 2015
  */
 
 /*
@@ -19,12 +19,13 @@
  * The module is sensitive to ...
  */
 
-data_organizer_tb::data_organizer_tb(sc_module_name _name) :
+data_organizer_tb::data_organizer_tb(sc_module_name _name,
+        track_trigger_config configuration) :
         sc_module(_name),
-        dtc_input_sigs(data_organizer::dtc_input_nr, "dtc_input_sig"),
-        proc_output_sigs(data_organizer::proc_unit_nr, "proc_output_sig"),
+        dtc_input_sigs(configuration.trigger_tower.data_organizer.dtc_input_nr, "dtc_input_sig"),
+        proc_output_sigs(configuration.trigger_tower.data_organizer.proc_unit_nr, "proc_output_sig"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_data_organizer("dut_data_organizer")
+        dut_data_organizer("dut_data_organizer", configuration.trigger_tower.data_organizer)
 {
     // ----- Creation and binding of signals -----------------------------------
 
