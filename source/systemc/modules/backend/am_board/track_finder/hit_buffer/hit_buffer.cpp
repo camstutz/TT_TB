@@ -31,9 +31,9 @@ hit_buffer::hit_buffer(const sc_module_name _name,
         transmit_event_begin("transmit_event_begin"),
         pure_superstrips(layer_nr, "pure_superstrips"),
         output_buffer(layer_nr, "output_buffer"),
-        write_controller("write_controller"),
-        lookup_controller("lookup_controller"),
-        output_controller("output_controller")
+        write_controller("write_controller", configuration.hit_buffer_write_ctrl),
+        lookup_controller("lookup_controller", configuration.hit_buffer_lookup_ctrl),
+        output_controller("output_controller", configuration.hit_buffer_output_ctrl)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(initialize_event);

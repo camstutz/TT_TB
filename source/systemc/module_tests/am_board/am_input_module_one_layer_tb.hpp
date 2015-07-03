@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer_tb.hpp
  * @author Christian Amstutz
- * @date April 20, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -35,8 +35,11 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_buffer<bool> start_process_frame_sig;
+    sc_buffer<bool> delete_frame_sig;
     sc_buffer<am_input_module_one_layer::frame_t> frame_in_sig;
     sc_signal<bool> frame_available_sig;
+    sc_signal<bool> frame_empty_sig;
+    sc_signal<bool> frame_processing_sig;
     sc_buffer<track_finder::hit_stream> output_stream;
 
     // ----- Process Declarations ----------------------------------------------

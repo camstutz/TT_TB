@@ -15,7 +15,9 @@
 
 #include "../../modules/backend/am_board/track_finder/am_chip/am_chip.hpp"
 #include "../../modules/backend/am_board/track_finder/pattern_bank/pattern_bank.hpp"
-#include "../../systems/TT_configuration.hpp"
+
+#include "../../TT_configuration/track_trigger_config.hpp"
+//#include "../../systems/TT_configuration.hpp"
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -51,7 +53,7 @@ public:
     /*!
      * Constructor:
      */
-    am_chip_tb(sc_module_name _name);
+    am_chip_tb(sc_module_name _name, track_trigger_config configuration);
     SC_HAS_PROCESS(am_chip_tb);
     ~am_chip_tb();
 

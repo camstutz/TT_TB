@@ -14,7 +14,9 @@
 #pragma once
 
 #include "../../modules/backend/am_board/am_input_module/am_input_module.hpp"
+#include "../../TT_configuration/track_trigger_config.hpp"
 #include "../../systems/TT_configuration.hpp"
+
 
 #include "../../data_formats/prbf/PRBF.hpp"
 
@@ -51,7 +53,7 @@ public:
     /*!
      * Constructor:
      */
-    am_input_module_tb(sc_module_name _name);
+    am_input_module_tb(sc_module_name _name, const track_trigger_config configuration);
     SC_HAS_PROCESS(am_input_module_tb);
     ~am_input_module_tb();
 

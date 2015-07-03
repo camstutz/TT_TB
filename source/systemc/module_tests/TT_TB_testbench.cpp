@@ -35,8 +35,8 @@
 #include "data_organizer/data_organizer_tb.hpp"
 #include "processor_organizer/po_layer_splitter_tb.hpp"
 #include "processor_organizer/processor_organizer_tb.hpp"
-//#include "am_board/am_input_module_one_layer_tb.hpp"
-//#include "am_board/am_input_module_tb.hpp"
+#include "am_board/am_input_module_one_layer_tb.hpp"
+#include "am_board/am_input_module_tb.hpp"
 //#include "track_finder/am_chip_tb.hpp"
 //#include "am_board_tb.hpp"
 //#include "am_system_tb.hpp"
@@ -82,7 +82,7 @@ int sc_main(int argc, char *agv[])
 //    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB", configuration.trigger_tower.processor_organizer.layer_splitter);
 //    processor_organizer_tb processor_organizer_TB("processor_organizer_TB", configuration);
 //    am_input_module_one_layer_tb am_in_mod_one_layer_TB("AM_input_module_one_layer_TB");
-//    am_input_module_tb am_in_mod_TB("AM_input_module_TB");
+    am_input_module_tb am_in_mod_TB("AM_input_module_TB", configuration);
 //	  am_system_tb am_system_tb("AM_System");
 //    am_board_tb am_board_tb("AM_board_TB");
 //    am_chip_tb AMchip_TB("AMchip_TB");

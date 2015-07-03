@@ -29,4 +29,4 @@ public:
    hit_buffer_write_ctrl_config hit_buffer_write_ctrl;
    hit_buffer_lookup_ctrl_config hit_buffer_lookup_ctrl;
    hit_buffer_output_ctrl_config hit_buffer_output_ctrl;
-}
+};

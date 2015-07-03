@@ -86,5 +86,8 @@ track_trigger_config baseline_config()
     // AM Board
     configuration.am_board.layer_nr = 6;
 
+    configuration.am_board.input_module.layer_nr = 6;
+    configuration.am_board.input_module.controller.layer_nr = 6;
+
     return configuration;
 }

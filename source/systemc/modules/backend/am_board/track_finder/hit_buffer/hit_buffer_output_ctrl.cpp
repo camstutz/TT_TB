@@ -1,7 +1,7 @@
 /*!
  * @file hit_buffer_output_ctrl.cpp
  * @author Christian Amstutz
- * @date May 5, 2015
+ * @date July 3, 2015
  *
  * @brief File contains the implementation of the AM board FSM.
  */
@@ -18,8 +18,6 @@ const hit_buffer_output_ctrl::fsm_states hit_buffer_output_ctrl::IDLE = 0x01;
 const hit_buffer_output_ctrl::fsm_states hit_buffer_output_ctrl::START = 0x02;
 const hit_buffer_output_ctrl::fsm_states hit_buffer_output_ctrl::TX_ROAD = 0x03;
 
-const unsigned int hit_buffer_output_ctrl::layer_nr = NR_DETECTOR_LAYERS;
-
 // *****************************************************************************
 
 /*!
@@ -27,8 +25,10 @@ const unsigned int hit_buffer_output_ctrl::layer_nr = NR_DETECTOR_LAYERS;
  *
  */
 
-hit_buffer_output_ctrl::hit_buffer_output_ctrl(sc_module_name _name) :
+hit_buffer_output_ctrl::hit_buffer_output_ctrl(sc_module_name _name,
+        const hit_buffer_output_ctrl_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         start_transmission("start_transmission"),
         hit_input(layer_nr, "hit_input"),

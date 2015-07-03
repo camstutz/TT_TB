@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -18,7 +18,6 @@
 #include "sensor_module_config/sensor_module_config.hpp"
 #include "../modules/backend/dtc/dtc_config.hpp"
 #include "../modules/backend/trigger_tower_config.hpp"
-#include "../modules/backend/am_board/am_board_config.hpp"
 
 #include <vector>
 

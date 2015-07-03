@@ -25,7 +25,7 @@ const hit_buffer_lookup_ctrl::fsm_states hit_buffer_lookup_ctrl::RX_HIT = 0x02;
  */
 
 hit_buffer_lookup_ctrl::hit_buffer_lookup_ctrl(sc_module_name _name,
-        const hit_buffer_lookup_ctrl_config cnofiguration) :
+        const hit_buffer_lookup_ctrl_config configuration) :
         sc_module(_name),
         layer_nr(configuration.layer_nr),
         clk("clk"),

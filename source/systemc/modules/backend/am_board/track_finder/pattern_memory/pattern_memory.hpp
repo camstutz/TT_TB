@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.hpp
  * @author Christian Amstutz
- * @date March 30, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -10,14 +10,16 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include <map>
-
-#include <systemc.h>
-
 #include "../../../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../pattern_bank/pattern_bank.hpp"
+
 #include "../../../../../systems/TT_configuration.hpp"
+#include "pattern_memory_config.hpp"
+
+#include <systemc.h>
+
+#include <map>
 
 /*!
  * @brief
@@ -25,7 +27,7 @@
 class pattern_memory : public sc_module
 {
 public:
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -47,7 +49,7 @@ public:
     /*!
      * Constructor:
      */
-    pattern_memory(const sc_module_name _name, pattern_bank *p_bank);
+    pattern_memory(const sc_module_name _name, const pattern_memory_config configuration);
     SC_HAS_PROCESS(pattern_memory);
 
 private:

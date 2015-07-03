@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_tb.cpp
  * @author Christian Amstutz
- * @date April 21, 2015
+ * @date July 3, 2015
  */
 
 /*
@@ -13,12 +13,13 @@
 // *****************************************************************************
 
 // *****************************************************************************
-am_input_module_tb::am_input_module_tb(sc_module_name _name) :
+am_input_module_tb::am_input_module_tb(sc_module_name _name,
+        const track_trigger_config configuration) :
         sc_module(_name),
-        frame_in_sigs(am_input_module::layer_nr, "frame_in_sig"),
-        output_streams(am_input_module::layer_nr, "output_stream"),
+        frame_in_sigs(configuration.am_board.input_module.layer_nr, "frame_in_sig"),
+        output_streams(configuration.am_board.input_module.layer_nr, "output_stream"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_am_input_module_tb("DUT_AM_input_module")
+        dut_am_input_module_tb("DUT_AM_input_module", configuration.am_board.input_module)
 {
     // ----- Creation and binding of signals -----------------------------------
 
@@ -65,7 +66,7 @@ void am_input_module_tb::write_frames()
     data_frame[0].add_stub(stub_element);
     frame_in_sigs[0].write(data_frame[0]);
 
-    for(unsigned int layer = 1; layer < am_input_module::layer_nr; ++layer)
+    for(unsigned int layer = 1; layer < dut_am_input_module_tb.layer_nr; ++layer)
     {
         data_frame[layer] = data_frame[layer-1];
         data_frame[layer].set_bunch_crossing(8);
@@ -84,7 +85,7 @@ void am_input_module_tb::write_frames()
     data_frame[0].add_stub(stub_element);
     frame_in_sigs[0].write(data_frame[0]);
 
-    for(unsigned int layer = 1; layer < am_input_module::layer_nr; ++layer)
+    for(unsigned int layer = 1; layer < dut_am_input_module_tb.layer_nr; ++layer)
     {
         data_frame[layer] = data_frame[layer-1];
         data_frame[layer].set_bunch_crossing(8);
@@ -99,7 +100,7 @@ void am_input_module_tb::write_frames()
 
     am_input_module_one_layer::frame_t empty_frame(32);
 
-    for(unsigned int layer = 0; layer < am_input_module::layer_nr; ++layer)
+    for(unsigned int layer = 0; layer < dut_am_input_module_tb.layer_nr; ++layer)
     {
         frame_in_sigs[layer].write(empty_frame);
     }

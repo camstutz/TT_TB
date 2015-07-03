@@ -34,11 +34,11 @@ track_finder::track_finder(const sc_module_name _name,
         hit_search_sig(layer_nr, "hit_search_sig"),
         hit_result_sig(layer_nr, "hit_result_sig"),
         patterns(layer_nr),
-        hit_proc("hit_processor"),
-        temp_hit_buffer("temp_hit_buffer"),
-        road_lookup("road_lookup", &patterns),
-        pattern_lookup("pattern_lookup", &patterns),
-        road_proc("road_processor")
+        hit_proc("hit_processor", configuration.hit_processor),
+        temp_hit_buffer("temp_hit_buffer", configuration.hit_buffer),
+        road_lookup("road_lookup", configuration.am_chip),
+        pattern_lookup("pattern_lookup", configuration.pattern_memory),
+        road_proc("road_processor", configuration.road_processor)
 {
     //patterns.import_text_file("patternbank.txt");
     patterns.generate_patterns_straight(10000);

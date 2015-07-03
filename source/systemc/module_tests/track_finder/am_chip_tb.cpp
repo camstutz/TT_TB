@@ -13,13 +13,13 @@
 // *****************************************************************************
 
 // *****************************************************************************
-am_chip_tb::am_chip_tb(sc_module_name _name) :
+am_chip_tb::am_chip_tb(sc_module_name _name, track_trigger_config configuration) :
         sc_module(_name),
-        hit_input_sigs(am_chip::layer_nr, "hit_input_sig"),
+        hit_input_sigs(configuration.am_board.track_finder.am_chip.layer_nr, "hit_input_sig"),
         road_output_sig("road_output_sig"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        patterns(am_chip::layer_nr),
-        dut_AM_chip("DUT_AM_chip", &patterns)
+        patterns(configuration.am_board.track_finder.am_chip.layer_nr),
+        dut_AM_chip("DUT_AM_chip", configuration.am_board.track_finder.am_chip)
 {
     // ----- Creation and binding of signals -----------------------------------
 

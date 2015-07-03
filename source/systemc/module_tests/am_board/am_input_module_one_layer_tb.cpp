@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer_tb.cpp
  * @author Christian Amstutz
- * @date April 20, 2015
+ * @date July 3, 2015
  */
 
 /*
@@ -16,8 +16,11 @@
 am_input_module_one_layer_tb::am_input_module_one_layer_tb(sc_module_name _name) :
         sc_module(_name),
         start_process_frame_sig("start_process_frame_sig"),
+        delete_frame_sig("delete_frame_sig"),
         frame_in_sig("frame_in_sig"),
         frame_available_sig("frame_available_sig"),
+        frame_empty_sig("frame_empty_sig"),
+        frame_processing_sig("frame_processing_sig"),
         output_stream("output_stream"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         dut_am_input_module_one_layer_tb("DUT_AM_input_module_one_layer")
@@ -28,6 +31,8 @@ am_input_module_one_layer_tb::am_input_module_one_layer_tb(sc_module_name _name)
     SC_THREAD(write_frames);
     SC_THREAD(print_control);
         sensitive << frame_available_sig;
+        sensitive << frame_empty_sig;
+        sensitive << frame_processing_sig;
     SC_THREAD(print_stream);
         sensitive << output_stream;
 
@@ -36,8 +41,11 @@ am_input_module_one_layer_tb::am_input_module_one_layer_tb(sc_module_name _name)
     // ----- Module instance / channel binding ---------------------------------
     dut_am_input_module_one_layer_tb.clk.bind(LHC_clock);
     dut_am_input_module_one_layer_tb.start_process_frame.bind(start_process_frame_sig);
+    dut_am_input_module_one_layer_tb.delete_frame.bind(delete_frame_sig);
     dut_am_input_module_one_layer_tb.frame_input.bind(frame_in_sig);
     dut_am_input_module_one_layer_tb.frame_available.bind(frame_available_sig);
+    dut_am_input_module_one_layer_tb.frame_empty.bind(frame_empty_sig);
+    dut_am_input_module_one_layer_tb.frame_processing.bind(frame_processing_sig);
     dut_am_input_module_one_layer_tb.stub_stream_output.bind(output_stream);
 
     log_buffer << std::endl
@@ -110,7 +118,9 @@ void am_input_module_one_layer_tb::print_control()
          wait();
 
          log_buffer << sc_time_stamp() <<": ";
-         log_buffer << frame_available_sig.read();
+         log_buffer << "avail=" << frame_available_sig.read() << ", ";
+         log_buffer << "empty=" << frame_empty_sig.read() << ", ";
+         log_buffer << "processing=" << frame_processing_sig.read();
          log_buffer << " - ready!" << std::endl;
     }
 
