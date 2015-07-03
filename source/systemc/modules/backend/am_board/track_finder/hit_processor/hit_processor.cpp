@@ -1,7 +1,7 @@
 /*!
  * @file hit_processor.cpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -18,12 +18,10 @@ SC_MODULE_EXPORT(hit_processor);
 
 // *****************************************************************************
 
-const unsigned int hit_processor::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-
-hit_processor::hit_processor(const sc_module_name _name) :
+hit_processor::hit_processor(const sc_module_name _name,
+        const hit_processor_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         hit_input(layer_nr, "hit_input"),
         am_superstrip_out(layer_nr, "am_superstrip_out"),

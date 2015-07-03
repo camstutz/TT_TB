@@ -1,7 +1,7 @@
 /*!
  * @file hit_processor.hpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -12,13 +12,15 @@
 
 #pragma once
 
-#include <systemc.h>
-
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
-#include "../../../../../systems/TT_configuration.hpp"
 #include "hit_processor_one_layer.hpp"
+
+#include "hit_processor_config.hpp"
+#include "../../../../../systems/TT_configuration.hpp"
+
+#include <systemc.h>
 
 /*!
  * @brief
@@ -30,7 +32,7 @@ public:
     typedef simple_stream_protocol<hit_t> superstrip_stream;
     typedef simple_stream_protocol<hit_t> substrip_stream;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -52,6 +54,6 @@ public:
     /*!
      * Constructor:
      */
-    hit_processor(const sc_module_name _name);
+    hit_processor(const sc_module_name _name, const hit_processor_config configuration);
     SC_HAS_PROCESS(hit_processor);
 };

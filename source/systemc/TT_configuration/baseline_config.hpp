@@ -1,7 +1,7 @@
 /*!
  * @file configuration.hpp
  * @author Christian Amstutz
- * @date June 25, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -45,15 +45,46 @@ track_trigger_config baseline_config()
     configuration.mpa_data_concentrator.max_output_stubs = 10;
     configuration.mpa_data_concentrator.output_window_cycles = 8;
 
+    // DTC
+    configuration.dtc.input_nr = 3;
+    configuration.dtc.collection_cycles = 8;
+
+    configuration.dtc.controller.fe_collect_cycles = 8;
+
+    configuration.dtc.input_unit.fe_id = 0xFF;
+    configuration.dtc.input_unit.fe_collect_cycles = 8;
+
+    configuration.dtc.output_unit.dtc_input_nr = 3;
+    configuration.dtc.output_unit.fe_collect_cycles = 8;
+
+    // Trigger Tower
     configuration.trigger_tower.layer_nr = 6;
     configuration.trigger_tower.dtc_per_prb = 1;
     configuration.trigger_tower.prb_nr = 2;
-    configuration.trigger_tower.dtc_per_prb = 2;
+    configuration.trigger_tower.AM_boards_per_prb = 2;
 
-    //configuration.trigger_tower.processor_organizer.
+    configuration.trigger_tower.data_organizer.dtc_input_nr =  2;
+    configuration.trigger_tower.data_organizer.proc_unit_nr = 2;
+    configuration.trigger_tower.data_organizer.input_collector.input_nr = 2;
+    configuration.trigger_tower.data_organizer.demultiplexer.layer_nr = 1;
+    configuration.trigger_tower.data_organizer.demultiplexer.proc_unit_nr = 2;
+    configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;
+    configuration.trigger_tower.data_organizer.demultiplexer.bx_divider = 2;
+    configuration.trigger_tower.data_organizer.demultiplexer.bx_offset = 0;
 
-    //configuration.trigger_tower.data_organizer
+    configuration.trigger_tower.processor_organizer.do_input_nr = 2;
+    configuration.trigger_tower.processor_organizer.processor_output_nr = 2;
+    configuration.trigger_tower.processor_organizer.layer_nr = 6;
+    configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
+    configuration.trigger_tower.processor_organizer.layer_splitter.layer_nr = 6;
+    configuration.trigger_tower.processor_organizer.demultiplexer.layer_nr = 6;
+    configuration.trigger_tower.processor_organizer.demultiplexer.proc_unit_nr = 2;
+    configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -27;
+    configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
+    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 0;
+
+    // AM Board
+    configuration.am_board.layer_nr = 6;
 
     return configuration;
 }
-

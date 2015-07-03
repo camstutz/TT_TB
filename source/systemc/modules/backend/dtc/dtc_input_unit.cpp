@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -14,19 +14,17 @@
 
 // *****************************************************************************
 
-const unsigned int dtc_input_unit::fe_collect_cycles = NR_DC_WINDOW_CYCLES;
-
-// *****************************************************************************
-
 /*!
  * @class dtc_input_unit
  *
  * The module is sensitive to ...
  */
 
-dtc_input_unit::dtc_input_unit(sc_module_name _name) :
+dtc_input_unit::dtc_input_unit(sc_module_name _name,
+        dtc_input_unit_config configuration) :
         sc_module(_name),
-        fe_id(0xFF),
+        fe_collect_cycles(configuration.fe_collect_cycles),
+        fe_id(configuration.fe_id),
         clk("clk"),
         gbt_input("gbt_input"),
         write_buffer_select("write_buffer_select"),

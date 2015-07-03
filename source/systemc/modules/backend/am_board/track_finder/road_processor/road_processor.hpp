@@ -18,9 +18,10 @@
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
+#include "road_processor_config.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
 
-#define VALUE_EVENT 0
+//#define VALUE_EVENT 0
 
 /*!
  * @brief
@@ -32,7 +33,7 @@ public:
     typedef simple_stream_protocol<road_t> road_stream;
     typedef simple_stream_protocol<superstrip_t> superstrip_stream;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -63,6 +64,6 @@ public:
     /*!
      * Constructor:
      */
-    road_processor(const sc_module_name _name);
+    road_processor(const sc_module_name _name, const road_processor_config configuration);
     SC_HAS_PROCESS(road_processor);
 };

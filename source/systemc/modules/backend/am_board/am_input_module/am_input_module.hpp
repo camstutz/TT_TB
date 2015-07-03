@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module.hpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -17,7 +17,8 @@
 #include "am_input_module_ctrl.hpp"
 #include "../track_finder/track_finder.hpp"
 #include "../../../../data_formats/prbf/PRBF.hpp"
-#include "../../../../systems/TT_configuration.hpp"
+
+#include "am_input_module_config.hpp"
 
 #include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -32,7 +33,7 @@
 class am_input_module : public sc_module
 {
 public:
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -60,5 +61,5 @@ public:
     /*!
      * Constructor:
      */
-    am_input_module(const sc_module_name _name);
+    am_input_module(const sc_module_name _name, const am_input_module_config configuration);
 };

@@ -16,6 +16,7 @@
 #include "hit_buffer_output_ctrl.hpp"
 #include "hit_buffer_write_ctrl.hpp"
 
+#include "hit_buffer_config.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
 
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
@@ -42,7 +43,7 @@ public:
     typedef std::map<superstrip_t, superstrip_table_element_t> superstrip_table_t;
     typedef std::vector<superstrip_table_t> event_set_t;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -80,7 +81,7 @@ public:
     /*!
      * Constructor:
      */
-    hit_buffer(const sc_module_name _name);
+    hit_buffer(const sc_module_name _name, const hit_buffer_config configuration);
     SC_HAS_PROCESS(hit_buffer);
     ~hit_buffer();
 

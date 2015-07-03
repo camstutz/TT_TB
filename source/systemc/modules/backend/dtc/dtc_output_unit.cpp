@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -14,19 +14,17 @@
 
 // *****************************************************************************
 
-const unsigned int dtc_output_unit::dtc_input_nr = 3;
-const unsigned int dtc_output_unit::fe_collect_cycles = NR_DC_WINDOW_CYCLES;
-
-// *****************************************************************************
-
 /*!
  * @class dtc_output_unit
  *
  * The module is sensitive to ...
  */
 
-dtc_output_unit::dtc_output_unit(sc_module_name _name) :
+dtc_output_unit::dtc_output_unit(sc_module_name _name,
+        dtc_output_unit_config configuration) :
         sc_module(_name),
+        dtc_input_nr(configuration.dtc_input_nr),
+        fe_collect_cycles(configuration.fe_collect_cycles),
         clk("clk"),
         relative_bx("relative_bx"),
         read_buffer("read_buffer"),

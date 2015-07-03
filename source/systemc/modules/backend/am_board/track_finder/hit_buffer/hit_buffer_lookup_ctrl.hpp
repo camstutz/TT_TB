@@ -1,7 +1,7 @@
 /*!
  * @file hit_buffer_lookup_ctrl.hpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -14,6 +14,7 @@
 
 #include "../../simple_stream_protocol.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
+#include "hit_buffer_lookup_ctrl_config.hpp"
 
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -30,7 +31,7 @@ public:
     static const fsm_states IDLE;
     static const fsm_states RX_HIT;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock
@@ -62,6 +63,6 @@ public:
      * assigning their sensitivity lists. Initializes the FSM by setting the
      * current state to IDLE.
      */
-    hit_buffer_lookup_ctrl(sc_module_name _name);
+    hit_buffer_lookup_ctrl(sc_module_name _name, const hit_buffer_lookup_ctrl_config cnofiguration);
     SC_HAS_PROCESS(hit_buffer_lookup_ctrl);
 };

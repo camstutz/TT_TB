@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date February 19, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -14,22 +14,19 @@
 
 // *****************************************************************************
 
-const unsigned int am_board::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-
 /*!
  * @class am_lane
  */
 
-am_board::am_board(const sc_module_name _name) :
+am_board::am_board(const sc_module_name _name, const am_board_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
-        frame_inputs(NR_DETECTOR_LAYERS, "frame_inputs"),
-        hit_output(NR_DETECTOR_LAYERS, "hit_output"),
-        track_finder_in_signal(NR_DETECTOR_LAYERS, "track_finder_in_signal"),
-        AM_InputModule("AM_input_module"),
-        TrackFinder("track_finder")
+        frame_inputs(layer_nr, "frame_inputs"),
+        hit_output(layer_nr, "hit_output"),
+        track_finder_in_signal(layer_nr, "track_finder_in_signal"),
+        AM_InputModule("AM_input_module", configuration.input_module),
+        TrackFinder("track_finder", configuration.track_finder)
 {
     // ----- Module instance / channel binding ---------------------------------
     AM_InputModule.clk.bind(clk);

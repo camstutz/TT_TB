@@ -12,19 +12,15 @@
 
 // *****************************************************************************
 
-const unsigned int dtc::input_nr = 3;
-
-const unsigned int dtc::collection_cycles = NR_DC_WINDOW_CYCLES;
-
-// *****************************************************************************
-
 /*!
  * @class dtc
  * The module is sensitive to ...
  */
 
-dtc::dtc(sc_module_name _name) :
+dtc::dtc(sc_module_name _name, dtc_config configuration) :
         sc_module(_name),
+        input_nr(configuration.input_nr),
+        collection_cycles(configuration.collection_cycles),
         clk("clk"),
         gbt_inputs(input_nr, "gbt_input"),
         tower_output("tower_output"),
@@ -33,9 +29,9 @@ dtc::dtc(sc_module_name _name) :
         read_buffer_sig("read_buffer_sig"),
         write_buffer_sig("write_buffer_sig"),
         tower_output_sig("tower_output_sig"),
-        controller("controller"),
-        input_units(input_nr, "input_unit"),
-        output_unit("output_unit"),
+        controller("controller", configuration.controller),
+        input_units(input_nr, "input_unit", configuration.input_unit),
+        output_unit("output_unit", configuration.output_unit),
         delay_output("delay_output")
 {
     // ----- Creation and binding of signals -----------------------------------

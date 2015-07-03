@@ -1,13 +1,13 @@
 /*!
  * @file am_chip_write_ctrl.cpp
  * @author Christian Amstutz
- * @date November 24, 2014
+ * @date July 3, 2015
  *
  * @brief File contains the implementation of the AM board FSM.
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "am_chip_write_ctrl.hpp"
@@ -17,8 +17,6 @@
 const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::IDLE = 0x01;
 const am_chip_write_ctrl::fsm_states am_chip_write_ctrl::RX_HIT = 0x02;
 
-const unsigned int am_chip_write_ctrl::layer_nr = NR_DETECTOR_LAYERS;
-
 // *****************************************************************************
 
 /*!
@@ -26,8 +24,10 @@ const unsigned int am_chip_write_ctrl::layer_nr = NR_DETECTOR_LAYERS;
  *
  */
 
-am_chip_write_ctrl::am_chip_write_ctrl(sc_module_name _name) :
+am_chip_write_ctrl::am_chip_write_ctrl(sc_module_name _name,
+        const am_chip_write_ctrl_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         hit_inputs(layer_nr, "hit_inputs"),
         process_hits(layer_nr, "process_hit"),

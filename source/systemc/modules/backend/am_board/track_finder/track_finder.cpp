@@ -18,12 +18,10 @@ SC_MODULE_EXPORT(track_finder);
 
 // *****************************************************************************
 
-const unsigned int track_finder::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-
-track_finder::track_finder(const sc_module_name _name) :
+track_finder::track_finder(const sc_module_name _name,
+        const track_finder_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         hit_input(layer_nr, "hit_input"),
         hit_output(layer_nr, "hit_output"),

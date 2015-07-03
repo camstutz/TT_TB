@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -32,9 +32,9 @@
 #include "backend_common/bx_stub_buffer_tb.hpp"
 #include "backend_common/input_collector_tb.hpp"
 #include "backend_common/time_demux_tb.hpp"
-//#include "data_organizer/data_organizer_tb.hpp"
-//#include "processor_organizer/po_layer_splitter_tb.hpp"
-//#include "processor_organizer/processor_organizer_tb.hpp"
+#include "data_organizer/data_organizer_tb.hpp"
+#include "processor_organizer/po_layer_splitter_tb.hpp"
+#include "processor_organizer/processor_organizer_tb.hpp"
 //#include "am_board/am_input_module_one_layer_tb.hpp"
 //#include "am_board/am_input_module_tb.hpp"
 //#include "track_finder/am_chip_tb.hpp"
@@ -66,8 +66,8 @@ int sc_main(int argc, char *agv[])
 //    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file, configuration);
 //    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
 //    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
-    gbt_config gbt_configuration;
-    gbt_configuration.input_link_count = 2;
+//    gbt_config gbt_configuration;
+//    gbt_configuration.input_link_count = 2;
 //    gbt_tb gbt_TB("GBT_TB", gbt_configuration);
 //    dtc_input_unit_tb dtc_INU_TB("DTC_input_unit_TB");
 //    dtc_output_unit_tb dtc_OUTU_TB("DTC_output_unit_TB");
@@ -75,18 +75,12 @@ int sc_main(int argc, char *agv[])
 
 
 
-    bx_stub_buffer_tb bx_stub_buffer_TB("bx_stub_buffer_TB");
-
-    input_collector_config in_collector_configuration;
-    in_collector_configuration.input_nr = 2;
-    input_collector_tb do_input_collector_TB("DO_input_collector_TB", in_collector_configuration);
-
-    time_demux_tb do_demux_TB("DO_dmux_TB", configuration.trigger_tower.data_organizer.demultiplexer);
-//    data_organizer_tb data_organizer_tb("Data_Organizer_TB");
-//    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB");
-//    processor_organizer_tb processor_organizer_TB("processor_organizer_TB");
-//    fifo_manager_tb fifo_manager_tb("FIFO_Manager_TB");
-//    fifo_manager_datapath_tb("FIFO_Manager_Datapath_TB");
+//    bx_stub_buffer_tb bx_stub_buffer_TB("bx_stub_buffer_TB");
+//    input_collector_tb do_input_collector_TB("DO_input_collector_TB", configuration.trigger_tower.data_organizer.input_collector);
+//    time_demux_tb do_demux_TB("DO_dmux_TB", configuration.trigger_tower.data_organizer.demultiplexer);
+//    data_organizer_tb data_organizer_tb("Data_Organizer_TB", configuration);
+//    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB", configuration.trigger_tower.processor_organizer.layer_splitter);
+//    processor_organizer_tb processor_organizer_TB("processor_organizer_TB", configuration);
 //    am_input_module_one_layer_tb am_in_mod_one_layer_TB("AM_input_module_one_layer_TB");
 //    am_input_module_tb am_in_mod_TB("AM_input_module_TB");
 //	  am_system_tb am_system_tb("AM_System");

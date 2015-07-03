@@ -12,13 +12,14 @@
 
 #pragma once
 
-#include "../../../../systems/TT_configuration.hpp"
 #include "hit_processor/hit_processor.hpp"
 #include "pattern_bank/pattern_bank.hpp"
 #include "am_chip/am_chip.hpp"
 #include "hit_buffer/hit_buffer.hpp"
 #include "pattern_memory/pattern_memory.hpp"
 #include "road_processor/road_processor.hpp"
+
+#include "track_finder_config.hpp"
 
 #include "../simple_stream_protocol.hpp"
 
@@ -38,7 +39,7 @@ public:
     typedef simple_stream_protocol<substrip_t> substrip_stream;
     typedef simple_stream_protocol<road_t> road_stream;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -71,5 +72,5 @@ public:
     /*!
      * Constructor:
      */
-    track_finder(const sc_module_name _name);
+    track_finder(const sc_module_name _name, const track_finder_config configuration);
 };

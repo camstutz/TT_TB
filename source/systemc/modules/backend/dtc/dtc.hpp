@@ -1,7 +1,7 @@
 /*!
  * @file dtc.hpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -18,7 +18,7 @@
 #include "dtc_controller.hpp"
 #include "dtc_buffer_element.hpp"
 
-#include "../../../systems/TT_configuration.hpp"
+#include "dtc_config.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
@@ -34,8 +34,8 @@ public:
     typedef dtc_input_unit::input_t input_t;
     typedef dtc_output_unit::output_t output_t;
 
-    static const unsigned int input_nr;
-    static const unsigned int collection_cycles;
+    const unsigned int input_nr;
+    const unsigned int collection_cycles;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -57,11 +57,11 @@ public:
     dtc_controller controller;
     sc_map_linear<dtc_input_unit> input_units;
     dtc_output_unit output_unit;
-    sc_delay_signal<output_t, DTC_latency> delay_output;
+    sc_delay_signal<output_t, 0> delay_output;
 
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    dtc(sc_module_name _name);
+    dtc(sc_module_name _name, dtc_config configuration);
 };

@@ -1,7 +1,7 @@
 /*!
  * @file dtc_controller.cpp
  * @author Christian Amstutz
- * @date April 13, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -14,18 +14,16 @@
 
 // *****************************************************************************
 
-const unsigned int dtc_controller::fe_collect_cycles = NR_DC_WINDOW_CYCLES;
-
-// *****************************************************************************
-
 /*!
  * @class dtc_output_unit
  *
  * The module is sensitive to ...
  */
 
-dtc_controller::dtc_controller(sc_module_name _name) :
+dtc_controller::dtc_controller(sc_module_name _name,
+        dtc_controller_config configuration) :
         sc_module(_name),
+        fe_collect_cycles(configuration.fe_collect_cycles),
         clk("clk"),
         bunch_crossing("bunch_crossing"),
         write_buffer("write_buffer"),

@@ -17,6 +17,7 @@
 #include "../../simple_stream_protocol.hpp"
 
 #include "../../../../../systems/TT_configuration.hpp"
+#include "am_chip_write_ctrl_config.hpp"
 
 class am_chip_write_ctrl : public sc_module
 {
@@ -28,7 +29,7 @@ public:
     static const fsm_states IDLE;
     static const fsm_states RX_HIT;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock
@@ -77,6 +78,6 @@ public:
      * assigning their sensitivity lists. Initializes the FSM by setting the
      * current state to IDLE.
      */
-    am_chip_write_ctrl(sc_module_name _name);
+    am_chip_write_ctrl(sc_module_name _name, const am_chip_write_ctrl_config configuration);
     SC_HAS_PROCESS(am_chip_write_ctrl);
 };

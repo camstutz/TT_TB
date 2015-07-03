@@ -115,7 +115,7 @@ void time_demux_tb::print_output()
              if (proc_output_it->event())
              {
                  log_buffer << "output " << output_id << ":" << std::endl;
-                 log_buffer << *proc_output_it;
+                 log_buffer << *proc_output_it << std::endl;
              }
              ++output_id;
          }

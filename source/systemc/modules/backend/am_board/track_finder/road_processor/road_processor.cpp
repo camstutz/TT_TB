@@ -17,12 +17,10 @@ SC_MODULE_EXPORT(road_processor);
 #endif
 
 // *****************************************************************************
-
-const unsigned int road_processor::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-road_processor::road_processor(const sc_module_name _name) :
+road_processor::road_processor(const sc_module_name _name,
+        const road_processor_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         road_input("road_input"),
         road_lookup("road_lookup"),

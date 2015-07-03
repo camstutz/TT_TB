@@ -17,12 +17,10 @@ SC_MODULE_EXPORT(hit_buffer);
 #endif
 
 // *****************************************************************************
-
-const unsigned int hit_buffer::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-hit_buffer::hit_buffer(const sc_module_name _name) :
+hit_buffer::hit_buffer(const sc_module_name _name,
+        const hit_buffer_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         superstrip_inputs(layer_nr, "superstrip_input"),
         substrip_inputs(layer_nr, "substrip_input"),
         superstrip_search(layer_nr, "superstrip_search"),

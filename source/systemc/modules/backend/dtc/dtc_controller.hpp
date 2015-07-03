@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../../../systems/TT_configuration.hpp"
+#include "dtc_controller_config.hpp"
 
 #include <systemc.h>
 
@@ -23,7 +23,7 @@
 class dtc_controller : public sc_module
 {
 public:
-    static const unsigned int fe_collect_cycles;
+    const unsigned int fe_collect_cycles;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
@@ -46,7 +46,7 @@ public:
     /*!
      * Constructor:
      */
-    dtc_controller(sc_module_name _name);
+    dtc_controller(sc_module_name _name, dtc_controller_config configuration);
     SC_HAS_PROCESS(dtc_controller);
 
 private:

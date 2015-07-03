@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.hpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -16,7 +16,8 @@
 #include "../../../systems/tt_tb_logger.hpp"
 #include "dtc_buffer_element.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
-#include "../../../systems/TT_configuration.hpp"
+
+#include "dtc_output_unit_config.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -33,8 +34,8 @@ public:
     typedef PRBF_0::stub_element_t input_t;
     typedef PRBF_0 output_t;
 
-    static const unsigned int dtc_input_nr;
-    static const unsigned int fe_collect_cycles;
+    const unsigned int dtc_input_nr;
+    const unsigned int fe_collect_cycles;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
@@ -59,7 +60,7 @@ public:
     /*!
      * Constructor:
      */
-    dtc_output_unit(sc_module_name _name);
+    dtc_output_unit(sc_module_name _name, dtc_output_unit_config configuration);
     SC_HAS_PROCESS(dtc_output_unit);
 
 private:

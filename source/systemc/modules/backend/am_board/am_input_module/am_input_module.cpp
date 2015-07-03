@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module.cpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -13,12 +13,10 @@
 #include "am_input_module.hpp"
 
 // *****************************************************************************
-
-const unsigned int am_input_module::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-am_input_module::am_input_module(const sc_module_name _name) :
+am_input_module::am_input_module(const sc_module_name _name,
+        const am_input_module_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         frame_inputs(layer_nr, "frame_input"),
         stub_stream_outputs(layer_nr, "stream_output"),
@@ -27,7 +25,7 @@ am_input_module::am_input_module(const sc_module_name _name) :
         frame_available_sigs(layer_nr, "frame_available_sig"),
         frame_empty_sigs(layer_nr, "frame_empty_sig"),
         frame_processing_sigs(layer_nr, "frame_processing_sig"),
-        controller("controller"),
+        controller("controller", configuration.controller),
         input_modules(layer_nr, "input_modules")
 {
     // ----- Module instance / channel binding ---------------------------------

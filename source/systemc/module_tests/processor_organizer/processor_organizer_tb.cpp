@@ -1,7 +1,7 @@
 /*!
  * @file processor_organizer_tb.cpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date July 3, 2015
  */
 
 /*
@@ -14,12 +14,12 @@
 
 // *****************************************************************************
 processor_organizer_tb::processor_organizer_tb(sc_module_name _name,
-        processor_organizer_config configuration) :
+        track_trigger_config configuration) :
         sc_module(_name),
-        do_input_sigs(configuration.do_input_nr, "do_input_sig"),
-        processor_output_sigs(configuration.processor_output_nr, configuration.layer_nr, "processor_output_sig"),
+        do_input_sigs(configuration.trigger_tower.processor_organizer.do_input_nr, "do_input_sig"),
+        processor_output_sigs(configuration.trigger_tower.processor_organizer.processor_output_nr, configuration.trigger_tower.processor_organizer.layer_nr, "processor_output_sig"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_processor_organizer("DUT_processor_organizer", configuration)
+        dut_processor_organizer("DUT_processor_organizer", configuration.trigger_tower.processor_organizer)
 {
     // ----- Creation and binding of signals -----------------------------------
 

@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief File containing the implementation of the AM board.
  */
@@ -14,12 +14,9 @@
 
 // *****************************************************************************
 
-const unsigned int am_chip::layer_nr = NR_DETECTOR_LAYERS;
-
-// *****************************************************************************
-
-am_chip::am_chip(sc_module_name _name, pattern_bank *p_bank) :
+am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         hit_inputs(layer_nr, "hit_input"),
         road_output("road_output"),
@@ -31,9 +28,9 @@ am_chip::am_chip(sc_module_name _name, pattern_bank *p_bank) :
 		road_output_sig("road_output_sig"),
         detected_roads_buffer("detected_roads_buffer"),
         read_controller("read_controller"),
-        write_controller("write_controller"),
+        write_controller("write_controller", configuration.write_ctrl),
 		delay_road_output("delay_road_output"),
-        patterns(p_bank)
+        patterns(configuration.ptrn_bank)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_hits);

@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_ctrl.hpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "../../../../systems/TT_configuration.hpp"
+#include "am_input_module_ctrl_config.hpp"
 
 #include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -31,7 +31,7 @@ public:
     static const fsm_states PROCESSING;
     static const fsm_states DELETE;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock
@@ -58,6 +58,6 @@ public:
 // ----- Module Instantiations -------------------------------------------------
 
 // ----- Constructor -----------------------------------------------------------
-    am_input_module_ctrl(sc_module_name _name);
+    am_input_module_ctrl(sc_module_name _name, const am_input_module_ctrl_config configuration);
     SC_HAS_PROCESS(am_input_module_ctrl);
 };

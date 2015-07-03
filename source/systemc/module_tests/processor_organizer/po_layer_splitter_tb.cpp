@@ -81,7 +81,7 @@ void po_layer_splitter_tb::write_stubs()
     stub_input_sig.write(stub_element);
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
-    stub.set(5, 1, 9, 1, 1, 1, 2);
+    stub.set(5, 1, 9, 1, 1, 1, 4);
     stub_element.set_stub(stub);
     stub_input_sig.write(stub_element);
 

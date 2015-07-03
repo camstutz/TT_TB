@@ -25,7 +25,6 @@ class data_organizer_config
 public:
     unsigned int dtc_input_nr;
     unsigned int proc_unit_nr;
-    int counter_correction;
 
     input_collector_config input_collector;
     time_demux_config demultiplexer;

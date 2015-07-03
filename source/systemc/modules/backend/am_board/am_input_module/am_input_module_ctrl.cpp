@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_ctrl.cpp
  * @author Christian Amstutz
- * @date May 5, 2014
+ * @date July 3, 2014
  *
  * @brief File contains the implementation of the AM board FSM.
  */
@@ -20,8 +20,6 @@ const am_input_module_ctrl::fsm_states am_input_module_ctrl::PROCESS1 = 0x03;
 const am_input_module_ctrl::fsm_states am_input_module_ctrl::PROCESSING = 0x04;
 const am_input_module_ctrl::fsm_states am_input_module_ctrl::DELETE = 0x05;
 
-const unsigned int am_input_module_ctrl::layer_nr = NR_DETECTOR_LAYERS;
-
 // *****************************************************************************
 
 /*!
@@ -29,8 +27,10 @@ const unsigned int am_input_module_ctrl::layer_nr = NR_DETECTOR_LAYERS;
  *
  */
 
-am_input_module_ctrl::am_input_module_ctrl(sc_module_name _name) :
+am_input_module_ctrl::am_input_module_ctrl(sc_module_name _name,
+        const am_input_module_ctrl_config configuration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         frame_available(layer_nr, "frame_available"),
         frame_empty(layer_nr, "frame_empty"),

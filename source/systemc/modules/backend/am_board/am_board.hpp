@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date April 20, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -16,14 +16,16 @@
 #include "am_input_module/am_input_module.hpp"
 #include "track_finder/track_finder.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
-#include "../../../systems/TT_configuration.hpp"
+
+#include "am_board_config.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include <systemc.h>
 
+// *****************************************************************************
 /*!
- * @brief SystemC
+ * @brief
  */
 class am_board : public sc_module
 {
@@ -31,7 +33,7 @@ public:
     typedef PRBF_2 input_t;
     typedef track_finder::hit_stream output_stream_t;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -55,5 +57,5 @@ public:
     /*!
      * Constructor:
      */
-    am_board(const sc_module_name _name);
+    am_board(const sc_module_name _name, const am_board_config configuration);
 };

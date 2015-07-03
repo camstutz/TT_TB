@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -12,20 +12,23 @@
 
 #pragma once
 
-#include <vector>
-#include <map>
-#include <utility>
+#include "am_chip_read_ctrl.hpp"
+#include "am_chip_write_ctrl.hpp"
 
-#include <systemc.h>
+#include "../pattern_bank/pattern_bank.hpp"
+
+#include "../../../../../systems/TT_configuration.hpp"
+#include "am_chip_config.hpp"
 
 #include "../../../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
 #include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
-#include "../pattern_bank/pattern_bank.hpp"
-#include "../../../../../systems/TT_configuration.hpp"
-#include "am_chip_read_ctrl.hpp"
-#include "am_chip_write_ctrl.hpp"
+#include <systemc.h>
+
+#include <vector>
+#include <map>
+#include <utility>
 
 /*!
  * @brief Associative Memory Module
@@ -47,7 +50,7 @@ public:
     /** @brief Data type of the road at the output of the AM board */
     typedef road_t road_addr_t;
 
-    static const unsigned int layer_nr;
+    const unsigned int layer_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock
@@ -154,7 +157,7 @@ public:
      * sensitivity of the processes. Initializes the pattern bank and clears the
      * match table.
      */
-    am_chip(sc_module_name _name, pattern_bank *p_bank);
+    am_chip(sc_module_name _name, const am_chip_config configuration);
     SC_HAS_PROCESS(am_chip);
 
 private:

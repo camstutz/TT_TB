@@ -1,7 +1,7 @@
 /*!
  * @file hit_buffer_lookup_ctrl.cpp
  * @author Christian Amstutz
- * @date May 5, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -17,8 +17,6 @@
 const hit_buffer_lookup_ctrl::fsm_states hit_buffer_lookup_ctrl::IDLE = 0x01;
 const hit_buffer_lookup_ctrl::fsm_states hit_buffer_lookup_ctrl::RX_HIT = 0x02;
 
-const unsigned int hit_buffer_lookup_ctrl::layer_nr = NR_DETECTOR_LAYERS;
-
 // *****************************************************************************
 
 /*!
@@ -26,8 +24,10 @@ const unsigned int hit_buffer_lookup_ctrl::layer_nr = NR_DETECTOR_LAYERS;
  *
  */
 
-hit_buffer_lookup_ctrl::hit_buffer_lookup_ctrl(sc_module_name _name) :
+hit_buffer_lookup_ctrl::hit_buffer_lookup_ctrl(sc_module_name _name,
+        const hit_buffer_lookup_ctrl_config cnofiguration) :
         sc_module(_name),
+        layer_nr(configuration.layer_nr),
         clk("clk"),
         superstrip_inputs(layer_nr, "superstrip_inputs"),
         lookup_superstrips(layer_nr, "lookup_superstrips"),

@@ -16,7 +16,9 @@
 #include "sensor_module_config/frontend_chip_config.hpp"
 #include "sensor_module_config/data_concentrator_config.hpp"
 #include "sensor_module_config/sensor_module_config.hpp"
+#include "../modules/backend/dtc/dtc_config.hpp"
 #include "../modules/backend/trigger_tower_config.hpp"
+#include "../modules/backend/am_board/am_board_config.hpp"
 
 #include <vector>
 
@@ -31,10 +33,13 @@ public:
     sensor_module_type_config mpa_sensor_module;
     frontend_chip_config cbc_frontend_chip;
     frontend_chip_config mpa_frontend_chip;
+    dtc_config  dtc;
     data_concentrator_config cbc_data_concentrator;
     data_concentrator_config mpa_data_concentrator;
 
     trigger_tower_config trigger_tower;
+
+    am_board_config am_board;
 
     std::vector<sensor_module_config> sensor_modules;
 };

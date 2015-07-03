@@ -18,8 +18,10 @@
 #include "../../../data_formats/gbt_link_format.hpp"
 #include "../../../data_formats/CIC_format/CIC_format.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
+
+#include "dtc_input_unit_config.hpp"
+
 #include "../../../systems/tt_tb_logger.hpp"
-#include "../../../systems/TT_configuration.hpp"
 
 #include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -37,7 +39,7 @@ public:
     typedef CIC_frame input_frame_t;
     typedef dtc_buffer_element::second_type output_element_t;
 
-    static const unsigned int fe_collect_cycles;
+    const unsigned int fe_collect_cycles;
     const unsigned int fe_id;
 
 // ----- Port Declarations -----------------------------------------------------
@@ -62,6 +64,6 @@ public:
     /*!
      * Constructor:
      */
-    dtc_input_unit(sc_module_name _name);
+    dtc_input_unit(sc_module_name _name, dtc_input_unit_config configuration);
     SC_HAS_PROCESS(dtc_input_unit);
 };

@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.cpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date July 3, 2015
  *
  * @brief
  */
@@ -25,7 +25,6 @@ data_organizer::data_organizer(sc_module_name _name,
         sc_module(_name),
         dtc_input_nr(configuration.dtc_input_nr),
         proc_unit_nr(configuration.proc_unit_nr),
-        counter_correction(configuration.counter_correction),
         clk("clk"),
         dtc_inputs(dtc_input_nr, "dtc_inputs"),
         proc_unit_outputs(proc_unit_nr, "proc_unit_output"),

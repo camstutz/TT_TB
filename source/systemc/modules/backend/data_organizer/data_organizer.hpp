@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date July 3, 2015
  *
  * @brief
  *
@@ -30,16 +30,15 @@
 class data_organizer : public sc_module
 {
 public:
-    const unsigned int dtc_input_nr;
-    const unsigned int proc_unit_nr;
-    const unsigned int counter_correction;
-
     typedef input_collector<PRBF_0, PRBF_1> do_input_collector;
     typedef bx_stub_buffer<PRBF_1> do_stub_buffer;
     typedef time_demux<PRBF_1> do_demux;
 
     typedef PRBF_0 dtc_input_t;
     typedef PRBF_1 proc_unit_output_t;
+
+    const unsigned int dtc_input_nr;
+    const unsigned int proc_unit_nr;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_in<bool> clk;
