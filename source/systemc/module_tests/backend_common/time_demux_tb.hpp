@@ -15,7 +15,6 @@
 
 #include "../../modules/backend/common/time_demux.hpp"
 #include "../../modules/backend/common/time_demux_config.hpp"
-//#include "../../systems/TT_configuration.hpp"
 
 #include "../../data_formats/prbf/PRBF.hpp"
 
@@ -32,14 +31,13 @@
 class time_demux_tb : public sc_module
 {
 public:
-    //typedef time_demux<PRBF_1, 1, 4, -10> do_demux;
     typedef time_demux<PRBF_1> do_demux;
 
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_buffer<do_demux::bunch_crossing_t> bunch_crossing_request_sig;
-    sc_fifo<do_demux::input_t> stub_input_sig;
+    sc_map_linear<sc_fifo<do_demux::input_t> > stub_input_sig;
     sc_map_square<sc_buffer<do_demux::output_t> > proc_unit_output_sigs;
 
     // ----- Process Declarations ----------------------------------------------

@@ -27,12 +27,12 @@
 class track_trigger_config
 {
 public:
+    sensor_module_type_config cbc_sensor_module;
+    sensor_module_type_config mpa_sensor_module;
     frontend_chip_config cbc_frontend_chip;
     frontend_chip_config mpa_frontend_chip;
     data_concentrator_config cbc_data_concentrator;
     data_concentrator_config mpa_data_concentrator;
-    sensor_module_type_config cbc_sensor_module;
-    sensor_module_type_config mpa_sensor_module;
 
     trigger_tower_config trigger_tower;
 

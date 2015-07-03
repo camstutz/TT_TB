@@ -45,6 +45,15 @@ track_trigger_config baseline_config()
     configuration.mpa_data_concentrator.max_output_stubs = 10;
     configuration.mpa_data_concentrator.output_window_cycles = 8;
 
+    configuration.trigger_tower.layer_nr = 6;
+    configuration.trigger_tower.dtc_per_prb = 1;
+    configuration.trigger_tower.prb_nr = 2;
+    configuration.trigger_tower.dtc_per_prb = 2;
+
+    //configuration.trigger_tower.processor_organizer.
+
+    //configuration.trigger_tower.data_organizer
+
     return configuration;
 }
 
