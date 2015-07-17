@@ -72,9 +72,11 @@ void am_input_module_ctrl::controller()
 
             frames_ready = true;
             input_it = frame_available.begin();
-            for (; input_it != frame_available.end(); ++input_it)
+            for (; input_it != frame_available.end();)
             {
                 frames_ready &= input_it->read();
+
+                ++input_it;
             }
 
             if (frames_ready)

@@ -24,7 +24,7 @@
 class hit_buffer_config
 {
 public:
-    unsigned int layer_nr;
+   unsigned int layer_nr;
 
    hit_buffer_write_ctrl_config hit_buffer_write_ctrl;
    hit_buffer_lookup_ctrl_config hit_buffer_lookup_ctrl;

@@ -52,6 +52,8 @@ public:
     pattern_memory(const sc_module_name _name, const pattern_memory_config configuration);
     SC_HAS_PROCESS(pattern_memory);
 
+    void link_pattern_bank(pattern_bank* bank);
+
 private:
     void print_pattern_bank();
 

@@ -16,6 +16,8 @@
 #include <map>
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <sstream>
 #include <iomanip>
 #include <algorithm>
 
@@ -34,7 +36,7 @@ public:
     std::vector<pattern_id_t> find_id(const pattern_t& pattern) const;
 
     size_t get_pattern_nr() const;
-    void print_pattern_bank() const;
+    std::string print_pattern_bank() const;
 
     void clear();
     void generate_patterns_straight(const unsigned int pattern_nr);
@@ -59,5 +61,5 @@ public:
     reverse_lookup_collection_t reverse_tables;
 
     void insert_pattern(const pattern_id_t id, const pattern_t& pattern);
-    void print_reverse_tables();
+    std::string print_reverse_tables();
 };

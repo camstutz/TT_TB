@@ -26,7 +26,7 @@ pattern_memory::pattern_memory(const sc_module_name _name,
         superstrip_outputs(layer_nr, "superstrip_outputs"),
 		superstrip_outputs_sig(layer_nr, "superstrip_outputs_sig"),
 		delay_superstrip_outputs(layer_nr, "delay_superstrip_outputs"),
-        patterns(configuration.ptrn_bank)
+		patterns()
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(lookup_road);
@@ -76,6 +76,14 @@ void pattern_memory::lookup_road()
 		}
 	}
 
+}
+
+// *****************************************************************************
+void pattern_memory::link_pattern_bank(pattern_bank* bank)
+{
+    patterns = bank;
+
+    return;
 }
 
 // *****************************************************************************

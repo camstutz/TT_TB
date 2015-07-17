@@ -38,7 +38,5 @@ public:
 
     trigger_tower_config trigger_tower;
 
-    am_board_config am_board;
-
     std::vector<sensor_module_config> sensor_modules;
 };

@@ -49,8 +49,9 @@ std::vector<pattern_bank::pattern_id_t> pattern_bank::find_id(
     id_range = reverse_tables[layer].equal_range(element);
 
     std::vector<pattern_id_t> id_vector;
-    reverse_table_t::const_iterator id_it;
-    for (id_it = id_range.first; id_it !=id_range.second; ++id_it)
+    for (reverse_table_t::const_iterator id_it = id_range.first;
+         id_it !=id_range.second;
+         ++id_it)
     {
         id_vector.push_back(id_it->second);
     }
@@ -97,23 +98,25 @@ size_t pattern_bank::get_pattern_nr() const
 }
 
 // *****************************************************************************
-void pattern_bank::print_pattern_bank() const
+std::string pattern_bank::print_pattern_bank() const
 {
-    std::cout << std::endl << "Pattern Bank:" << std::endl;
+    std::stringstream output_stream;
+
+    output_stream << "Pattern Bank (" << pattern_memory.size() <<"):" << std::endl;
 
     pattern_memory_t::const_iterator pattern_it = pattern_memory.begin();
     for (; pattern_it != pattern_memory.end(); ++pattern_it)
     {
-        std::cout << pattern_it->first << ": ";
-        std::cout << pattern_it->second[0];
+        output_stream << pattern_it->first << ": ";
+        output_stream << pattern_it->second[0];
         for (unsigned int layer = 1; layer < layer_nr; ++layer)
         {
-             std::cout << ", " << pattern_it->second[layer];
+             output_stream << ", " << pattern_it->second[layer];
         }
-        std::cout << std::endl;
+        output_stream << std::endl;
     }
 
-    return;
+    return output_stream.str();
 }
 
 // *****************************************************************************
@@ -363,17 +366,22 @@ void pattern_bank::insert_pattern(const pattern_id_t id,
 }
 
 // *****************************************************************************
-void pattern_bank::print_reverse_tables()
+std::string pattern_bank::print_reverse_tables()
 {
-    std::cout << "Reverse Tables:" << std::endl;
+    std::stringstream output_stream;
+
+    output_stream << "Reverse Tables:" << std::endl;
     for (unsigned int layer = 0; layer < layer_nr; ++layer)
     {
-        std::cout << "Size (" << layer << "): " << reverse_tables[layer].size() << std::endl;
-        reverse_table_t::iterator rev_element = reverse_tables[layer].begin();
-        for(;rev_element != reverse_tables[layer].end(); ++rev_element)
+        output_stream << "Size (" << layer << "): " << reverse_tables[layer].size() << std::endl;
+        for(reverse_table_t::iterator rev_element = reverse_tables[layer].begin();
+            rev_element != reverse_tables[layer].end();
+            ++rev_element)
         {
-            std::cout << rev_element->first << "->" << rev_element->second << std::endl;
+            output_stream << rev_element->first << "->" << rev_element->second << std::endl;
         }
-        std::cout << std::endl;
+        output_stream << std::endl;
     }
+
+    return output_stream.str();
 }

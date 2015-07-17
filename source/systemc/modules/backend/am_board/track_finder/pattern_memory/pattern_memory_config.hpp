@@ -23,5 +23,4 @@ class pattern_memory_config
 {
 public:
     unsigned int layer_nr;
-    pattern_bank* ptrn_bank;
 };

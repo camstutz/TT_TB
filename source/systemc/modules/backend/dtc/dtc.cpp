@@ -54,7 +54,8 @@ dtc::dtc(sc_module_name _name, dtc_config configuration) :
         input_unit_it->clk.bind(clk);
         input_unit_it->gbt_input.bind(gbt_inputs[input_id]);
         input_unit_it->write_buffer_select.bind(write_buffer_sig);
-        input_unit_it->bx_buffer_out.bind(bx_sorted_buffer(sc_map_cube_key(input_id, 0, 0), sc_map_cube_key(input_id, 2, collection_cycles)) );
+        sc_map_cube<sc_fifo<dtc_buffer_element> >::iterator bx_buffer_per_input = bx_sorted_buffer(sc_map_cube_key(input_id, 0, 0), sc_map_cube_key(input_id, 1, collection_cycles-1));
+        input_unit_it->bx_buffer_out.bind(bx_buffer_per_input);
 
         ++input_id;
     }

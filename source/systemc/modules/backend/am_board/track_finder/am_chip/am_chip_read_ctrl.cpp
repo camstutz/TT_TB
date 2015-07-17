@@ -56,7 +56,7 @@ void am_chip_read_ctrl::controller()
         switch (current_state)
         {
         case IDLE:
-            if (roads_detected.event())
+            if (roads_detected.event() && (roads_detected.read() == true))
             {
                 road_output.write(road_stream::IDLE);
                 current_state = START;

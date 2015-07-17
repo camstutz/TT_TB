@@ -24,7 +24,6 @@ class am_chip_config
 {
 public:
     unsigned int layer_nr;
-    pattern_bank* ptrn_bank;
 
     am_chip_write_ctrl_config write_ctrl;
 };

@@ -58,10 +58,12 @@ track_finder::track_finder(const sc_module_name _name,
     road_lookup.clk.bind(clk);
     road_lookup.hit_inputs.bind(am_input_sig);
     road_lookup.road_output.bind(am_output_sig);
+    road_lookup.link_pattern_bank(&patterns);
 
     pattern_lookup.clk.bind(clk);
     pattern_lookup.road_input.bind(pattern_mem_addr_sig);
     pattern_lookup.superstrip_outputs.bind(pattern_mem_out_sig);
+    pattern_lookup.link_pattern_bank(&patterns);
 
     road_proc.clk.bind(clk);
     road_proc.road_input.bind(am_output_sig);

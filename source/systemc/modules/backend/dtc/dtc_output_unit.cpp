@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.cpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date July 17, 2015
  *
  * @brief
  */

@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date July 16, 2015
  *
  * @brief
  */
@@ -29,6 +29,8 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <string>
+#include <sstream>
 
 /*!
  * @brief Associative Memory Module
@@ -122,9 +124,10 @@ public:
 
     /** @brief Prints the content of the pattern bank.
      *
-     * This function prints the pattern bank to the console. Used for debugging.
+     * This function returns a string containing the pattern bank. Used for
+     * debugging.
      */
-    void print_pattern_bank();
+    std::string print_pattern_bank();
 
     /** @brief Prints the match table.
      *
@@ -159,6 +162,8 @@ public:
      */
     am_chip(sc_module_name _name, const am_chip_config configuration);
     SC_HAS_PROCESS(am_chip);
+
+    void link_pattern_bank(pattern_bank* bank);
 
 private:
     pattern_bank *patterns;

@@ -1,7 +1,7 @@
 /*!
  * @file configuration.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date July 17, 2015
  *
  * @brief
  *
@@ -84,10 +84,21 @@ track_trigger_config baseline_config()
     configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 0;
 
     // AM Board
-    configuration.am_board.layer_nr = 6;
+    configuration.trigger_tower.am_board.layer_nr = 6;
 
-    configuration.am_board.input_module.layer_nr = 6;
-    configuration.am_board.input_module.controller.layer_nr = 6;
+    configuration.trigger_tower.am_board.input_module.layer_nr = 6;
+    configuration.trigger_tower.am_board.input_module.controller.layer_nr = 6;
+
+    configuration.trigger_tower.am_board.track_finder.hit_processor.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.am_chip.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.am_chip.write_ctrl.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.road_processor.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.pattern_memory.layer_nr = 6;
+
+    configuration.trigger_tower.am_board.track_finder.hit_buffer.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_write_ctrl.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_lookup_ctrl.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;
 
     return configuration;
 }

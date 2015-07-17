@@ -1,9 +1,9 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date July 16, 2015
  *
- * @brief File containing the implementation of the AM board.
+ * @brief File containing the implementation of the AM board module.
  */
 
 /*
@@ -30,7 +30,7 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
         read_controller("read_controller"),
         write_controller("write_controller", configuration.write_ctrl),
 		delay_road_output("delay_road_output"),
-        patterns(configuration.ptrn_bank)
+        patterns()
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_hits);
@@ -42,10 +42,8 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
                 << detected_roads_buffer.data_read_event();
 
     // ----- Module channel/variable initialization ----------------------------
-    roads_detected.write(false);
 
     // ----- Module instance / channel binding ---------------------------------
-
     write_controller.clk.bind(clk);
     write_controller.hit_inputs.bind(hit_inputs);
     write_controller.process_hits.bind(process_hits);
@@ -53,8 +51,8 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
 
     read_controller.clk.bind(clk);
     read_controller.roads_detected.bind(roads_detected);
-    read_controller.road_input(detected_roads_buffer);
-    read_controller.road_output(road_output_sig);
+    read_controller.road_input.bind(detected_roads_buffer);
+    read_controller.road_output.bind(road_output_sig);
 
     delay_road_output.clk.bind(clk);
     delay_road_output.input.bind(road_output_sig);
@@ -93,6 +91,8 @@ void am_chip::process_incoming_hits()
 // *****************************************************************************
 void am_chip::detect_roads()
 {
+    roads_detected.write(false);
+
     while (1)
     {
         wait();
@@ -148,12 +148,14 @@ void am_chip::check_detected_road_buffer()
 }
 
 // *****************************************************************************
-void am_chip::print_pattern_bank()
+std::string am_chip::print_pattern_bank()
 {
-	std::cout << "Pattern Banks:\n";
-	patterns->print_pattern_bank();
+    std::stringstream output_stream;
 
-	return;
+	output_stream << "Pattern Banks:\n";
+	output_stream << patterns->print_pattern_bank();
+
+	return output_stream.str();
 }
 
 // *****************************************************************************
@@ -179,6 +181,14 @@ void am_chip::print_match_table()
         }
         std::cout << "\n";
 	}
+
+    return;
+}
+
+// *****************************************************************************
+void am_chip::link_pattern_bank(pattern_bank* bank)
+{
+    patterns = bank;
 
     return;
 }

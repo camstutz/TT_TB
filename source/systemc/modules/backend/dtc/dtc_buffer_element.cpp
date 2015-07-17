@@ -1,7 +1,7 @@
 /*!
  * @file dtc_buffer_element.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date July 17, 2015
  *
  * @brief
  *
@@ -16,9 +16,9 @@
 // *****************************************************************************
 ostream& operator<< (ostream &os, dtc_buffer_element const &v)
 {
-    os << "BX:" << std::endl;
-    os << v.first << std::endl;
-    os << ", Stub element:" << std::endl;
+    os << "BX:";
+    os << v.first;
+    os << ", Stub element:";
     os << v.second << std::endl;
 
     return os;

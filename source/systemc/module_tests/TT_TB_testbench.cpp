@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_testbench.cpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date July 17, 2015
  *
  * @brief
  */
@@ -21,26 +21,24 @@
 
 //#include "hit_file_test.hpp"
 //#include "hit_generator_tb.hpp"
-#include "frontend_chip_cbc_tb.hpp"
-#include "frontend_chip_mpa_tb.hpp"
-#include "data_concentrator_cbc_tb.hpp"
-#include "data_concentrator_mpa_tb.hpp"
-#include "gbt_tb.hpp"
+//#include "frontend_chip_cbc_tb.hpp"
+//#include "frontend_chip_mpa_tb.hpp"
+//#include "data_concentrator_cbc_tb.hpp"
+//#include "data_concentrator_mpa_tb.hpp"
+//#include "gbt_tb.hpp"
 //#include "dtc_input_unit_tb.hpp"
 //#include "dtc_output_unit_tb.hpp"
 //#include "dtc_tb.hpp"
-#include "backend_common/bx_stub_buffer_tb.hpp"
-#include "backend_common/input_collector_tb.hpp"
-#include "backend_common/time_demux_tb.hpp"
-#include "data_organizer/data_organizer_tb.hpp"
-#include "processor_organizer/po_layer_splitter_tb.hpp"
-#include "processor_organizer/processor_organizer_tb.hpp"
-#include "am_board/am_input_module_one_layer_tb.hpp"
-#include "am_board/am_input_module_tb.hpp"
+//#include "backend_common/bx_stub_buffer_tb.hpp"
+//#include "backend_common/input_collector_tb.hpp"
+//#include "backend_common/time_demux_tb.hpp"
+//#include "data_organizer/data_organizer_tb.hpp"
+//#include "processor_organizer/po_layer_splitter_tb.hpp"
+//#include "processor_organizer/processor_organizer_tb.hpp"
+//#include "am_board/am_input_module_one_layer_tb.hpp"
+//#include "am_board/am_input_module_tb.hpp"
 //#include "track_finder/am_chip_tb.hpp"
-//#include "am_board_tb.hpp"
-//#include "am_system_tb.hpp"
-//#include "trigger_tower_tb.hpp"
+#include "trigger_tower_tb.hpp"
 //#include "prbf_tb.hpp"
 //#include "cic_format_tb.hpp"
 
@@ -69,9 +67,9 @@ int sc_main(int argc, char *agv[])
 //    gbt_config gbt_configuration;
 //    gbt_configuration.input_link_count = 2;
 //    gbt_tb gbt_TB("GBT_TB", gbt_configuration);
-//    dtc_input_unit_tb dtc_INU_TB("DTC_input_unit_TB");
-//    dtc_output_unit_tb dtc_OUTU_TB("DTC_output_unit_TB");
-//    dtc_tb DTC_TB("DTC_TB");
+//    dtc_input_unit_tb dtc_INU_TB("DTC_input_unit_TB", configuration);
+//    dtc_output_unit_tb dtc_OUTU_TB("DTC_output_unit_TB", configuration);
+//    dtc_tb DTC_TB("DTC_TB", configuration);
 
 
 
@@ -82,11 +80,9 @@ int sc_main(int argc, char *agv[])
 //    po_layer_splitter_tb PO_layer_splitter_TB("PO_layer_splitter_TB", configuration.trigger_tower.processor_organizer.layer_splitter);
 //    processor_organizer_tb processor_organizer_TB("processor_organizer_TB", configuration);
 //    am_input_module_one_layer_tb am_in_mod_one_layer_TB("AM_input_module_one_layer_TB");
-    am_input_module_tb am_in_mod_TB("AM_input_module_TB", configuration);
-//	  am_system_tb am_system_tb("AM_System");
-//    am_board_tb am_board_tb("AM_board_TB");
-//    am_chip_tb AMchip_TB("AMchip_TB");
-//    trigger_tower_tb triggerTower_TB("trigger_tower_TB");
+//    am_input_module_tb am_in_mod_TB("AM_input_module_TB", configuration);
+//    am_chip_tb AMchip_TB("AMchip_TB", configuration);
+    trigger_tower_tb triggerTower_TB("trigger_tower_TB", configuration);
 //    prbf_tb();
 //    cic_format_tb();
 
