@@ -89,6 +89,8 @@ track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.input_module.layer_nr = 6;
     configuration.trigger_tower.am_board.input_module.controller.layer_nr = 6;
 
+    configuration.trigger_tower.am_board.track_finder.layer_nr = 6;
+
     configuration.trigger_tower.am_board.track_finder.hit_processor.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.am_chip.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.am_chip.write_ctrl.layer_nr = 6;

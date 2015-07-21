@@ -27,7 +27,7 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
                 NR_FE_CHIP_PER_MODULE, "hit_signal_cbc", NR_DETECTOR_MPA_LAYERS, 0,
                 0, 0),
         hit_cnt_signal("hit_cnt_signal"),
-        dut_hit_generator("Hit_Generator_DUT", "test_hits.txt")
+        dut_hit_generator("Hit_Generator_DUT", "/home/amstutz/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt")
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_hit_generator.mpa_stub_outputs.bind(hit_signals_mpa);

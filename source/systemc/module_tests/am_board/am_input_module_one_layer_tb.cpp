@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer_tb.cpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date July 21, 2015
  */
 
 /*
@@ -72,40 +72,49 @@ void am_input_module_one_layer_tb::write_frames()
     am_input_module_one_layer::frame_t::stub_t stub;
 
     wait(50, SC_NS);
-
     stub_element.set_type_field(PRBF::element_type::local_MPA);
     stub.set(1, 1, 1, 1, 1, 1, 1);
     stub_element.set_stub(stub);
+    data_frame.set_bunch_crossing(5);
     data_frame.add_stub(stub_element);
 
     stub_element.set_type_field(PRBF::element_type::local_MPA);
     stub.set(1, 1, 1, 1, 1, 1, 2);
     stub_element.set_stub(stub);
+    data_frame.set_bunch_crossing(5);
     data_frame.add_stub(stub_element);
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
     stub.set(1, 2, 1, 1, 1, 1, 3);
     stub_element.set_stub(stub);
+    data_frame.set_bunch_crossing(5);
     data_frame.add_stub(stub_element);
 
     frame_in_sig.write(data_frame);
 
     wait(100, SC_NS);
-
     start_process_frame_sig.write(true);
 
-    wait(400, SC_NS);
+    wait(25, SC_NS);
+    start_process_frame_sig.write(false);
 
+    wait(400, SC_NS);
     frame_in_sig.write(data_frame);
+
+    wait(25, SC_NS);
     frame_in_sig.write(data_frame);
 
     wait(100, SC_NS);
-
     start_process_frame_sig.write(true);
+
+    wait(25, SC_NS);
+    start_process_frame_sig.write(false);
 
     wait(400, SC_NS);
+    delete_frame_sig.write(true);
 
-    start_process_frame_sig.write(true);
+    wait(25, SC_NS);
+    delete_frame_sig.write(false);
 
     return;
 }

@@ -62,12 +62,32 @@ void trigger_tower_tb::write_stream()
     data_frame.set_bunch_crossing(6);
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
-    stub.set(0, 0, 1, 2, 2, 1);
+    stub.set(0, 0, 1, 2, 0, 1);
     stub_element.set_stub(stub);
     data_frame.add_stub(stub_element);
 
     stub_element.set_type_field(PRBF::element_type::local_CBC);
-    stub.set(1, 0, 1, 2, 2, 2);
+    stub.set(1, 0, 1, 2, 1, 1);
+    stub_element.set_stub(stub);
+    data_frame.add_stub(stub_element);
+
+    stub_element.set_type_field(PRBF::element_type::local_CBC);
+    stub.set(1, 0, 1, 2, 2, 1);
+    stub_element.set_stub(stub);
+    data_frame.add_stub(stub_element);
+
+    stub_element.set_type_field(PRBF::element_type::local_CBC);
+    stub.set(1, 0, 1, 2, 3, 1);
+    stub_element.set_stub(stub);
+    data_frame.add_stub(stub_element);
+
+    stub_element.set_type_field(PRBF::element_type::local_CBC);
+    stub.set(1, 0, 1, 2, 4, 1);
+    stub_element.set_stub(stub);
+    data_frame.add_stub(stub_element);
+
+    stub_element.set_type_field(PRBF::element_type::local_CBC);
+    stub.set(1, 0, 1, 2, 5, 1);
     stub_element.set_stub(stub);
     data_frame.add_stub(stub_element);
 

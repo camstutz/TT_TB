@@ -47,7 +47,6 @@ void po_layer_splitter::split_stubs()
         while (input_stubs.num_available() > 0)
         {
             element_t stub = input_stubs.read();
-            //unsigned int layer_id = stub.get_stub().get_fe_module() % layer_nr;
             unsigned int layer_id = stub.get_stub().get_bend() % layer_nr;
             splitted_stubs[layer_id].write(stub);
         }

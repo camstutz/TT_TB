@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer.cpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date July 21, 2015
  *
  * @brief
  */
@@ -92,14 +92,14 @@ void am_input_module_one_layer::process_one_frame()
     {
         wait();
 
-        if (start_process_frame.read() == true)
+        if ((start_process_frame.read() == true) && (!input_frame_buffer.empty()))
         {
             processed_frame = input_frame_buffer.front();
             input_frame_buffer.pop();
 
             processed_frame.reset_stub_ptr();
         }
-        else if (delete_frame.read() == true)
+        else if ((delete_frame.read() == true) && (!input_frame_buffer.empty()))
         {
             input_frame_buffer.pop();
         }

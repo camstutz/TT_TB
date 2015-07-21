@@ -42,7 +42,7 @@ public:
     sc_in<bool> clk;
 
     sc_map_square<sc_in<data_organizer::dtc_input_t> > dtc_inputs;
-    sc_map_square<sc_out<am_board::output_stream_t> > hit_outputs;
+    sc_map_cube<sc_out<am_board::output_stream_t> > hit_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_map_square<sc_buffer<data_organizer::proc_unit_output_t > > trigger_tower_interconnect;
