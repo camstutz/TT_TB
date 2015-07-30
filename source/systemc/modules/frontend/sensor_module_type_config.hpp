@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module_type_config.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date July 21, 2015
  *
  * @brief
  *
@@ -26,10 +26,10 @@
 class sensor_module_type_config
 {
 public:
-    unsigned int side_count = 2;           // right now fixed as GBT only allows 2 sides
+    unsigned int side_count;                   // right now fixed as GBT only allows 2 sides
     unsigned int fe_chip_per_side;
 
-    frontend_chip_config frontend_chip_type;
-    data_concentrator_config data_concentrator_type;
-    gbt_config gbt_type;
+    frontend_chip_config frontend_chip;
+    data_concentrator_config data_concentrator;
+    gbt_config gbt;
 };

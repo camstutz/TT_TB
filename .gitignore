@@ -228,7 +228,7 @@ documentation/doxygen
 *.vcd
 
 # Folder to hide modules temporarily
-exclude/
+#exclude/
 
 ##########################
 ## Simulation Framework

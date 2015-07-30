@@ -12,16 +12,19 @@
 
 #pragma once
 
-#include <string>
-#include <sstream>
-#include <queue>
+#include "../../systems/TT_configuration.hpp"
+#include "../../data_formats/HitEvent.hpp"
+#include "../../data_formats/stub.hpp"
 
-#include <systemc.h>
+#include "hit_generator_config.hpp"
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/HitEvent.hpp"
+#include <systemc.h>
+
+#include <string>
+#include <sstream>
+#include <queue>
 
 /*!
  * @brief SystemC module that reads hits from a file.
@@ -29,8 +32,8 @@
 class hit_generator : public sc_module
 {
 public:
-    typedef fe_cbc_stub_t cbc_stub_t;
-    typedef fe_mpa_stub_t mpa_stub_t;
+    typedef stub cbc_stub_t;
+    typedef stub mpa_stub_t;
 
 // ----- Port Declarations -----------------------------------------------------
     /** 4-dimensional sc_map for the outputs of the stubs for the CBC front end
@@ -67,7 +70,7 @@ public:
     /*!
      * Constructor: Calls the function for reading the hit file.
      */
-    hit_generator(sc_module_name _name, std::string hitFileName);
+    hit_generator(sc_module_name _name, hit_generator_config);
     SC_HAS_PROCESS(hit_generator);
 
 private:

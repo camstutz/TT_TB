@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.cpp
  * @author Christian Amstutz
- * @date June 25, 2015
+ * @date July 28, 2015
  */
 
 /*
@@ -62,8 +62,6 @@ frontend_chip_mpa_tb::~frontend_chip_mpa_tb()
 // *****************************************************************************
 void frontend_chip_mpa_tb::generate_stubs()
 {
-    frontend_chip_mpa::input_stub_t stim_stub;
-
     // at 60 ns
     wait(60, SC_NS);
     en_sig.write(1);
@@ -131,8 +129,8 @@ void frontend_chip_mpa_tb::analyse_FE_out()
 
         for (auto& fe_out_signal : fe_out_signals)
         {
-            frontend_chip_mpa::output_stub_t read_stub = fe_out_signal.read();
-            std::pair<bool, sc_map_linear<sc_signal<frontend_chip_mpa::output_stub_t>>::key_type> signal_key;
+            frontend_chip::output_stub_t read_stub = fe_out_signal.read();
+            std::pair<bool, sc_map_linear<sc_signal<frontend_chip::output_stub_t>>::key_type> signal_key;
             signal_key = fe_out_signals.get_key(fe_out_signal);
 
             if(data_valid_signals.at(signal_key.second.X).read())
@@ -163,13 +161,13 @@ void frontend_chip_mpa_tb::trace(sc_trace_file* trace_file)
 }
 
 // *****************************************************************************
-void frontend_chip_mpa_tb::write_stub(frontend_chip_mpa::input_stub_t::bx_t bx,
-        frontend_chip_mpa::input_stub_t::pixel_t pixel,
-        frontend_chip_mpa::input_stub_t::strip_t strip,
-        frontend_chip_mpa::input_stub_t::bend_t bend)
+void frontend_chip_mpa_tb::write_stub(unsigned int bx, unsigned int pixel,
+        unsigned int strip, int bend)
 {
-    frontend_chip_mpa::input_stub_t stim_stub(bx, pixel, strip, bend);
+    frontend_chip::input_stub_t stim_stub(dut_front_end_chip.input_stub_config,
+            0, bx, 0, strip, bend, pixel );
     stub_input_sig.write(stim_stub);
+
     log_buffer << sc_time_stamp() << ": TX - " << stim_stub << std::endl;
 
     return;

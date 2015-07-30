@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_mpa_tb.hpp
  * @author Christian Amstutz
- * @date June 18, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -37,8 +37,8 @@ public:
     // ----- Local Channel Declarations ----------------------------------------
     sc_signal<bool> rst;
     sc_map_square<sc_signal<bool> > data_valid;
-    sc_map_square<sc_signal<data_concentrator_mpa::fe_stub_t> > fe_signals;
-    sc_signal<data_concentrator_mpa::output_t> dc_output;
+    sc_map_square<sc_signal<data_concentrator::fe_stub_t> > fe_signals;
+    sc_signal<data_concentrator::output_t> dc_output;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_hit_data();
@@ -52,7 +52,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    data_concentrator_mpa dut_data_concentrator;
+    data_concentrator dut_data_concentrator;
 
     // ----- Constructor -------------------------------------------------------
     /*!
@@ -63,5 +63,7 @@ public:
     ~data_concentrator_mpa_tb();
 
 private:
+    data_concentrator_config dut_configuration;
+
     std::ostringstream log_buffer;
 };

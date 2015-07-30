@@ -1,5 +1,5 @@
 /*!
- * @file gbt.cpp
+i * @file gbt.cpp
  * @author Christian Amstutz
  * @date May 5, 2015
  *

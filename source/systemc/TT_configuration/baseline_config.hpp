@@ -1,7 +1,7 @@
 /*!
  * @file configuration.hpp
  * @author Christian Amstutz
- * @date July 17, 2015
+ * @date July 30, 2015
  *
  * @brief
  *
@@ -22,28 +22,57 @@ track_trigger_config baseline_config()
     configuration.cbc_frontend_chip.max_stubs_per_cycle = 3;
     configuration.cbc_frontend_chip.collection_cycles = 1;
 
-    configuration.cbc_frontend_chip.output_format.bx_bits = 0;
-    configuration.cbc_frontend_chip.output_format.strip_bits = 8;
-    configuration.cbc_frontend_chip.output_format.pixel_bits = 0;
-    configuration.cbc_frontend_chip.output_format.bend_bits = 5;
+    configuration.cbc_frontend_chip.input_stub.valid_bits = 0;
+    configuration.cbc_frontend_chip.input_stub.bx_bits = 0;
+    configuration.cbc_frontend_chip.input_stub.fechip_bits = 0;
+    configuration.cbc_frontend_chip.input_stub.strip_bits = 8;
+    configuration.cbc_frontend_chip.input_stub.bend_bits = 5;
+    configuration.cbc_frontend_chip.input_stub.pixel_bits = 0;
 
-    configuration.cbc_data_concentrator.fe_chips_count = 8;
+    configuration.cbc_frontend_chip.output_stub = configuration.cbc_frontend_chip.input_stub;
+
     configuration.cbc_data_concentrator.frontend_chip_type = configuration.cbc_frontend_chip;
+    configuration.cbc_data_concentrator.output_stub = configuration.cbc_frontend_chip.output_stub;
+    configuration.cbc_data_concentrator.output_stub.valid_bits = 1;
+    configuration.cbc_data_concentrator.output_stub.bx_bits = 3;
+    configuration.cbc_data_concentrator.fe_chips_count = 8;
     configuration.cbc_data_concentrator.max_output_stubs = 12;
     configuration.cbc_data_concentrator.output_window_cycles = 8;
 
     configuration.mpa_frontend_chip.max_stubs_per_cycle = 2;
     configuration.mpa_frontend_chip.collection_cycles = 2;
 
-    configuration.mpa_frontend_chip.output_format.bx_bits = 1;
-    configuration.mpa_frontend_chip.output_format.strip_bits = 8;
-    configuration.mpa_frontend_chip.output_format.pixel_bits = 4;
-    configuration.mpa_frontend_chip.output_format.bend_bits = 5;
+    configuration.mpa_frontend_chip.input_stub.valid_bits = 0;
+    configuration.mpa_frontend_chip.input_stub.bx_bits = 1;
+    configuration.mpa_frontend_chip.input_stub.fechip_bits = 0;
+    configuration.mpa_frontend_chip.input_stub.strip_bits = 8;
+    configuration.mpa_frontend_chip.input_stub.bend_bits = 5;
+    configuration.mpa_frontend_chip.input_stub.pixel_bits = 4;
 
-    configuration.mpa_data_concentrator.fe_chips_count = 8;
+    configuration.mpa_frontend_chip.output_stub = configuration.mpa_frontend_chip.input_stub;
+    configuration.mpa_frontend_chip.output_stub.bx_bits = 1;
+
     configuration.mpa_data_concentrator.frontend_chip_type = configuration.mpa_frontend_chip;
+    configuration.mpa_data_concentrator.output_stub = configuration.mpa_frontend_chip.output_stub;
+    configuration.mpa_data_concentrator.output_stub.valid_bits = 1;
+    configuration.mpa_data_concentrator.output_stub.bx_bits = 3;
+    configuration.mpa_data_concentrator.fe_chips_count = 8;
     configuration.mpa_data_concentrator.max_output_stubs = 10;
     configuration.mpa_data_concentrator.output_window_cycles = 8;
+
+    configuration.cbc_sensor_module.fe_chip_per_side = 8;
+    configuration.cbc_sensor_module.side_count = 2;
+    configuration.cbc_sensor_module_test.type = configuration.cbc_sensor_module;
+
+    // Configure general GBT module
+    configuration.gbt.input_link_count = 2;
+
+    configuration.mpa_sensor_module.fe_chip_per_side = 8;
+    configuration.mpa_sensor_module.side_count = 2;
+    configuration.mpa_sensor_module.frontend_chip = configuration.mpa_frontend_chip;
+    configuration.mpa_sensor_module.data_concentrator = configuration.mpa_data_concentrator;
+    configuration.mpa_sensor_module.gbt = configuration.gbt;
+    configuration.mpa_sensor_module_test.type = configuration.mpa_sensor_module;
 
     // DTC
     configuration.dtc.input_nr = 3;

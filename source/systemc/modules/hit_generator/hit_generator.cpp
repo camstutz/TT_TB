@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date February 16, 2015
+ * @date July 29, 2015
  *
  * @brief
  */
@@ -14,7 +14,8 @@
 
 // *****************************************************************************
 
-hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
+hit_generator::hit_generator(sc_module_name _name ,
+        const hit_generator_config configuration) :
         sc_module(_name),
         cbc_stub_outputs(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
                 NR_FE_CHIP_PER_MODULE, "hit_output_cbc", NR_DETECTOR_MPA_LAYERS, 0,
@@ -31,7 +32,7 @@ hit_generator::hit_generator(sc_module_name _name , std::string hitFileName) :
 
     // ----- Module instance / channel binding ---------------------------------
 
-    readFile(hitFileName);
+    readFile(configuration.input_file);
 
     return;
 }

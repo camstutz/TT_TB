@@ -11,7 +11,7 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "trailer.hpp"
+#include "../CIC_frame/trailer.hpp"
 
 // *****************************************************************************
 namespace CIC

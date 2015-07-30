@@ -1,7 +1,7 @@
 /*!
  * @file CIC_frame.cpp
  * @author Christian Amstutz
- * @date April 13, 2015
+ * @date July 30, 2015
  *
  * @brief
  *
@@ -11,10 +11,27 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "CIC_frame.hpp"
+#include "../CIC_frame/CIC_frame.hpp"
 
 // *****************************************************************************
 CIC_frame::CIC_frame()
+{
+    init();
+
+    return;
+}
+
+// *****************************************************************************
+CIC_frame::CIC_frame(stub_config stub_configuration) :
+        stub_configuration(stub_configuration)
+{
+    init();
+
+    return;
+}
+
+// *****************************************************************************
+void CIC_frame::init()
 {
     header_element = header_t();
     stub_vector.clear();
@@ -71,34 +88,30 @@ bool CIC_frame::is_MPA_frame() const
 }
 
 // *****************************************************************************
-bool CIC_frame::add_stub(stub_CBC stub)
+bool CIC_frame::add_stub(stub stub)
 {
     bool success = false;
 
-    if (is_CBC_frame())
+    if (stub.configuration == stub_configuration)
     {
         stub_vector.push_back(stub);
-        header_element.set_fe_type(header::CBC);
+        if (stub.configuration.pixel_bits == 0)
+        {
+            header_element.set_fe_type(header::CBC);
+        }
+        else
+        {
+            header_element.set_fe_type(header::MPA);
+        }
         header_element.set_stub_count(stub_count());
 
         success = true;
     }
-
-    return success;
-}
-
-// *****************************************************************************
-bool CIC_frame::add_stub(stub_MPA stub)
-{
-    bool success = false;
-
-    if (is_MPA_frame())
+    else
     {
-        stub_vector.push_back(stub);
-        header_element.set_fe_type(header::MPA);
-        header_element.set_stub_count(stub_count());
+        std::cerr << "CIC_frame: Wrong stub type." << std::endl;
 
-        success = true;
+        success = false;
     }
 
     return success;
@@ -120,40 +133,16 @@ void CIC_frame::reset_stub_ptr()
 }
 
 // *****************************************************************************
-bool CIC_frame::get_stub(stub_CBC& stub)
+bool CIC_frame::get_stub(stub& stub)
 {
     bool valid = false;
 
-    if ((stub_it != stub_vector.end()) & is_CBC_frame())
+    if (stub_it != stub_vector.end())
     {
-        stub = boost::get<stub_CBC>(*stub_it);
+        stub = *stub_it;
         ++stub_it;
 
         valid = true;
-    }
-    else
-    {
-        valid = false;
-    }
-
-    return valid;
-}
-
-// *****************************************************************************
-bool CIC_frame::get_stub(stub_MPA& stub)
-{
-    bool valid = false;
-
-    if ((stub_it != stub_vector.end()) & is_MPA_frame())
-    {
-        stub = boost::get<stub_MPA>(*stub_it);
-        ++stub_it;
-
-        valid = true;
-    }
-    else
-    {
-        valid = false;
     }
 
     return valid;
@@ -199,16 +188,8 @@ std::string CIC_frame::get_string() const
     typename stub_vector_t::const_iterator local_stub_it = stub_vector.begin();
     for(; local_stub_it != stub_vector.end(); ++local_stub_it)
     {
-        if (is_CBC_frame())
-        {
-            stub_CBC stub = boost::get<stub_CBC>(*local_stub_it);
-            out_string << stub << std::endl;
-        }
-        else if(is_MPA_frame())
-        {
-            stub_MPA stub = boost::get<stub_MPA>(*local_stub_it);
-            out_string << stub << std::endl;
-        }
+        stub stub = *local_stub_it;
+        out_string << stub << std::endl;
     }
     out_string << trailer_element;
 

@@ -1,7 +1,7 @@
 /*!
  * @file gbt_tb.hpp
  * @author Christian Amstutz
- * @date June 29, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -14,10 +14,11 @@
 #pragma once
 
 #include "../modules/frontend/gbt.hpp"
-#include "../data_formats/CIC_format/CIC_format.hpp"
+#include "../modules/frontend/data_concentrator_config.hpp"
+#include "../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../data_formats/gbt_link_format.hpp"
 
-#include "../TT_configuration/sensor_module_config/gbt_config.hpp"
+#include "../modules/frontend/gbt_config.hpp"
 #include "../systems/TT_configuration.hpp"
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
@@ -51,10 +52,13 @@ public:
     /*!
      * Constructor:
      */
-    gbt_tb(sc_module_name _name, gbt_config configuration);
+    gbt_tb(sc_module_name _name, gbt_config configuration, data_concentrator_config CBC_concentrator_config);
     SC_HAS_PROCESS(gbt_tb);
     ~gbt_tb();
 
 private:
+    gbt_config dut_configuration;
+    data_concentrator_config CBC_concentrator_config;
+
     std::ostringstream log_buffer;
 };

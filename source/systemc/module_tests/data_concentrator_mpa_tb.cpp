@@ -26,7 +26,9 @@ data_concentrator_mpa_tb::data_concentrator_mpa_tb(sc_module_name _name,
         data_valid(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP, "data_valid"),
         fe_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_MPA_FE_CHIP, "fe_signal"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_data_concentrator("Data_Concentrator_MPA_DUT", configuration.mpa_data_concentrator)
+        dut_data_concentrator("Data_Concentrator_MPA_DUT",
+                configuration.mpa_data_concentrator),
+        dut_configuration(configuration.mpa_data_concentrator)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_data_concentrator.clk.bind(LHC_clock);
@@ -62,7 +64,7 @@ data_concentrator_mpa_tb::~data_concentrator_mpa_tb()
 void data_concentrator_mpa_tb::generate_hit_data()
 {
     data_valid.write(false);
-    fe_signals.write(data_concentrator_mpa::fe_stub_t());
+    fe_signals.write(data_concentrator::fe_stub_t());
 
     wait(50, SC_NS);
     write_fe(2,0,1,3,255,4);
@@ -119,15 +121,16 @@ void data_concentrator_mpa_tb::write_fe(const unsigned int fe_chip,
 		const unsigned int pixel, const unsigned int strip,
 		const unsigned int bend)
 {
-    data_concentrator_mpa::fe_stub_t fe_data(bx, pixel, strip, bend);
+    data_concentrator::fe_stub_t fe_data(
+            dut_configuration.frontend_chip_type.output_stub, 0, bx, 0, strip,
+            bend, pixel);
 
     data_valid.at(fe_chip, hit_nr).write(true);
     fe_signals.at(fe_chip, hit_nr).write(fe_data);
 
-    unsigned int output = fe_data.get_bitvector().to_uint();
     log_buffer << sc_time_stamp() << ": writing to "
                << fe_signals.at(fe_chip,hit_nr).name()
-               << " --> " << std::hex << output << std::dec
+               << " --> " << fe_data << std::dec
                << std::endl;
 
     return;
@@ -138,7 +141,7 @@ void data_concentrator_mpa_tb::release_fe(const unsigned int fe_chip,
         const unsigned int hit_nr)
 {
     data_valid.at(fe_chip, hit_nr).write(false);
-	fe_signals.at(fe_chip, hit_nr).write(data_concentrator_mpa::fe_stub_t());
+	fe_signals.at(fe_chip, hit_nr).write(data_concentrator::fe_stub_t(dut_configuration.frontend_chip_type.output_stub));
 
     return;
 }

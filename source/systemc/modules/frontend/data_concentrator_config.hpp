@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_config.hpp
  * @author Christian Amstutz
- * @date June 25, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include "frontend_chip_config.hpp"
+#include "../../data_formats/stub_config.hpp"
 
 // *****************************************************************************
 /*!
@@ -23,6 +24,7 @@ class data_concentrator_config
 {
 public:
     frontend_chip_config frontend_chip_type;
+    stub_config output_stub;
 
     unsigned int fe_chips_count;
     unsigned int max_output_stubs;

@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit_tb.cpp
  * @author Christian Amstutz
- * @date July 17, 2015
+ * @date July 30, 2015
  */
 
 /*
@@ -25,7 +25,8 @@ dtc_input_unit_tb::dtc_input_unit_tb(sc_module_name _name,
         gbt_input_link("gbt_input_link"),
         bx_sorted_outputs(2, configuration.dtc.input_unit.fe_collect_cycles, "bx_sorted_output"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_dtc_input_unit("DUT_DTC_input_unit", configuration.dtc.input_unit)
+        dut_dtc_input_unit("DUT_DTC_input_unit", configuration.dtc.input_unit),
+        dut_configuration(configuration.dtc.input_unit)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_dtc_input_unit.clk.bind(LHC_clock);
@@ -66,10 +67,10 @@ void dtc_input_unit_tb::generate_packets()
 {
     wait(50, SC_NS);
 
-    CIC_frame input_frame;
-    CIC::stub_CBC stub1(1, 1, 1, 1);
+    CIC_frame input_frame(dut_configuration.CBC_input_stub);
+    stub stub1(dut_configuration.CBC_input_stub, 0, 1, 1, 1, 1, 0);
     input_frame.add_stub(stub1);
-    CIC::stub_CBC stub2(2, 1, 1, 2);
+    stub stub2(dut_configuration.CBC_input_stub, 0, 2, 1, 1, 2, 0);
     input_frame.add_stub(stub2);
     gbt_link_format input_packet(input_frame, input_frame);
 
@@ -80,7 +81,7 @@ void dtc_input_unit_tb::generate_packets()
 
     wait(580, SC_NS);
 
-    CIC::stub_CBC stub3(5, 1, 1, 3);
+    stub stub3(dut_configuration.CBC_input_stub, 0, 5, 1, 1, 3, 0);
     input_frame.add_stub(stub3);
     gbt_link_format input_packet2(input_frame, input_frame);
 

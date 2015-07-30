@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_test.hpp
  * @author Christian
- * @date June 18, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -21,6 +21,7 @@
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
 #include "../systems/TT_configuration.hpp"
+#include "../TT_configuration/track_trigger_config.hpp"
 #include "../modules/hit_generator/hit_generator.hpp"
 
 /*!
@@ -51,7 +52,7 @@ public:
     /*!
      * Constructor:
      */
-    hit_generator_tb(sc_module_name _name);
+    hit_generator_tb(const sc_module_name _name, const track_trigger_config configuration);
     SC_HAS_PROCESS(hit_generator_tb);
     ~hit_generator_tb();
 

@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "CIC_format/CIC_format.hpp"
+#include "CIC_frame/CIC_frame.hpp"
 
 #include <systemc.h>
 

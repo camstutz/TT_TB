@@ -36,8 +36,8 @@ public:
 
     // ----- Local Channel Declarations ----------------------------------------
     sc_map_square<sc_signal<bool> > data_valid;
-    sc_map_square<sc_signal<data_concentrator_cbc::fe_stub_t> > fe_signals;
-    sc_signal<data_concentrator_cbc::output_t> dc_output;
+    sc_map_square<sc_signal<data_concentrator::fe_stub_t> > fe_signals;
+    sc_signal<data_concentrator::output_t> dc_output;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_hit_data();
@@ -50,7 +50,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    data_concentrator_cbc dut_data_concentrator;
+    data_concentrator dut_data_concentrator;
 
     // ----- Constructor -------------------------------------------------------
     /*!
@@ -61,5 +61,7 @@ public:
     ~data_concentrator_cbc_tb();
 
 private:
+    data_concentrator_config dut_configuration;
+
     std::ostringstream log_buffer;
 };

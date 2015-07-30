@@ -1,5 +1,5 @@
 /*!
- * @file dtc_input_unit_config.hpp
+ * @file hit_generator_config.hpp
  * @author Christian Amstutz
  * @date July 29, 2015
  *
@@ -13,16 +13,17 @@
 
 #pragma once
 
+#include "../../data_formats/stub_config.hpp"
+
+#include <string>
+
 // *****************************************************************************
 /*!
  * @brief
  */
-class dtc_input_unit_config
+class hit_generator_config
 {
 public:
-    stub_config CBC_input_stub;
-    stub_config MPA_input_stub;
-
-    unsigned int fe_collect_cycles;
-    unsigned int fe_id;
+    std::string input_file;
+    stub_config output_stub;
 };

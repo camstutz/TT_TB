@@ -25,7 +25,8 @@ dtc_tb::dtc_tb(sc_module_name _name,
         gbt_input_links(configuration.dtc.input_nr, "gbt_input_link"),
         tower_output_stream("tower_output_stream"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_dtc("DUT_DTC", configuration.dtc)
+        dut_dtc("DUT_DTC", configuration.dtc),
+        dut_configuration(configuration.dtc)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_dtc.clk.bind(LHC_clock);
@@ -62,9 +63,9 @@ void dtc_tb::generate_packets()
     wait(50, SC_NS);
 
     CIC_frame input_frame1, input_frame2;
-    CIC::stub_CBC stub1(1, 1, 1, 1);
+    stub stub1(dut_configuration.input_unit.CBC_input_stub, 0, 1, 1, 1, 1, 0);
     input_frame1.add_stub(stub1);
-    CIC::stub_CBC stub2(1, 1, 1, 2);
+    stub stub2(dut_configuration.input_unit.CBC_input_stub, 0, 1, 1, 1, 2, 0);
     input_frame2 = input_frame1;
     input_frame1.add_stub(stub2);
     gbt_link_format input_packet(input_frame1, input_frame2);

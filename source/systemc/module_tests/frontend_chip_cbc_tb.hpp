@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc_tb.hpp
  * @author Christian Amstutz
- * @date June 18, 2015
+ * @date July 28, 2015
  *
  * @brief
  *
@@ -33,9 +33,10 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_fifo<frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::input_stub_t> stub_input_sig;
+    sc_fifo<frontend_chip::input_stub_t> stub_input_sig;
     sc_map_linear<sc_signal<bool> > data_valid_signals;
-    sc_map_linear<sc_signal<frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::output_stub_t> > fe_out_signals;
+    sc_map_linear<sc_signal<frontend_chip
+    ::output_stub_t> > fe_out_signals;
 
     // ----- Process Declarations ----------------------------------------------
     void generate_stubs();
@@ -45,7 +46,7 @@ public:
 
     // ----- Module Instantiations ---------------------------------------------
     sc_clock LHC_clock;
-    frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t> dut_front_end_chip;
+    frontend_chip dut_front_end_chip;
 
     // ----- Constructor -------------------------------------------------------
     /*!
@@ -59,5 +60,5 @@ private:
     std::ostringstream log_buffer;
 
     void trace(sc_trace_file* trace_file);
-    void write_stub(frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::input_stub_t::strip_t strip, frontend_chip<fe_cbc_stub_t, fe_cbc_stub_t>::input_stub_t::bend_t bend);
+    void write_stub(unsigned int strip, int bend);
 };

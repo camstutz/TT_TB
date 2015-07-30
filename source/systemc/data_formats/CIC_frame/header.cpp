@@ -11,7 +11,7 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "header.hpp"
+#include "../CIC_frame/header.hpp"
 
 // *****************************************************************************
 namespace CIC

@@ -1,7 +1,7 @@
 /*!
  * @file dtc_tb.hpp
  * @author Christian Amstutz
- * @date July 17, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -17,7 +17,7 @@
 #include "../modules/backend/dtc/dtc.hpp"
 
 #include "../data_formats/gbt_link_format.hpp"
-#include "../data_formats/CIC_format/CIC_format.hpp"
+#include "../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../data_formats/prbf/PRBF.hpp"
 
 #include "../TT_configuration/track_trigger_config.hpp"
@@ -62,5 +62,7 @@ public:
     ~dtc_tb();
 
 private:
+    dtc_config dut_configuration;
+
     std::ostringstream log_buffer;
 };

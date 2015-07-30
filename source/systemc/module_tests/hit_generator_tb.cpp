@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_tb.cpp
  * @author Christian Amstutz
- * @date June 18, 2015
+ * @date July 29, 2015
  */
 
 /*
@@ -19,7 +19,7 @@
  * The module is sensitive to ...
  */
 
-hit_generator_tb::hit_generator_tb(sc_module_name _name) :
+hit_generator_tb::hit_generator_tb(const sc_module_name _name, const track_trigger_config configuration) :
         sc_module(_name),
         hit_signals_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
                 NR_FE_CHIP_PER_MODULE, "hit_signal_mpa", 0, 0, 0, 0),
@@ -27,7 +27,7 @@ hit_generator_tb::hit_generator_tb(sc_module_name _name) :
                 NR_FE_CHIP_PER_MODULE, "hit_signal_cbc", NR_DETECTOR_MPA_LAYERS, 0,
                 0, 0),
         hit_cnt_signal("hit_cnt_signal"),
-        dut_hit_generator("Hit_Generator_DUT", "/home/amstutz/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt")
+        dut_hit_generator("Hit_Generator_DUT", configuration.hit_generator)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_hit_generator.mpa_stub_outputs.bind(hit_signals_mpa);

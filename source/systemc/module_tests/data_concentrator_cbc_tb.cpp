@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator_cbc_tb.cpp
  * @author Christian Amstutz
- * @date June 29, 2015
+ * @date July 29, 2015
  */
 
 /*
@@ -24,7 +24,8 @@ data_concentrator_cbc_tb::data_concentrator_cbc_tb(sc_module_name _name, track_t
         data_valid(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "data_valid"),
         fe_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "fe_signal"),
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_data_concentrator("Data_Concentrator_CBC_DUT", configuration.cbc_data_concentrator)
+        dut_data_concentrator("Data_Concentrator_CBC_DUT", configuration.cbc_data_concentrator),
+        dut_configuration(configuration.cbc_data_concentrator)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_data_concentrator.clk.bind(LHC_clock);
@@ -60,7 +61,7 @@ data_concentrator_cbc_tb::~data_concentrator_cbc_tb()
 void data_concentrator_cbc_tb::generate_hit_data()
 {
     data_valid.write(false);
-    fe_signals.write(data_concentrator_cbc::fe_stub_t());
+    fe_signals.write(data_concentrator::fe_stub_t());
 
     wait(25, SC_NS);
     write_fe(0,0,255,1);
@@ -121,15 +122,14 @@ void data_concentrator_cbc_tb::write_fe( const unsigned int fe_chip,
         const unsigned int hit_nr, const unsigned int address,
         const unsigned int bend)
 {
-    data_concentrator_cbc::fe_stub_t fe_data(0, address, bend);
+    data_concentrator::fe_stub_t fe_data(dut_configuration.frontend_chip_type.output_stub, 0, 0, 0, address, bend, 0);
 
     data_valid.at(fe_chip, hit_nr).write(true);
     fe_signals.at(fe_chip, hit_nr).write(fe_data);
 
-    unsigned int output = fe_data.get_bitvector().to_uint();
     log_buffer << sc_time_stamp() << ": writing to "
                << fe_signals.at(fe_chip,hit_nr).name()
-               << " --> " << std::hex << output << std::dec
+               << " --> " << fe_data << std::dec
                << std::endl;
 
     return;
@@ -140,7 +140,7 @@ void data_concentrator_cbc_tb::release_fe(const unsigned int fe_chip,
         const unsigned int hit_nr)
 {
     data_valid.at(fe_chip, hit_nr).write(false);
-	fe_signals.at(fe_chip, hit_nr).write(data_concentrator_cbc::fe_stub_t());
+	fe_signals.at(fe_chip, hit_nr).write(data_concentrator::fe_stub_t());
 
     return;
 }

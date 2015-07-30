@@ -19,7 +19,7 @@
 
 #include "../systems/tt_tb_logger.hpp"
 
-#include "hit_file_test.hpp"
+//#include "hit_file_test.hpp"
 #include "hit_generator_tb.hpp"
 #include "frontend_chip_cbc_tb.hpp"
 #include "frontend_chip_mpa_tb.hpp"
@@ -59,14 +59,15 @@ int sc_main(int argc, char *agv[])
 
     // ----- Module instance declarations --------------------------------------
 
-    hit_generator_tb hit_generator_tb("Hit_Generator_TB");
+    configuration.hit_generator.input_file = "/home/amstutz/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt";
+    hit_generator_tb hit_generator_tb("Hit_Generator_TB", configuration);
     frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
     frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file, configuration);
     data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
     data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
     gbt_config gbt_configuration;
     gbt_configuration.input_link_count = 2;
-    gbt_tb gbt_TB("GBT_TB", gbt_configuration);
+    gbt_tb gbt_TB("GBT_TB", gbt_configuration, configuration.cbc_data_concentrator);
     dtc_input_unit_tb dtc_INU_TB("DTC_input_unit_TB", configuration);
     dtc_output_unit_tb dtc_OUTU_TB("DTC_output_unit_TB", configuration);
     dtc_tb DTC_TB("DTC_TB", configuration);

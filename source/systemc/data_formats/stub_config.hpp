@@ -1,7 +1,7 @@
 /*!
- * @file fe_chip_output_config.hpp
+ * @file stub_config.hpp
  * @author Christian Amstutz
- * @date June 25, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -13,15 +13,21 @@
 
 #pragma once
 
+#include "stub_config.hpp"
+
 // *****************************************************************************
 /*!
  * @brief
  */
-class fe_chip_output_config
+class stub_config
 {
 public:
+    unsigned int valid_bits;
     unsigned int bx_bits;
+    unsigned int fechip_bits;
     unsigned int strip_bits;
-    unsigned int pixel_bits;
     unsigned int bend_bits;
+    unsigned int pixel_bits;
+
+    bool operator== (const stub_config &v) const;
 };

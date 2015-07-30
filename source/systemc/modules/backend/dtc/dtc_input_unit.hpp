@@ -16,7 +16,7 @@
 #include "dtc_buffer_element.hpp"
 
 #include "../../../data_formats/gbt_link_format.hpp"
-#include "../../../data_formats/CIC_format/CIC_format.hpp"
+#include "../../../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
 
 #include "dtc_input_unit_config.hpp"
@@ -66,4 +66,7 @@ public:
      */
     dtc_input_unit(sc_module_name _name, dtc_input_unit_config configuration);
     SC_HAS_PROCESS(dtc_input_unit);
+
+private:
+    dtc_input_unit_config configuration;
 };

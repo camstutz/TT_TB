@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit_tb.hpp
  * @author Christian Amstutz
- * @date July 17, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -19,7 +19,7 @@
 #include "../systems/TT_configuration.hpp"
 
 #include "../data_formats/gbt_link_format.hpp"
-#include "../data_formats/CIC_format/CIC_format.hpp"
+#include "../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../data_formats/prbf/PRBF.hpp"
 
 #include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
@@ -62,5 +62,7 @@ public:
     ~dtc_input_unit_tb();
 
 private:
+    dtc_input_unit_config dut_configuration;
+
     std::ostringstream log_buffer;
 };

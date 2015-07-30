@@ -1,7 +1,7 @@
 /*!
  * @file gbt.hpp
  * @author Christian Amstutz
- * @date June 29, 2015
+ * @date July 29, 2015
  *
  * @brief
  *
@@ -14,11 +14,11 @@
 #pragma once
 
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "../../data_formats/CIC_format/CIC_format.hpp"
+#include "../../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../../data_formats/gbt_link_format.hpp"
 #include "../../systems/tt_tb_logger.hpp"
 
-#include "../../TT_configuration/sensor_module_config/gbt_config.hpp"
+#include "gbt_config.hpp"
 
 #include <systemc.h>
 
