@@ -40,7 +40,7 @@ void gbt::combine_inputs()
 
         // TODO: adapt to more than 2 inputs
 
-        output_t out_value(cic_in[0].read(), cic_in[1].read() );
+        output_t out_value(cic_in.at(0).read(), cic_in.at(1).read() );
         optical_link.write(out_value);
 
         if ((cic_in[0].read().stub_count() > 0) | (cic_in[1].read().stub_count() > 0))
