@@ -77,6 +77,10 @@ track_trigger_config baseline_config()
     configuration.mpa_sensor_module.gbt = configuration.gbt;
     configuration.mpa_sensor_module_test.type = configuration.mpa_sensor_module;
 
+    // Hit Generator
+    configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;
+    configuration.hit_generator.output_stub_mpa = configuration.mpa_frontend_chip.input_stub;
+
     // DTC
     configuration.dtc.input_nr = 3;
     configuration.dtc.collection_cycles = 8;

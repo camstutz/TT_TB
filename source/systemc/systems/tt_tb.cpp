@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.cpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 3, 2015
  *
  * @brief
  */
@@ -26,8 +26,7 @@ SC_MODULE_EXPORT(tt_tb);
 tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuration) :
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("true_sig"),
-        hit_fifos_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo_mpa", 0, 0, 0, 0),
-        hit_fifos_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, NR_FE_CHIP_PER_MODULE, "hit_fifo_cbc", NR_DETECTOR_MPA_LAYERS, 0, 0, 0),
+        hit_fifos(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, 2*NR_FE_CHIP_PER_MODULE, "hit_fifo"),
         gbt_links(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "GBT_link"),
         dtc_links(NR_PRB_PER_TRIGGER_TOWER, "DTC_link"),
         result_hits(NR_PRB_PER_TRIGGER_TOWER * NR_AM_BOARDS, NR_DETECTOR_LAYERS, "result_road"),
@@ -39,8 +38,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
         trigger_tower_0("trigger_tower", configuration.trigger_tower),
         roadAnalyzer("road_analyzer")
 {
-    hitGenerator.mpa_stub_outputs.bind(hit_fifos_mpa);
-    hitGenerator.cbc_stub_outputs.bind(hit_fifos_cbc);
+    hitGenerator.stub_outputs.bind(hit_fifos);
     hitGenerator.hit_cnt(hit_cnt_sig);
 
     sc_map_cube<sensor_module>::iterator mpa_module_it = sensor_modules_mpa.begin();
@@ -48,9 +46,9 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
     {
         sc_map_cube<sensor_module>::key_type module_key = sensor_modules_mpa.get_key(*mpa_module_it).second;
         mpa_module_it->clk.bind(LHC_clock);
-        mpa_module_it->stub_inputs.bind(hit_fifos_mpa(
+        mpa_module_it->stub_inputs.bind(hit_fifos(
                 sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 0),
-                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, NR_FE_CHIP_PER_MODULE) ));
+                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 2*NR_FE_CHIP_PER_MODULE) ));
         mpa_module_it->gbt_link.bind(gbt_links.at(module_key.Z, module_key.Y, module_key.X));
     }
 
@@ -59,9 +57,9 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
     {
         sc_map_cube<sensor_module>::key_type module_key = sensor_modules_cbc.get_key(*cbc_module_it).second;
         cbc_module_it->clk.bind(LHC_clock);
-        cbc_module_it->stub_inputs.bind(hit_fifos_cbc(
+        cbc_module_it->stub_inputs.bind(hit_fifos(
                 sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 0),
-                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, NR_FE_CHIP_PER_MODULE) ));
+                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 2*NR_FE_CHIP_PER_MODULE) ));
         cbc_module_it->gbt_link.bind(gbt_links.at(module_key.Z, module_key.Y, module_key.X));
     }
 

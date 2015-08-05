@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_config.hpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 3, 2015
  *
  * @brief
  *
@@ -25,5 +25,7 @@ class hit_generator_config
 {
 public:
     std::string input_file;
-    stub_config output_stub;
+
+    stub_config output_stub_cbc;
+    stub_config output_stub_mpa;
 };

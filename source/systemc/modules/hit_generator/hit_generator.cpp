@@ -17,12 +17,10 @@
 hit_generator::hit_generator(sc_module_name _name ,
         const hit_generator_config configuration) :
         sc_module(_name),
-        cbc_stub_outputs(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                NR_FE_CHIP_PER_MODULE, "hit_output_cbc", NR_DETECTOR_MPA_LAYERS, 0,
-                0, 0),
-        mpa_stub_outputs(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                NR_FE_CHIP_PER_MODULE, "hit_output_mpa", 0, 0, 0, 0),
+        stub_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
+                2*NR_FE_CHIP_PER_MODULE, "hit_output"),
         hit_cnt("hit_cnt"),
+        configuration(configuration),
         hit_counter(0)
 {
     // ----- Process registration ----------------------------------------------
@@ -45,38 +43,38 @@ void hit_generator::schedule_hits()
     while (!hit_queue.empty())
     {
         sc_time wait_time;
-        HitEvent hit;
-        cbc_stub_t processed_cbc_stub;
-        mpa_stub_t processed_mpa_stub;
 
-        hit = hit_queue.front();
+        HitSF hit = hit_queue.front();
         hit_queue.pop();
 
-        wait_time = (hit.timeStamp * sc_time(LHC_CLOCK_PERIOD_NS, SC_NS));
+        wait_time = (hit.getEvent() * sc_time(LHC_CLOCK_PERIOD_NS, SC_NS));
         wait_time = wait_time - sc_time_stamp();
-        if (wait_time > sc_time(0,SC_PS))
+        if (wait_time > sc_time(0, SC_PS))
         {
             wait(wait_time);
         }
 
+        stub output_stub;
+
         // stub belongs to an MPA chip
-        if (hit.layer < NR_DETECTOR_MPA_LAYERS)
+        if (hit.getModuleIsPS())
         {
-            processed_mpa_stub.set_bx(0);
-            processed_mpa_stub.set_strip(hit.stubAddress);
-            processed_mpa_stub.set_bend(hit.stubBend);
-            processed_mpa_stub.set_pixel(0);
-            mpa_stub_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
-                    hit.frontEndChipNr).write(processed_mpa_stub);
+            output_stub = stub(configuration.output_stub_mpa, true, 0, 0,
+                    hit.getStrip(), hit.getBend(), hit.getPixel());
         }
         // stub belongs to a CBC chip
         else
         {
-            processed_cbc_stub.set_strip(hit.stubAddress);
-            processed_cbc_stub.set_bend(hit.stubBend);
-            cbc_stub_outputs.at(hit.layer, hit.phiCoordinate, hit.zCoordinate,
-                    hit.frontEndChipNr).write(processed_cbc_stub);
+            output_stub = stub(configuration.output_stub_cbc, true, 0, 0,
+                    hit.getStrip(), hit.getBend(), 0);
         }
+
+        HitSF::layer_t layer = hit.getLayer();
+        HitSF::ladder_t ladder = hit.getLadder();
+        HitSF::module_t module_cnt = hit.getModule();
+        HitSF::chip_t chip = 2*hit.getSegment() + hit.getChip();
+
+        stub_outputs.at(layer, ladder, module_cnt, chip).write(output_stub);
 
         ++hit_counter;
         hit_cnt.write(hit_counter);
@@ -106,33 +104,21 @@ int hit_generator::readFile(const std::string &hit_file) {
     hitFile.open(hit_file.c_str());
     if (hitFile.is_open())
     {
-        #ifdef DEBUG
-        std::cout << "File: " << hit_file << " opened ..." << std::endl;
-        #endif
-
-        HitEvent hit;
+        SYSTEMC_LOG << "File: " << hit_file << " opened ...";
 
         // clear the event queue
-        std::queue<HitEvent> empty;
+        std::queue<HitSF> empty;
         std::swap(hit_queue, empty);
 
         // read all the hits from the file
         std::string fileLine;
         while (std::getline(hitFile, fileLine))
         {
-            std::stringstream fileLineStream(fileLine);
-            fileLineStream >> std::hex >> hit.timeStamp
-                           >> hit.layer
-                           >> hit.phiCoordinate
-                           >> hit.zCoordinate
-                           >> hit.frontEndChipNr
-                           >> hit.stubAddress
-                           >> hit.stubBend;
-
-            /** Assumption: hits are in the correct order in the file. */
+            bool line_valid;
+            HitSF hit = HitSF(&line_valid, fileLine);
 
             // check for valid stub in the read line
-            if ( !fileLineStream.fail() )
+            if (line_valid)
             {
                 hit_queue.push(hit);
 
@@ -148,13 +134,12 @@ int hit_generator::readFile(const std::string &hit_file) {
                           << std::endl;
                 #endif
             }
+
         }
 
         hitFile.close();
 
-        #ifdef DEBUG
-        std::cout << "File: " << hit_file << " closed." << std::endl;
-        #endif
+        SYSTEMC_LOG << "File: " << hit_file << " closed.";
     }
     else
     {

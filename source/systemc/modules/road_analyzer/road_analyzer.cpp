@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.cpp
  * @author Christian Amstutz
- * @date May 5, 2015
+ * @date August 3, 2015
  *
  * @brief
  */
@@ -14,7 +14,7 @@
 
 // *****************************************************************************
 
-const std::string road_analyzer::filename = "data/roads.txt";
+const std::string road_analyzer::filename = "data/output/roads.txt";
 
 // *****************************************************************************
 road_analyzer::road_analyzer(sc_module_name _name) :
