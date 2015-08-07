@@ -33,8 +33,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_4d<sc_fifo<hit_generator::mpa_stub_t> > hit_signals_mpa;
-    sc_map_4d<sc_fifo<hit_generator::cbc_stub_t> > hit_signals_cbc;
+    sc_map_4d<sc_fifo<stub> > hit_signals;
 
     sc_signal<unsigned int> hit_cnt_signal;
 
@@ -57,6 +56,7 @@ public:
     ~hit_generator_tb();
 
 private:
+    hit_generator_config configuration;
     std::ostringstream log_buffer;
 
 };

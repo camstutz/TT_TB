@@ -72,7 +72,8 @@ void hit_generator::schedule_hits()
         HitSF::layer_t layer = hit.getLayer();
         HitSF::ladder_t ladder = hit.getLadder();
         HitSF::module_t module_cnt = hit.getModule();
-        HitSF::chip_t chip = 2*hit.getSegment() + hit.getChip();
+        // TODO: exchange number by constant
+        HitSF::chip_t chip = 8*hit.getSegment() + hit.getChip();
 
         stub_outputs.at(layer, ladder, module_cnt, chip).write(output_stub);
 
@@ -81,13 +82,14 @@ void hit_generator::schedule_hits()
 
         #ifdef DEBUG
         std::cout << std::hex << sc_time_stamp() << " hit_generator @ "
-                << "L" << hit.layer
-                << "P" << hit.phiCoordinate
-                << "Z" << hit.zCoordinate
-                << "FE" << hit.frontEndChipNr
+                << "Lay" << layer
+                << "Lad" << ladder
+                << "M"   << module_cnt
+                << "FE"  << chip
                 << " Stub --> 0x"
-                << processed_cbc_stub.get_strip() << "/0x"
-                << processed_cbc_stub.get_bend() << std::endl;
+                << output_stub.get_strip() << "/0x"
+                << output_stub.get_bend() <<  "/0x"
+                << output_stub.get_pixel() << std::endl;
         #endif
     }
 
@@ -124,13 +126,14 @@ int hit_generator::readFile(const std::string &hit_file) {
 
                 #ifdef DEBUG
                 std::cout << "Hit read -" << std::hex
-                          << " TS:0x" << hit.timeStamp
-                          << ", Lay:0x" << hit.layer
-                          << ", Phi:0x" << hit.phiCoordinate
-                          << ", Z:0x" << hit.zCoordinate
-                          << ", FE:0x" << hit.frontEndChipNr
-                          << ", Stub:0x" << hit.stubAddress
-                          << ", Bend:0x" << hit.stubBend
+                          << " TS:0x" << hit.getEvent()
+                          << ", Lay:0x" << hit.getLayer()
+                          << ", Lad:0x" << hit.getLadder()
+                          << ", Mod:0x" << hit.getModule()
+                          << ", FE:0x" << hit.getChip()
+                          << ", Strip:0x" << hit.getStrip()
+                          << ", Pix:0x" << hit.getPixel()
+                          << ", Bend:0x" << hit.getBend()
                           << std::endl;
                 #endif
             }
