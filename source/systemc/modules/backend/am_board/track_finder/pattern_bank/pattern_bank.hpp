@@ -12,6 +12,15 @@
 
 #pragma once
 
+#include "../../../../../libraries/CMSSW_extraction/CMSPatternLayer.h"
+#include "../../../../../libraries/CMSSW_extraction/SectorTree.h"
+#include "../../../../../libraries/CMSSW_extraction/Sector.h"
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
 #include <vector>
 #include <map>
 #include <fstream>
@@ -42,10 +51,13 @@ public:
     void generate_patterns_straight(const unsigned int pattern_nr);
     void generate_patterns_slight_tilt(const unsigned int pattern_nr);
 
-    void generate_text_file(const std::string& filename) const;
-    void generate_binary_file(const std::string& filename) const;
-    void import_text_file(const std::string& filename);
-    void import_binary_file(const std::string& filename);
+    void store_text_file(const std::string& filename) const;
+    void store_text_binary_file(const std::string& filename) const;
+    void store_binary_file(const std::string& filename) const;
+    //void load_text_file(const std::string& filename);
+    void load_text_binary_file(const std::string& filename);
+    void load_binary_file(const std::string& filename);
+    void load_CMSSW_patterns(const std::string& filename);
 
 public:
     typedef std::pair<pattern_id_t, pattern_t> pattern_pair_t;
@@ -61,5 +73,6 @@ public:
     reverse_lookup_collection_t reverse_tables;
 
     void insert_pattern(const pattern_id_t id, const pattern_t& pattern);
+    void insert_pattern(const pattern_t& pattern);
     std::string print_reverse_tables();
 };

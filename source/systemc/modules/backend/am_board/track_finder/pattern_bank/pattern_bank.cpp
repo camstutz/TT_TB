@@ -194,7 +194,7 @@ void pattern_bank::generate_patterns_slight_tilt(const unsigned int pattern_nr)
 }
 
 // *****************************************************************************
-void pattern_bank::generate_text_file(const std::string& filename) const
+void pattern_bank::store_text_file(const std::string& filename) const
 {
     std::ofstream file(filename.c_str());
     file << std::setfill('0');
@@ -202,11 +202,11 @@ void pattern_bank::generate_text_file(const std::string& filename) const
     pattern_memory_t::const_iterator pattern_it = pattern_memory.begin();
     for (; pattern_it != pattern_memory.end(); ++pattern_it)
     {
-        file << std::setw(id_width) << std::hex << pattern_it->first << " ";
-        file << std::setw(pattern_width) << std::hex << pattern_it->second[0];
-        for (unsigned int layer = 1; layer < layer_nr; ++layer)
+        for (unsigned int layer = 0; layer < layer_nr; ++layer)
         {
-             file << " " << std::setw(pattern_width) << std::hex << pattern_it->second[layer];
+            CMSPatternLayer mp;
+            mp.setIntValue(pattern_it->second[layer]);
+            file << mp.toString() << " - ";
         }
         file << std::endl;
     }
@@ -217,7 +217,29 @@ void pattern_bank::generate_text_file(const std::string& filename) const
 }
 
 // *****************************************************************************
-void pattern_bank::generate_binary_file(const std::string& filename) const
+void pattern_bank::store_text_binary_file(const std::string& filename) const
+{
+    std::ofstream file(filename.c_str());
+
+    pattern_memory_t::const_iterator pattern_it = pattern_memory.begin();
+    for (; pattern_it != pattern_memory.end(); ++pattern_it)
+    {
+        for (unsigned int layer = 0; layer < layer_nr; ++layer)
+        {
+            CMSPatternLayer mp;
+            mp.setIntValue(pattern_it->second[layer]);
+            file << mp.toStringBinary() << " - ";
+        }
+        file << std::endl;
+    }
+
+    file.close();
+
+    return;
+}
+
+// *****************************************************************************
+void pattern_bank::store_binary_file(const std::string& filename) const
 {
     std::ofstream file(filename.c_str(), std::ios::binary | std::ios::trunc | std::ios::out);
 
@@ -238,62 +260,138 @@ void pattern_bank::generate_binary_file(const std::string& filename) const
 }
 
 // *****************************************************************************
-void pattern_bank::import_text_file(const std::string& filename)
+//void pattern_bank::load_text_file(const std::string& filename)
+//{
+//    std::ifstream file(filename.c_str(), std::ios::in);
+//    if (file.is_open())
+//    {
+//        std::string line;
+//        std::getline(file, line);
+//        unsigned int layer_cnt = 0;
+//        bool last_blank = true;
+//        for (unsigned int i = 0; i < line.length(); ++i)
+//        {
+//            if (line[i] == ' ')
+//            {
+//                if (last_blank == false)
+//                {
+//                    ++layer_cnt;
+//                }
+//                last_blank = true;
+//            }
+//            else
+//            {
+//                last_blank = false;
+//            }
+//        }
+//        if (line[line.length()-1] == ' ')
+//        {
+//            --layer_cnt;
+//        }
+//        file.seekg(0);
+//
+//        if (layer_cnt == layer_nr)
+//        {
+//            pattern_memory.clear();
+//
+//            pattern_t new_pattern;
+//            new_pattern.resize(layer_cnt);
+//            pattern_id_t id;
+//            while(file >> std::hex >> id)
+//            {
+//                for (unsigned int layer = 0; layer < layer_nr; ++layer)
+//                {
+//                    element_t new_element;
+//                    file >> std::hex >> new_element;
+//                    new_pattern[layer] = new_element;
+//                }
+//                insert_pattern(id, new_pattern);
+//            }
+//        }
+//        else
+//        {
+//            std::cerr << "Error reading text pattern file - layer number does not match" << std::endl;
+//        }
+//    }
+//    else
+//    {
+//        std::cerr << "Error reading text pattern file : " << filename << std::endl;
+//    }
+//
+//    file.close();
+//
+//    return;
+//}
+
+// *****************************************************************************
+void pattern_bank::load_text_binary_file(const std::string& filename)
 {
+    // Analyze File format
+    size_t file_layer_nr = 0;
+    unsigned int nr_dc_bits = 0;
     std::ifstream file(filename.c_str(), std::ios::in);
     if (file.is_open())
     {
-        std::string line;
-        std::getline(file, line);
-        unsigned int layer_cnt = 0;
-        bool last_blank = true;
-        for (unsigned int i = 0; i < line.length(); ++i)
+        std::string line = "";
+        while (std::getline(file, line))
         {
-            if (line[i] == ' ')
+            // Line starts with number
+            if ((line[0] >= '0') & (line[0] <= '9') )
             {
-                if (last_blank == false)
+                file_layer_nr = std::count(line.begin(), line.end(), '-');
+
+                size_t start_dc = line.find('(', 0);
+                size_t end_dc = line.find(')', 0);
+                if (start_dc == std::string::npos)
                 {
-                    ++layer_cnt;
+                    nr_dc_bits = 0;
                 }
-                last_blank = true;
-            }
-            else
-            {
-                last_blank = false;
+                else
+                {
+                    nr_dc_bits = end_dc-start_dc-1;
+                }
+
+                break;
             }
         }
-        if (line[line.length()-1] == ' ')
+
+        std::cout << file_layer_nr << " - " << nr_dc_bits << std::endl;
+        if (file_layer_nr != layer_nr)
         {
-            --layer_cnt;
+            std::cerr << "Layers of pattern bank " << filename << " does not fit with model." << std::endl;
+
+            return;
         }
+
         file.seekg(0);
-
-        if (layer_cnt == layer_nr)
+        while (std::getline(file, line))
         {
-            pattern_memory.clear();
-
-            pattern_t new_pattern;
-            new_pattern.resize(layer_cnt);
-            pattern_id_t id;
-            while(file >> std::hex >> id)
+            // Line starts with number
+            if ((line[0] >= '0') & (line[0] <= '9') )
             {
+                pattern_t pattern;
+                pattern.resize(layer_nr);
+                std::stringstream line_stream(line);
+
                 for (unsigned int layer = 0; layer < layer_nr; ++layer)
                 {
-                    element_t new_element;
-                    file >> std::hex >> new_element;
-                    new_pattern[layer] = new_element;
+                    element_t pattern_element;
+                    char dc_bits[5];
+                    char dump[5];
+                    line_stream >> pattern_element;
+                    line_stream.get(dump, 3);
+                    line_stream.get(dc_bits, nr_dc_bits+1);
+                    line_stream.get(dump, 4);
+
+                    pattern[layer] = pattern_element;
                 }
-                insert_pattern(id, new_pattern);
+                insert_pattern(pattern);
             }
-        }
-        else
-        {
-            std::cerr << "Error reading text pattern file - layer number does not match" << std::endl;
         }
     }
     else
     {
-        std::cerr << "Error reading text pattern file : " << filename << std::endl;
+        std::cerr << "Error opening text binary pattern file: " << filename << std::endl;
     }
 
     file.close();
@@ -302,7 +400,7 @@ void pattern_bank::import_text_file(const std::string& filename)
 }
 
 // *****************************************************************************
-void pattern_bank::import_binary_file(const std::string& filename)
+void pattern_bank::load_binary_file(const std::string& filename)
 {
     std::ifstream file(filename.c_str(), std::ios::binary | std::ios::in);
     if (file.is_open())
@@ -329,15 +427,67 @@ void pattern_bank::import_binary_file(const std::string& filename)
         }
         else
         {
-            std::cerr << "Error reading binary pattern file - layer number does not match" << std::endl;
+            std::cerr << "Error reading binary pattern file - layer number does not match." << std::endl;
         }
     }
     else
     {
-        std::cerr << "Error reading binary pattern file" << filename << std::endl;
+        std::cerr << "Error reading binary pattern file" << filename << "." << std::endl;
     }
 
     file.close();
+
+    return;
+}
+
+// *****************************************************************************
+void pattern_bank::load_CMSSW_patterns(const std::string& filename)
+{
+    SectorTree sector_tree;
+
+    std::ifstream pattern_file(filename.c_str());
+    boost::iostreams::filtering_stream<boost::iostreams::input> gzip_filter;
+    gzip_filter.push(boost::iostreams::gzip_decompressor());
+    // We try to read a compressed file
+    try
+    {
+        gzip_filter.push(pattern_file);
+        boost::archive::text_iarchive file_archive(gzip_filter);
+
+        //file_archive.template register_type<SectorTree>();
+        file_archive.template register_type<Sector>();
+
+        file_archive >> sector_tree;
+        std::cout << "compressed pattern file read." << std::endl;
+    }
+    catch (boost::iostreams::gzip_error& e)
+    {
+        // File is not compressed->read it without decompression
+        if(e.error()==4)
+        {
+         std::ifstream uncomp_pattern_file(filename.c_str());
+         boost::archive::text_iarchive file_archive(uncomp_pattern_file);
+         file_archive >> sector_tree;
+         std::cout << "uncompressed pattern file read." << std::endl;
+        }
+    }
+
+    vector<Sector*> sectors = sector_tree.getAllSectors();
+    for(unsigned int i=0; i < sectors.size(); ++i)
+    {
+        Sector* mySector = sectors[i];
+        vector<GradedPattern*> patterns = mySector->getPatternTree()->getLDPatterns();
+        for(unsigned int j=0; j<patterns.size(); ++j)
+        {
+            Pattern* p = patterns[j];
+            for(int k=0;k<p->getNbLayers();k++)
+            {
+                PatternLayer* mp = p->getLayerStrip(k);
+                cout<<((CMSPatternLayer*)mp)->toStringBinary()<<" - ";
+            }
+            cout<<endl;
+        }
+    }
 
     return;
 }
@@ -361,6 +511,16 @@ void pattern_bank::insert_pattern(const pattern_id_t id,
         std::cerr << "Pattern Bank: Layers of inserted pattern do not match."
                   << std::endl;
     }
+
+    return;
+}
+
+// *****************************************************************************
+void pattern_bank::insert_pattern(const pattern_t& pattern)
+{
+    unsigned int pattern_cnt = pattern_memory.size();
+
+    insert_pattern(pattern_cnt, pattern);
 
     return;
 }
