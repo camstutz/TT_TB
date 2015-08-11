@@ -13,8 +13,8 @@
 #pragma once
 
 #include "../../systems/TT_configuration.hpp"
-#include "../../data_formats/HitSF.h"
-#include "../../data_formats/stub.hpp"
+#include "../../data_formats/HitSF/HitSF.h"
+#include "../../data_formats/stub/stub.hpp"
 
 #include "hit_generator_config.hpp"
 

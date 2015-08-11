@@ -20,7 +20,7 @@
 #include <systemc.h>
 #include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 
-#include "../../data_formats/stub.hpp"
+#include "../../data_formats/stub/stub.hpp"
 #include "frontend_chip_config.hpp"
 
 /*!

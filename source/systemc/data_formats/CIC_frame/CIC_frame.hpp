@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../stub.hpp"
+#include "../stub/stub.hpp"
 
 #include "systemc.h"
 

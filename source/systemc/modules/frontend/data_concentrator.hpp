@@ -25,7 +25,7 @@
 #include "../../systems/TT_configuration.hpp"
 #include "data_concentrator_config.hpp"
 
-#include "../../data_formats/stub.hpp"
+#include "../../data_formats/stub/stub.hpp"
 #include "../../data_formats/CIC_frame/CIC_frame.hpp"
 
 /*!

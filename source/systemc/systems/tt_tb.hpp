@@ -16,7 +16,7 @@
 #include "../modules/backend/trigger_tower.hpp"
 #include "../modules/road_analyzer/road_analyzer.hpp"
 
-#include "../data_formats/stub.hpp"
+#include "../data_formats/stub/stub.hpp"
 
 #include "TT_configuration.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"

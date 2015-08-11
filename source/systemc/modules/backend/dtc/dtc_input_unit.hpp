@@ -15,7 +15,7 @@
 
 #include "dtc_buffer_element.hpp"
 
-#include "../../../data_formats/gbt_link_format.hpp"
+#include "../../../data_formats/gbt_link_format/gbt_link_format.hpp"
 #include "../../../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
 

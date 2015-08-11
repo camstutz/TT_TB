@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "CIC_frame/CIC_frame.hpp"
+#include "../CIC_frame/CIC_frame.hpp"
 
 #include <systemc.h>
 
