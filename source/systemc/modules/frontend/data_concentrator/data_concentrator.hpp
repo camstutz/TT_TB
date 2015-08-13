@@ -18,15 +18,15 @@
 
 #include <systemc.h>
 
-#include "../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
-#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-#include "../../systems/tt_tb_logger.hpp"
+#include "../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
+#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "../../../systems/tt_tb_logger.hpp"
 
-#include "../../systems/TT_configuration.hpp"
+#include "../../../systems/TT_configuration.hpp"
 #include "data_concentrator_config.hpp"
 
-#include "../../data_formats/stub/stub.hpp"
-#include "../../data_formats/CIC_frame/CIC_frame.hpp"
+#include "../../../data_formats/stub/stub.hpp"
+#include "../../../data_formats/CIC_frame/CIC_frame.hpp"
 
 /*!
  * @brief

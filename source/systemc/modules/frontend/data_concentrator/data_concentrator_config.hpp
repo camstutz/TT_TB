@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include "frontend_chip_config.hpp"
-#include "../../data_formats/stub/stub_config.hpp"
+#include "../frontend_chip/frontend_chip_config.hpp"
+#include "../../../data_formats/stub/stub_config.hpp"
 
 // *****************************************************************************
 /*!

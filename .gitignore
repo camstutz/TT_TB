@@ -240,3 +240,6 @@ roads.txt
 /Debug C++11
 /Debug
 source/systemc/libraries/CMSSW_extraction/exclude
+
+*.o
+*.d

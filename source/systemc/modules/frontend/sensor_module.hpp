@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.hpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 13, 2015
  *
  * @brief
  *
@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include "frontend_chip.hpp"
-#include "data_concentrator.hpp"
-#include "gbt.hpp"
+#include "frontend_chip/frontend_chip.hpp"
+#include "data_concentrator/data_concentrator.hpp"
+#include "gbt/gbt.hpp"
 
 #include "sensor_module_config.hpp"
 

@@ -14,7 +14,7 @@
 #pragma once
 
 #include "fe_chip_output_config.hpp"
-#include "../../data_formats/stub/stub_config.hpp"
+#include "../../../data_formats/stub/stub_config.hpp"
 
 // *****************************************************************************
 /*!
