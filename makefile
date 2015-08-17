@@ -70,11 +70,6 @@ clean:
 sources/systemc/libraries/systemc_helpers/systemc_helpers.a:
 	make -C source/systemc/libraries/systemc_helpers
 	
-#ifneq "$(MAKECMDGOALS)" "clean"
-#	include $(dependencies)
-#	@echo "included dependencies"
-#endif
-
 %.d: %.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
 
@@ -83,3 +78,8 @@ sources/systemc/libraries/systemc_helpers/systemc_helpers.a:
 
 #%.o: %.cpp %.cc
 #	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+
+ifneq "$(MAKECMDGOALS)" "clean"
+	include $(dependencies)
+	@echo "included dependencies"
+endif
