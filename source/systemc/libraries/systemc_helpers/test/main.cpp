@@ -1,5 +1,5 @@
-#include "../sc_map/sc_map.hpp"
-#include "../sc_analyzer/sc_analyzer.hpp"
+#include "../sc_map/include/sc_map.hpp"
+#include "../sc_analyzer/include/sc_analyzer.hpp"
 #include "source.hpp"
 #include "sink.hpp"
 //#include "bind_tester.hpp"

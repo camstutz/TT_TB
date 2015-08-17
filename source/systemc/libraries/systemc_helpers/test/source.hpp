@@ -3,7 +3,7 @@
 
 #include <systemc.h>
 
-#include "../sc_map/sc_map.hpp"
+#include "../sc_map/include/sc_map.hpp"
 
 class source : public sc_module
 {

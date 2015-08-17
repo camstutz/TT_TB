@@ -1,74 +1,42 @@
-OPATH = obj
-HPATHS = -I/usr/local/lib/systemc-2.3.1/include
-CC = gcc
-CFLAGS = -c -g3 -Wall -std=c++11 $(HPATHS) -o $@
+LINK_LIBS     = $(addprefix -l,$(libraries))
+LINK_LIBPATHS = $(addprefix -L,$(librarypaths))
 
-SCMAP_PATH = sc_map
+CC       := g++
+CPPFLAGS := -Wall -g3 -O0 -std=c++11 $(addprefix -I,$(include_dirs)) $(LINK_LIBPATHS) $(LINK_LIBS)
 
-# -------------------------------------------------------------------------
+SUBLIBS_SRC  := $(addsuffix /src,$(sub_libs))
+SOURCES      := $(foreach _LIB,$(SUBLIBS_SRC),$(wildcard $(_LIB)/*.cpp))
+OBJECTS      := $(subst .cpp,.o,$(SOURCES))
+DEPENDENCIES := $(subst .cpp,.d,$(SOURCES))
 
-sc_map: $(OPATH)/sc_map_key.o \
-        $(OPATH)/sc_map_linear_key.o $(OPATH)/sc_map_linear_range.o \
-        $(OPATH)/sc_map_square_key.o $(OPATH)/sc_map_square_range.o \
-        $(OPATH)/sc_map_cube_key.o $(OPATH)/sc_map_cube_range.o \
-        $(OPATH)/sc_map_4d_key.o $(OPATH)/sc_map_4d_range.o \
+TESTSOURCES      := test/main.cpp test/source.cpp test/sink.cpp test/sc_delay_tb.cpp
+TESTOBJECTS      := $(subst .cpp,.o,$(TESTSOURCES))
+TESTDEPENDENCIES := $(subst .cpp,.d,$(TESTSOURCES))
 
-$(OPATH)/sc_map_key.o : $(SCMAP_PATH)/sc_map_key.cpp $(SCMAP_PATH)/sc_map_key.hpp
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_key.cpp
+.PHONY: all
+all: systemc_helpers.a
 
-$(OPATH)/sc_map_regular_key.o : $(SCMAP_PATH)/sc_map_regular/sc_map_regular_key.cpp $(SCMAP_PATH)/sc_map_regular/sc_map_regular_key.hpp
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_regular/sc_map_regular_key.cpp
+systemc_helpers.a : $(DEPENDENCIES) $(OBJECTS)
+	ar rvs libsystemc_helpers.a $(OBJECTS)
 
-# sc_map_linear -----------------------------------------------------------
+.PHONY: test
+test: systemc_helpers_test
 
-$(OPATH)/sc_map_linear_key.o : $(SCMAP_PATH)/sc_map_linear/sc_map_linear_key.cpp $(SCMAP_PATH)/sc_map_linear/sc_map_linear_key.hpp \
-                               $(OPATH)/sc_map_regular_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_linear/sc_map_linear_key.cpp
+systemc_helpers_test: systemc_helpers.a $(TESTDEPENDENCIES) $(TESTOBJECTS)
+	$(CC) -o $@ $(TESTOBJECTS) $(CPPFLAGS) $(TARGET_ARCH) -L. -lsystemc_helpers
 
-$(OPATH)/sc_map_linear_range.o : $(SCMAP_PATH)/sc_map_linear/sc_map_linear_range.cpp $(SCMAP_PATH)/sc_map_linear/sc_map_linear_range.hpp \
-                               $(OPATH)/sc_map_regular_key.o $(OPATH)/sc_map_linear_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_linear/sc_map_linear_range.cpp
+%.d: %.cpp
+	$(CC) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
 
-# sc_map_square ----------------------------------------------------------
-
-$(OPATH)/sc_map_square_key.o : $(SCMAP_PATH)/sc_map_square/sc_map_square_key.cpp $(SCMAP_PATH)/sc_map_square/sc_map_square_key.hpp \
-                               $(OPATH)/sc_map_regular_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_square/sc_map_square_key.cpp
-
-$(OPATH)/sc_map_square_range.o : $(SCMAP_PATH)/sc_map_square/sc_map_square_range.cpp $(SCMAP_PATH)/sc_map_square/sc_map_square_range.hpp \
-                               $(OPATH)/sc_map_regular_key.o $(OPATH)/sc_map_square_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_square/sc_map_square_range.cpp
-
-# sc_map_cube -----------------------------------------------------------
-
-$(OPATH)/sc_map_cube_key.o : $(SCMAP_PATH)/sc_map_cube/sc_map_cube_key.cpp $(SCMAP_PATH)/sc_map_cube/sc_map_cube_key.hpp \
-                               $(OPATH)/sc_map_regular_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_cube/sc_map_cube_key.cpp
-
-$(OPATH)/sc_map_cube_range.o : $(SCMAP_PATH)/sc_map_cube/sc_map_cube_range.cpp $(SCMAP_PATH)/sc_map_cube/sc_map_cube_range.hpp \
-                               $(OPATH)/sc_map_regular_key.o $(OPATH)/sc_map_cube_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_cube/sc_map_cube_range.cpp
-
-# sc_map_4d -----------------------------------------------------------
-
-$(OPATH)/sc_map_4d_key.o : $(SCMAP_PATH)/sc_map_4d/sc_map_4d_key.cpp $(SCMAP_PATH)/sc_map_4d/sc_map_4d_key.hpp \
-                               $(OPATH)/sc_map_regular_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_4d/sc_map_4d_key.cpp 
-
-$(OPATH)/sc_map_4d_range.o : $(SCMAP_PATH)/sc_map_4d/sc_map_4d_range.cpp $(SCMAP_PATH)/sc_map_4d/sc_map_4d_range.hpp \
-                               $(OPATH)/sc_map_regular_key.o $(OPATH)/sc_map_4d_key.o
-	$(CC) $(CFLAGS) $(SCMAP_PATH)/sc_map_4d/sc_map_4d_range.cpp
-
-# sc_analyzer -----------------------------------------------------------
-
-sc_analyzer: $(OPATH)/sc_analyzer.o
-
-$(OPATH)/sc_analyzer.o : sc_analyzer/sc_analyzer.cpp sc_analyzer/sc_analyzer.hpp
-	$(CC) $(CFLAGS) sc_analyzer/sc_analyzer.cpp
-
-# other targets ---------------------------------------------------------
+%.o : %.cpp
+	$(CC) $(CPPFLAGS) -MD -c $< -o $(patsubst %.cpp, %.o, $<)
 
 .PHONY: clean
-
 clean:
-	rm -f $(OPATH)/*.o *~
+	rm -f $(OBJECTS) $(DEPENDENCIES) $(TESTDEPENDENCIES) $(TESTOBJECTS)
+	rm -f libsystemc_helpers.a systemc_helpers_test
+
+ifneq "$(MAKECMDGOALS)" "clean"
+	include $(DEPENDENCIES)
+	@echo "included dependencies"
+endif
