@@ -1,3 +1,13 @@
+include_dirs := /usr/local/lib/systemc-2.3.1/include
+
+librarypaths := /usr/local/lib/systemc-2.3.1/lib-linux64
+libraries := systemc
+
+sub_libs := sc_analyzer sc_map
+
+
+##########################################################################################
+
 LINK_LIBS     = $(addprefix -l,$(libraries))
 LINK_LIBPATHS = $(addprefix -L,$(librarypaths))
 
