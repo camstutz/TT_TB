@@ -23,7 +23,7 @@
 
 #include "../simple_stream_protocol.hpp"
 
-#include "../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

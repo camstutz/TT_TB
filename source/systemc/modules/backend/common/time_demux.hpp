@@ -1,7 +1,7 @@
 /*!
  * @file time_demux.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -19,7 +19,7 @@
 #include "../../../systems/TT_configuration.hpp"
 #include "../../../systems/tt_tb_logger.hpp"
 
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

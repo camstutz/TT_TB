@@ -12,13 +12,14 @@
 
 #pragma once
 
-#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
 #include "hit_processor_one_layer.hpp"
 
 #include "hit_processor_config.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
+
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

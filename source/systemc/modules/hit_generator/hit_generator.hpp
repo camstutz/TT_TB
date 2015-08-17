@@ -19,7 +19,7 @@
 #include "hit_generator_config.hpp"
 
 #include "../../systems/tt_tb_logger.hpp"
-#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

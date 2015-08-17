@@ -19,7 +19,7 @@
 #include "hit_buffer_config.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
 
-#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
 #include <systemc.h>

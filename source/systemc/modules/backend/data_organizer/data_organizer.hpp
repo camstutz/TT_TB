@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -20,7 +20,7 @@
 #include "../../../modules/backend/data_organizer/data_organizer_config.hpp"
 #include "../../../systems/TT_configuration.hpp"
 
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

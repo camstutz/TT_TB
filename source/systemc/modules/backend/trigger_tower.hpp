@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -18,9 +18,8 @@
 #include "am_board/am_board.hpp"
 
 #include "../../modules/backend/trigger_tower_config.hpp"
-//#include "../../systems/TT_configuration.hpp"
 
-#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

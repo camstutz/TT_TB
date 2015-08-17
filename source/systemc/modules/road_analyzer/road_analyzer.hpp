@@ -15,7 +15,7 @@
 #include "../backend/am_board/track_finder/track_finder.hpp"
 #include "../../systems/TT_configuration.hpp"
 
-#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

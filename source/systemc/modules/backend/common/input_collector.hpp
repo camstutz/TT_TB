@@ -1,7 +1,7 @@
 /*!
  * @file do_input_collector.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -17,11 +17,8 @@
 #include "../../../data_formats/sc_pair/sc_pair.hpp"
 #include "../../../systems/tt_tb_logger.hpp"
 #include "input_collector_config.hpp"
-//#include "../../../systems/TT_configuration.hpp"
 
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
-
-//#include <boost/log/sources/record_ostream.hpp>
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

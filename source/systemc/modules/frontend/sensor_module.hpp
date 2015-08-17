@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.hpp
  * @author Christian Amstutz
- * @date August 13, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -19,7 +19,7 @@
 
 #include "sensor_module_config.hpp"
 
-#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

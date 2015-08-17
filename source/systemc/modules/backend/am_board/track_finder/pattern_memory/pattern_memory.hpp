@@ -10,12 +10,13 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "../../../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
-#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../pattern_bank/pattern_bank.hpp"
 
 #include "../../../../../systems/TT_configuration.hpp"
 #include "pattern_memory_config.hpp"
+
+#include "sc_delay_signal.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

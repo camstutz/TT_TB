@@ -14,8 +14,8 @@
 
 #include <systemc.h>
 
-#include "../../../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
-#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_delay_signal.hpp"
+#include "sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
 #include "road_processor_config.hpp"

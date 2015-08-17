@@ -1,7 +1,9 @@
 include_dirs := /usr/local/lib/systemc-2.3.1/include /usr/local/include/root
+include_dirs += source/systemc/libraries/systemc_helpers/sc_map/include source/systemc/libraries/systemc_helpers/nbits/include source/systemc/libraries/systemc_helpers/sc_analyzer/include source/systemc/libraries/systemc_helpers/sc_delay/include
 
-librarypaths := /usr/local/lib/systemc-2.3.1/lib-linux64 /usr/local/lib/root
-libraries := systemc
+librarypaths := /usr/local/lib/systemc-2.3.1/lib-linux64 /usr/local/lib/root source/systemc/libraries/systemc_helpers
+libraries := systemc_helpers
+libraries += systemc
 libraries += boost_system boost_serialization boost_iostreams boost_thread boost_log
 libraries += Hist Gpad Thread Physics Graf Graf3d Matrix RIO Net Core Tree
 
@@ -54,20 +56,23 @@ include $(addsuffix /module.mk,$(modules))
 
 .PHONY: all
 all: $(execs)
-#all: $(dependencies) $(objects)
 
-$(execs): $(dependencies) $(objects)
+$(execs): $(dependencies) $(objects) sources/systemc/libraries/systemc_helpers/systemc_helpers.a
 	@echo "Link files"
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread -o $@ $(objects)
+	$(CC) -o $@ $(objects) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
 
 .PHONY: clean
 clean:
 	$(RM) $(objects) $(execs) $(dependencies)
+	make clean -C source/systemc/libraries/systemc_helpers
+
+sources/systemc/libraries/systemc_helpers/systemc_helpers.a:
+	make -C source/systemc/libraries/systemc_helpers
 	
-ifneq "$(MAKECMDGOALS)" "clean"
-	include $(dependencies)
-	@echo "included dependencies"
-endif
+#ifneq "$(MAKECMDGOALS)" "clean"
+#	include $(dependencies)
+#	@echo "included dependencies"
+#endif
 
 %.d: %.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)

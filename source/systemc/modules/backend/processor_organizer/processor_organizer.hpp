@@ -1,7 +1,7 @@
 /*!
  * @file processor_organizer.hpp
  * @author Christian Amstutz
- * @date April 17, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -22,7 +22,7 @@
 #include "processor_organizer_config.hpp"
 
 
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 #include "../common/time_demux.hpp"

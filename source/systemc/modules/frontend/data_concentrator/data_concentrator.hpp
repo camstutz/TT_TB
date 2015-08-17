@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -18,8 +18,8 @@
 
 #include <systemc.h>
 
-#include "../../../libraries/systemc_helpers/sc_delay/sc_delay_signal.hpp"
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_delay_signal.hpp"
+#include "sc_map.hpp"
 #include "../../../systems/tt_tb_logger.hpp"
 
 #include "../../../systems/TT_configuration.hpp"

@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -19,7 +19,7 @@
 
 #include "dtc_output_unit_config.hpp"
 
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

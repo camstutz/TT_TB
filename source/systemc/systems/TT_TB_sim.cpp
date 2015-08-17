@@ -1,7 +1,7 @@
 /*!
  * @file TT_TB_sim.cpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 17, 2015
 
  *
  * @brief
@@ -12,11 +12,10 @@
  */
 
 #include "tt_tb.hpp"
-
-#include "../libraries/systemc_helpers/sc_analyzer/sc_analyzer.hpp"
-
 #include "../TT_configuration/track_trigger_config.hpp"
 #include "../TT_configuration/baseline_config.hpp"
+
+#include "sc_analyzer.hpp"
 
 #include <systemc.h>
 

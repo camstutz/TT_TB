@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit.hpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -23,7 +23,7 @@
 
 #include "../../../systems/tt_tb_logger.hpp"
 
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include <systemc.h>
 

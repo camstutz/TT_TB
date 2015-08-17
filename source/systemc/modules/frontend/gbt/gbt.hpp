@@ -1,7 +1,7 @@
 /*!
  * @file gbt.hpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 17, 2015
  *
  * @brief
  *
@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 #include "../../../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../../../data_formats/gbt_link_format/gbt_link_format.hpp"
 #include "../../../systems/tt_tb_logger.hpp"

@@ -12,12 +12,14 @@
 
 #pragma once
 
-#include <systemc.h>
-#include "../../../../../libraries/systemc_helpers/sc_map/sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
 
 #include "../../../../../systems/TT_configuration.hpp"
 #include "am_chip_write_ctrl_config.hpp"
+
+#include "sc_map.hpp"
+
+#include <systemc.h>
 
 class am_chip_write_ctrl : public sc_module
 {
