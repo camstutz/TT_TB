@@ -18,7 +18,7 @@
 
 #include <systemc.h>
 
-#include "../sc_delay/sc_delay_signal.hpp"
+#include "../sc_delay/include/sc_delay_signal.hpp"
 
 
 class sc_delay_tb : public sc_module

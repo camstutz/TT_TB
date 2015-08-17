@@ -229,3 +229,7 @@ documentation/
 
 # Folder to hide modules temporarily
 exclude/
+
+*.a
+*.o
+*.d
