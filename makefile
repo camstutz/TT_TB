@@ -17,8 +17,9 @@ modules   += $(MODULEDIR)/backend $(MODULEDIR)/backend/data_organizer $(MODULEDI
 modules   += $(MODULEDIR)/backend/am_board $(MODULEDIR)/backend/am_board/am_input_module
 modules   += $(MODULEDIR)/backend/am_board/track_finder $(MODULEDIR)/backend/am_board/track_finder/am_chip $(MODULEDIR)/backend/am_board/track_finder/hit_buffer
 modules   += $(MODULEDIR)/backend/am_board/track_finder/hit_processor $(MODULEDIR)/backend/am_board/track_finder/pattern_bank
-moduels   += $(MODULEDIR)/backend/am_board/track_finder/pattern_memory $(MODULEDIR)/backend/am_board/track_finder/road_processor
+modules   += $(MODULEDIR)/backend/am_board/track_finder/pattern_memory $(MODULEDIR)/backend/am_board/track_finder/road_processor
 modules   += $(MODULEDIR)/road_analyzer
+modules   += source/systemc/libraries/CMSSW_extraction
 
 DFDIR := source/systemc/data_formats
 modules   += $(DFDIR)/CIC_frame $(DFDIR)/gbt_link_format $(DFDIR)/hit_file $(DFDIR)/HitSF $(DFDIR)/prbf $(DFDIR)/stub
@@ -59,7 +60,7 @@ all: $(execs)
 
 $(execs): $(dependencies) $(objects) sources/systemc/libraries/systemc_helpers/systemc_helpers.a
 	@echo "Link files"
-	$(CC) -o $@ $(objects) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
+	$(CC) -o TT_TBsim $(objects) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
 
 .PHONY: clean
 clean:

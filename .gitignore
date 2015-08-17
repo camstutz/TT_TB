@@ -234,6 +234,7 @@ documentation/doxygen
 ## Simulation Framework
 #########################
 
+TT_TBsim
 roads.txt
 /Debug C++11
 /TT_TB.mpf
