@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.hpp
  * @author Christian Amstutz
- * @date July 30, 2015
+ * @date August 14, 2015
  *
  * @brief
  *
@@ -14,10 +14,10 @@
 #pragma once
 
 #include "../modules/hit_generator/hit_generator_config.hpp"
-#include "../modules/frontend/frontend_chip_config.hpp"
-#include "../modules/frontend/data_concentrator_config.hpp"
+#include "../modules/frontend/frontend_chip/frontend_chip_config.hpp"
+#include "../modules/frontend/data_concentrator/data_concentrator_config.hpp"
 #include "../modules/frontend/sensor_module_config.hpp"
-#include "../modules/frontend/gbt_config.hpp"
+#include "../modules/frontend/gbt/gbt_config.hpp"
 #include "../modules/backend/dtc/dtc_config.hpp"
 #include "../modules/backend/trigger_tower_config.hpp"
 
