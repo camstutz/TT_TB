@@ -24,7 +24,7 @@ modules   += source/systemc/libraries/CMSSW_extraction
 DFDIR := source/systemc/data_formats
 modules   += $(DFDIR)/CIC_frame $(DFDIR)/gbt_link_format $(DFDIR)/hit_file $(DFDIR)/HitSF $(DFDIR)/prbf $(DFDIR)/stub
 
-programs   := source/systemc/systems
+programs   :=
 sources    :=
 
 TBPATH     := source/systemc/module_tests
@@ -68,10 +68,10 @@ RM  := rm -f
 SED := sed
 
 .PHONY: all
-all: $(execs)
+all: TT_TB_sim
 
-$(execs): $(dependencies) $(objects) sources/systemc/libraries/systemc_helpers/systemc_helpers.a
-	$(CC) source/systemc/systems/TT_TB_sim.cpp -o TT_TB_sim $(objects) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
+TT_TB_sim: $(dependencies) $(objects) sources/systemc/libraries/systemc_helpers/systemc_helpers.a
+	$(CC) source/systemc/systems/TT_TB_sim.cpp -o $@ $(objects) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
 
 .PHONY: test
 test: TT_TB_test
@@ -85,7 +85,7 @@ clean:
 	make clean -C source/systemc/libraries/systemc_helpers
 
 sources/systemc/libraries/systemc_helpers/systemc_helpers.a:
-	make -C source/systemc/libraries/systemc_helpers
+	+make -C source/systemc/libraries/systemc_helpers
 	
 %.d: %.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)

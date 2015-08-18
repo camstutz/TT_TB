@@ -57,7 +57,7 @@ stub::stub(stub_config configuration, const valid_t valid, const bx_t bx,
 }
 
 // *****************************************************************************
-inline void stub::set_valid(const valid_t valid)
+void stub::set_valid(const valid_t valid)
 {
     this->valid = valid;
 
@@ -65,13 +65,13 @@ inline void stub::set_valid(const valid_t valid)
 }
 
 // *****************************************************************************
-inline stub::valid_t stub::get_valid() const
+stub::valid_t stub::get_valid() const
 {
     return valid;
 }
 
 // *****************************************************************************
-inline void stub::set_bx(const bx_t bx)
+void stub::set_bx(const bx_t bx)
 {
     this->bx = bx;
 
@@ -79,13 +79,13 @@ inline void stub::set_bx(const bx_t bx)
 }
 
 // *****************************************************************************
-inline stub::bx_t stub::get_bx() const
+stub::bx_t stub::get_bx() const
 {
     return bx;
 }
 
 // *****************************************************************************
-inline void stub::set_fechip(const fechip_t fechip)
+void stub::set_fechip(const fechip_t fechip)
 {
     this->fechip = fechip;
 
@@ -93,13 +93,13 @@ inline void stub::set_fechip(const fechip_t fechip)
 }
 
 // *****************************************************************************
-inline stub::fechip_t stub::get_fechip() const
+stub::fechip_t stub::get_fechip() const
 {
     return fechip;
 }
 
 // *****************************************************************************
-inline void stub::set_strip(const strip_t strip)
+void stub::set_strip(const strip_t strip)
 {
     this->strip = strip;
 
@@ -107,13 +107,13 @@ inline void stub::set_strip(const strip_t strip)
 }
 
 // *****************************************************************************
-inline stub::strip_t stub::get_strip() const
+stub::strip_t stub::get_strip() const
 {
     return strip;
 }
 
 // *****************************************************************************
-inline void stub::set_bend(const bend_t bend)
+void stub::set_bend(const bend_t bend)
 {
     this->bend = bend;
 
@@ -121,13 +121,13 @@ inline void stub::set_bend(const bend_t bend)
 }
 
 // *****************************************************************************
-inline stub::bend_t stub::get_bend() const
+stub::bend_t stub::get_bend() const
 {
     return bend;
 }
 
 // *****************************************************************************
-inline void stub::set_pixel(const pixel_t pixel)
+void stub::set_pixel(const pixel_t pixel)
 {
     this->pixel = pixel;
 
@@ -135,7 +135,7 @@ inline void stub::set_pixel(const pixel_t pixel)
 }
 
 // *****************************************************************************
-inline stub::pixel_t stub::get_pixel() const
+stub::pixel_t stub::get_pixel() const
 {
     return pixel;
 }
