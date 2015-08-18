@@ -13,14 +13,13 @@
 
 #pragma once
 
-#include "../modules/frontend/gbt.hpp"
-#include "../modules/frontend/data_concentrator_config.hpp"
+#include "../modules/frontend/gbt/gbt.hpp"
+#include "../modules/frontend/gbt/gbt_config.hpp"
+#include "../modules/frontend/data_concentrator/data_concentrator_config.hpp"
 #include "../data_formats/CIC_frame/CIC_frame.hpp"
-#include "../data_formats/gbt_link_format.hpp"
+#include "../data_formats/gbt_link_format/gbt_link_format.hpp"
 
-#include "../modules/frontend/gbt_config.hpp"
-#include "../systems/TT_configuration.hpp"
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include "systemc.h"
 

@@ -16,14 +16,14 @@
 
 #include "../modules/backend/dtc/dtc.hpp"
 
-#include "../data_formats/gbt_link_format.hpp"
+#include "../data_formats/gbt_link_format/gbt_link_format.hpp"
 #include "../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../data_formats/prbf/PRBF.hpp"
 
 #include "../TT_configuration/track_trigger_config.hpp"
 #include "../systems/TT_configuration.hpp"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include "systemc.h"
 

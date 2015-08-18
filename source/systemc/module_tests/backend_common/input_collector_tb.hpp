@@ -19,7 +19,7 @@
 #include "../../data_formats/sc_pair/sc_pair.hpp"
 #include "../../data_formats/prbf/PRBF.hpp"
 
-#include "../../libraries/systemc_helpers/sc_map/sc_map.hpp"
+#include "sc_map.hpp"
 
 #include "systemc.h"
 

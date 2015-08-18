@@ -13,16 +13,16 @@
 
 #pragma once
 
-#include <iostream>
-#include <sstream>
+#include "../TT_configuration/track_trigger_config.hpp"
+#include "../systems/TT_configuration.hpp"
+#include "../modules/frontend/data_concentrator/data_concentrator.hpp"
+
+#include "sc_map.hpp"
 
 #include "systemc.h"
 
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
-
-#include "../TT_configuration/track_trigger_config.hpp"
-#include "../systems/TT_configuration.hpp"
-#include "../modules/frontend/data_concentrator.hpp"
+#include <iostream>
+#include <sstream>
 
 
 /*!

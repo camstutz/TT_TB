@@ -15,7 +15,7 @@
 
 #include "track_trigger_config.hpp"
 
-track_trigger_config baseline_config()
+inline track_trigger_config baseline_config()
 {
     track_trigger_config configuration;
 

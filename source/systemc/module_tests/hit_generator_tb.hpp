@@ -13,16 +13,16 @@
 
 #pragma once
 
-#include <vector>
-#include <sstream>
-
-#include "systemc.h"
-
-#include "../libraries/systemc_helpers/sc_map/sc_map.hpp"
-
 #include "../systems/TT_configuration.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
 #include "../modules/hit_generator/hit_generator.hpp"
+
+#include "sc_map.hpp"
+
+#include "systemc.h"
+
+#include <vector>
+#include <sstream>
 
 /*!
  * @brief
