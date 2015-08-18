@@ -49,6 +49,8 @@ subdirectory = $(patsubst %/module.mk,%,                            \
                    $(word                                           \
                        $(words &(MAKEFILE_LIST)),$(MAKEFILE_LIST)))
 
+include $(addsuffix /module.mk,$(modules))
+
 objects         = $(call source-to-object,$(sources))
 dependencies    = $(subst .o,.d,$(objects))
 execs           = $(addsuffix _exec, $(programs))
@@ -64,13 +66,6 @@ CPPFLAGS := -Wall -g3 -O0 -std=c++11 $(addprefix -I,$(include_dirs)) $(LINK_LIBP
 MV  := mv -f
 RM  := rm -f
 SED := sed
-
-include $(addsuffix /module.mk,$(modules))
-#ifneq "$(MAKECMDGOALS)" "clean"
-#	include $(dependencies)
-#	include $(tb_dependencies)
-#	@echo "included dependencies"
-#endif
 
 .PHONY: all
 all: $(execs)
@@ -100,3 +95,11 @@ sources/systemc/libraries/systemc_helpers/systemc_helpers.a:
 
 #%.o: %.cpp %.cc
 #	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+
+ifneq "$(MAKECMDGOALS)" "clean"
+	-include $(dependencies)
+endif
+
+ifeq "$(MAKECMDGOALS)" "test"
+	-include $(tb_dependencies)
+endif
