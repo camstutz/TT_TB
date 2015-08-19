@@ -68,15 +68,15 @@ RM  := rm -f
 SED := sed
 
 .PHONY: all
-all: TT_TB_sim
+all: TT_TB_sim libraries
 
-TT_TB_sim: $(dependencies) $(objects) sources/systemc/libraries/systemc_helpers/systemc_helpers.a
+TT_TB_sim: $(dependencies) $(objects)
 	$(CC) source/systemc/systems/TT_TB_sim.cpp -o $@ $(objects) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
 
 .PHONY: test
 test: TT_TB_test
 
-TT_TB_test: $(dependencies) $(objects) $(tb_dependencies) $(tb_objects) sources/systemc/libraries/systemc_helpers/systemc_helpers.a source/systemc/module_tests/TT_TB_testbench.o
+TT_TB_test: $(dependencies) $(objects) $(tb_dependencies) $(tb_objects)
 	$(CC) -o $@ $(tb_objects) source/systemc/module_tests/TT_TB_testbench.o $(objects) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
 
 .PHONY: clean
@@ -84,7 +84,8 @@ clean:
 	$(RM) $(objects) $(execs) $(dependencies) $(tb_dependencies) $(tb_objects) TT_TB_sim TT_TB_test
 	make clean -C source/systemc/libraries/systemc_helpers
 
-sources/systemc/libraries/systemc_helpers/systemc_helpers.a:
+.PHONY: libraries
+libraries:
 	+make -C source/systemc/libraries/systemc_helpers
 	
 %.d: %.cpp

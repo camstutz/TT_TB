@@ -68,7 +68,9 @@ void road_analyzer::detect_hits()
                     read_hit = filtered_hits.at(input_id, layer).read();
                     if (!read_hit.is_opcode())
                     {
-                        road_file << sc_time_stamp() << " @ " << input_id << ": " <<  std::hex << read_hit.get_value() << std::endl;
+                        road_file << sc_time_stamp() << " @ " << input_id
+                                  << "," << layer <<" : "
+                                  <<  std::hex << read_hit.get_value() << std::endl;
                         ++filtered_hits_cnt;
                     }
                 }

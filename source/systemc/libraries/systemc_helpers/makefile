@@ -24,15 +24,15 @@ TESTOBJECTS      := $(subst .cpp,.o,$(TESTSOURCES))
 TESTDEPENDENCIES := $(subst .cpp,.d,$(TESTSOURCES))
 
 .PHONY: all
-all: systemc_helpers.a
+all: libsystemc_helpers.a
 
-systemc_helpers.a : $(DEPENDENCIES) $(OBJECTS)
+libsystemc_helpers.a: $(DEPENDENCIES) $(OBJECTS)
 	ar rvs libsystemc_helpers.a $(OBJECTS)
 
 .PHONY: test
 test: systemc_helpers_test
 
-systemc_helpers_test: systemc_helpers.a $(TESTDEPENDENCIES) $(TESTOBJECTS)
+systemc_helpers_test: libsystemc_helpers.a $(TESTDEPENDENCIES) $(TESTOBJECTS)
 	$(CC) -o $@ $(TESTOBJECTS) $(CPPFLAGS) $(TARGET_ARCH) -L. -lsystemc_helpers
 
 %.d: %.cpp
