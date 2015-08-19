@@ -1,7 +1,7 @@
 /*!
  * @file sc_delay_tb.hpp
  * @author Christian Amstutz
- * @date Feb 12, 2015
+ * @date August 19, 2015
  *
  * @brief
  *
@@ -24,8 +24,8 @@
 class sc_delay_tb : public sc_module
 {
 public:
-    sc_delay_signal<int, 3> delay_element;
-    sc_delay_signal<int, 0> zero_delay;
+    sc_delay_signal<int> delay_element;
+    sc_delay_signal<int> zero_delay;
 
     sc_signal<int> in_signal;
     sc_signal<int> out_signal;

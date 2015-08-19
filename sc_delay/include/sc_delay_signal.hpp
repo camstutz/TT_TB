@@ -1,7 +1,7 @@
 /*!
  * @file sc_delay_signal.hpp
  * @author Christian Amstutz
- * @date Feb 12, 2015
+ * @date August 19, 2015
  *
  * @brief
  *
@@ -20,7 +20,7 @@
 /*!
  * @brief
  */
-template <typename signal_t, unsigned int delay_cycles>
+template <typename signal_t>
 class sc_delay_signal : public sc_module
 {
 public:
@@ -53,10 +53,12 @@ public:
     /*!
      * Constructor:
      */
-    sc_delay_signal(sc_module_name _name);
+    sc_delay_signal(sc_module_name _name, unsigned int delay_cycles);
     SC_HAS_PROCESS(sc_delay_signal);
 
 private:
+    const unsigned int delay_cycles;
+
     void increase_ptr(sc_signal<unsigned int>& ptr);
 };
 
@@ -68,8 +70,9 @@ private:
  *
  * The module is sensitive to ....
  */
-template <typename signal_t, unsigned int delay_cycles>
-sc_delay_signal<signal_t, delay_cycles>::sc_delay_signal(sc_module_name _name) :
+template <typename signal_t>
+sc_delay_signal<signal_t>::sc_delay_signal(sc_module_name _name,
+        unsigned int delay_cycles) :
         sc_module(_name),
         clk("clk"),
         input("input"),
@@ -77,7 +80,8 @@ sc_delay_signal<signal_t, delay_cycles>::sc_delay_signal(sc_module_name _name) :
         input_signal("input_singal"),
         signal_received("signal_received"),
         read_ptr("read_ptr"),
-        write_ptr("write_ptr")
+        write_ptr("write_ptr"),
+        delay_cycles(delay_cycles)
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(read_input);
@@ -104,8 +108,8 @@ sc_delay_signal<signal_t, delay_cycles>::sc_delay_signal(sc_module_name _name) :
 }
 
 //******************************************************************************
-template <typename signal_t, unsigned int delay_cycles>
-void sc_delay_signal<signal_t, delay_cycles>::read_input()
+template <typename signal_t>
+void sc_delay_signal<signal_t>::read_input()
 {
     signal_received.write(false);
 
@@ -139,8 +143,8 @@ void sc_delay_signal<signal_t, delay_cycles>::read_input()
 }
 
 //******************************************************************************
-template <typename signal_t, unsigned int delay_cycles>
-void sc_delay_signal<signal_t, delay_cycles>::write_output()
+template <typename signal_t>
+void sc_delay_signal<signal_t>::write_output()
 {
     while (true)
     {
@@ -157,9 +161,8 @@ void sc_delay_signal<signal_t, delay_cycles>::write_output()
 }
 
 //******************************************************************************
-template <typename signal_t, unsigned int delay_cycles>
-void sc_delay_signal<signal_t, delay_cycles>::increase_ptr(
-        sc_signal<unsigned int>& ptr)
+template <typename signal_t>
+void sc_delay_signal<signal_t>::increase_ptr(sc_signal<unsigned int>& ptr)
 {
     if (ptr.read() == delay_cycles-1)
     {
@@ -171,77 +174,4 @@ void sc_delay_signal<signal_t, delay_cycles>::increase_ptr(
     }
 
     return;
-}
-
-//******************************************************************************
-
-//******************************************************************************
-
-template <typename signal_t>
-class sc_delay_signal<signal_t, 0> : public sc_module
-{
-public:
-
-// ----- Port Declarations -----------------------------------------------------
-    /** Input port for the clock signal */
-    sc_in<bool> clk;
-
-    sc_in<signal_t> input;
-    sc_out<signal_t> delayed;
-
-// ----- Local Channel Declarations --------------------------------------------
-    sc_signal<signal_t> forward_signal;
-
-// ----- Process Declarations --------------------------------------------------
-    void forward_input();
-
-// ----- Other Method Declarations ---------------------------------------------
-
-// ----- Module Instantiations -------------------------------------------------
-
-// ----- Constructor -----------------------------------------------------------
-    /*!
-     * Constructor:
-     */
-    sc_delay_signal(sc_module_name _name);
-    SC_HAS_PROCESS(sc_delay_signal);
-};
-
-//******************************************************************************
-
-//******************************************************************************
-/*!
- * @class sc_delay_signal
- *
- * The module is sensitive to ....
- */
-template <typename signal_t>
-sc_delay_signal<signal_t, 0>::sc_delay_signal(sc_module_name _name) :
-        sc_module(_name),
-        clk("clk"),
-        input("input"),
-        delayed("delayed"),
-        forward_signal("forward_singal")
-{
-    // ----- Process registration ----------------------------------------------
-    SC_THREAD(forward_input);
-        sensitive << input;
-
-    // ----- Module variable initialization ------------------------------------
-
-    // ----- Module instance / channel binding ---------------------------------
-
-    return;
-}
-
-//******************************************************************************
-template <typename signal_t>
-void sc_delay_signal<signal_t, 0>::forward_input()
-{
-    while (1)
-    {
-        wait();
-
-        delayed.write(input.read());
-    }
 }
