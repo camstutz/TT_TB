@@ -44,6 +44,7 @@ public:
 // ----- Process Declarations --------------------------------------------------
     void read_input();
     void write_output();
+    void zero_delay();
 
 // ----- Other Method Declarations ---------------------------------------------
 
@@ -84,25 +85,27 @@ sc_delay_signal<signal_t>::sc_delay_signal(sc_module_name _name,
         delay_cycles(delay_cycles)
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(read_input);
-        sensitive << input << clk.pos();
-    SC_THREAD(write_output);
-        sensitive << clk.pos();
+    if (delay_cycles == 0)
+    {
+        SC_THREAD(zero_delay);
+            sensitive << input;
+    }
+    else
+    {
+        SC_THREAD(read_input);
+            sensitive << input << clk.pos();
+        SC_THREAD(write_output);
+            sensitive << clk.pos();
+    }
 
     // ----- Module variable initialization ------------------------------------
     read_ptr.write(1);
     write_ptr.write(0);
 
-    std::vector<bool>::iterator buffer_it = data_valid_buffer.begin();
-    for (; buffer_it != data_valid_buffer.end(); ++buffer_it)
-    {
-        *buffer_it = false;
-    }
-
-    // ----- Module instance / channel binding ---------------------------------
-
     data_valid_buffer.resize(delay_cycles, false);
     value_buffer.resize(delay_cycles, signal_t());
+
+    // ----- Module instance / channel binding ---------------------------------
 
     return;
 }
@@ -156,6 +159,19 @@ void sc_delay_signal<signal_t>::write_output()
         }
 
         increase_ptr(read_ptr);
+    }
+
+}
+
+//******************************************************************************
+template <typename signal_t>
+void sc_delay_signal<signal_t>::zero_delay()
+{
+    while (true)
+    {
+        wait();
+
+        delayed.write(input.read());
     }
 
 }
