@@ -239,7 +239,7 @@ template <typename range_T, typename object_T>
 typename sc_map_base<range_T, object_T>::range_type*
         sc_map_base<range_T, object_T>::get_range() const
 {
-    return new range_type(range);
+    return range.clone();
 }
 
 //******************************************************************************
@@ -385,7 +385,7 @@ void sc_map_base<range_T, object_T>::write(const data_type& value)
 {
     for (iterator object_it = begin(); object_it != end(); ++object_it)
     {
-        (*object_it)->write(value);
+        object_it->write(value);
     }
 
     return;
@@ -427,7 +427,8 @@ sc_sensitive& operator<< (sc_sensitive& sensitivity_list,
 {
     for (typename sc_map_base<signal_range_T, signal_T>::iterator signal_it = signal_map.begin();
          signal_it != signal_map.end();
-         ++signal_it)
+         ++signal_it
+         )
     {
         sensitivity_list << *signal_it;
     }
