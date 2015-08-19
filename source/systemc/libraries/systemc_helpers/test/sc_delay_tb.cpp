@@ -1,7 +1,11 @@
 /*!
  * @file sc_delay_tb.cpp
  * @author Christian Amstutz
+<<<<<<< HEAD
  * @date Feb 12, 2015
+=======
+ * @date August 19, 2015
+>>>>>>> 1a9a681a0fd5540f046e187850cca49445b9919e
  *
  * @brief
  *
@@ -16,8 +20,8 @@
 //******************************************************************************
 sc_delay_tb::sc_delay_tb(sc_module_name _name) :
         sc_module(_name),
-        delay_element("delay_element"),
-        zero_delay("zero_delay_element"),
+        delay_element("delay_element", 3),
+        zero_delay("zero_delay_element", 0),
         in_signal("in_signal"),
         out_signal("out_signal"),
         zerod_out_signal("zero_out_signal"),

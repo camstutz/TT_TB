@@ -233,3 +233,5 @@ exclude/
 *.a
 *.o
 *.d
+
+systemc_helpers_test
