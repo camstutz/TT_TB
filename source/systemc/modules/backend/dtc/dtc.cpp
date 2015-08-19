@@ -1,7 +1,7 @@
 /*!
  * @file dtc.cpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date August 19, 2015
  */
 
 /*
@@ -32,7 +32,7 @@ dtc::dtc(sc_module_name _name, dtc_config configuration) :
         controller("controller", configuration.controller),
         input_units(input_nr, "input_unit", configuration.input_unit),
         output_unit("output_unit", configuration.output_unit),
-        delay_output("delay_output")
+        delay_output("delay_output", 0)
 {
     // ----- Creation and binding of signals -----------------------------------
 

@@ -32,7 +32,7 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
         clock_phase("clock_phase"),
         stub_buffer_write_sel("stub_buffer_write_sel"),
         stub_buffer_read_sel("stub_buffer_read_sel"),
-        delay_output("delay_outout"),
+        delay_output("delay_outout", DC_output_delay),
         output_stub_config(configuration.output_stub)
 {
     // ----- Process registration ----------------------------------------------

@@ -58,7 +58,7 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
-    sc_delay_signal<road_stream, PATTERN_MEMORY_LATENCY> pattern_mem_delay_compensation;
+    sc_delay_signal<road_stream> pattern_mem_delay_compensation;
 
     // ----- Constructor -------------------------------------------------------
     /*!

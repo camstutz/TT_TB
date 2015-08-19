@@ -149,7 +149,7 @@ public:
 
     /** Additional delay for the data ready signal to correct the low latency of
      * the quite high level implementation of the AM chip. */
-    sc_delay_signal<road_stream, AM_CHIP_LATENCY> delay_road_output;
+    sc_delay_signal<road_stream> delay_road_output;
 
 // ----- Constructor -----------------------------------------------------------
 

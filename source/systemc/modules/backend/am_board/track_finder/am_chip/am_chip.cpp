@@ -30,7 +30,7 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
         detected_roads_buffer("detected_roads_buffer"),
         read_controller("read_controller"),
         write_controller("write_controller", configuration.write_ctrl),
-		delay_road_output("delay_road_output"),
+		delay_road_output("delay_road_output", AM_CHIP_LATENCY),
         patterns()
 {
     // ----- Process registration ----------------------------------------------

@@ -31,7 +31,7 @@ road_processor::road_processor(const sc_module_name _name,
         command_buffer("command_buffer"),
 		command_buffer_write_sig("command_buffer_write_sig"),
 		command_buffer_delayed_sig("command_buffer_delayed_sig"),
-		pattern_mem_delay_compensation("pattern_mem_delay_compensation")
+		pattern_mem_delay_compensation("pattern_mem_delay_compensation", PATTERN_MEMORY_LATENCY)
 {
 	// ----- Process registration ----------------------------------------------
     SC_THREAD(process_incoming_roads);

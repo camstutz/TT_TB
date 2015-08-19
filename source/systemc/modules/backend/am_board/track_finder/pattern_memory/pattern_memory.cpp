@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.cpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 19, 2015
  *
  * @brief
  */
@@ -25,7 +25,7 @@ pattern_memory::pattern_memory(const sc_module_name _name,
         road_input("road_input"),
         superstrip_outputs(layer_nr, "superstrip_outputs"),
 		superstrip_outputs_sig(layer_nr, "superstrip_outputs_sig"),
-		delay_superstrip_outputs(layer_nr, "delay_superstrip_outputs"),
+		delay_superstrip_outputs(layer_nr, "delay_superstrip_outputs", (unsigned int) PATTERN_MEMORY_LATENCY),
 		patterns()
 {
     // ----- Process registration ----------------------------------------------
@@ -42,7 +42,7 @@ pattern_memory::pattern_memory(const sc_module_name _name,
 //    fifo_stub_in.register_signal_modelsim<fm_out_data>();
 //#endif
 
-    sc_map_linear<sc_delay_signal<superstrip_t, PATTERN_MEMORY_LATENCY> >::iterator delay_superstrip_output_it = delay_superstrip_outputs.begin();
+    sc_map_linear<sc_delay_signal<superstrip_t> >::iterator delay_superstrip_output_it = delay_superstrip_outputs.begin();
     sc_map_linear<sc_signal<superstrip_t> >::iterator superstrip_output_sig_it = superstrip_outputs_sig.begin();
 	sc_map_linear<sc_out<superstrip_t> >::iterator superstrip_output_it = superstrip_outputs.begin();
 	for (; delay_superstrip_output_it != delay_superstrip_outputs.end(); ++delay_superstrip_output_it)

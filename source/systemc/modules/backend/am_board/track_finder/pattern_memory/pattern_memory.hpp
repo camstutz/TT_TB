@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 19, 2015
  *
  * @brief
  */
@@ -44,7 +44,7 @@ public:
     // ----- Other Method Declarations -----------------------------------------
 
     // ----- Module Instantiations ---------------------------------------------
-    sc_map_linear<sc_delay_signal<superstrip_t, PATTERN_MEMORY_LATENCY> > delay_superstrip_outputs;
+    sc_map_linear<sc_delay_signal<superstrip_t> > delay_superstrip_outputs;
 
     // ----- Constructor -------------------------------------------------------
     /*!

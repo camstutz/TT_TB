@@ -1,7 +1,7 @@
 /*!
  * @file dtc.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 19, 2015
  *
  * @brief
  *
@@ -57,7 +57,7 @@ public:
     dtc_controller controller;
     sc_map_linear<dtc_input_unit> input_units;
     dtc_output_unit output_unit;
-    sc_delay_signal<output_t, 0> delay_output;
+    sc_delay_signal<output_t> delay_output;
 
     // ----- Constructor -------------------------------------------------------
     /*!

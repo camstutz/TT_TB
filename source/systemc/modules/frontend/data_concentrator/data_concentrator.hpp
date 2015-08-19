@@ -77,7 +77,7 @@ public:
     output_t create_output_buffer();
 
     // ----- Module Instantiations ---------------------------------------------
-    sc_delay_signal<output_t, DC_output_delay> delay_output;
+    sc_delay_signal<output_t> delay_output;
 
     // ----- Constructor -------------------------------------------------------
     data_concentrator(sc_module_name _name, data_concentrator_config configuration);
