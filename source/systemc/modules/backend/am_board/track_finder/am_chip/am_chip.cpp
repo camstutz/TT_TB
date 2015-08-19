@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date July 16, 2015
+ * @date August 19, 2015
  *
  * @brief File containing the implementation of the AM board module.
  */
@@ -17,6 +17,7 @@
 am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
         sc_module(_name),
         layer_nr(configuration.layer_nr),
+        road_detection_threshold(configuration.road_detection_threshold),
         clk("clk"),
         hit_inputs(layer_nr, "hit_input"),
         road_output("road_output"),
@@ -113,7 +114,7 @@ void am_chip::detect_roads()
                     }
                 }
 
-                if ((road_hits == layer_nr) | (road_hits >= AM_HITS_PER_ROAD_THRESHOLD))
+                if ((road_hits == layer_nr) | (road_hits >= road_detection_threshold))
                 {
                     detected_roads_buffer.write(road_addr_t(match_line_it->first));
                 }

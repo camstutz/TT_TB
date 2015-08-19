@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date July 16, 2015
+ * @date August 19, 2015
  *
  * @brief
  */
@@ -17,7 +17,6 @@
 
 #include "../pattern_bank/pattern_bank.hpp"
 
-#include "../../../../../systems/TT_configuration.hpp"
 #include "am_chip_config.hpp"
 
 #include "sc_delay_signal.hpp"
@@ -53,6 +52,7 @@ public:
     typedef road_t road_addr_t;
 
     const unsigned int layer_nr;
+    const unsigned int road_detection_threshold;
 
 // ----- Port Declarations -----------------------------------------------------
     /** @brief Clock

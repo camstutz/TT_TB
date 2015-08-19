@@ -1,7 +1,7 @@
 /*!
  * @file configuration.hpp
  * @author Christian Amstutz
- * @date July 31, 2015
+ * @date August 19, 2015
  *
  * @brief
  *
@@ -129,6 +129,7 @@ inline track_trigger_config baseline_config()
 
     configuration.trigger_tower.am_board.track_finder.hit_processor.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.am_chip.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.am_chip.road_detection_threshold = 5;
     configuration.trigger_tower.am_board.track_finder.am_chip.write_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.road_processor.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.pattern_memory.layer_nr = 6;
