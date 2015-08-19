@@ -99,9 +99,9 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.prb_nr = 2;
     configuration.trigger_tower.AM_boards_per_prb = 2;
 
-    configuration.trigger_tower.data_organizer.dtc_input_nr =  2;
+    configuration.trigger_tower.data_organizer.dtc_input_nr =  1;
     configuration.trigger_tower.data_organizer.proc_unit_nr = 2;
-    configuration.trigger_tower.data_organizer.input_collector.input_nr = 2;
+    configuration.trigger_tower.data_organizer.input_collector.input_nr = 1;
     configuration.trigger_tower.data_organizer.demultiplexer.layer_nr = 1;
     configuration.trigger_tower.data_organizer.demultiplexer.proc_unit_nr = 2;
     configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;

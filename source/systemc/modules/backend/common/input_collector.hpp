@@ -110,6 +110,7 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
                 if (input_frame.stub_count() > 0)
                 {
                     SYSTEMC_LOG << "Frame " << input_frame.get_bunch_crossing()
+                            << " @ input " << input_it.get_key().second
                             << " with " << input_frame.stub_count() << " stubs reveived.";
                 }
 
