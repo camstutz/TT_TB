@@ -196,7 +196,7 @@ std::string stub::get_string() const
 // *****************************************************************************
 bool stub::operator== (const stub& rhs) const
 {
-    bool equal = false;
+    bool equal = true;
     equal &= (configuration == rhs.configuration);
     equal &= (valid == rhs.get_valid());
     equal &= (bx == rhs.get_bx());
