@@ -5,7 +5,7 @@ librarypaths := /usr/local/lib/systemc-2.3.1/lib-linux64 /usr/local/lib/root sou
 libraries := systemc_helpers
 libraries += systemc
 libraries += boost_system boost_serialization boost_iostreams boost_thread boost_log
-libraries += Hist Gpad Thread Physics Graf Graf3d Matrix RIO Net Core Tree
+#libraries += Hist Gpad Thread Physics Graf Graf3d Matrix RIO Net Core Tree
 
 modules   := source/systemc/systems
 
@@ -15,17 +15,14 @@ modules   += $(DFDIR)/CIC_frame $(DFDIR)/gbt_link_format $(DFDIR)/hit_file $(DFD
 MODULEDIR := source/systemc/modules
 modules   += $(MODULEDIR)/hit_generator
 modules   += $(MODULEDIR)/frontend $(MODULEDIR)/frontend/frontend_chip $(MODULEDIR)/frontend/data_concentrator $(MODULEDIR)/frontend/gbt
-modules   += $(MODULEDIR)/backend/dtc
-modules   += $(MODULEDIR)/backend $(MODULEDIR)/backend/data_organizer $(MODULEDIR)/backend/processor_organizer
-modules   += $(MODULEDIR)/backend/am_board $(MODULEDIR)/backend/am_board/am_input_module
-modules   += $(MODULEDIR)/backend/am_board/track_finder $(MODULEDIR)/backend/am_board/track_finder/am_chip $(MODULEDIR)/backend/am_board/track_finder/hit_buffer
-modules   += $(MODULEDIR)/backend/am_board/track_finder/hit_processor $(MODULEDIR)/backend/am_board/track_finder/pattern_bank
-modules   += $(MODULEDIR)/backend/am_board/track_finder/pattern_memory $(MODULEDIR)/backend/am_board/track_finder/road_processor
-modules   += $(MODULEDIR)/road_analyzer
-modules   += source/systemc/libraries/CMSSW_extraction
-
-DFDIR     := source/systemc/data_formats
-modules   += $(DFDIR)/CIC_frame $(DFDIR)/gbt_link_format $(DFDIR)/hit_file $(DFDIR)/HitSF $(DFDIR)/prbf $(DFDIR)/stub
+#modules   += $(MODULEDIR)/backend/dtc
+#modules   += $(MODULEDIR)/backend $(MODULEDIR)/backend/data_organizer $(MODULEDIR)/backend/processor_organizer
+#modules   += $(MODULEDIR)/backend/am_board $(MODULEDIR)/backend/am_board/am_input_module
+#modules   += $(MODULEDIR)/backend/am_board/track_finder $(MODULEDIR)/backend/am_board/track_finder/am_chip $(MODULEDIR)/backend/am_board/track_finder/hit_buffer
+#modules   += $(MODULEDIR)/backend/am_board/track_finder/hit_processor $(MODULEDIR)/backend/am_board/track_finder/pattern_bank
+#modules   += $(MODULEDIR)/backend/am_board/track_finder/pattern_memory $(MODULEDIR)/backend/am_board/track_finder/road_processor
+#modules   += $(MODULEDIR)/road_analyzer
+#modules   += source/systemc/libraries/CMSSW_extraction
 
 sources     :=
 sim_sources :=
@@ -33,14 +30,15 @@ tb_sources  :=
 
 TBPATH     := source/systemc/module_tests
 tb_sources += $(TBPATH)/TT_TB_testbench.cpp
-tb_sources += $(TBPATH)/data_concentrator_cbc_tb.cpp $(TBPATH)/data_concentrator_mpa_tb.cpp $(TBPATH)/ $(TBPATH)/dtc_input_unit_tb.cpp $(TBPATH)/dtc_output_unit_tb.cpp
-tb_sources += $(TBPATH)/dtc_tb.cpp $(TBPATH)/frontend_chip_cbc_tb.cpp $(TBPATH)/frontend_chip_mpa_tb.cpp $(TBPATH)/gbt_tb.cpp $(TBPATH)/hit_file_test.cpp
-tb_sources += $(TBPATH)/hit_generator_tb.cpp $(TBPATH)/prbf_tb.cpp $(TBPATH)/trigger_tower_tb.cpp
-tb_sources += $(TBPATH)/am_board/am_input_module_one_layer_tb.cpp $(TBPATH)/am_board/am_input_module_tb.cpp
-tb_sources += $(TBPATH)/backend_common/bx_stub_buffer_tb.cpp $(TBPATH)/backend_common/input_collector_tb.cpp $(TBPATH)/backend_common/time_demux_tb.cpp
-tb_sources += $(TBPATH)/data_organizer/data_organizer_tb.cpp
-tb_sources += $(TBPATH)/processor_organizer/po_layer_splitter_tb.cpp $(TBPATH)/processor_organizer/processor_organizer_tb.cpp
-tb_sources += $(TBPATH)/track_finder/am_chip_tb.cpp $(TBPATH)/track_finder/pattern_bank_tb.cpp
+tb_sources += $(TBPATH)/hit_generator_tb.cpp
+#tb_sources += $(TBPATH)/data_concentrator_cbc_tb.cpp $(TBPATH)/data_concentrator_mpa_tb.cpp $(TBPATH)/ $(TBPATH)/dtc_input_unit_tb.cpp $(TBPATH)/dtc_output_unit_tb.cpp
+#tb_sources += $(TBPATH)/dtc_tb.cpp $(TBPATH)/frontend_chip_cbc_tb.cpp $(TBPATH)/frontend_chip_mpa_tb.cpp $(TBPATH)/gbt_tb.cpp $(TBPATH)/hit_file_test.cpp
+#tb_sources += $(TBPATH)/prbf_tb.cpp $(TBPATH)/trigger_tower_tb.cpp
+#tb_sources += $(TBPATH)/am_board/am_input_module_one_layer_tb.cpp $(TBPATH)/am_board/am_input_module_tb.cpp
+#tb_sources += $(TBPATH)/backend_common/bx_stub_buffer_tb.cpp $(TBPATH)/backend_common/input_collector_tb.cpp $(TBPATH)/backend_common/time_demux_tb.cpp
+#tb_sources += $(TBPATH)/data_organizer/data_organizer_tb.cpp
+#tb_sources += $(TBPATH)/processor_organizer/po_layer_splitter_tb.cpp $(TBPATH)/processor_organizer/processor_organizer_tb.cpp
+#tb_sources += $(TBPATH)/track_finder/am_chip_tb.cpp $(TBPATH)/track_finder/pattern_bank_tb.cpp
  
 #################################################################################################
 
@@ -82,13 +80,13 @@ SED := sed
 all: TT_TB_sim libraries
 
 TT_TB_sim: $(dependencies) $(objects) $(sim_dependencies) $(sim_objects)
-	$(CC) source/systemc/systems/TT_TB_sim.cpp -o $@ $(sim_objects) $(objects) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
+	$(CC) source/systemc/systems/TT_TB_sim.cpp -o $@ $(sim_objects) $(objects) $(CPPFLAGS) $(LINK_LIBS) $(TARGET_ARCH) -pthread
 
 .PHONY: test
 test: TT_TB_test libraries
 
 TT_TB_test: $(dependencies) $(objects) $(tb_dependencies) $(tb_objects)
-	$(CC) -o $@ $(tb_objects) source/systemc/module_tests/TT_TB_testbench.o $(objects) $(CPPFLAGS) $(TARGET_ARCH) $(LINK_LIBPATHS) $(LINK_LIBS) -pthread
+	$(CC) -o $@ $(tb_objects) $(objects) $(CPPFLAGS) $(LINK_LIBS) $(TARGET_ARCH) -pthread
 
 .PHONY: clean
 clean:

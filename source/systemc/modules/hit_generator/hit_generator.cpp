@@ -87,7 +87,7 @@ void hit_generator::schedule_hits()
         {
             SYSTEMC_LOG << "Stub cannot be sent to: "
                         << layer << "," << ladder << "," << module_cnt
-                        << " does not exist.";
+                        << ". Module does not exist.";
         }
 
         ++hit_counter;

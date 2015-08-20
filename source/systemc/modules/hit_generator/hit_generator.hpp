@@ -34,6 +34,8 @@
 class hit_generator : public sc_module
 {
 public:
+    // todo: add counter for undelivered stubs
+
 // ----- Port Declarations -----------------------------------------------------
     /** 4-dimensional sc_map for the outputs of the stubs for the front end
      * chips. The dimensions are according to the detector
