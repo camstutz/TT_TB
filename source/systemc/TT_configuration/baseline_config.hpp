@@ -68,14 +68,14 @@ inline track_trigger_config baseline_config()
     configuration.cbc_sensor_module.frontend_chip = configuration.cbc_frontend_chip;
     configuration.cbc_sensor_module.data_concentrator = configuration.cbc_data_concentrator;
     configuration.cbc_sensor_module.gbt = configuration.gbt;
-    configuration.cbc_sensor_module_test.type = configuration.cbc_sensor_module;
+    configuration.cbc_sensor_module_test.type = &configuration.cbc_sensor_module;
 
     configuration.mpa_sensor_module.fe_chip_per_side = 8;
     configuration.mpa_sensor_module.side_count = 2;
     configuration.mpa_sensor_module.frontend_chip = configuration.mpa_frontend_chip;
     configuration.mpa_sensor_module.data_concentrator = configuration.mpa_data_concentrator;
     configuration.mpa_sensor_module.gbt = configuration.gbt;
-    configuration.mpa_sensor_module_test.type = configuration.mpa_sensor_module;
+    configuration.mpa_sensor_module_test.type = &configuration.mpa_sensor_module;
 
     // Hit Generator
     configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;

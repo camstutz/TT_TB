@@ -16,18 +16,18 @@
 sensor_module::sensor_module(
         const sc_module_name _name, sensor_module_config configuration) :
         sc_module(_name),
-        sides(configuration.type.side_count),
-        fe_chips_per_side(configuration.type.fe_chip_per_side),
-        hits_per_fe_chip(configuration.type.frontend_chip.max_stubs_per_cycle),
+        sides(configuration.type->side_count),
+        fe_chips_per_side(configuration.type->fe_chip_per_side),
+        hits_per_fe_chip(configuration.type->frontend_chip.max_stubs_per_cycle),
         clk("clk"),
         stub_inputs(sides, fe_chips_per_side, "stub_inputs"),
         gbt_link("gbt_link"),
         fe_data_valid_signals(sides, fe_chips_per_side, hits_per_fe_chip, "fe_data_valid_sig"),
         fe_out_signals(sides, fe_chips_per_side, hits_per_fe_chip, "fe_out_sig"),
-        cic_out_signals(configuration.type.side_count, "cic_out_signals"),
-        front_end_chips(configuration.type.side_count, configuration.type.fe_chip_per_side, "front_end_chip", configuration.type.frontend_chip),
-        concentrators(configuration.type.side_count, "CICs", configuration.type.data_concentrator),
-        gbt_unit("GBT_unit", configuration.type.gbt)
+        cic_out_signals(configuration.type->side_count, "cic_out_signals"),
+        front_end_chips(configuration.type->side_count, configuration.type->fe_chip_per_side, "front_end_chip", configuration.type->frontend_chip),
+        concentrators(configuration.type->side_count, "CICs", configuration.type->data_concentrator),
+        gbt_unit("GBT_unit", configuration.type->gbt)
 {
     // ----- Module / Port / Signal - creation and naming ----------------------
 

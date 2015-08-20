@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module_config.hpp
  * @author Christian Amstutz
- * @date May 15, 2015
+ * @date August 19, 2015
  *
  * @brief
  *
@@ -24,8 +24,10 @@
 class sensor_module_config
 {
 public:
-    sensor_module_type_config type;
+    sensor_module_type_config *type;
 
     boost::optional<unsigned int> id;
-    // coordinates;
+    boost::optional<unsigned int> layer;
+    boost::optional<unsigned int> ladder;
+    boost::optional<unsigned int> module;
 };

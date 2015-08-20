@@ -26,6 +26,8 @@
 class sensor_module_type_config
 {
 public:
+    std::string name;
+
     unsigned int side_count;                   // right now fixed as GBT only allows 2 sides
     unsigned int fe_chip_per_side;
 
