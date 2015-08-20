@@ -45,4 +45,6 @@ public:
     sensor_module_config cbc_sensor_module_test;
     sensor_module_config mpa_sensor_module_test;
     std::vector<sensor_module_config> sensor_modules;
+
+    std::vector<sensor_module_address> get_module_addresses() const;
 };

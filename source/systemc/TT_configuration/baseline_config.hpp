@@ -1,7 +1,7 @@
 /*!
  * @file configuration.hpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 20, 2015
  *
  * @brief
  *
@@ -80,6 +80,12 @@ inline track_trigger_config baseline_config()
     // Hit Generator
     configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;
     configuration.hit_generator.output_stub_mpa = configuration.mpa_frontend_chip.input_stub;
+    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(0,0,0));
+    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(1,0,0));
+    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(2,0,0));
+    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(3,0,0));
+    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(4,0,0));
+    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(5,0,0));
 
     // DTC
     configuration.dtc.input_nr = 3;

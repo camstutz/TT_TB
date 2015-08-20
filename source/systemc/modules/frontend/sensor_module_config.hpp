@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module_config.hpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 20, 2015
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include "sensor_module_type_config.hpp"
+#include "sensor_module_address.hpp"
 
 #include <boost/optional.hpp>
 
@@ -27,7 +28,5 @@ public:
     sensor_module_type_config *type;
 
     boost::optional<unsigned int> id;
-    boost::optional<unsigned int> layer;
-    boost::optional<unsigned int> ladder;
-    boost::optional<unsigned int> module;
+    sensor_module_address address;
 };

@@ -61,6 +61,7 @@ int sc_main(int argc, char *agv[])
     // ----- Module instance declarations --------------------------------------
 
     configuration.hit_generator.input_file = "/home/amstutz/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt";
+
     hit_generator_tb hit_generator_tb("Hit_Generator_TB", configuration);
 //    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
 //    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file, configuration);

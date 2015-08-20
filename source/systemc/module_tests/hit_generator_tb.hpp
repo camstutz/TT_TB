@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_test.hpp
  * @author Christian
- * @date July 29, 2015
+ * @date August 20, 2015
  *
  * @brief
  *
@@ -16,6 +16,7 @@
 #include "../systems/TT_configuration.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
 #include "../modules/hit_generator/hit_generator.hpp"
+#include "../modules/frontend/sensor_module_address.hpp"
 
 #include "sc_map.hpp"
 
@@ -33,7 +34,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_4d<sc_fifo<stub> > hit_signals;
+    sc_map_list<sensor_module_address, sc_fifo<stub> > hit_signals;
 
     sc_signal<unsigned int> hit_cnt_signal;
 

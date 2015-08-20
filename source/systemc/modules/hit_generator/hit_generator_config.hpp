@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_config.hpp
  * @author Christian Amstutz
- * @date August 3, 2015
+ * @date August 20, 2015
  *
  * @brief
  *
@@ -14,8 +14,10 @@
 #pragma once
 
 #include "../../data_formats/stub/stub_config.hpp"
+#include "../../modules/frontend/sensor_module_address.hpp"
 
 #include <string>
+#include <vector>
 
 // *****************************************************************************
 /*!
@@ -28,4 +30,6 @@ public:
 
     stub_config output_stub_cbc;
     stub_config output_stub_mpa;
+
+    std::vector<sensor_module_address> sensor_module_addresses;
 };

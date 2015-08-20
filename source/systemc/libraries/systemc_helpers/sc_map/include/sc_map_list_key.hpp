@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_list_key.hpp
  * @author Christian Amstutz
- * @date June 8, 2015
+ * @date August 20, 2015
  *
  * @brief
  *
@@ -27,6 +27,7 @@ public:
 
     value_type value;
 
+    sc_map_list_key();
     sc_map_list_key(value_type value);
     virtual ~sc_map_list_key() {};
 
@@ -37,6 +38,11 @@ public:
 };
 
 //*****************************************************************************
+
+//******************************************************************************
+template <typename value_T>
+sc_map_list_key<value_T>::sc_map_list_key()
+{}
 
 //******************************************************************************
 template <typename value_T>

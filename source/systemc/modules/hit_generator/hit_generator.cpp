@@ -17,8 +17,7 @@
 hit_generator::hit_generator(sc_module_name _name ,
         const hit_generator_config configuration) :
         sc_module(_name),
-        stub_outputs(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z,
-                2*NR_FE_CHIP_PER_MODULE, "hit_output"),
+        stub_outputs(configuration.sensor_module_addresses, "hit_output"),
         hit_cnt("hit_cnt"),
         configuration(configuration),
         hit_counter(0)
@@ -75,7 +74,21 @@ void hit_generator::schedule_hits()
         // TODO: exchange number by constant
         HitSF::chip_t chip = 8*hit.getSegment() + hit.getChip();
 
-        stub_outputs.at(layer, ladder, module_cnt, chip).write(output_stub);
+        // check if sensor module exists in system
+        sensor_module_address hit_module_address(layer, ladder, module_cnt);
+        if (std::find(configuration.sensor_module_addresses.begin(),
+                      configuration.sensor_module_addresses.end(),
+                      hit_module_address)
+            != configuration.sensor_module_addresses.end())
+        {
+            stub_outputs.at(hit_module_address).write(output_stub);
+        }
+        else
+        {
+            SYSTEMC_LOG << "Stub cannot be sent to: "
+                        << layer << "," << ladder << "," << module_cnt
+                        << " does not exist.";
+        }
 
         ++hit_counter;
         hit_cnt.write(hit_counter);

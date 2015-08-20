@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.hpp
  * @author Christian Amstutz
- * @date August 3, 2015
+ * @date August 20, 2015
  *
  * @brief
  */
@@ -26,6 +26,7 @@
 #include <string>
 #include <sstream>
 #include <queue>
+#include <algorithm>
 
 /*!
  * @brief SystemC module that reads hits from a file.
@@ -39,7 +40,7 @@ public:
      * structure in the following order: layer, ladder, module and front end chip
      * number.
      */
-    sc_map_4d<sc_fifo_out<stub> > stub_outputs;
+    sc_map_list<sensor_module_address, sc_fifo_out<stub> > stub_outputs;
 
     /** Signal that indicates the number of stubs read from the input file. This
      * is used to analyze the system.
