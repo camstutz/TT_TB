@@ -80,12 +80,20 @@ inline track_trigger_config baseline_config()
     // Hit Generator
     configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;
     configuration.hit_generator.output_stub_mpa = configuration.mpa_frontend_chip.input_stub;
-    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(0,0,0));
-    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(1,0,0));
-    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(2,0,0));
-    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(3,0,0));
-    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(4,0,0));
-    configuration.hit_generator.sensor_module_addresses.push_back(sensor_module_address(5,0,0));
+
+    std::vector<chip_address> new_chips;
+    new_chips = sensor_module_address(0,0,0).get_chips(configuration.mpa_sensor_module);
+    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
+    new_chips = sensor_module_address(1,0,0).get_chips(configuration.mpa_sensor_module);
+    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
+    new_chips = sensor_module_address(2,0,0).get_chips(configuration.mpa_sensor_module);
+    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
+    new_chips = sensor_module_address(3,0,0).get_chips(configuration.mpa_sensor_module);
+    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
+    new_chips = sensor_module_address(4,0,0).get_chips(configuration.mpa_sensor_module);
+    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
+    new_chips = sensor_module_address(5,0,0).get_chips(configuration.mpa_sensor_module);
+    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
 
     // DTC
     configuration.dtc.input_nr = 3;
@@ -99,7 +107,7 @@ inline track_trigger_config baseline_config()
     configuration.dtc.output_unit.dtc_input_nr = 3;
     configuration.dtc.output_unit.fe_collect_cycles = 8;
 
-    // Trigger Tower
+/*    // Trigger Tower
     configuration.trigger_tower.layer_nr = 6;
     configuration.trigger_tower.dtc_per_prb = 1;
     configuration.trigger_tower.prb_nr = 2;
@@ -125,6 +133,7 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
     configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 0;
 
+
     // AM Board
     configuration.trigger_tower.am_board.layer_nr = 6;
 
@@ -144,6 +153,7 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_write_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_lookup_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;
+ */
 
     return configuration;
 }

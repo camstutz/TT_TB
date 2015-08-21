@@ -19,7 +19,7 @@
 #include "../modules/frontend/sensor_module_config.hpp"
 #include "../modules/frontend/gbt/gbt_config.hpp"
 #include "../modules/backend/dtc/dtc_config.hpp"
-#include "../modules/backend/trigger_tower_config.hpp"
+//#include "../modules/backend/trigger_tower_config.hpp"
 
 #include <vector>
 
@@ -40,7 +40,7 @@ public:
     data_concentrator_config cbc_data_concentrator;
     data_concentrator_config mpa_data_concentrator;
 
-    trigger_tower_config trigger_tower;
+ //   trigger_tower_config trigger_tower;
 
     sensor_module_config cbc_sensor_module_test;
     sensor_module_config mpa_sensor_module_test;

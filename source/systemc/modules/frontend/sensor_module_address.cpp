@@ -29,6 +29,30 @@ sensor_module_address::sensor_module_address(unsigned int layer,
 {}
 
 // *****************************************************************************
+std::vector<chip_address> sensor_module_address::get_chips (
+        const unsigned int nr_segments, const unsigned int nr_chips) const
+{
+    std::vector<chip_address> chips;
+    for (unsigned int segment_id = 0; segment_id < nr_segments; ++segment_id)
+    {
+        for (unsigned int chip_id = 0; chip_id < nr_chips; ++chip_id)
+        {
+            chips.push_back(chip_address(layer, ladder, module, segment_id, chip_id));
+        }
+    }
+
+    return chips;
+}
+
+// *****************************************************************************
+std::vector<chip_address> sensor_module_address::get_chips (
+        const sensor_module_type_config& sensor_mod_config) const
+{
+    return get_chips(sensor_mod_config.side_count,
+            sensor_mod_config.fe_chip_per_side);
+}
+
+// *****************************************************************************
 bool sensor_module_address::operator== (const sensor_module_address& rhs) const
 {
     bool equal = true;

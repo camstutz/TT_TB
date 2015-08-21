@@ -13,6 +13,10 @@
 
 #pragma once
 
+#include "sensor_module_type_config.hpp"
+#include "chip_address.hpp"
+
+#include <vector>
 #include <string>
 #include <sstream>
 #include <ostream>
@@ -30,6 +34,9 @@ public:
 
     sensor_module_address();
     sensor_module_address(unsigned int layer, unsigned int ladder, unsigned int module);
+
+    std::vector<chip_address> get_chips(const unsigned int nr_segments, const unsigned int nr_chips) const;
+    std::vector<chip_address> get_chips(const sensor_module_type_config& sensor_mod_config) const;
 
     bool operator== (const sensor_module_address& rhs) const;
     bool operator< (const sensor_module_address& rhs) const;

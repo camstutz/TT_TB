@@ -17,7 +17,7 @@
 hit_generator::hit_generator(sc_module_name _name ,
         const hit_generator_config configuration) :
         sc_module(_name),
-        stub_outputs(configuration.sensor_module_addresses, "hit_output"),
+        stub_outputs(configuration.chip_addresses, "hit_output"),
         hit_cnt("hit_cnt"),
         configuration(configuration),
         hit_counter(0)
@@ -71,17 +71,17 @@ void hit_generator::schedule_hits()
         HitSF::layer_t layer = hit.getLayer();
         HitSF::ladder_t ladder = hit.getLadder();
         HitSF::module_t module_cnt = hit.getModule();
-        // TODO: exchange number by constant
-        HitSF::chip_t chip = 8*hit.getSegment() + hit.getChip();
+        HitSF::segment_t segment = hit.getSegment();
+        HitSF::chip_t chip = hit.getChip();
 
         // check if sensor module exists in system
-        sensor_module_address hit_module_address(layer, ladder, module_cnt);
-        if (std::find(configuration.sensor_module_addresses.begin(),
-                      configuration.sensor_module_addresses.end(),
-                      hit_module_address)
-            != configuration.sensor_module_addresses.end())
+        chip_address hit_chip_address(layer, ladder, module_cnt, segment, chip);
+        if (std::find(configuration.chip_addresses.begin(),
+                      configuration.chip_addresses.end(),
+                      hit_chip_address)
+            != configuration.chip_addresses.end())
         {
-            stub_outputs.at(hit_module_address).write(output_stub);
+            stub_outputs.at(hit_chip_address).write(output_stub);
         }
         else
         {

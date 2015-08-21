@@ -15,6 +15,7 @@
 #include "../../systems/TT_configuration.hpp"
 #include "../../data_formats/HitSF/HitSF.h"
 #include "../../data_formats/stub/stub.hpp"
+#include "../frontend/chip_address.hpp"
 
 #include "hit_generator_config.hpp"
 
@@ -42,7 +43,7 @@ public:
      * structure in the following order: layer, ladder, module and front end chip
      * number.
      */
-    sc_map_list<sensor_module_address, sc_fifo_out<stub> > stub_outputs;
+    sc_map_list<chip_address, sc_fifo_out<stub> > stub_outputs;
 
     /** Signal that indicates the number of stubs read from the input file. This
      * is used to analyze the system.

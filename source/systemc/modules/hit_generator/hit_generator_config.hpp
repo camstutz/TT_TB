@@ -14,7 +14,7 @@
 #pragma once
 
 #include "../../data_formats/stub/stub_config.hpp"
-#include "../../modules/frontend/sensor_module_address.hpp"
+#include "../../modules/frontend/chip_address.hpp"
 
 #include <string>
 #include <vector>
@@ -31,5 +31,5 @@ public:
     stub_config output_stub_cbc;
     stub_config output_stub_mpa;
 
-    std::vector<sensor_module_address> sensor_module_addresses;
+    std::vector<chip_address> chip_addresses;
 };
