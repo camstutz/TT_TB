@@ -83,7 +83,6 @@
 #define SS_BIT_WIDTH 2
 
 // Define delays
-#define DC_output_delay 0
 #define DTC_latency 0
 #define DO_output_delay 0
 #define AM_CHIP_LATENCY 0

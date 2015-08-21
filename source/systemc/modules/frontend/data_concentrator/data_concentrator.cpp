@@ -32,7 +32,7 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
         clock_phase("clock_phase"),
         stub_buffer_write_sel("stub_buffer_write_sel"),
         stub_buffer_read_sel("stub_buffer_read_sel"),
-        delay_output("delay_outout", DC_output_delay),
+        delay_output("delay_outout", configuration.delay_cycles),
         output_stub_config(configuration.output_stub)
 {
     // ----- Process registration ----------------------------------------------
@@ -132,8 +132,8 @@ void data_concentrator::write_output()
             if (output_frame.stub_count() > 0)
             {
                 SYSTEMC_LOG << "Frame @ bx=" << output_frame.get_header().get_bunch_crossing()
-                        << " with "
-                        << output_frame.get_header().get_stub_count() << " stubs transmitted.";
+                            << " with "
+                            << output_frame.get_header().get_stub_count() << " stubs transmitted.";
             }
         }
     }
@@ -153,11 +153,9 @@ typename data_concentrator::output_t data_concentrator::create_output_buffer()
 
     if (stub_buffer[stub_buffer_read_sel].size() > max_output_stubs)
     {
-        // TODO: put this to logging
-        std::cerr << sc_time_stamp()
-                  << ": data_concentrator - Stub buffer overflow! ("
-                  << stub_buffer[stub_buffer_read_sel].size() << "/"
-                  <<  max_output_stubs<< ")" << std::endl;
+        SYSTEMC_LOG << "Stub buffer overflow! ("
+                    << stub_buffer[stub_buffer_read_sel].size() << "/"
+                    << max_output_stubs<< ")";
     }
     // cut the stubs that are too much for transmission to the back end
     // TODO: cut stubs by bend

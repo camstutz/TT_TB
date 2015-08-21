@@ -31,7 +31,8 @@ tb_sources  :=
 TBPATH     := source/systemc/module_tests
 tb_sources += $(TBPATH)/TT_TB_testbench.cpp
 tb_sources += $(TBPATH)/hit_generator_tb.cpp
-#tb_sources += $(TBPATH)/data_concentrator_cbc_tb.cpp $(TBPATH)/data_concentrator_mpa_tb.cpp $(TBPATH)/ $(TBPATH)/dtc_input_unit_tb.cpp $(TBPATH)/dtc_output_unit_tb.cpp
+tb_sources += $(TBPATH)/data_concentrator_cbc_tb.cpp $(TBPATH)/data_concentrator_mpa_tb.cpp 
+#$(TBPATH)/dtc_input_unit_tb.cpp $(TBPATH)/dtc_output_unit_tb.cpp
 #tb_sources += $(TBPATH)/dtc_tb.cpp $(TBPATH)/frontend_chip_cbc_tb.cpp $(TBPATH)/frontend_chip_mpa_tb.cpp $(TBPATH)/gbt_tb.cpp $(TBPATH)/hit_file_test.cpp
 #tb_sources += $(TBPATH)/prbf_tb.cpp $(TBPATH)/trigger_tower_tb.cpp
 #tb_sources += $(TBPATH)/am_board/am_input_module_one_layer_tb.cpp $(TBPATH)/am_board/am_input_module_tb.cpp

@@ -21,25 +21,25 @@
 
 //#include "hit_file_test.hpp"
 #include "hit_generator_tb.hpp"
-#include "frontend_chip_cbc_tb.hpp"
-#include "frontend_chip_mpa_tb.hpp"
+//#include "frontend_chip_cbc_tb.hpp"
+//#include "frontend_chip_mpa_tb.hpp"
 #include "data_concentrator_cbc_tb.hpp"
 #include "data_concentrator_mpa_tb.hpp"
-#include "gbt_tb.hpp"
-#include "dtc_input_unit_tb.hpp"
-#include "dtc_output_unit_tb.hpp"
-#include "dtc_tb.hpp"
-#include "backend_common/bx_stub_buffer_tb.hpp"
-#include "backend_common/input_collector_tb.hpp"
-#include "backend_common/time_demux_tb.hpp"
-#include "data_organizer/data_organizer_tb.hpp"
-#include "processor_organizer/po_layer_splitter_tb.hpp"
-#include "processor_organizer/processor_organizer_tb.hpp"
-#include "am_board/am_input_module_one_layer_tb.hpp"
-#include "am_board/am_input_module_tb.hpp"
-#include "track_finder/am_chip_tb.hpp"
-#include "track_finder/pattern_bank_tb.hpp"
-#include "trigger_tower_tb.hpp"
+//#include "gbt_tb.hpp"
+//#include "dtc_input_unit_tb.hpp"
+//#include "dtc_output_unit_tb.hpp"
+//#include "dtc_tb.hpp"
+//#include "backend_common/bx_stub_buffer_tb.hpp"
+//#include "backend_common/input_collector_tb.hpp"
+//#include "backend_common/time_demux_tb.hpp"
+//#include "data_organizer/data_organizer_tb.hpp"
+//#include "processor_organizer/po_layer_splitter_tb.hpp"
+//#include "processor_organizer/processor_organizer_tb.hpp"
+//#include "am_board/am_input_module_one_layer_tb.hpp"
+//#include "am_board/am_input_module_tb.hpp"
+//#include "track_finder/am_chip_tb.hpp"
+//#include "track_finder/pattern_bank_tb.hpp"
+//#include "trigger_tower_tb.hpp"
 //#include "prbf_tb.hpp"
 //#include "cic_format_tb.hpp"
 
@@ -60,13 +60,13 @@ int sc_main(int argc, char *agv[])
 
     // ----- Module instance declarations --------------------------------------
 
-    configuration.hit_generator.input_file = "/home/amstutz/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt";
+    configuration.hit_generator.input_file = "/home/chris/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt";
 
     hit_generator_tb hit_generator_tb("Hit_Generator_TB", configuration);
 //    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
 //    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file, configuration);
-//    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
-//    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
+    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
+    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
 //    gbt_config gbt_configuration;
 //    gbt_configuration.input_link_count = 2;
 //    gbt_tb gbt_TB("GBT_TB", gbt_configuration, configuration.cbc_data_concentrator);

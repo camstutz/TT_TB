@@ -29,4 +29,6 @@ public:
     unsigned int fe_chips_count;
     unsigned int max_output_stubs;
     unsigned int output_window_cycles;
+
+    unsigned int delay_cycles;
 };

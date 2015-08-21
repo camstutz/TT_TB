@@ -38,6 +38,7 @@ inline track_trigger_config baseline_config()
     configuration.cbc_data_concentrator.fe_chips_count = 8;
     configuration.cbc_data_concentrator.max_output_stubs = 12;
     configuration.cbc_data_concentrator.output_window_cycles = 8;
+    configuration.cbc_data_concentrator.delay_cycles = 0;
 
     configuration.mpa_frontend_chip.max_stubs_per_cycle = 2;
     configuration.mpa_frontend_chip.collection_cycles = 2;
@@ -59,6 +60,7 @@ inline track_trigger_config baseline_config()
     configuration.mpa_data_concentrator.fe_chips_count = 8;
     configuration.mpa_data_concentrator.max_output_stubs = 10;
     configuration.mpa_data_concentrator.output_window_cycles = 8;
+    configuration.mpa_data_concentrator.delay_cycles = 0;
 
     // Configure general GBT module
     configuration.gbt.input_link_count = 2;

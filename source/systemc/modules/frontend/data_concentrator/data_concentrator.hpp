@@ -22,7 +22,6 @@
 #include "sc_map.hpp"
 #include "../../../systems/tt_tb_logger.hpp"
 
-#include "../../../systems/TT_configuration.hpp"
 #include "data_concentrator_config.hpp"
 
 #include "../../../data_formats/stub/stub.hpp"
