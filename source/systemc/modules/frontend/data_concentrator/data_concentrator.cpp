@@ -32,7 +32,7 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
         clock_phase("clock_phase"),
         stub_buffer_write_sel("stub_buffer_write_sel"),
         stub_buffer_read_sel("stub_buffer_read_sel"),
-        delay_output("delay_outout", configuration.delay_cycles),
+        delay_output("delay_output", configuration.delay_cycles),
         output_stub_config(configuration.output_stub)
 {
     // ----- Process registration ----------------------------------------------
@@ -46,7 +46,6 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
     // ----- Module variable initialization ------------------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-
     delay_output.clk.bind(clk);
     delay_output.input.bind(dc_out_sig);
     delay_output.delayed.bind(dc_out);

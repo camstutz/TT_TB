@@ -5,7 +5,7 @@ librarypaths := /usr/local/lib/systemc-2.3.1/lib-linux64 /usr/local/lib/root sou
 libraries := systemc_helpers
 libraries += systemc
 libraries += boost_system boost_serialization boost_iostreams boost_thread boost_log
-#libraries += Hist Gpad Thread Physics Graf Graf3d Matrix RIO Net Core Tree
+libraries += Hist Gpad Thread Physics Graf Graf3d Matrix RIO Net Core Tree
 
 modules   := source/systemc/systems
 
@@ -72,12 +72,6 @@ RM  := rm -f
 SED := sed
 
 .PHONY: all
-#all:
-#	@echo "$(sources)"
-#	@echo "$(modules)"
-#	@echo "$(objects)"
-#	@echo "$(sim_objects)"
-#	@echo "$(tb_objects)"
 all: TT_TB_sim libraries
 
 TT_TB_sim: $(dependencies) $(objects) $(sim_dependencies) $(sim_objects)

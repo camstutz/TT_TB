@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.cpp
  * @author Christian Amstutz
- * @date July 30, 2015
+ * @date August 22, 2015
  */
 
 /*
@@ -24,6 +24,10 @@ frontend_chip::frontend_chip(const sc_module_name _name,
         data_valid(configuration.max_stubs_per_cycle, "data_valid", 0),
         stub_outputs(configuration.max_stubs_per_cycle, "stub_output", 0),
         selected_stubs("selected_stubs", configuration.max_stubs_per_cycle * configuration.collection_cycles),
+        data_valid_sig(configuration.max_stubs_per_cycle, "data_valid_sig"),
+        stub_output_sig(configuration.max_stubs_per_cycle, "stub_output_sig"),
+        delay_data_valid(configuration.max_stubs_per_cycle, configuration.latency_cycles),
+        delay_stub_output(configuration.max_stubs_per_cycle, configuration.latency_cycles),
         max_stubs_per_cycle(configuration.max_stubs_per_cycle),
         collection_cycles(configuration.collection_cycles),
         total_collected_stubs(configuration.max_stubs_per_cycle * configuration.collection_cycles)
@@ -37,6 +41,16 @@ frontend_chip::frontend_chip(const sc_module_name _name,
     // ----- Module variable initialization ------------------------------------
 
     // ----- Module instance / channel binding ---------------------------------
+    for (unsigned int i=0; i<configuration.collection_cycles; ++i)
+    {
+        delay_data_valid[i].clk.bind(clk);
+        delay_data_valid[i].input.bind(data_valid_sig[i]);
+        delay_data_valid[i].delayed.bind(data_valid[i]);
+
+        delay_stub_output[i].clk.bind(clk);
+        delay_stub_output[i].input.bind(stub_output_sig[i]);
+        delay_stub_output[i].delayed.bind(stub_outputs[i]);
+    }
 
     return;
 }
@@ -81,17 +95,17 @@ void frontend_chip::write_hits()
             unsigned int i = 0;
             while ((i < max_stubs_per_cycle) && (selected_stubs.num_available() > 0))
             {
-                data_valid.at(i).write(true);
+                data_valid_sig.at(i).write(true);
                 stub stub_to_write(output_stub_config);
                 stub_to_write = selected_stubs.read();
-                stub_outputs.at(i).write(stub_to_write);
+                stub_output_sig.at(i).write(stub_to_write);
                 ++i;
             }
 
             wait(clk.posedge_event());
 
-            data_valid.write(0);
-            stub_outputs.write(output_stub_t(output_stub_config));
+            data_valid_sig.write(0);
+            stub_output_sig.write(output_stub_t(output_stub_config));
         }
     }
 

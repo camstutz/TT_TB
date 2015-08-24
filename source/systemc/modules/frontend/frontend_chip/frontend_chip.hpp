@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date July 28, 2015
+ * @date August 22, 2015
  *
  * @brief
  *
@@ -13,15 +13,17 @@
 
 #pragma once
 
+#include "../../../data_formats/stub/stub.hpp"
+#include "frontend_chip_config.hpp"
+
+#include "sc_delay_signal.hpp"
+#include "sc_map.hpp"
+
+#include <systemc.h>
+
 #include <vector>
 #include <map>
 #include <string>
-
-#include <systemc.h>
-#include "sc_map.hpp"
-
-#include "../../../data_formats/stub/stub.hpp"
-#include "frontend_chip_config.hpp"
 
 /*!
  * @brief
@@ -44,6 +46,8 @@ public:
 
 // ----- Local Channel Declarations --------------------------------------------
     sc_fifo<output_stub_t> selected_stubs;
+    sc_map_linear<sc_signal<bool> > data_valid_sig;
+    sc_map_linear<sc_signal<output_stub_t> > stub_output_sig;
 
 // ----- Process Declarations --------------------------------------------------
     void read_input();
@@ -52,6 +56,8 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
+    sc_map_linear<sc_delay_signal<bool> > delay_data_valid;
+    sc_map_linear<sc_delay_signal<output_stub_t> > delay_stub_output;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

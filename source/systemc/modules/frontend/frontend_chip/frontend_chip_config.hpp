@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_config.hpp
  * @author Christian Amstutz
- * @date July 28, 2015
+ * @date August 22, 2015
  *
  * @brief
  *
@@ -13,7 +13,6 @@
 
 #pragma once
 
-#include "fe_chip_output_config.hpp"
 #include "../../../data_formats/stub/stub_config.hpp"
 
 // *****************************************************************************
@@ -28,4 +27,6 @@ public:
 
     unsigned int max_stubs_per_cycle;
     unsigned int collection_cycles;
+
+    unsigned int latency_cycles;
 };
