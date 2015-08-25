@@ -33,8 +33,6 @@ public:
     sc_out<signal_t> delayed;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_signal<signal_t> input_signal;
-    sc_signal<bool> signal_received;
     sc_signal<unsigned int> read_ptr;
     sc_signal<unsigned int> write_ptr;
 
@@ -78,8 +76,6 @@ sc_delay_signal<signal_t>::sc_delay_signal(sc_module_name _name,
         clk("clk"),
         input("input"),
         delayed("delayed"),
-        input_signal("input_singal"),
-        signal_received("signal_received"),
         read_ptr("read_ptr"),
         write_ptr("write_ptr"),
         delay_cycles(delay_cycles)
@@ -99,11 +95,18 @@ sc_delay_signal<signal_t>::sc_delay_signal(sc_module_name _name,
     }
 
     // ----- Module variable initialization ------------------------------------
-    read_ptr.write(1);
-    write_ptr.write(0);
-
     data_valid_buffer.resize(delay_cycles, false);
     value_buffer.resize(delay_cycles, signal_t());
+
+    write_ptr.write(0);
+    if (delay_cycles > 1)
+    {
+        read_ptr.write(1);
+    }
+    else
+    {
+        read_ptr.write(0);
+    }
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -114,32 +117,27 @@ sc_delay_signal<signal_t>::sc_delay_signal(sc_module_name _name,
 template <typename signal_t>
 void sc_delay_signal<signal_t>::read_input()
 {
-    signal_received.write(false);
+    bool signal_received = false;
 
     while (true)
     {
         wait();
 
+        if (input.event())
+        {
+            value_buffer[write_ptr] = input.read();
+            data_valid_buffer[write_ptr] = true;
+            signal_received = true;
+        }
+
         if (clk.posedge())
         {
-            if (!signal_received.read())
+            if (signal_received == false)
             {
                 data_valid_buffer[write_ptr.read()] = false;
             }
-            else
-            {
-                value_buffer[write_ptr] = input_signal.read();
-                data_valid_buffer[write_ptr.read()] = true;
-            }
-
+            signal_received = false;
             increase_ptr(write_ptr);
-            signal_received.write(false);
-        }
-
-        if (input.event())
-        {
-            input_signal.write(input.read());
-            signal_received.write(true);
         }
     }
 
@@ -180,7 +178,7 @@ void sc_delay_signal<signal_t>::zero_delay()
 template <typename signal_t>
 void sc_delay_signal<signal_t>::increase_ptr(sc_signal<unsigned int>& ptr)
 {
-    if (ptr.read() == delay_cycles-1)
+    if (ptr.read() >= (delay_cycles-1))
     {
         ptr.write(0);
     }
