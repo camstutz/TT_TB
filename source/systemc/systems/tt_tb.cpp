@@ -26,52 +26,39 @@ SC_MODULE_EXPORT(tt_tb);
 tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuration) :
         LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("true_sig"),
-        hit_fifos(configuration.get_module_addresses(), "hit_fifo"),
-        gbt_links(NR_DETECTOR_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "GBT_link"),
+        hit_fifos(configuration.get_chip_addresses(), "hit_fifo"),
+        gbt_links(configuration.get_module_addresses(), "GBT_link"),
         dtc_links(NR_PRB_PER_TRIGGER_TOWER, "DTC_link"),
         result_hits(NR_PRB_PER_TRIGGER_TOWER * NR_AM_BOARDS, NR_DETECTOR_LAYERS, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
-        sensor_modules_mpa(NR_DETECTOR_MPA_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module_mpa", configuration.mpa_sensor_module_test, 0, 0, 0),
-        sensor_modules_cbc(NR_DETECTOR_CBC_LAYERS, NR_DETECTOR_PHI, NR_DETECTOR_Z, "sensor_module_cbc", configuration.cbc_sensor_module_test, NR_DETECTOR_MPA_LAYERS, 0, 0),
-        DTCs(NR_PRB_PER_TRIGGER_TOWER, "DTC", configuration.dtc),
+        sensor_modules(configuration.get_module_addresses(), "sensor_module", configuration.sensor_modules),
+        DTCs(1, "DTC", configuration.dtcs),
         trigger_tower_0("trigger_tower", configuration.trigger_tower),
         roadAnalyzer("road_analyzer")
 {
     hitGenerator.stub_outputs.bind(hit_fifos);
     hitGenerator.hit_cnt(hit_cnt_sig);
 
-    sc_map_cube<sensor_module>::iterator mpa_module_it = sensor_modules_mpa.begin();
-    for (; mpa_module_it != sensor_modules_mpa.end(); ++mpa_module_it)
+    for( sc_map_list<sensor_module_address, sensor_module>::iterator module_it = sensor_modules.begin();
+         module_it != sensor_modules.end();
+         ++module_it)
     {
-        sc_map_cube<sensor_module>::key_type module_key = sensor_modules_mpa.get_key(*mpa_module_it).second;
-        mpa_module_it->clk.bind(LHC_clock);
-        mpa_module_it->stub_inputs.bind(hit_fifos(
-                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 0),
-                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 2*NR_FE_CHIP_PER_MODULE) ));
-        mpa_module_it->gbt_link.bind(gbt_links.at(module_key.Z, module_key.Y, module_key.X));
-    }
-
-    sc_map_cube<sensor_module>::iterator cbc_module_it = sensor_modules_cbc.begin();
-    for (; cbc_module_it != sensor_modules_cbc.end(); ++cbc_module_it)
-    {
-        sc_map_cube<sensor_module>::key_type module_key = sensor_modules_cbc.get_key(*cbc_module_it).second;
-        cbc_module_it->clk.bind(LHC_clock);
-        cbc_module_it->stub_inputs.bind(hit_fifos(
-                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 0),
-                sc_map_4d_key(module_key.Z, module_key.Y, module_key.X, 2*NR_FE_CHIP_PER_MODULE) ));
-        cbc_module_it->gbt_link.bind(gbt_links.at(module_key.Z, module_key.Y, module_key.X));
+        module_it->clk.bind(LHC_clock);
+        std::vector<chip_address> chip_addresses = module_it->configuration.address.get_chips(*(module_it->configuration.type) );
+        sc_map_list_range<chip_address> module_chips(chip_addresses);
+        module_it->stub_inputs.bind(hit_fifos(module_chips));
+        module_it->gbt_link.bind(gbt_links[module_it->configuration.address]);
     }
 
     unsigned int dtc_id = 0;
-    sc_map_linear<dtc>::iterator dtc_it = DTCs.begin();
-    for (; dtc_it != DTCs.end(); ++dtc_it)
+    for ( sc_map_linear<dtc>::iterator dtc_it = DTCs.begin();
+          dtc_it != DTCs.end();
+          ++dtc_it)
     {
         dtc_it->clk.bind(LHC_clock);
-        dtc_it->gbt_inputs.bind(gbt_links(
-                sc_map_cube_key(3*dtc_id, 0, 0),
-                sc_map_cube_key(3*dtc_id+2, 0, 0)));
-
+        sc_map_list_range<sensor_module_address> module_list(dtc_it->configuration.sensor_modules);
+        dtc_it->gbt_inputs.bind(gbt_links(module_list));
         dtc_it->tower_output.bind(dtc_links[dtc_id]);
 
         ++dtc_id;

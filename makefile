@@ -13,16 +13,17 @@ DFDIR     := source/systemc/data_formats
 modules   += $(DFDIR)/CIC_frame $(DFDIR)/gbt_link_format $(DFDIR)/hit_file $(DFDIR)/HitSF $(DFDIR)/prbf $(DFDIR)/stub
 
 MODULEDIR := source/systemc/modules
+modules   += source/systemc/TT_configuration
 modules   += $(MODULEDIR)/hit_generator
 modules   += $(MODULEDIR)/frontend $(MODULEDIR)/frontend/frontend_chip $(MODULEDIR)/frontend/data_concentrator $(MODULEDIR)/frontend/gbt
-#modules   += $(MODULEDIR)/backend/dtc
-#modules   += $(MODULEDIR)/backend $(MODULEDIR)/backend/data_organizer $(MODULEDIR)/backend/processor_organizer
-#modules   += $(MODULEDIR)/backend/am_board $(MODULEDIR)/backend/am_board/am_input_module
-#modules   += $(MODULEDIR)/backend/am_board/track_finder $(MODULEDIR)/backend/am_board/track_finder/am_chip $(MODULEDIR)/backend/am_board/track_finder/hit_buffer
-#modules   += $(MODULEDIR)/backend/am_board/track_finder/hit_processor $(MODULEDIR)/backend/am_board/track_finder/pattern_bank
-#modules   += $(MODULEDIR)/backend/am_board/track_finder/pattern_memory $(MODULEDIR)/backend/am_board/track_finder/road_processor
-#modules   += $(MODULEDIR)/road_analyzer
-#modules   += source/systemc/libraries/CMSSW_extraction
+modules   += $(MODULEDIR)/backend/dtc
+modules   += $(MODULEDIR)/backend $(MODULEDIR)/backend/data_organizer $(MODULEDIR)/backend/processor_organizer
+modules   += $(MODULEDIR)/backend/am_board $(MODULEDIR)/backend/am_board/am_input_module
+modules   += $(MODULEDIR)/backend/am_board/track_finder $(MODULEDIR)/backend/am_board/track_finder/am_chip $(MODULEDIR)/backend/am_board/track_finder/hit_buffer
+modules   += $(MODULEDIR)/backend/am_board/track_finder/hit_processor $(MODULEDIR)/backend/am_board/track_finder/pattern_bank
+modules   += $(MODULEDIR)/backend/am_board/track_finder/pattern_memory $(MODULEDIR)/backend/am_board/track_finder/road_processor
+modules   += $(MODULEDIR)/road_analyzer
+modules   += source/systemc/libraries/CMSSW_extraction
 
 sources     :=
 sim_sources :=

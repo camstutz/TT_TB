@@ -1,7 +1,7 @@
 /*!
  * @file dtc_config.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 25, 2015
  *
  * @brief
  *
@@ -17,6 +17,8 @@
 #include "dtc_input_unit_config.hpp"
 #include "dtc_output_unit_config.hpp"
 
+#include "../../frontend/sensor_module_address.hpp"
+
 // *****************************************************************************
 /*!
  * @brief
@@ -24,10 +26,11 @@
 class dtc_config
 {
 public:
-    unsigned int input_nr;
     unsigned int collection_cycles;
 
     dtc_controller_config controller;
     dtc_input_unit_config input_unit;
     dtc_output_unit_config output_unit;
+
+    std::vector<sensor_module_address> sensor_modules;
 };

@@ -84,33 +84,39 @@ inline track_trigger_config baseline_config()
     configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;
     configuration.hit_generator.output_stub_mpa = configuration.mpa_frontend_chip.input_stub;
 
+    configuration.sensor_modules.push_back(sensor_module_config(&configuration.mpa_sensor_module, 0, sensor_module_address(0,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(&configuration.mpa_sensor_module, 1, sensor_module_address(1,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(&configuration.mpa_sensor_module, 2, sensor_module_address(2,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(&configuration.cbc_sensor_module, 3, sensor_module_address(3,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(&configuration.cbc_sensor_module, 4, sensor_module_address(4,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(&configuration.cbc_sensor_module, 5, sensor_module_address(5,0,0)));
+
     std::vector<chip_address> new_chips;
-    new_chips = sensor_module_address(0,0,0).get_chips(configuration.mpa_sensor_module);
-    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
-    new_chips = sensor_module_address(1,0,0).get_chips(configuration.mpa_sensor_module);
-    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
-    new_chips = sensor_module_address(2,0,0).get_chips(configuration.mpa_sensor_module);
-    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
-    new_chips = sensor_module_address(3,0,0).get_chips(configuration.mpa_sensor_module);
-    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
-    new_chips = sensor_module_address(4,0,0).get_chips(configuration.mpa_sensor_module);
-    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
-    new_chips = sensor_module_address(5,0,0).get_chips(configuration.mpa_sensor_module);
-    configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
+    for(auto module : configuration.sensor_modules)
+    {
+        new_chips = module.address.get_chips(*module.type);
+        configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
+    }
 
     // DTC
-    configuration.dtc.input_nr = 3;
+
     configuration.dtc.collection_cycles = 8;
-
     configuration.dtc.controller.fe_collect_cycles = 8;
-
     configuration.dtc.input_unit.fe_id = 0xFF;
     configuration.dtc.input_unit.fe_collect_cycles = 8;
-
-    configuration.dtc.output_unit.dtc_input_nr = 3;
     configuration.dtc.output_unit.fe_collect_cycles = 8;
 
-/*    // Trigger Tower
+    configuration.dtcs.resize(1);
+    configuration.dtcs[0] = configuration.dtc;
+    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(0,0,0));
+    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(1,0,0));
+    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(2,0,0));
+    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(3,0,0));
+    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(4,0,0));
+    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(5,0,0));
+    configuration.dtcs[0].output_unit.dtc_input_nr = configuration.dtcs[0].sensor_modules.size();
+
+    // Trigger Tower
     configuration.trigger_tower.layer_nr = 6;
     configuration.trigger_tower.dtc_per_prb = 1;
     configuration.trigger_tower.prb_nr = 2;
@@ -156,7 +162,6 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_write_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_lookup_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;
- */
 
     return configuration;
 }

@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.hpp
  * @author Christian Amstutz
- * @date August 14, 2015
+ * @date August 25, 2015
  *
  * @brief
  *
@@ -19,7 +19,7 @@
 #include "../modules/frontend/sensor_module_config.hpp"
 #include "../modules/frontend/gbt/gbt_config.hpp"
 #include "../modules/backend/dtc/dtc_config.hpp"
-//#include "../modules/backend/trigger_tower_config.hpp"
+#include "../modules/backend/trigger_tower_config.hpp"
 
 #include <vector>
 
@@ -40,11 +40,14 @@ public:
     data_concentrator_config cbc_data_concentrator;
     data_concentrator_config mpa_data_concentrator;
 
- //   trigger_tower_config trigger_tower;
+    trigger_tower_config trigger_tower;
 
     sensor_module_config cbc_sensor_module_test;
     sensor_module_config mpa_sensor_module_test;
+
     std::vector<sensor_module_config> sensor_modules;
+    std::vector<dtc_config> dtcs;
 
     std::vector<sensor_module_address> get_module_addresses() const;
+    std::vector<chip_address> get_chip_addresses() const;
 };

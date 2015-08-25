@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module.cpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 25, 2015
  *
  * @brief
  */
@@ -16,6 +16,7 @@
 sensor_module::sensor_module(
         const sc_module_name _name, sensor_module_config configuration) :
         sc_module(_name),
+        configuration(configuration),
         sides(configuration.type->side_count),
         fe_chips_per_side(configuration.type->fe_chip_per_side),
         hits_per_fe_chip(configuration.type->frontend_chip.max_stubs_per_cycle),

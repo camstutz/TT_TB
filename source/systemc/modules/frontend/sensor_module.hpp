@@ -37,6 +37,8 @@ public:
     typedef typename data_concentrator::output_t cic_out_t;
     typedef typename gbt::output_t gbt_link_t;
 
+    const sensor_module_config configuration;
+
     const unsigned int sides;
     const unsigned int fe_chips_per_side;
     const unsigned int hits_per_fe_chip;

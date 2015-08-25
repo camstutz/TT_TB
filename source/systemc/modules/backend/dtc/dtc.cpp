@@ -1,7 +1,7 @@
 /*!
  * @file dtc.cpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 25, 2015
  */
 
 /*
@@ -17,12 +17,13 @@
  * The module is sensitive to ...
  */
 
-dtc::dtc(sc_module_name _name, dtc_config configuration) :
+dtc::dtc(sc_module_name _name, const dtc_config& configuration) :
         sc_module(_name),
-        input_nr(configuration.input_nr),
+        configuration(configuration),
+        input_nr(configuration.sensor_modules.size()),
         collection_cycles(configuration.collection_cycles),
         clk("clk"),
-        gbt_inputs(input_nr, "gbt_input"),
+        gbt_inputs(configuration.sensor_modules, "gbt_input"),
         tower_output("tower_output"),
         bx_sorted_buffer(input_nr, 2, collection_cycles, "bx_sorted_inputs"),
         relative_bx_sig("bx_sig"),
@@ -47,17 +48,19 @@ dtc::dtc(sc_module_name _name, dtc_config configuration) :
     controller.read_buffer.bind(read_buffer_sig);
     controller.write_buffer.bind(write_buffer_sig);
 
-    unsigned int input_id = 0;
+    sc_map_list<sensor_module_address, sc_in<input_t> >::iterator input_it = gbt_inputs.begin();
     sc_map_linear<dtc_input_unit>::iterator input_unit_it = input_units.begin();
+    unsigned int input_id = 0;
     for (; input_unit_it != input_units.end(); ++input_unit_it)
     {
         input_unit_it->clk.bind(clk);
-        input_unit_it->gbt_input.bind(gbt_inputs[input_id]);
+        input_unit_it->gbt_input.bind(*input_it);
         input_unit_it->write_buffer_select.bind(write_buffer_sig);
         sc_map_cube<sc_fifo<dtc_buffer_element> >::iterator bx_buffer_per_input = bx_sorted_buffer(sc_map_cube_key(input_id, 0, 0), sc_map_cube_key(input_id, 1, collection_cycles-1));
         input_unit_it->bx_buffer_out.bind(bx_buffer_per_input);
 
         ++input_id;
+        ++input_it;
     }
 
     output_unit.clk.bind(clk);

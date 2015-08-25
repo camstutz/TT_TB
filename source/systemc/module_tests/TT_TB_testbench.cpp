@@ -60,10 +60,10 @@ int sc_main(int argc, char *agv[])
 
     // ----- Module instance declarations --------------------------------------
 
-    configuration.hit_generator.input_file = "/home/chris/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt";
+    configuration.hit_generator.input_file = "/home/amstutz/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt";
 
-//    hit_generator_tb hit_generator_tb("Hit_Generator_TB", configuration);
-    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
+    hit_generator_tb hit_generator_tb("Hit_Generator_TB", configuration);
+//    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
 //    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file, configuration);
 //    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
 //    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
@@ -89,14 +89,6 @@ int sc_main(int argc, char *agv[])
 //    cic_format_tb();
 
     // ----- Time unit / resolution setup --------------------------------------
-
-    sc_trace(trace_file, fechip_cbc_tb.LHC_clock, "clock");
-    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].read_ptr, "read_ptr");
-    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].write_ptr, "write_ptr");
-    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].data_valid_buffer[0], "buffer(0)");
-    //sc_trace(trace_file, fechip_mpa_tb.dut_front_end_chip.delay_data_valid[0].data_valid_buffer[1], "buffer(1)");
-    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].input, "dv_input");
-    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].delayed, "dv_delayed");
 
     // ----- Start simulation --------------------------------------------------
 

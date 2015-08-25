@@ -1,7 +1,7 @@
 /*!
  * @file dtc.hpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 25, 2015
  *
  * @brief
  *
@@ -19,6 +19,7 @@
 #include "dtc_buffer_element.hpp"
 
 #include "dtc_config.hpp"
+#include "../../frontend/sensor_module_address.hpp"
 
 #include "sc_map.hpp"
 #include "sc_delay_signal.hpp"
@@ -34,12 +35,14 @@ public:
     typedef dtc_input_unit::input_t input_t;
     typedef dtc_output_unit::output_t output_t;
 
+    const dtc_config configuration;
+
     const unsigned int input_nr;
     const unsigned int collection_cycles;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
-    sc_map_linear<sc_in<input_t> > gbt_inputs;
+    sc_map_list<sensor_module_address, sc_in<input_t> > gbt_inputs;
     sc_out<output_t> tower_output;
 
     // ----- Local Channel Declarations ----------------------------------------
@@ -63,5 +66,5 @@ public:
     /*!
      * Constructor:
      */
-    dtc(sc_module_name _name, dtc_config configuration);
+    dtc(sc_module_name _name, const dtc_config& configuration);
 };
