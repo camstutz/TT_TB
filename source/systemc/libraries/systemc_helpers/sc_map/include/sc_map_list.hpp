@@ -72,7 +72,7 @@ sc_map_list<value_T, object_T>::sc_map_list(const key_value_vector_type& key_vec
 {
     range_type range;
 
-    for (typename key_value_vector_type::iterator value_it = key_vector.begin();
+    for (typename key_value_vector_type::const_iterator value_it = key_vector.begin();
          value_it != key_vector.end();
          ++value_it)
     {

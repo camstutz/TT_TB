@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_list_range.hpp
  * @author Christian Amstutz
- * @date June 17, 2015
+ * @date August 25, 2015
  *
  * @brief
  *
@@ -30,6 +30,7 @@ public:
 
     sc_map_list_range();
     sc_map_list_range(const std::vector<key_type>& keys);
+    sc_map_list_range(const std::vector<value_type>& values);
     sc_map_list_range(const sc_map_range<key_type>* source_range, const key_type& start_key, const key_type& end_key);
     virtual ~sc_map_list_range() {};
 
@@ -59,6 +60,22 @@ sc_map_list_range<value_T>::sc_map_list_range(
         const std::vector<key_type>& keys) :
         keys(keys)
 {}
+
+//******************************************************************************
+template <typename value_T>
+sc_map_list_range<value_T>::sc_map_list_range(
+        const std::vector<value_type>& values)
+{
+    for (typename std::vector<value_type>::const_iterator value_it = values.begin();
+         value_it != values.end();
+         ++ value_it)
+    {
+        key_type key = key_type(*value_it);
+        keys.push_back(key);
+    }
+
+    return;
+}
 
 //******************************************************************************
 template <typename value_T>

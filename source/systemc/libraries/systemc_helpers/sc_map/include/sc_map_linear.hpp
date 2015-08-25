@@ -36,13 +36,13 @@ public:
 
     sc_map_linear(const size_type element_cnt_X, const sc_module_name name, const index_type start_id_X = sc_map_linear_key::default_start_id);
     template <typename config_type>
-    sc_map_linear(const size_type element_cnt_X, const sc_module_name name, const config_type configuration, const index_type start_id_X = sc_map_linear_key::default_start_id);
+    sc_map_linear(const size_type element_cnt_X, const sc_module_name name, const config_type& configuration, const index_type start_id_X = sc_map_linear_key::default_start_id);
     sc_map_linear(const key_type start_key, const key_type end_key, const sc_module_name name);
     template <typename config_type>
     sc_map_linear(const key_type start_key, const key_type end_key, const sc_module_name name, const config_type configuration);
     sc_map_linear(const range_type new_range, const sc_module_name name);
     template <typename config_type>
-    sc_map_linear(const range_type new_range, const sc_module_name name, const config_type configuration);
+    sc_map_linear(const range_type new_range, const sc_module_name name, const config_type& configuration);
     virtual ~sc_map_linear() {};
 };
 
@@ -66,7 +66,7 @@ sc_map_linear<object_T>::sc_map_linear(const size_type element_cnt_X,
 template <typename object_T>
 template <typename config_type>
 sc_map_linear<object_T>::sc_map_linear(const size_type element_cnt_X,
-        const sc_module_name name, const config_type configuration,
+        const sc_module_name name, const config_type& configuration,
         const index_type start_id_X) :
         sc_map_base<range_type, object_T>(name)
 {
@@ -74,7 +74,6 @@ sc_map_linear<object_T>::sc_map_linear(const size_type element_cnt_X,
                 sc_map_linear_key(start_id_X+element_cnt_X-1));
 
     this->init(range, typename base::creator(), configuration);
-//  sink_configurable::sink_configurable(const char*, const std::vector<sink_config>&)’
 
     return;
 }
@@ -120,7 +119,7 @@ sc_map_linear<object_T>::sc_map_linear(const range_type new_range,
 template <typename object_T>
 template <typename config_type>
 sc_map_linear<object_T>::sc_map_linear(const range_type new_range,
-        const sc_module_name name, const config_type configuration) :
+        const sc_module_name name, const config_type& configuration) :
         sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator(), configuration);
