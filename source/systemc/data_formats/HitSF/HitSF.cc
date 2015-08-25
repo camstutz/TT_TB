@@ -136,31 +136,31 @@ HitSF::module_t HitSF::getModule() const
 // *****************************************************************************
 HitSF::segment_t HitSF::getSegment() const
 {
-  return segment;
+    return segment;
 }
 
 // *****************************************************************************
 HitSF::chip_t HitSF::getChip() const
 {
-  return chip;
+    return chip;
 }
 
 // *****************************************************************************
 HitSF::strip_t HitSF::getStrip() const
 {
-  return strip;
+    return strip;
 }
 
 // *****************************************************************************
 HitSF::pixel_t HitSF::getPixel() const
 {
-  return pixel;
+    return pixel;
 }
 
 // *****************************************************************************
 HitSF::bend_t HitSF::getBend() const
 {
-  return bend;
+    return bend;
 }
 
 // *****************************************************************************

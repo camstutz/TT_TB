@@ -21,6 +21,7 @@ inline track_trigger_config baseline_config()
 
     configuration.cbc_frontend_chip.max_stubs_per_cycle = 3;
     configuration.cbc_frontend_chip.collection_cycles = 1;
+    configuration.cbc_frontend_chip.latency_cycles = 1;
 
     configuration.cbc_frontend_chip.input_stub.valid_bits = 0;
     configuration.cbc_frontend_chip.input_stub.bx_bits = 0;
@@ -28,7 +29,6 @@ inline track_trigger_config baseline_config()
     configuration.cbc_frontend_chip.input_stub.strip_bits = 8;
     configuration.cbc_frontend_chip.input_stub.bend_bits = 5;
     configuration.cbc_frontend_chip.input_stub.pixel_bits = 0;
-
     configuration.cbc_frontend_chip.output_stub = configuration.cbc_frontend_chip.input_stub;
 
     configuration.cbc_data_concentrator.frontend_chip_type = configuration.cbc_frontend_chip;
@@ -42,6 +42,7 @@ inline track_trigger_config baseline_config()
 
     configuration.mpa_frontend_chip.max_stubs_per_cycle = 2;
     configuration.mpa_frontend_chip.collection_cycles = 2;
+    configuration.mpa_frontend_chip.latency_cycles = 1;
 
     configuration.mpa_frontend_chip.input_stub.valid_bits = 0;
     configuration.mpa_frontend_chip.input_stub.bx_bits = 1;

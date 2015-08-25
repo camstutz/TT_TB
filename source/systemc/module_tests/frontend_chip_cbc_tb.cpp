@@ -25,7 +25,7 @@ frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
         stub_input_sig("stub_input"),
         data_valid_signals(MAX_HITS_PER_CBC_FE_CHIP, "data_valid_sig"),
         fe_out_signals(MAX_HITS_PER_CBC_FE_CHIP, "fe_out_sig"),
-        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 10, SC_NS, true),
+        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 25, SC_NS, true),
         dut_front_end_chip("Front_End_Chip_DUT", configuration.cbc_frontend_chip)
 {
     // ----- Creation and binding of signals -----------------------------------
@@ -93,7 +93,6 @@ void frontend_chip_cbc_tb::generate_stubs()
     write_stub(0x12, 0x7);
     write_stub(0x13, 0x8);
 
-    //! todo: there is an error here with this event falling on a clock edge and does not show on the output
     // at 160 ns
     wait(16, SC_NS);
     write_stub(0xD, 0x9);
@@ -102,11 +101,11 @@ void frontend_chip_cbc_tb::generate_stubs()
     wait(1, SC_NS);
     write_stub(0x1, 0x1);
 
-    // at 201 ns
-    wait(40, SC_NS);
+    // at 200 ns
+    wait(64, SC_NS);
     write_stub(0x14, 0x9);
 
-    // at 202 ns
+    // at 201 ns
     wait(1, SC_NS);
     write_stub(0x1, 0x1);
 

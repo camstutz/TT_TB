@@ -26,8 +26,8 @@ frontend_chip::frontend_chip(const sc_module_name _name,
         selected_stubs("selected_stubs", configuration.max_stubs_per_cycle * configuration.collection_cycles),
         data_valid_sig(configuration.max_stubs_per_cycle, "data_valid_sig"),
         stub_output_sig(configuration.max_stubs_per_cycle, "stub_output_sig"),
-        delay_data_valid(configuration.max_stubs_per_cycle, configuration.latency_cycles),
-        delay_stub_output(configuration.max_stubs_per_cycle, configuration.latency_cycles),
+        delay_data_valid(configuration.max_stubs_per_cycle, "delay_data_valid", configuration.latency_cycles),
+        delay_stub_output(configuration.max_stubs_per_cycle, "delay_stub_output", configuration.latency_cycles),
         max_stubs_per_cycle(configuration.max_stubs_per_cycle),
         collection_cycles(configuration.collection_cycles),
         total_collected_stubs(configuration.max_stubs_per_cycle * configuration.collection_cycles)
@@ -41,7 +41,7 @@ frontend_chip::frontend_chip(const sc_module_name _name,
     // ----- Module variable initialization ------------------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-    for (unsigned int i=0; i<configuration.collection_cycles; ++i)
+    for (unsigned int i=0; i<configuration.max_stubs_per_cycle; ++i)
     {
         delay_data_valid[i].clk.bind(clk);
         delay_data_valid[i].input.bind(data_valid_sig[i]);

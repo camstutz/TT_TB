@@ -101,11 +101,11 @@ void frontend_chip_mpa_tb::generate_stubs()
     wait(1, SC_NS);
     write_stub(0x0, 0xF, 0x1, 0xA);
 
-    // at 201 ns
-    wait(40, SC_NS);
+    // at 200 ns
+    wait(19, SC_NS);
     write_stub(0x1, 0x10, 0xB, 0xB);
 
-    // at 202 ns
+    // at 201 ns
     wait(1, SC_NS);
     write_stub(0x1, 0x12, 0x1, 0xC);
 

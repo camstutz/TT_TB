@@ -21,8 +21,8 @@
 
 //#include "hit_file_test.hpp"
 #include "hit_generator_tb.hpp"
-//#include "frontend_chip_cbc_tb.hpp"
-//#include "frontend_chip_mpa_tb.hpp"
+#include "frontend_chip_cbc_tb.hpp"
+#include "frontend_chip_mpa_tb.hpp"
 #include "data_concentrator_cbc_tb.hpp"
 #include "data_concentrator_mpa_tb.hpp"
 //#include "gbt_tb.hpp"
@@ -62,11 +62,11 @@ int sc_main(int argc, char *agv[])
 
     configuration.hit_generator.input_file = "/home/chris/eclipse/git/TT_TB/source/systemc/module_tests/test_hits.txt";
 
-    hit_generator_tb hit_generator_tb("Hit_Generator_TB", configuration);
-//    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
+//    hit_generator_tb hit_generator_tb("Hit_Generator_TB", configuration);
+    frontend_chip_cbc_tb fechip_cbc_tb("FE_Chip_CBC_TB", trace_file, configuration);
 //    frontend_chip_mpa_tb fechip_mpa_tb("FE_Chip_MPA_TB", trace_file, configuration);
-    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
-    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
+//    data_concentrator_cbc_tb data_concentrator_cbc_tb("Data_Concentrator_CBC_TB", configuration);
+//    data_concentrator_mpa_tb data_concentrator_mpa_tb("Data_Concentrator_MPA_TB", configuration);
 //    gbt_config gbt_configuration;
 //    gbt_configuration.input_link_count = 2;
 //    gbt_tb gbt_TB("GBT_TB", gbt_configuration, configuration.cbc_data_concentrator);
@@ -90,47 +90,20 @@ int sc_main(int argc, char *agv[])
 
     // ----- Time unit / resolution setup --------------------------------------
 
-//    sc_trace(trace_file, am_in_mod_one_layer_TB.dut_am_input_module_one_layer_tb.delete_frame, "delete_frame");
-//    sc_trace(trace_file, am_in_mod_one_layer_TB.dut_am_input_module_one_layer_tb.frame_available, "frame_available");
-//    sc_trace(trace_file, am_in_mod_one_layer_TB.dut_am_input_module_one_layer_tb.frame_empty, "frame_empty");
-//    sc_trace(trace_file, am_in_mod_one_layer_TB.dut_am_input_module_one_layer_tb.frame_input, "frame_input");
-//    sc_trace(trace_file, am_in_mod_one_layer_TB.dut_am_input_module_one_layer_tb.frame_processing, "frame_processing");
-//    sc_trace(trace_file, am_in_mod_one_layer_TB.dut_am_input_module_one_layer_tb.start_process_frame, "start_process_frame");
-//    sc_trace(trace_file, am_in_mod_one_layer_TB.dut_am_input_module_one_layer_tb.stub_stream_output, "stub_stream_output");
-
-//    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.clk, "clk");
-//    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.current_state, "current_state");
-//    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.frame_available, "frame_available");
-//    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.frame_empty, "frame_empty");
-//    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.init_processing, "init_processing");
-//    sc_trace(trace_file, am_in_mod_TB.dut_am_input_module_tb.controller.delete_frame, "delete_frame");
-
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.processorOrganizers[0]->do_inputs, "PO0_DO_in");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.processorOrganizers[1]->do_inputs, "PO1_DO_in");
-    //sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(0,0).TrackFinder.hit_input, "AM0_frame_input");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.hit_input, "AM1_frame_input");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.clk, "clk");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.current_state, "current_state");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.frame_available, "frame_available");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.frame_empty, "frame_empty");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.init_processing, "init_processing");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.controller.delete_frame, "delete_frame");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).AM_InputModule.input_modules[0].frame_input, "stub_stream_output");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.write_controller.current_state, "AM_chip.write.current_state");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.read_controller.current_state, "AM_chip.read.current_state");
-//    sc_trace(trace_file, triggerTower_TB.dut_trigger_tower.amBoards.at(1,1).TrackFinder.road_lookup.hit_inputs, "AM_chip.input");
-
-//    sc_trace(trace_file, AMchip_TB.dut_AM_chip.clk, "clk");
-//    sc_trace(trace_file, AMchip_TB.dut_AM_chip.hit_inputs, "AM_chip.input");
-//    sc_trace(trace_file, AMchip_TB.dut_AM_chip.write_controller.current_state, "write_ctrl.current_state");
-//    sc_trace(trace_file, AMchip_TB.dut_AM_chip.read_controller.current_state, "read_ctrl.current_state");
+    sc_trace(trace_file, fechip_cbc_tb.LHC_clock, "clock");
+    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].read_ptr, "read_ptr");
+    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].write_ptr, "write_ptr");
+    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].data_valid_buffer[0], "buffer(0)");
+    //sc_trace(trace_file, fechip_mpa_tb.dut_front_end_chip.delay_data_valid[0].data_valid_buffer[1], "buffer(1)");
+    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].input, "dv_input");
+    sc_trace(trace_file, fechip_cbc_tb.dut_front_end_chip.delay_data_valid[0].delayed, "dv_delayed");
 
     // ----- Start simulation --------------------------------------------------
 
-    std::cout << std::endl << "Start test bench ..." << std::endl << std::endl;
+    std::cout << std::endl << "Start test bench ...." << std::endl << std::endl;
 
     //sc_report_handler::set_actions (SC_ID_MORE_THAN_ONE_SIGNAL_DRIVER_, SC_DO_NOTHING);
-    sc_start(3000, SC_NS);
+    sc_start(1000, SC_NS);
 
     sc_close_vcd_trace_file(trace_file);
     std::cout << std::endl << "Test bench ended!" << std::endl;
