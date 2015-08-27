@@ -106,15 +106,14 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
             if (input_it->event())
             {
                 input_frame_t input_frame = input_it->read();
+                bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();
 
                 if (input_frame.stub_count() > 0)
                 {
-                    SYSTEMC_LOG << "Frame " << input_frame.get_bunch_crossing()
+                    SYSTEMC_LOG << "Frame " << bx
                             << " @ input " << input_it.get_key().second
                             << " with " << input_frame.stub_count() << " stubs reveived.";
                 }
-
-                bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();
 
                 input_frame.reset_stub_ptr();
                 typename input_frame_t::stub_element_t in_stub_element;
@@ -126,7 +125,11 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
                     typename output_frame_t::stub_element_t out_stub_element(type_field, out_stub);
                     output_t output_bx_stub(bx, out_stub_element);
 
-                    stub_output.write(output_bx_stub);
+                    if (!stub_output.nb_write(output_bx_stub))
+                    {
+                        std::cout << sc_time_stamp() << ": FIFO overflow @ "
+                                  << name() << ".stub_output" << std::endl;
+                    }
                 }
             }
             ++dtc_id;

@@ -1,7 +1,7 @@
 /*!
  * @file tt_tb.cpp
  * @author Christian Amstutz
- * @date August 3, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -28,14 +28,14 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
         true_sig("true_sig"),
         hit_fifos(configuration.get_chip_addresses(), "hit_fifo"),
         gbt_links(configuration.get_module_addresses(), "GBT_link"),
-        dtc_links(NR_PRB_PER_TRIGGER_TOWER, "DTC_link"),
-        result_hits(NR_PRB_PER_TRIGGER_TOWER * NR_AM_BOARDS, NR_DETECTOR_LAYERS, "result_road"),
+        dtc_links(configuration.trigger_tower.prb_nr, "DTC_link"),
+        result_hits(configuration.trigger_tower.prb_nr * configuration.trigger_tower.AM_boards_per_prb, configuration.trigger_tower.layer_nr, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
         sensor_modules(configuration.get_module_addresses(), "sensor_module", configuration.sensor_modules),
         DTCs(1, "DTC", configuration.dtcs),
         trigger_tower_0("trigger_tower", configuration.trigger_tower),
-        roadAnalyzer("road_analyzer")
+        roadAnalyzer("road_analyzer", configuration.road_analyzer)
 {
     hitGenerator.stub_outputs.bind(hit_fifos);
     hitGenerator.hit_cnt(hit_cnt_sig);
@@ -65,8 +65,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
     }
 
     trigger_tower_0.clk.bind(LHC_clock);
-    trigger_tower_0.dtc_inputs.at(0,0).bind(dtc_links[0]);
-    trigger_tower_0.dtc_inputs.at(1,0).bind(dtc_links[1]);
+    trigger_tower_0.dtc_inputs.bind(dtc_links);
     trigger_tower_0.hit_outputs.bind(result_hits);
 
     roadAnalyzer.hit_cnt.bind(hit_cnt_sig);

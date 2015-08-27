@@ -65,7 +65,7 @@ void pattern_memory::lookup_road()
 	{
 		wait();
 
-		std::pair<bool, pattern_bank::pattern_t> pattern= patterns->find_pattern(road_input.read());
+		std::pair<bool, pattern_bank::pattern_t> pattern = patterns->find_pattern(road_input.read());
 
 		if (pattern.first)
 		{

@@ -112,7 +112,7 @@ void time_demux<FRAME_T>::transfer_stubs()
 
         if ((bx_counter.read() % bx_divider) == bx_offset)
         {
-            for(unsigned int layer_id = 0; layer_id < layer_nr; ++layer_id)
+            for (unsigned int layer_id = 0; layer_id < layer_nr; ++layer_id)
             {
                 frame_t output_frame(bx_counter.read()-1);
                 while (stub_input[layer_id].num_available() > 0)

@@ -1,7 +1,7 @@
 /*!
  * @file configuration.hpp
  * @author Christian Amstutz
- * @date August 20, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -21,7 +21,7 @@ inline track_trigger_config baseline_config()
 
     configuration.cbc_frontend_chip.max_stubs_per_cycle = 3;
     configuration.cbc_frontend_chip.collection_cycles = 1;
-    configuration.cbc_frontend_chip.latency_cycles = 1;
+    configuration.cbc_frontend_chip.latency_cycles = 0;
 
     configuration.cbc_frontend_chip.input_stub.valid_bits = 0;
     configuration.cbc_frontend_chip.input_stub.bx_bits = 0;
@@ -42,7 +42,7 @@ inline track_trigger_config baseline_config()
 
     configuration.mpa_frontend_chip.max_stubs_per_cycle = 2;
     configuration.mpa_frontend_chip.collection_cycles = 2;
-    configuration.mpa_frontend_chip.latency_cycles = 1;
+    configuration.mpa_frontend_chip.latency_cycles = 0;
 
     configuration.mpa_frontend_chip.input_stub.valid_bits = 0;
     configuration.mpa_frontend_chip.input_stub.bx_bits = 1;
@@ -119,29 +119,36 @@ inline track_trigger_config baseline_config()
     // Trigger Tower
     configuration.trigger_tower.layer_nr = 6;
     configuration.trigger_tower.dtc_per_prb = 1;
-    configuration.trigger_tower.prb_nr = 2;
+    configuration.trigger_tower.prb_nr = 4;
     configuration.trigger_tower.AM_boards_per_prb = 2;
 
     configuration.trigger_tower.data_organizer.dtc_input_nr =  1;
-    configuration.trigger_tower.data_organizer.proc_unit_nr = 2;
+    configuration.trigger_tower.data_organizer.proc_unit_nr = 4;
     configuration.trigger_tower.data_organizer.input_collector.input_nr = 1;
-    configuration.trigger_tower.data_organizer.demultiplexer.layer_nr = 1;
-    configuration.trigger_tower.data_organizer.demultiplexer.proc_unit_nr = 2;
-    configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;
-    configuration.trigger_tower.data_organizer.demultiplexer.bx_divider = 2;
+    configuration.trigger_tower.data_organizer.demultiplexer.bx_divider = 1;
     configuration.trigger_tower.data_organizer.demultiplexer.bx_offset = 0;
+    configuration.trigger_tower.data_organizer.demultiplexer.layer_nr = 1;
+    configuration.trigger_tower.data_organizer.demultiplexer.proc_unit_nr = 4;
+    configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;
 
-    configuration.trigger_tower.processor_organizer.do_input_nr = 2;
+    configuration.trigger_tower.processor_organizer.do_input_nr = 4;
     configuration.trigger_tower.processor_organizer.processor_output_nr = 2;
     configuration.trigger_tower.processor_organizer.layer_nr = 6;
     configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
-    configuration.trigger_tower.processor_organizer.layer_splitter.layer_nr = 6;
+    configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
     configuration.trigger_tower.processor_organizer.demultiplexer.layer_nr = 6;
     configuration.trigger_tower.processor_organizer.demultiplexer.proc_unit_nr = 2;
-    configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -27;
-    configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
-    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 0;
+    configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -40;
+    configuration.trigger_tower.processor_organizer.layer_splitter.layer_nr = 6;
 
+    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 0;
+    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
+    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 1;
+    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
+    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 2;
+    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
+    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 3;
+    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
 
     // AM Board
     configuration.trigger_tower.am_board.layer_nr = 6;
@@ -162,6 +169,11 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_write_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_lookup_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;
+
+    // Road Analyzer
+    configuration.road_analyzer.output_file = "data/output/roads.txt";
+    configuration.road_analyzer.nr_inputs = 8;
+    configuration.road_analyzer.nr_layers = 6;
 
     return configuration;
 }

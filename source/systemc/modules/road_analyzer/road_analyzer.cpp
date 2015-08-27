@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.cpp
  * @author Christian Amstutz
- * @date August 3, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -13,14 +13,14 @@
 #include "road_analyzer.hpp"
 
 // *****************************************************************************
-
-const std::string road_analyzer::filename = "data/output/roads.txt";
-
-// *****************************************************************************
-road_analyzer::road_analyzer(sc_module_name _name) :
+road_analyzer::road_analyzer(sc_module_name _name,
+        const road_analyzer_config configuration) :
         sc_module(_name),
+        filename(configuration.output_file),
+        nr_inputs(configuration.nr_inputs),
+        nr_layers(configuration.nr_layers),
         hit_cnt("hit_cnt"),
-        filtered_hits(NR_PRB_PER_TRIGGER_TOWER * NR_AM_BOARDS, NR_DETECTOR_LAYERS, "filtered_hits"),
+        filtered_hits(nr_inputs, nr_layers, "filtered_hits"),
         hit_counter(0),
         filtered_hits_cnt(0)
 {
@@ -58,9 +58,9 @@ void road_analyzer::detect_hits()
 	{
 		wait();
 
-        for (unsigned int input_id = 0; input_id < (NR_PRB_PER_TRIGGER_TOWER * NR_AM_BOARDS); ++input_id)
+        for (unsigned int input_id = 0; input_id < (nr_inputs); ++input_id)
         {
-            for (unsigned int layer = 0; layer < NR_DETECTOR_LAYERS; ++layer)
+            for (unsigned int layer = 0; layer < nr_layers; ++layer)
             {
                 if (filtered_hits.at(input_id, layer).event())
                 {

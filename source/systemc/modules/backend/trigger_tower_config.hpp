@@ -17,6 +17,8 @@
 #include "processor_organizer/processor_organizer_config.hpp"
 #include "am_board/am_board_config.hpp"
 
+#include <vector>
+
 // *****************************************************************************
 /*!
  * @brief
@@ -32,4 +34,6 @@ public:
     data_organizer_config data_organizer;
     processor_organizer_config processor_organizer;
     am_board_config am_board;
+
+    std::vector<processor_organizer_config> processor_organizers;
 };

@@ -117,13 +117,18 @@ void bx_stub_buffer<FRAME_T>::bx_stub_buffer::read_frame()
 
         bunch_crossing_t bx = bunch_crossing_select.read();
 
+        // Test if frame is available for current bunch crossing
         if (bx_buffer.find(bx) != bx_buffer.end())
         {
             std::vector<element_t> stub_vector = bx_buffer[bx];
             typename std::vector<element_t>::iterator stub_it = stub_vector.begin();
             for (; stub_it != stub_vector.end(); ++stub_it)
             {
-                stub_output.write(*stub_it);
+                if (!stub_output.nb_write(*stub_it))
+                {
+                    std::cerr << sc_time_stamp() << ": FIFO overflow @ "
+                              << name() << ".stub_output" << std::endl;
+                }
             }
 
             // delete bunch crossing entry

@@ -80,6 +80,7 @@ void data_concentrator::read_FE_chips()
                 stub.set_strip(fe_data.get_strip());
                 stub.set_bend(fe_data.get_bend());
                 stub.set_bx(calculate_bx(clock_phase.read(), fe_data.get_bx()));
+
                 stub.set_fechip(signal_key.second.Y);
 
                 stub_buffer[stub_buffer_write_sel].push_back(stub);
@@ -179,5 +180,7 @@ typename data_concentrator::output_stub_t::bx_t
 inline data_concentrator::calculate_bx(clock_phase_t clock_phase,
         typename fe_stub_t::bx_t stub_bx)
 {
-    return (collection_cycles * (clock_phase / collection_cycles) + stub_bx);
+    unsigned int slot_start = collection_cycles * (clock_phase / collection_cycles);
+
+    return slot_start + stub_bx;
 }

@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.hpp
  * @author Christian Amstutz
- * @date August 25, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -20,6 +20,7 @@
 #include "../modules/frontend/gbt/gbt_config.hpp"
 #include "../modules/backend/dtc/dtc_config.hpp"
 #include "../modules/backend/trigger_tower_config.hpp"
+#include "../modules/road_analyzer/road_analyzer_config.hpp"
 
 #include <vector>
 
@@ -41,6 +42,8 @@ public:
     data_concentrator_config mpa_data_concentrator;
 
     trigger_tower_config trigger_tower;
+
+    road_analyzer_config road_analyzer;
 
     sensor_module_config cbc_sensor_module_test;
     sensor_module_config mpa_sensor_module_test;

@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.hpp
  * @author Christian Amstutz
- * @date April 23, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -13,7 +13,7 @@
 #pragma once
 
 #include "../backend/am_board/track_finder/track_finder.hpp"
-#include "../../systems/TT_configuration.hpp"
+#include "road_analyzer_config.hpp"
 
 #include "sc_map.hpp"
 
@@ -30,7 +30,9 @@
 class road_analyzer : public sc_module
 {
 public:
-    static const std::string filename;
+    const std::string filename;
+    const unsigned int nr_inputs;
+    const unsigned int nr_layers;
 
 // ----- Port Declarations -----------------------------------------------------
 	sc_in<unsigned int> hit_cnt;
@@ -50,7 +52,7 @@ public:
     /*!
      * Constructor:
      */
-	road_analyzer(sc_module_name _name);
+	road_analyzer(sc_module_name _name, const road_analyzer_config configuration);
     SC_HAS_PROCESS(road_analyzer);
     ~road_analyzer();
 

@@ -26,7 +26,7 @@ trigger_tower::trigger_tower(const sc_module_name _name,
         trigger_tower_interconnect(prb_nr, prb_nr, "trigger_tower_interconnect"),
         am_board_in_sig(prb_nr, AM_boards_per_proc_unit, layer_nr, "am_board_sig"),
         dataOrganizers(prb_nr, "dataOrganizer", configuration.data_organizer),
-        processorOrganizers(prb_nr, "processorOrganizer", configuration.processor_organizer),
+        processorOrganizers(prb_nr, "processorOrganizer", configuration.processor_organizers),
         amBoards(prb_nr, AM_boards_per_proc_unit, "AM_Board", configuration.am_board)
 {
     unsigned int do_id = 0;
