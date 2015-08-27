@@ -104,9 +104,9 @@ libraries:
 #	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
 
 ifneq "$(MAKECMDGOALS)" "clean"
-	-include $(dependencies)
+  -include $(dependencies)
 endif
 
 ifeq "$(MAKECMDGOALS)" "test"
-	-include $(tb_dependencies)
+  -include $(tb_dependencies)
 endif
