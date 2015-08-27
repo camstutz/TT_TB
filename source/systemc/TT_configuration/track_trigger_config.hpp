@@ -32,6 +32,7 @@ class track_trigger_config
 {
 public:
     unsigned int LHC_clock_period;
+    unsigned int hit_FIFO_size;
 
     hit_generator_config hit_generator;
     sensor_module_type_config cbc_sensor_module;

@@ -26,7 +26,7 @@ SC_MODULE_EXPORT(tt_tb);
 tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuration) :
         LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("true_sig"),
-        hit_fifos(configuration.get_chip_addresses(), "hit_fifo"),
+        hit_fifos(configuration.get_chip_addresses(), "hit_fifo", configuration.hit_FIFO_size),
         gbt_links(configuration.get_module_addresses(), "GBT_link"),
         dtc_links(configuration.trigger_tower.prb_nr, "DTC_link"),
         result_hits(configuration.trigger_tower.prb_nr * configuration.trigger_tower.AM_boards_per_prb, configuration.trigger_tower.layer_nr, "result_road"),

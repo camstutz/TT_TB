@@ -20,6 +20,7 @@ inline track_trigger_config baseline_config()
     track_trigger_config configuration;
 
     configuration.LHC_clock_period = 25;
+    configuration.hit_FIFO_size = 20;
 
     configuration.cbc_frontend_chip.max_stubs_per_cycle = 3;
     configuration.cbc_frontend_chip.collection_cycles = 1;

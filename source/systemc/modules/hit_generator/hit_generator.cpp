@@ -81,7 +81,12 @@ void hit_generator::schedule_hits()
                       hit_chip_address)
             != configuration.chip_addresses.end())
         {
-            stub_outputs.at(hit_chip_address).write(output_stub);
+            if (!stub_outputs.at(hit_chip_address).nb_write(output_stub))
+            {
+                std::cerr << sc_time_stamp() << ": FIFO overflow @ "
+                          << name() << ".stub_outputs[" << hit_chip_address << "]"
+                          << std::endl;
+            }
         }
         else
         {
