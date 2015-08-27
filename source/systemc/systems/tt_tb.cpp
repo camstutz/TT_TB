@@ -33,7 +33,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
         sensor_modules(configuration.get_module_addresses(), "sensor_module", configuration.sensor_modules),
-        DTCs(1, "DTC", configuration.dtcs),
+        DTCs(configuration.dtcs.size(), "DTC", configuration.dtcs),
         trigger_tower_0("trigger_tower", configuration.trigger_tower),
         roadAnalyzer("road_analyzer", configuration.road_analyzer)
 {
