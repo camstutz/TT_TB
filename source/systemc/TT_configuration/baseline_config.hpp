@@ -19,6 +19,8 @@ inline track_trigger_config baseline_config()
 {
     track_trigger_config configuration;
 
+    configuration.LHC_clock_period = 25;
+
     configuration.cbc_frontend_chip.max_stubs_per_cycle = 3;
     configuration.cbc_frontend_chip.collection_cycles = 1;
     configuration.cbc_frontend_chip.latency_cycles = 0;
@@ -81,6 +83,7 @@ inline track_trigger_config baseline_config()
     configuration.mpa_sensor_module_test.type = &configuration.mpa_sensor_module;
 
     // Hit Generator
+    configuration.hit_generator.LHC_clock_period_ns = 25;
     configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;
     configuration.hit_generator.output_stub_mpa = configuration.mpa_frontend_chip.input_stub;
 

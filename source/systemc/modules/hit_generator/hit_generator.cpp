@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -46,7 +46,7 @@ void hit_generator::schedule_hits()
         HitSF hit = hit_queue.front();
         hit_queue.pop();
 
-        wait_time = (hit.getEvent() * sc_time(LHC_CLOCK_PERIOD_NS, SC_NS));
+        wait_time = (hit.getEvent() * sc_time(configuration.LHC_clock_period_ns, SC_NS));
         wait_time = wait_time - sc_time_stamp();
         if (wait_time > sc_time(0, SC_PS))
         {

@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_config.hpp
  * @author Christian Amstutz
- * @date August 20, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -26,6 +26,7 @@
 class hit_generator_config
 {
 public:
+    unsigned int LHC_clock_period_ns;
     std::string input_file;
 
     stub_config output_stub_cbc;

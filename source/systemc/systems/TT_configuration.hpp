@@ -15,7 +15,7 @@
 
 // Define the clock frequency and the period in nanoseconds of the LHC clock
 #define LHC_CLOCK_FREQ 40000000
-#define LHC_CLOCK_PERIOD_NS 25
+//#define LHC_CLOCK_PERIOD_NS 25
 
 #define FE_CBC_STUB_BX_BITS 0
 #define FE_CBC_STUB_STRIP_BITS 8

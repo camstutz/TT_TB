@@ -19,7 +19,7 @@
 
 #include "../data_formats/stub/stub.hpp"
 
-#include "TT_configuration.hpp"
+//#include "TT_configuration.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
 
 #include "sc_map.hpp"
