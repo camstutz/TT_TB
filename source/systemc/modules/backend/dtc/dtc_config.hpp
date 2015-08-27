@@ -1,7 +1,7 @@
 /*!
  * @file dtc_config.hpp
  * @author Christian Amstutz
- * @date August 25, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -27,6 +27,7 @@ class dtc_config
 {
 public:
     unsigned int collection_cycles;
+    unsigned int bx_buffer_FIFO_size;
 
     dtc_controller_config controller;
     dtc_input_unit_config input_unit;

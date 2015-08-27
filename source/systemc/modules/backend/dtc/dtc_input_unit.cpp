@@ -87,7 +87,13 @@ void dtc_input_unit::process_stubs()
                     buffer_element.first = frame_bx + relative_bx;
                     buffer_element.second = output_element;
 
-                    bx_buffer_out.at(write_buffer_select.read(), relative_bx).write(buffer_element);
+                    if(!bx_buffer_out.at(write_buffer_select.read(), relative_bx).nb_write(buffer_element))
+                    {
+                        std::cerr << sc_time_stamp() << ": FIFO overflow @ "
+                                  << name() << ".bx_buffer_out["
+                                  << write_buffer_select.read() << ","
+                                  << relative_bx << "]" << std::endl;
+                    }
                 }
             }
             else if (input_frame[in_frame_id].get_header().get_fe_type() == CIC::header::MPA)

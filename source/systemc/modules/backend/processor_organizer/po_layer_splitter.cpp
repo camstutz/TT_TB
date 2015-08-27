@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter.cpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -48,7 +48,12 @@ void po_layer_splitter::split_stubs()
         {
             element_t stub = input_stubs.read();
             unsigned int layer_id = stub.get_stub().get_bend() % layer_nr;
-            splitted_stubs[layer_id].write(stub);
+            if (!splitted_stubs[layer_id].nb_write(stub))
+            {
+                std::cerr << sc_time_stamp() << ": FIFO overflow @ "
+                          << name() << ".splitted stubs["
+                          << layer_id << "]" << std::endl;
+            }
         }
     }
 

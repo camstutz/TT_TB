@@ -127,7 +127,7 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
 
                     if (!stub_output.nb_write(output_bx_stub))
                     {
-                        std::cout << sc_time_stamp() << ": FIFO overflow @ "
+                        std::cerr << sc_time_stamp() << ": FIFO overflow @ "
                                   << name() << ".stub_output" << std::endl;
                     }
                 }

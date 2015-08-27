@@ -105,6 +105,7 @@ inline track_trigger_config baseline_config()
     // DTC
 
     configuration.dtc.collection_cycles = 8;
+    configuration.dtc.bx_buffer_FIFO_size = 20;
     configuration.dtc.controller.fe_collect_cycles = 8;
     configuration.dtc.input_unit.fe_id = 0xFF;
     configuration.dtc.input_unit.fe_collect_cycles = 8;
@@ -128,6 +129,8 @@ inline track_trigger_config baseline_config()
 
     configuration.trigger_tower.data_organizer.dtc_input_nr =  1;
     configuration.trigger_tower.data_organizer.proc_unit_nr = 4;
+    configuration.trigger_tower.data_organizer.stub_buffer_in_FIFO_size = 100;
+    configuration.trigger_tower.data_organizer.stub_buffer_out_FIFO_size = 100;
     configuration.trigger_tower.data_organizer.input_collector.input_nr = 1;
     configuration.trigger_tower.data_organizer.demultiplexer.bx_divider = 1;
     configuration.trigger_tower.data_organizer.demultiplexer.bx_offset = 0;
@@ -138,6 +141,9 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.processor_organizer.do_input_nr = 4;
     configuration.trigger_tower.processor_organizer.processor_output_nr = 2;
     configuration.trigger_tower.processor_organizer.layer_nr = 6;
+    configuration.trigger_tower.processor_organizer.stub_buffer_in_FIFO_size = 100;
+    configuration.trigger_tower.processor_organizer.stub_buffer_out_FIFO_size = 100;
+    configuration.trigger_tower.processor_organizer.layer_splittet_FIFO_size = 20;
     configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
     configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
     configuration.trigger_tower.processor_organizer.demultiplexer.layer_nr = 6;

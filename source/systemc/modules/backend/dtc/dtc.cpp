@@ -1,7 +1,7 @@
 /*!
  * @file dtc.cpp
  * @author Christian Amstutz
- * @date August 25, 2015
+ * @date August 27, 2015
  */
 
 /*
@@ -25,7 +25,7 @@ dtc::dtc(sc_module_name _name, const dtc_config& configuration) :
         clk("clk"),
         gbt_inputs(configuration.sensor_modules, "gbt_input"),
         tower_output("tower_output"),
-        bx_sorted_buffer(input_nr, 2, collection_cycles, "bx_sorted_inputs"),
+        bx_sorted_buffer(input_nr, 2, collection_cycles, "bx_sorted_inputs", configuration.bx_buffer_FIFO_size),
         relative_bx_sig("bx_sig"),
         read_buffer_sig("read_buffer_sig"),
         write_buffer_sig("write_buffer_sig"),

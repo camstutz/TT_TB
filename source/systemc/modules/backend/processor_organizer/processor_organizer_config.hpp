@@ -1,7 +1,7 @@
 /*!
  * @file processor_organizer_config.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -27,6 +27,10 @@ public:
     unsigned int do_input_nr;
     unsigned int layer_nr;
     unsigned int processor_output_nr;
+
+    unsigned int stub_buffer_in_FIFO_size;
+    unsigned int stub_buffer_out_FIFO_size;
+    unsigned int layer_splittet_FIFO_size;
 
     po_layer_splitter_config layer_splitter;
     input_collector_config input_collector;

@@ -1,7 +1,7 @@
 /*!
  * @file dtc.hpp
  * @author Christian Amstutz
- * @date August 25, 2015
+ * @date August 27, 2015
  *
  * @brief
  *

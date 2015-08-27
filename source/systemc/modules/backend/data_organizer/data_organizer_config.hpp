@@ -26,6 +26,9 @@ public:
     unsigned int dtc_input_nr;
     unsigned int proc_unit_nr;
 
+    unsigned int stub_buffer_in_FIFO_size;
+    unsigned int stub_buffer_out_FIFO_size;
+
     input_collector_config input_collector;
     time_demux_config demultiplexer;
 };
