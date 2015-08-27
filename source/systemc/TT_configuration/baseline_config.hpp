@@ -162,13 +162,16 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.track_finder.layer_nr = 6;
 
     configuration.trigger_tower.am_board.track_finder.hit_processor.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.hit_processor.hit_processor_one_layer.SS_width_bits = 2;
     configuration.trigger_tower.am_board.track_finder.am_chip.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.am_chip.latency_cycles = 0;
     configuration.trigger_tower.am_board.track_finder.am_chip.road_detection_threshold = 5;
     configuration.trigger_tower.am_board.track_finder.am_chip.write_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.road_processor.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.pattern_memory.layer_nr = 6;
 
     configuration.trigger_tower.am_board.track_finder.hit_buffer.layer_nr = 6;
+    configuration.trigger_tower.am_board.track_finder.hit_buffer.SS_width_bit = 2;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_write_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_lookup_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;

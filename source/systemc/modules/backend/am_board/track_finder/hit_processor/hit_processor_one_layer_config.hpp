@@ -1,5 +1,5 @@
 /*!
- * @file pattern_memory_config.hpp
+ * @file hit_procesor_one_layer_config.hpp
  * @author Christian Amstutz
  * @date August 27, 2015
  *
@@ -13,15 +13,12 @@
 
 #pragma once
 
-#include "../pattern_bank/pattern_bank.hpp"
-
 // *****************************************************************************
 /*!
  * @brief
  */
-class pattern_memory_config
+class hit_processor_one_layer_config
 {
 public:
-    unsigned int layer_nr;
-    unsigned int latency_cycles;
+    unsigned int SS_width_bits;
 };

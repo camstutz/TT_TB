@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.cpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -25,7 +25,7 @@ pattern_memory::pattern_memory(const sc_module_name _name,
         road_input("road_input"),
         superstrip_outputs(layer_nr, "superstrip_outputs"),
 		superstrip_outputs_sig(layer_nr, "superstrip_outputs_sig"),
-		delay_superstrip_outputs(layer_nr, "delay_superstrip_outputs", (unsigned int) PATTERN_MEMORY_LATENCY),
+		delay_superstrip_outputs(layer_nr, "delay_superstrip_outputs", configuration.latency_cycles),
 		patterns()
 {
     // ----- Process registration ----------------------------------------------

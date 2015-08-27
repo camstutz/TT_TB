@@ -1,7 +1,7 @@
 /*!
  * @file road_processor.hpp
  * @author Christian Amstutz
- * @date March 31, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -20,8 +20,6 @@
 
 #include "road_processor_config.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
-
-//#define VALUE_EVENT 0
 
 /*!
  * @brief

@@ -20,6 +20,7 @@ SC_MODULE_EXPORT(hit_buffer);
 hit_buffer::hit_buffer(const sc_module_name _name,
         const hit_buffer_config configuration) :
         sc_module(_name),
+        configuration(configuration),
         layer_nr(configuration.layer_nr),
         superstrip_inputs(layer_nr, "superstrip_input"),
         substrip_inputs(layer_nr, "substrip_input"),
@@ -145,7 +146,7 @@ void hit_buffer::search_hits()
                         for(; strip_it != table_entry->second.end(); ++strip_it)
                         {
                             hit_t composed_hit;
-                            composed_hit = (actual_superstrip.get_value() << SS_BIT_WIDTH) | *strip_it;
+                            composed_hit = (actual_superstrip.get_value() << configuration.SS_width_bit) | *strip_it;
                             output_buffer[layer].write(composed_hit);
                         }
 

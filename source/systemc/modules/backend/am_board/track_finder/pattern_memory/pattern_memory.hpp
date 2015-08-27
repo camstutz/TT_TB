@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.hpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 27, 2015
  *
  * @brief
  */

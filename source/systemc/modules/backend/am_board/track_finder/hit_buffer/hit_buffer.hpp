@@ -17,7 +17,7 @@
 #include "hit_buffer_write_ctrl.hpp"
 
 #include "hit_buffer_config.hpp"
-#include "../../../../../systems/TT_configuration.hpp"
+//#include "../../../../../systems/TT_configuration.hpp"
 
 #include "sc_map.hpp"
 #include "../../simple_stream_protocol.hpp"
@@ -43,6 +43,7 @@ public:
     typedef std::map<superstrip_t, superstrip_table_element_t> superstrip_table_t;
     typedef std::vector<superstrip_table_t> event_set_t;
 
+    const hit_buffer_config configuration;
     const unsigned int layer_nr;
 
     // ----- Port Declarations -------------------------------------------------

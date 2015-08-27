@@ -26,5 +26,7 @@ public:
     unsigned int layer_nr;
     unsigned int road_detection_threshold;
 
+    unsigned int latency_cycles;
+
     am_chip_write_ctrl_config write_ctrl;
 };

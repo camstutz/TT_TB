@@ -27,7 +27,7 @@ hit_processor::hit_processor(const sc_module_name _name,
         am_superstrip_out(layer_nr, "am_superstrip_out"),
         hitbuf_superstrip_out(layer_nr, "hitbuf_superstrip_out"),
         hitbuf_substrip_out(layer_nr, "hitbuf_substrip_out"),
-        hit_processors(layer_nr, "hit_processors")
+        hit_processors(layer_nr, "hit_processors", configuration.hit_processor_one_layer)
 {
 
 //#ifdef MTI_SYSTEMC

@@ -16,6 +16,7 @@
 #include "../../simple_stream_protocol.hpp"
 
 #include "../../../../../systems/TT_configuration.hpp"
+#include "hit_processor_one_layer_config.hpp"
 
 #include <systemc.h>
 
@@ -28,6 +29,8 @@ public:
     typedef simple_stream_protocol<hit_t> hit_stream;
     typedef simple_stream_protocol<hit_t> superstrip_stream;
     typedef simple_stream_protocol<hit_t> substrip_stream;
+
+    const hit_processor_one_layer_config configuration;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;
@@ -51,6 +54,6 @@ public:
     /*!
      * Constructor:
      */
-    hit_processor_one_layer(const sc_module_name _name);
+    hit_processor_one_layer(const sc_module_name _name, const hit_processor_one_layer_config& configuration);
     SC_HAS_PROCESS(hit_processor_one_layer);
 };

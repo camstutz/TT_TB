@@ -1,7 +1,7 @@
 /*!
  * @file hit_procesor_config.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include "hit_processor_one_layer_config.hpp"
+
 // *****************************************************************************
 /*!
  * @brief
@@ -21,4 +23,6 @@ class hit_processor_config
 {
 public:
     unsigned int layer_nr;
+
+    hit_processor_one_layer_config hit_processor_one_layer;
 };

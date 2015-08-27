@@ -1,7 +1,7 @@
 /*!
  * @file road_processor_config.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -21,4 +21,5 @@ class road_processor_config
 {
 public:
     unsigned int layer_nr;
+    unsigned int latency_cycles;
 };

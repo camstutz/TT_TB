@@ -1,13 +1,13 @@
 /*!
  * @file hit_processor_one_layer.cpp
  * @author Christian Amstutz
- * @date November 17, 2014
+ * @date August 27, 2015
  *
  * @brief
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "hit_processor_one_layer.hpp"
@@ -18,8 +18,10 @@ SC_MODULE_EXPORT(hit_processor);
 
 // *****************************************************************************
 
-hit_processor_one_layer::hit_processor_one_layer(const sc_module_name _name) :
+hit_processor_one_layer::hit_processor_one_layer(const sc_module_name _name,
+        const hit_processor_one_layer_config& configuration) :
         sc_module(_name),
+        configuration(configuration),
         clk("clk"),
         hit_input("hit_input"),
         am_superstrip_out("am_superstrip_out"),
@@ -68,14 +70,14 @@ void hit_processor_one_layer::write_outputs()
 // *****************************************************************************
 superstrip_t hit_processor_one_layer::generate_superstrip(hit_t hit)
 {
-    return (hit >> SS_BIT_WIDTH);
+    return (hit >> configuration.SS_width_bits);
 }
 
 // *****************************************************************************
 substrip_t hit_processor_one_layer::generate_substrip(hit_t hit)
 {
     superstrip_t mask = 0x0;
-    for(unsigned int i=0; i<SS_BIT_WIDTH; ++i)
+    for(unsigned int i=0; i<configuration.SS_width_bits; ++i)
     {
         mask = mask | (0x01 << i);
     }

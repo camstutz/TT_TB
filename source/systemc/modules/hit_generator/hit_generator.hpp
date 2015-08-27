@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.hpp
  * @author Christian Amstutz
- * @date August 20, 2015
+ * @date August 27, 2015
  *
  * @brief
  */
@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include "../../systems/TT_configuration.hpp"
 #include "../../data_formats/HitSF/HitSF.h"
 #include "../../data_formats/stub/stub.hpp"
 #include "../frontend/chip_address.hpp"
