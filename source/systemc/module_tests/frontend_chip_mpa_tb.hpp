@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.hpp
  * @author Christian Amstutz
- * @date July 28, 2015
+ * @date August 28, 2015
  *
  * @brief
  *
@@ -14,7 +14,6 @@
 #pragma once
 
 #include "../TT_configuration/track_trigger_config.hpp"
-#include "../systems/TT_configuration.hpp"
 #include "../modules/frontend/frontend_chip/frontend_chip.hpp"
 
 #include "sc_map.hpp"

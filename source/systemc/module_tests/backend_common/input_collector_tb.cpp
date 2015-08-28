@@ -94,8 +94,6 @@ void input_collector_tb::write_frames()
     data_frame.set_bunch_crossing(7);
     dtc_input_sig[0].write(data_frame);
 
-
-
     return;
 }
 

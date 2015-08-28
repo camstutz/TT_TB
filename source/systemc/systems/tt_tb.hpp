@@ -15,11 +15,11 @@
 #include "../modules/frontend/sensor_module_address.hpp"
 #include "../modules/backend/dtc/dtc.hpp"
 #include "../modules/backend/trigger_tower.hpp"
+#include "../modules/backend/trigger_tower_address.hpp"
 #include "../modules/road_analyzer/road_analyzer.hpp"
 
 #include "../data_formats/stub/stub.hpp"
 
-//#include "TT_configuration.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
 
 #include "sc_map.hpp"
@@ -55,7 +55,7 @@ public:
     hit_generator hitGenerator;
     sc_map_list<sensor_module_address, sensor_module> sensor_modules;
     sc_map_linear<dtc> DTCs;
-    trigger_tower trigger_tower_0;
+    sc_map_list<trigger_tower_address, trigger_tower> trigger_towers;
     road_analyzer roadAnalyzer;
 
     // ----- Constructor -------------------------------------------------------

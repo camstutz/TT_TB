@@ -44,7 +44,7 @@ public:
     data_concentrator_config cbc_data_concentrator;
     data_concentrator_config mpa_data_concentrator;
 
-    trigger_tower_config trigger_tower;
+    trigger_tower_type_config trigger_tower;
 
     road_analyzer_config road_analyzer;
 
@@ -53,7 +53,9 @@ public:
 
     std::vector<sensor_module_config> sensor_modules;
     std::vector<dtc_config> dtcs;
+    std::vector<trigger_tower_config> trigger_towers;
 
     std::vector<sensor_module_address> get_module_addresses() const;
     std::vector<chip_address> get_chip_addresses() const;
+    std::vector<trigger_tower_address> get_trigger_tower_addresses() const;
 };

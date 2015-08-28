@@ -18,7 +18,7 @@ processor_organizer_tb::processor_organizer_tb(sc_module_name _name,
         sc_module(_name),
         do_input_sigs(configuration.trigger_tower.processor_organizer.do_input_nr, "do_input_sig"),
         processor_output_sigs(configuration.trigger_tower.processor_organizer.processor_output_nr, configuration.trigger_tower.processor_organizer.layer_nr, "processor_output_sig"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
         dut_processor_organizer("DUT_processor_organizer", configuration.trigger_tower.processor_organizer)
 {
     // ----- Creation and binding of signals -----------------------------------
@@ -97,6 +97,7 @@ void processor_organizer_tb::print_output()
 {
     while(1)
     {
+         // wait for 'processor_output_sigs' changes
          wait();
 
          log_buffer << std::endl;

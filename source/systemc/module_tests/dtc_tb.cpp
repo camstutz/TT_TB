@@ -1,7 +1,7 @@
 /*!
  * @file dtc_tb.cpp
  * @author Christian Amstutz
- * @date July 17, 2015
+ * @date August 28, 2015
  */
 
 /*
@@ -22,11 +22,11 @@
 dtc_tb::dtc_tb(sc_module_name _name,
         track_trigger_config configuration) :
         sc_module(_name),
-        gbt_input_links(configuration.dtc.input_nr, "gbt_input_link"),
+        gbt_input_links(configuration.dtcs[0].sensor_modules, "gbt_input_link"),
         tower_output_stream("tower_output_stream"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_dtc("DUT_DTC", configuration.dtc),
-        dut_configuration(configuration.dtc)
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
+        dut_dtc("DUT_DTC", configuration.dtcs[0]),
+        dut_configuration(configuration.dtcs[0])
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_dtc.clk.bind(LHC_clock);
@@ -62,7 +62,8 @@ void dtc_tb::generate_packets()
 {
     wait(50, SC_NS);
 
-    CIC_frame input_frame1, input_frame2;
+    CIC_frame input_frame1(dut_configuration.input_unit.CBC_input_stub);
+    CIC_frame input_frame2(dut_configuration.input_unit.CBC_input_stub);
     stub stub1(dut_configuration.input_unit.CBC_input_stub, 0, 1, 1, 1, 1, 0);
     input_frame1.add_stub(stub1);
     stub stub2(dut_configuration.input_unit.CBC_input_stub, 0, 1, 1, 1, 2, 0);
@@ -72,11 +73,11 @@ void dtc_tb::generate_packets()
 
     std::cout << input_packet << std::endl;
 
-    gbt_input_links[0].write(input_packet);
+    gbt_input_links[sensor_module_address(0,0,0)].write(input_packet);
 
     wait(580, SC_NS);
 
-    gbt_input_links[0].write(input_packet);
+    gbt_input_links[sensor_module_address(0,0,0)].write(input_packet);
 
     wait(500, SC_NS);
 

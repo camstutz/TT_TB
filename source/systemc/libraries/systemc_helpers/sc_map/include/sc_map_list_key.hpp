@@ -35,6 +35,7 @@ public:
 
     virtual bool operator==(const sc_map_key& other_key) const;
     virtual bool operator<(const sc_map_key& other_key) const;
+    operator value_T() const;
 };
 
 //*****************************************************************************
@@ -78,4 +79,11 @@ bool sc_map_list_key<value_T>::operator<(const sc_map_key& other_key) const
             dynamic_cast<const sc_map_list_key<value_type>*>(&other_key);
 
     return (this->value < other_key_linear->value);
+}
+
+//******************************************************************************
+template <typename value_T>
+sc_map_list_key<value_T>::operator value_T() const
+{
+    return value;
 }

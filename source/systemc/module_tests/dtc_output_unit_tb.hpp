@@ -18,7 +18,6 @@
 #include "../modules/backend/dtc/dtc_controller.hpp"
 
 #include "../TT_configuration/track_trigger_config.hpp"
-#include "../systems/TT_configuration.hpp"
 
 #include "../data_formats/prbf/PRBF.hpp"
 
@@ -60,7 +59,7 @@ public:
     /*!
      * Constructor:
      */
-    dtc_output_unit_tb(sc_module_name _name, track_trigger_config configuration);
+    dtc_output_unit_tb(sc_module_name _name, const track_trigger_config& configuration);
     SC_HAS_PROCESS(dtc_output_unit_tb);
     ~dtc_output_unit_tb();
 

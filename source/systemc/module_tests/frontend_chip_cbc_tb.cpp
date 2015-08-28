@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_cbc_tb.cpp
  * @author Christian Amstutz
- * @date July 30, 2015
+ * @date August 28, 2015
  */
 
 /*
@@ -23,8 +23,8 @@ frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
 		sc_trace_file* trace_file, track_trigger_config configuration) :
 		sc_module(_name),
         stub_input_sig("stub_input"),
-        data_valid_signals(MAX_HITS_PER_CBC_FE_CHIP, "data_valid_sig"),
-        fe_out_signals(MAX_HITS_PER_CBC_FE_CHIP, "fe_out_sig"),
+        data_valid_signals(configuration.cbc_sensor_module.frontend_chip.max_stubs_per_cycle, "data_valid_sig"),
+        fe_out_signals(configuration.cbc_sensor_module.frontend_chip.max_stubs_per_cycle, "fe_out_sig"),
         LHC_clock("LHC_clock", 25, SC_NS, 0.5, 25, SC_NS, true),
         dut_front_end_chip("Front_End_Chip_DUT", configuration.cbc_frontend_chip)
 {

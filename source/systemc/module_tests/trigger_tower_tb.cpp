@@ -19,8 +19,8 @@ trigger_tower_tb::trigger_tower_tb(sc_module_name _name,
         sc_module(_name),
         dtc_input_sigs(configuration.trigger_tower.prb_nr, configuration.trigger_tower.dtc_per_prb, "dtc_input_sig"),
         hit_output_sigs(configuration.trigger_tower.prb_nr, configuration.trigger_tower.AM_boards_per_prb, configuration.trigger_tower.layer_nr, "hit_output_sig"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_trigger_tower("trigger_tower", configuration.trigger_tower)
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
+        dut_trigger_tower("trigger_tower", configuration.trigger_towers[0])
 {
     // ----- Creation and binding of signals -----------------------------------
 

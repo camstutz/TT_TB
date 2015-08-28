@@ -21,9 +21,9 @@
 
 data_concentrator_cbc_tb::data_concentrator_cbc_tb(sc_module_name _name, track_trigger_config configuration) :
         sc_module(_name),
-        data_valid(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "data_valid"),
-        fe_signals(NR_FE_CHIP_PER_MODULE, MAX_HITS_PER_CBC_FE_CHIP, "fe_signal"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+        data_valid(configuration.cbc_sensor_module.fe_chip_per_side, configuration.cbc_sensor_module.frontend_chip.max_stubs_per_cycle, "data_valid"),
+        fe_signals(configuration.cbc_sensor_module.fe_chip_per_side, configuration.cbc_sensor_module.frontend_chip.max_stubs_per_cycle, "fe_signal"),
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
         dut_data_concentrator("Data_Concentrator_CBC_DUT", configuration.cbc_data_concentrator),
         dut_configuration(configuration.cbc_data_concentrator)
 {

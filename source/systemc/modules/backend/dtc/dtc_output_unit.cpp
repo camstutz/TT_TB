@@ -21,7 +21,7 @@
  */
 
 dtc_output_unit::dtc_output_unit(sc_module_name _name,
-        dtc_output_unit_config configuration) :
+        const dtc_output_unit_config& configuration) :
         sc_module(_name),
         dtc_input_nr(configuration.dtc_input_nr),
         fe_collect_cycles(configuration.fe_collect_cycles),
@@ -53,10 +53,11 @@ void dtc_output_unit::generate_frame()
         output_t output_frame;
         for (unsigned int input_id = 0; input_id < dtc_input_nr; ++input_id)
         {
-            while (bx_buffer_inputs.at(input_id, read_buffer.read(), relative_bx.read()).num_available() > 0)
+            sc_fifo_in<dtc_buffer_element>& bx_buffer = bx_buffer_inputs.at(input_id, read_buffer.read(), relative_bx.read());
+            while (bx_buffer.num_available() > 0)
             {
                 dtc_buffer_element stub_element;
-                stub_element= bx_buffer_inputs.at(input_id, read_buffer.read(), relative_bx.read()).read();
+                stub_element= bx_buffer.read();
                 output_frame.add_stub(stub_element.second);
                 bx = stub_element.first;
             }

@@ -1,7 +1,7 @@
 /*!
  * @file data_organizer_config.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -13,8 +13,7 @@
 
 #pragma once
 
-#include "../common/time_demux_config.hpp"
-#include "../common/input_collector_config.hpp"
+#include "data_organizer_type_config.hpp"
 
 // *****************************************************************************
 /*!
@@ -23,12 +22,7 @@
 class data_organizer_config
 {
 public:
-    unsigned int dtc_input_nr;
-    unsigned int proc_unit_nr;
+    data_organizer_type_config* type;
 
-    unsigned int stub_buffer_in_FIFO_size;
-    unsigned int stub_buffer_out_FIFO_size;
-
-    input_collector_config input_collector;
-    time_demux_config demultiplexer;
+    std::vector<unsigned int> DTCs;
 };

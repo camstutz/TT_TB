@@ -20,16 +20,16 @@
  */
 
 dtc_output_unit_tb::dtc_output_unit_tb(sc_module_name _name,
-        track_trigger_config configuration) :
+        const track_trigger_config& configuration) :
         sc_module(_name),
-        bx_sorted_inputs(configuration.dtc.output_unit.dtc_input_nr, 2, configuration.dtc.output_unit.fe_collect_cycles, "bx_sorted_inputs"),
+        bx_sorted_inputs(configuration.dtcs[0].output_unit.dtc_input_nr, 2, configuration.dtcs[0].output_unit.fe_collect_cycles, "bx_sorted_inputs"),
         tower_output("tower_output"),
         bx_sig("bx_sig"),
         read_buffer_sig("read_buffer_sig"),
         write_buffer_sig("write_buffer_sig"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_dtc_controller("DUT_dtc_controller", configuration.dtc.controller),
-        dut_dtc_output_unit("DUT_DTC_output_unit", configuration.dtc.output_unit)
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
+        dut_dtc_controller("DUT_dtc_controller", configuration.dtcs[0].controller),
+        dut_dtc_output_unit("DUT_DTC_output_unit", configuration.dtcs[0].output_unit)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_dtc_controller.clk.bind(LHC_clock);

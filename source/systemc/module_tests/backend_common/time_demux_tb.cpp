@@ -17,7 +17,7 @@ time_demux_tb::time_demux_tb(sc_module_name _name,
         bunch_crossing_request_sig("bunch_crossing_request_sig"),
         stub_input_sig(configuration.layer_nr, "stub_input_sig"),
         proc_unit_output_sigs(configuration.proc_unit_nr, configuration.layer_nr, "proc_unit_output_sigs"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 25, SC_NS, true),
         dut_do_demux("DUT_do_demux", configuration)
 {
     // ----- Creation and binding of signals -----------------------------------

@@ -31,6 +31,7 @@
 class trigger_tower : public sc_module
 {
 public:
+    const trigger_tower_config configuration;
     const unsigned int layer_nr;
     const unsigned int prb_nr;
     const unsigned int dtc_per_prb;
@@ -40,7 +41,7 @@ public:
     /** Input port for the clock signal */
     sc_in<bool> clk;
 
-    sc_map_square<sc_in<data_organizer::dtc_input_t> > dtc_inputs;
+    sc_map_list<unsigned int, sc_in<data_organizer::dtc_input_t> > dtc_inputs;
     sc_map_cube<sc_out<am_board::output_stream_t> > hit_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
@@ -63,5 +64,5 @@ public:
     /*!
      * Constructor:
      */
-    trigger_tower(sc_module_name _name, trigger_tower_config);
+    trigger_tower(sc_module_name _name, const trigger_tower_config&);
 };

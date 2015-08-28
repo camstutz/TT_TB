@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.cpp
  * @author Christian Amstutz
- * @date August 25, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -41,4 +41,18 @@ std::vector<chip_address> track_trigger_config::get_chip_addresses() const
     }
 
     return chip_addresses;
+}
+
+// *****************************************************************************
+std::vector<trigger_tower_address> track_trigger_config::get_trigger_tower_addresses() const
+{
+    std::vector<trigger_tower_address> tower_addresses;
+    for (std::vector<trigger_tower_config>::const_iterator tower_config_it = trigger_towers.begin();
+         tower_config_it != trigger_towers.end();
+         tower_config_it++)
+    {
+        tower_addresses.push_back(tower_config_it->address);
+    }
+
+    return tower_addresses;
 }

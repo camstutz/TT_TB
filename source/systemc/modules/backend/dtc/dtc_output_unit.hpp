@@ -60,7 +60,7 @@ public:
     /*!
      * Constructor:
      */
-    dtc_output_unit(sc_module_name _name, dtc_output_unit_config configuration);
+    dtc_output_unit(sc_module_name _name, const dtc_output_unit_config& configuration);
     SC_HAS_PROCESS(dtc_output_unit);
 
 private:

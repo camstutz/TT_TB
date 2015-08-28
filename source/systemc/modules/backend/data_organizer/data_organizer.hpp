@@ -37,6 +37,7 @@ public:
     typedef PRBF_0 dtc_input_t;
     typedef PRBF_1 proc_unit_output_t;
 
+    const data_organizer_config configuration;
     const unsigned int dtc_input_nr;
     const unsigned int proc_unit_nr;
 

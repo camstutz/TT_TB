@@ -15,13 +15,13 @@
 
 
 #include "../modules/backend/dtc/dtc.hpp"
+#include "../modules/frontend/sensor_module_address.hpp"
 
 #include "../data_formats/gbt_link_format/gbt_link_format.hpp"
 #include "../data_formats/CIC_frame/CIC_frame.hpp"
 #include "../data_formats/prbf/PRBF.hpp"
 
 #include "../TT_configuration/track_trigger_config.hpp"
-#include "../systems/TT_configuration.hpp"
 
 #include "sc_map.hpp"
 
@@ -40,7 +40,7 @@ public:
     // ----- Port Declarations -------------------------------------------------
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_linear<sc_buffer<dtc_input_unit::input_t> > gbt_input_links;
+    sc_map_list<sensor_module_address, sc_buffer<dtc_input_unit::input_t> > gbt_input_links;
     sc_buffer<dtc::output_t> tower_output_stream;
 
     // ----- Process Declarations ----------------------------------------------

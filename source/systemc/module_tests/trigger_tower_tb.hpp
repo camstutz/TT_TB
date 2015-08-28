@@ -15,7 +15,6 @@
 
 #include "../modules/backend/data_organizer/data_organizer.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
-#include "../systems/TT_configuration.hpp"
 #include "../modules/backend/trigger_tower.hpp"
 #include "../data_formats/prbf/PRBF.hpp"
 

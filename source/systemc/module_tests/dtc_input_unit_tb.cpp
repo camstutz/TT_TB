@@ -23,10 +23,10 @@ dtc_input_unit_tb::dtc_input_unit_tb(sc_module_name _name,
         track_trigger_config configuration) :
         sc_module(_name),
         gbt_input_link("gbt_input_link"),
-        bx_sorted_outputs(2, configuration.dtc.input_unit.fe_collect_cycles, "bx_sorted_output"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_dtc_input_unit("DUT_DTC_input_unit", configuration.dtc.input_unit),
-        dut_configuration(configuration.dtc.input_unit)
+        bx_sorted_outputs(2, configuration.dtcs[0].input_unit.fe_collect_cycles, "bx_sorted_output"),
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
+        dut_dtc_input_unit("DUT_DTC_input_unit", configuration.dtcs[0].input_unit),
+        dut_configuration(configuration.dtcs[0].input_unit)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_dtc_input_unit.clk.bind(LHC_clock);

@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower_config.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date August 27, 2015
  *
  * @brief
  *
@@ -13,9 +13,8 @@
 
 #pragma once
 
-#include "data_organizer/data_organizer_config.hpp"
-#include "processor_organizer/processor_organizer_config.hpp"
-#include "am_board/am_board_config.hpp"
+#include "trigger_tower_type_config.hpp"
+#include "trigger_tower_address.hpp"
 
 #include <vector>
 
@@ -26,14 +25,14 @@
 class trigger_tower_config
 {
 public:
-    unsigned int layer_nr;
-    unsigned int prb_nr;
-    unsigned int dtc_per_prb;
-    unsigned int AM_boards_per_prb;
+    trigger_tower_address address;
+    //std::string pattern_bank_file;
+    trigger_tower_type_config* type;
 
-    data_organizer_config data_organizer;
-    processor_organizer_config processor_organizer;
-    am_board_config am_board;
-
+    std::vector<unsigned int> DTC_ids;
+    std::vector<data_organizer_config> data_organizers;
     std::vector<processor_organizer_config> processor_organizers;
+
+    //trigger_tower_config();
+    //trigger_tower_config(trigger_tower_type_config *type, trigger_tower_address address);
 };

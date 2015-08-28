@@ -16,7 +16,6 @@
 #include "../modules/backend/dtc/dtc_buffer_element.hpp"
 #include "../modules/backend/dtc/dtc_input_unit.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
-#include "../systems/TT_configuration.hpp"
 
 #include "../data_formats/gbt_link_format/gbt_link_format.hpp"
 #include "../data_formats/CIC_frame/CIC_frame.hpp"

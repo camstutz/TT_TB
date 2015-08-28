@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip_mpa_tb.cpp
  * @author Christian Amstutz
- * @date July 28, 2015
+ * @date August 28, 2015
  */
 
 /*
@@ -19,8 +19,8 @@ frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name,
         sc_module(_name),
         en_sig("en"),
         stub_input_sig("stub_input"),
-        data_valid_signals(MAX_HITS_PER_MPA_FE_CHIP, "data_valid_sig"),
-        fe_out_signals(MAX_HITS_PER_MPA_FE_CHIP, "fe_out_sig"),
+        data_valid_signals(configuration.mpa_sensor_module.frontend_chip.max_stubs_per_cycle, "data_valid_sig"),
+        fe_out_signals(configuration.mpa_sensor_module.frontend_chip.max_stubs_per_cycle, "fe_out_sig"),
         LHC_clock("LHC_clock", 25, SC_NS, 0.5, 50, SC_NS, true),
         dut_front_end_chip("Front_End_Chip_DUT", configuration.mpa_frontend_chip)
 {

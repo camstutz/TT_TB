@@ -14,7 +14,6 @@
 #pragma once
 
 #include "../TT_configuration/track_trigger_config.hpp"
-#include "../systems/TT_configuration.hpp"
 #include "../modules/frontend/data_concentrator/data_concentrator.hpp"
 
 #include "sc_map.hpp"

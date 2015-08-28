@@ -28,13 +28,13 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
         true_sig("true_sig"),
         hit_fifos(configuration.get_chip_addresses(), "hit_fifo", configuration.hit_FIFO_size),
         gbt_links(configuration.get_module_addresses(), "GBT_link"),
-        dtc_links(configuration.trigger_tower.prb_nr, "DTC_link"),
+        dtc_links(configuration.dtcs.size(), "DTC_link"),
         result_hits(configuration.trigger_tower.prb_nr * configuration.trigger_tower.AM_boards_per_prb, configuration.trigger_tower.layer_nr, "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
         sensor_modules(configuration.get_module_addresses(), "sensor_module", configuration.sensor_modules),
         DTCs(configuration.dtcs.size(), "DTC", configuration.dtcs),
-        trigger_tower_0("trigger_tower", configuration.trigger_tower),
+        trigger_towers(configuration.get_trigger_tower_addresses(), "trigger_tower", configuration.trigger_towers),
         roadAnalyzer("road_analyzer", configuration.road_analyzer)
 {
     hitGenerator.stub_outputs.bind(hit_fifos);
@@ -64,9 +64,20 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
         ++dtc_id;
     }
 
-    trigger_tower_0.clk.bind(LHC_clock);
-    trigger_tower_0.dtc_inputs.bind(dtc_links);
-    trigger_tower_0.hit_outputs.bind(result_hits);
+    for ( sc_map_list<trigger_tower_address, trigger_tower>::iterator tower_it = trigger_towers.begin();
+          tower_it != trigger_towers.end();
+          ++tower_it)
+    {
+        tower_it->clk.bind(LHC_clock);
+        for ( sc_map_list<unsigned int, sc_in<data_organizer::dtc_input_t> >::iterator input_it = tower_it->dtc_inputs.begin();
+              input_it != tower_it->dtc_inputs.end();
+              ++input_it)
+        {
+            unsigned int dtc_key = tower_it->dtc_inputs.get_key(*input_it).second;
+            input_it->bind(dtc_links[dtc_key]);
+        }
+        tower_it->hit_outputs.bind(result_hits);
+    }
 
     roadAnalyzer.hit_cnt.bind(hit_cnt_sig);
     roadAnalyzer.filtered_hits.bind(result_hits);

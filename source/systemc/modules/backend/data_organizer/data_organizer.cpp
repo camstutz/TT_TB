@@ -23,17 +23,18 @@
 data_organizer::data_organizer(sc_module_name _name,
         data_organizer_config configuration) :
         sc_module(_name),
-        dtc_input_nr(configuration.dtc_input_nr),
-        proc_unit_nr(configuration.proc_unit_nr),
+        configuration(configuration),
+        dtc_input_nr(configuration.DTCs.size()),
+        proc_unit_nr(configuration.type->proc_unit_nr),
         clk("clk"),
         dtc_inputs(dtc_input_nr, "dtc_inputs"),
         proc_unit_outputs(proc_unit_nr, "proc_unit_output"),
-        stub_buffer_input_fifo("stub_buffer_input_fifo", configuration.stub_buffer_in_FIFO_size),
+        stub_buffer_input_fifo("stub_buffer_input_fifo", configuration.type->stub_buffer_in_FIFO_size),
         bunch_request_sig("bunch_request_sig"),
-        stub_buffer_output_fifo("stub_buffer_output", configuration.stub_buffer_out_FIFO_size),
-        in_collector("in_collector", configuration.input_collector),
+        stub_buffer_output_fifo("stub_buffer_output", configuration.type->stub_buffer_out_FIFO_size),
+        in_collector("in_collector", configuration.type->input_collector),
         stub_buffer("stub_buffer"),
-        demultiplexer("demultiplexer", configuration.demultiplexer)
+        demultiplexer("demultiplexer", configuration.type->demultiplexer)
 {
     // ----- Process registration ----------------------------------------------
 

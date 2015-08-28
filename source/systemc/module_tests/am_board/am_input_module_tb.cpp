@@ -18,7 +18,7 @@ am_input_module_tb::am_input_module_tb(sc_module_name _name,
         sc_module(_name),
         frame_in_sigs(configuration.trigger_tower.am_board.input_module.layer_nr, "frame_in_sig"),
         output_streams(configuration.trigger_tower.am_board.input_module.layer_nr, "output_stream"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
         dut_am_input_module_tb("DUT_AM_input_module", configuration.trigger_tower.am_board.input_module)
 {
     // ----- Creation and binding of signals -----------------------------------

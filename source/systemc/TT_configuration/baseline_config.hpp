@@ -103,10 +103,11 @@ inline track_trigger_config baseline_config()
     }
 
     // DTC
-
     configuration.dtc.collection_cycles = 8;
     configuration.dtc.bx_buffer_FIFO_size = 20;
     configuration.dtc.controller.fe_collect_cycles = 8;
+    configuration.dtc.input_unit.CBC_input_stub = configuration.cbc_frontend_chip.input_stub;
+    configuration.dtc.input_unit.MPA_input_stub = configuration.mpa_frontend_chip.input_stub;
     configuration.dtc.input_unit.fe_id = 0xFF;
     configuration.dtc.input_unit.fe_collect_cycles = 8;
     configuration.dtc.output_unit.fe_collect_cycles = 8;
@@ -127,7 +128,6 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.prb_nr = 4;
     configuration.trigger_tower.AM_boards_per_prb = 2;
 
-    configuration.trigger_tower.data_organizer.dtc_input_nr =  1;
     configuration.trigger_tower.data_organizer.proc_unit_nr = 4;
     configuration.trigger_tower.data_organizer.stub_buffer_in_FIFO_size = 100;
     configuration.trigger_tower.data_organizer.stub_buffer_out_FIFO_size = 100;
@@ -151,15 +151,6 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -40;
     configuration.trigger_tower.processor_organizer.layer_splitter.layer_nr = 6;
 
-    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 0;
-    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
-    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 1;
-    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
-    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 2;
-    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
-    configuration.trigger_tower.processor_organizer.demultiplexer.bx_offset = 3;
-    configuration.trigger_tower.processor_organizers.push_back(configuration.trigger_tower.processor_organizer);
-
     // AM Board
     configuration.trigger_tower.am_board.layer_nr = 6;
 
@@ -182,6 +173,24 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_write_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_lookup_ctrl.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;
+
+    trigger_tower_config trigger_tower;
+    trigger_tower.type = &configuration.trigger_tower;
+
+    data_organizer_config data_org;
+    data_org.type = &configuration.trigger_tower.data_organizer;
+    data_org.DTCs.push_back(0);
+    trigger_tower.data_organizers.push_back(data_org);
+
+    for (unsigned int i = 0; i < configuration.trigger_tower.prb_nr; ++i)
+    {
+        processor_organizer_config processor_organizer = configuration.trigger_tower.processor_organizer;
+        processor_organizer.demultiplexer.bx_offset = i;
+        trigger_tower.processor_organizers.push_back(processor_organizer);
+    }
+
+    trigger_tower.DTC_ids.push_back(0);
+    configuration.trigger_towers.push_back(trigger_tower);
 
     // Road Analyzer
     configuration.road_analyzer.output_file = "data/output/roads.txt";

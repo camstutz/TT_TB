@@ -22,7 +22,7 @@ am_input_module_one_layer_tb::am_input_module_one_layer_tb(sc_module_name _name)
         frame_empty_sig("frame_empty_sig"),
         frame_processing_sig("frame_processing_sig"),
         output_stream("output_stream"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
+        LHC_clock("LHC_clock", 25, SC_NS, 0.5, 25, SC_NS, true),
         dut_am_input_module_one_layer_tb("DUT_AM_input_module_one_layer")
 {
     // ----- Creation and binding of signals -----------------------------------

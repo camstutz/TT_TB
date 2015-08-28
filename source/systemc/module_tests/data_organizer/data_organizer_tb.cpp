@@ -22,10 +22,10 @@
 data_organizer_tb::data_organizer_tb(sc_module_name _name,
         track_trigger_config configuration) :
         sc_module(_name),
-        dtc_input_sigs(configuration.trigger_tower.data_organizer.dtc_input_nr, "dtc_input_sig"),
+        dtc_input_sigs(configuration.trigger_towers[0].data_organizers[0].DTCs.size(), "dtc_input_sig"),
         proc_output_sigs(configuration.trigger_tower.data_organizer.proc_unit_nr, "proc_output_sig"),
-        LHC_clock("LHC_clock", LHC_CLOCK_PERIOD_NS, SC_NS, 0.5, 25, SC_NS, true),
-        dut_data_organizer("dut_data_organizer", configuration.trigger_tower.data_organizer)
+        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
+        dut_data_organizer("dut_data_organizer", configuration.trigger_towers[0].data_organizers[0])
 {
     // ----- Creation and binding of signals -----------------------------------
 
