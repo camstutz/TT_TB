@@ -18,8 +18,10 @@
 #include "../modules/frontend/data_concentrator/data_concentrator_config.hpp"
 #include "../modules/frontend/sensor_module/sensor_module_config.hpp"
 #include "../modules/frontend/gbt/gbt_config.hpp"
+#include "../modules/backend/dtc/dtc_type_config.hpp"
 #include "../modules/backend/dtc/dtc_config.hpp"
 #include "../modules/backend/trigger_tower/trigger_tower_config.hpp"
+#include "../modules/backend/trigger_tower/trigger_tower_type_config.hpp"
 #include "../modules/road_analyzer/road_analyzer_config.hpp"
 
 #include <vector>
@@ -40,10 +42,10 @@ public:
     frontend_chip_config cbc_frontend_chip;
     frontend_chip_config mpa_frontend_chip;
     gbt_config gbt;
-    dtc_config dtc;
     data_concentrator_config cbc_data_concentrator;
     data_concentrator_config mpa_data_concentrator;
 
+    dtc_type_config dtc;
     trigger_tower_type_config trigger_tower;
 
     road_analyzer_config road_analyzer;

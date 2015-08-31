@@ -113,16 +113,16 @@ inline track_trigger_config baseline_config()
     configuration.dtc.output_unit.fe_collect_cycles = 8;
 
     configuration.dtcs.resize(2);
-    configuration.dtcs[0] = configuration.dtc;
+    configuration.dtcs[0].type = configuration.dtc;
     configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(0,0,0));
     configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(1,0,0));
     configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(2,0,0));
-    configuration.dtcs[0].output_unit.dtc_input_nr = configuration.dtcs[0].sensor_modules.size();
-    configuration.dtcs[1] = configuration.dtc;
+    configuration.dtcs[0].type.output_unit.dtc_input_nr = configuration.dtcs[0].sensor_modules.size();
+    configuration.dtcs[1].type = configuration.dtc;
     configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(3,0,0));
     configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(4,0,0));
     configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(5,0,0));
-    configuration.dtcs[1].output_unit.dtc_input_nr = configuration.dtcs[1].sensor_modules.size();
+    configuration.dtcs[1].type.output_unit.dtc_input_nr = configuration.dtcs[1].sensor_modules.size();
 
     // Trigger Tower
     configuration.trigger_tower.layer_nr = 6;

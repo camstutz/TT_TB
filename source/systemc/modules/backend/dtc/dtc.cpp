@@ -21,18 +21,18 @@ dtc::dtc(sc_module_name _name, const dtc_config& configuration) :
         sc_module(_name),
         configuration(configuration),
         input_nr(configuration.sensor_modules.size()),
-        collection_cycles(configuration.collection_cycles),
+        collection_cycles(configuration.type.collection_cycles),
         clk("clk"),
         gbt_inputs(configuration.sensor_modules, "gbt_input"),
         tower_output("tower_output"),
-        bx_sorted_buffer(input_nr, 2, collection_cycles, "bx_sorted_inputs", configuration.bx_buffer_FIFO_size),
+        bx_sorted_buffer(input_nr, 2, collection_cycles, "bx_sorted_inputs", configuration.type.bx_buffer_FIFO_size),
         relative_bx_sig("bx_sig"),
         read_buffer_sig("read_buffer_sig"),
         write_buffer_sig("write_buffer_sig"),
         tower_output_sig("tower_output_sig"),
-        controller("controller", configuration.controller),
-        input_units(input_nr, "input_unit", configuration.input_unit),
-        output_unit("output_unit", configuration.output_unit),
+        controller("controller", configuration.type.controller),
+        input_units(input_nr, "input_unit", configuration.type.input_unit),
+        output_unit("output_unit", configuration.type.output_unit),
         delay_output("delay_output", 0)
 {
     // ----- Creation and binding of signals -----------------------------------
