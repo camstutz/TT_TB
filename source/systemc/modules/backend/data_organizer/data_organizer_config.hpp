@@ -22,7 +22,7 @@
 class data_organizer_config
 {
 public:
-    data_organizer_type_config* type;
+    data_organizer_type_config type;
 
     std::vector<unsigned int> DTCs;
 };

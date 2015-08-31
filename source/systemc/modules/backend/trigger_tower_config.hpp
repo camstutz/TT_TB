@@ -27,7 +27,7 @@ class trigger_tower_config
 public:
     trigger_tower_address address;
     //std::string pattern_bank_file;
-    trigger_tower_type_config* type;
+    trigger_tower_type_config type;
 
     std::vector<unsigned int> DTC_ids;
     std::vector<data_organizer_config> data_organizers;

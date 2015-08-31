@@ -74,31 +74,31 @@ inline track_trigger_config baseline_config()
     configuration.cbc_sensor_module.frontend_chip = configuration.cbc_frontend_chip;
     configuration.cbc_sensor_module.data_concentrator = configuration.cbc_data_concentrator;
     configuration.cbc_sensor_module.gbt = configuration.gbt;
-    configuration.cbc_sensor_module_test.type = &configuration.cbc_sensor_module;
+    configuration.cbc_sensor_module_test.type = configuration.cbc_sensor_module;
 
     configuration.mpa_sensor_module.fe_chip_per_side = 8;
     configuration.mpa_sensor_module.side_count = 2;
     configuration.mpa_sensor_module.frontend_chip = configuration.mpa_frontend_chip;
     configuration.mpa_sensor_module.data_concentrator = configuration.mpa_data_concentrator;
     configuration.mpa_sensor_module.gbt = configuration.gbt;
-    configuration.mpa_sensor_module_test.type = &configuration.mpa_sensor_module;
+    configuration.mpa_sensor_module_test.type = configuration.mpa_sensor_module;
 
     // Hit Generator
     configuration.hit_generator.LHC_clock_period_ns = 25;
     configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;
     configuration.hit_generator.output_stub_mpa = configuration.mpa_frontend_chip.input_stub;
 
-    configuration.sensor_modules.push_back(sensor_module_config(&configuration.mpa_sensor_module, 0, sensor_module_address(0,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(&configuration.mpa_sensor_module, 1, sensor_module_address(1,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(&configuration.mpa_sensor_module, 2, sensor_module_address(2,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(&configuration.cbc_sensor_module, 3, sensor_module_address(3,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(&configuration.cbc_sensor_module, 4, sensor_module_address(4,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(&configuration.cbc_sensor_module, 5, sensor_module_address(5,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(configuration.mpa_sensor_module, 0, sensor_module_address(0,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(configuration.mpa_sensor_module, 1, sensor_module_address(1,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(configuration.mpa_sensor_module, 2, sensor_module_address(2,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(configuration.cbc_sensor_module, 3, sensor_module_address(3,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(configuration.cbc_sensor_module, 4, sensor_module_address(4,0,0)));
+    configuration.sensor_modules.push_back(sensor_module_config(configuration.cbc_sensor_module, 5, sensor_module_address(5,0,0)));
 
     std::vector<chip_address> new_chips;
     for(auto module : configuration.sensor_modules)
     {
-        new_chips = module.address.get_chips(*module.type);
+        new_chips = module.address.get_chips(module.type);
         configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
     }
 
@@ -112,19 +112,21 @@ inline track_trigger_config baseline_config()
     configuration.dtc.input_unit.fe_collect_cycles = 8;
     configuration.dtc.output_unit.fe_collect_cycles = 8;
 
-    configuration.dtcs.resize(1);
+    configuration.dtcs.resize(2);
     configuration.dtcs[0] = configuration.dtc;
     configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(0,0,0));
     configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(1,0,0));
     configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(2,0,0));
-    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(3,0,0));
-    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(4,0,0));
-    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(5,0,0));
     configuration.dtcs[0].output_unit.dtc_input_nr = configuration.dtcs[0].sensor_modules.size();
+    configuration.dtcs[1] = configuration.dtc;
+    configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(3,0,0));
+    configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(4,0,0));
+    configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(5,0,0));
+    configuration.dtcs[1].output_unit.dtc_input_nr = configuration.dtcs[1].sensor_modules.size();
 
     // Trigger Tower
     configuration.trigger_tower.layer_nr = 6;
-    configuration.trigger_tower.dtc_per_prb = 1;
+    configuration.trigger_tower.dtc_per_prb = 2;
     configuration.trigger_tower.prb_nr = 4;
     configuration.trigger_tower.AM_boards_per_prb = 2;
 
@@ -175,11 +177,14 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;
 
     trigger_tower_config trigger_tower;
-    trigger_tower.type = &configuration.trigger_tower;
+    trigger_tower.type = configuration.trigger_tower;
 
     data_organizer_config data_org;
-    data_org.type = &configuration.trigger_tower.data_organizer;
+    data_org.type = configuration.trigger_tower.data_organizer;
     data_org.DTCs.push_back(0);
+    trigger_tower.data_organizers.push_back(data_org);
+    data_org.DTCs.clear();
+    data_org.DTCs.push_back(1);
     trigger_tower.data_organizers.push_back(data_org);
 
     for (unsigned int i = 0; i < configuration.trigger_tower.prb_nr; ++i)
@@ -190,6 +195,7 @@ inline track_trigger_config baseline_config()
     }
 
     trigger_tower.DTC_ids.push_back(0);
+    trigger_tower.DTC_ids.push_back(1);
     configuration.trigger_towers.push_back(trigger_tower);
 
     // Road Analyzer

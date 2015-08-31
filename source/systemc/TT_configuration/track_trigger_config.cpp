@@ -36,7 +36,7 @@ std::vector<chip_address> track_trigger_config::get_chip_addresses() const
          module_config_it++)
     {
         sensor_module_address module_address = module_config_it->address;
-        std::vector<chip_address> new_chips = module_address.get_chips(*(module_config_it->type) );
+        std::vector<chip_address> new_chips = module_address.get_chips(module_config_it->type);
         chip_addresses.insert(chip_addresses.end(), new_chips.begin(), new_chips.end());
     }
 

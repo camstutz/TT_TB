@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.cpp
  * @author Christian Amstutz
- * @date July 20, 2015
+ * @date August 31, 2015
  *
  * @brief
  */
@@ -17,10 +17,10 @@ trigger_tower::trigger_tower(const sc_module_name _name,
         const trigger_tower_config& configuration) :
         sc_module(_name),
         configuration(configuration),
-        layer_nr(configuration.type->layer_nr),
-        prb_nr(configuration.type->prb_nr),
-        dtc_per_prb(configuration.type->dtc_per_prb),
-        AM_boards_per_proc_unit(configuration.type->AM_boards_per_prb),
+        layer_nr(configuration.type.layer_nr),
+        prb_nr(configuration.type.prb_nr),
+        dtc_per_prb(configuration.type.dtc_per_prb),
+        AM_boards_per_proc_unit(configuration.type.AM_boards_per_prb),
         clk("clk"),
         dtc_inputs(configuration.DTC_ids, "dtc_input"),
         hit_outputs(prb_nr, AM_boards_per_proc_unit, layer_nr, "hit_output"),
@@ -28,16 +28,18 @@ trigger_tower::trigger_tower(const sc_module_name _name,
         am_board_in_sig(prb_nr, AM_boards_per_proc_unit, layer_nr, "am_board_sig"),
         dataOrganizers(configuration.data_organizers.size(), "dataOrganizer", configuration.data_organizers),
         processorOrganizers(prb_nr, "processorOrganizer", configuration.processor_organizers),
-        amBoards(prb_nr, AM_boards_per_proc_unit, "AM_Board", configuration.type->am_board)
+        amBoards(prb_nr, AM_boards_per_proc_unit, "AM_Board", configuration.type.am_board)
 {
     unsigned int do_id = 0;
     sc_map_linear<data_organizer>::iterator data_organizer_it = dataOrganizers.begin();
     for (; data_organizer_it != dataOrganizers.end(); ++data_organizer_it)
     {
         data_organizer_it->clk.bind(clk);
-        sc_map_iterator<sc_map_base<sc_map_list_range<unsigned int>, sc_core::sc_in<PRBF::PRBF_frame<PRBF::stub_PRBF0> > > > dtc_input_it = dtc_inputs.begin();
-        dtc_input_it = dtc_inputs(sc_map_list_range<unsigned int>(data_organizer_it->configuration.DTCs));
+
+        sc_map_list_range<unsigned int> DO_dtc_range(data_organizer_it->configuration.DTCs);
+        sc_map_list<unsigned int, sc_in<data_organizer::dtc_input_t> >::iterator dtc_input_it = dtc_inputs(DO_dtc_range);
         data_organizer_it->dtc_inputs.bind(dtc_input_it);
+
         data_organizer_it->proc_unit_outputs.bind(trigger_tower_interconnect(sc_map_square_key(do_id, 0), sc_map_square_key(do_id, prb_nr-1)));
 
         ++do_id;

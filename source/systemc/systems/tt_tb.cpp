@@ -45,7 +45,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
          ++module_it)
     {
         module_it->clk.bind(LHC_clock);
-        std::vector<chip_address> chip_addresses = module_it->configuration.address.get_chips(*(module_it->configuration.type) );
+        std::vector<chip_address> chip_addresses = module_it->configuration.address.get_chips(module_it->configuration.type);
         sc_map_list_range<chip_address> module_chips(chip_addresses);
         module_it->stub_inputs.bind(hit_fifos(module_chips));
         module_it->gbt_link.bind(gbt_links[module_it->configuration.address]);

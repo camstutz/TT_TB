@@ -67,5 +67,5 @@ public:
     /*!
      * Constructor:
      */
-    data_organizer(sc_module_name _name, data_organizer_config configuration);
+    data_organizer(sc_module_name _name, const data_organizer_config& configuration);
 };

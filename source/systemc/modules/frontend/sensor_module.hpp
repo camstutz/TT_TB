@@ -66,5 +66,5 @@ public:
     /*!
      * Constructor:
      */
-    sensor_module(const sc_module_name _name, sensor_module_config configuration);
+    sensor_module(const sc_module_name _name, const sensor_module_config& configuration);
 };

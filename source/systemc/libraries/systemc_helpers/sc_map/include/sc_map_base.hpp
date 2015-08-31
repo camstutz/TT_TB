@@ -81,6 +81,8 @@ public:
         void register_signal_modelsim();
     #endif
 
+    std::string print_objects();
+
 public:
     template <typename Creator>
     void init(const range_type& new_range, const Creator& object_creator);
@@ -389,6 +391,20 @@ void sc_map_base<range_T, object_T>::write(const data_type& value)
     }
 
     return;
+}
+
+//******************************************************************************
+template <typename range_T, typename object_T>
+std::string sc_map_base<range_T, object_T>::print_objects()
+{
+    std::stringstream output_stream;
+
+    for (iterator object_it = begin(); object_it != end(); ++object_it)
+    {
+        output_stream << object_it->name() << std::endl;
+    }
+
+    return output_stream.str();
 }
 
 ////******************************************************************************
