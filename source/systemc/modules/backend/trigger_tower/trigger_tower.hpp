@@ -13,11 +13,11 @@
 
 #pragma once
 
-#include "data_organizer/data_organizer.hpp"
-#include "processor_organizer/processor_organizer.hpp"
-#include "am_board/am_board.hpp"
+#include "../data_organizer/data_organizer.hpp"
+#include "../processor_organizer/processor_organizer.hpp"
+#include "../am_board/am_board.hpp"
 
-#include "../../modules/backend/trigger_tower_config.hpp"
+#include "trigger_tower_config.hpp"
 
 #include "sc_map.hpp"
 

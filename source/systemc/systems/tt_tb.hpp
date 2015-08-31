@@ -14,8 +14,8 @@
 #include "../modules/frontend/sensor_module/sensor_module.hpp"
 #include "../modules/frontend/sensor_module/sensor_module_address.hpp"
 #include "../modules/backend/dtc/dtc.hpp"
-#include "../modules/backend/trigger_tower.hpp"
-#include "../modules/backend/trigger_tower_address.hpp"
+#include "../modules/backend/trigger_tower/trigger_tower.hpp"
+#include "../modules/backend/trigger_tower/trigger_tower_address.hpp"
 #include "../modules/road_analyzer/road_analyzer.hpp"
 
 #include "../data_formats/stub/stub.hpp"

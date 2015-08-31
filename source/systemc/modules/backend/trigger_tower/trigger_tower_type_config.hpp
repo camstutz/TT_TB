@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include "data_organizer/data_organizer_config.hpp"
-#include "processor_organizer/processor_organizer_config.hpp"
-#include "am_board/am_board_config.hpp"
+#include "../data_organizer/data_organizer_config.hpp"
+#include "../processor_organizer/processor_organizer_config.hpp"
+#include "../am_board/am_board_config.hpp"
 
 // *****************************************************************************
 /*!

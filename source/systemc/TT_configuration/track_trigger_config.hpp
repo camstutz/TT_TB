@@ -19,7 +19,7 @@
 #include "../modules/frontend/sensor_module/sensor_module_config.hpp"
 #include "../modules/frontend/gbt/gbt_config.hpp"
 #include "../modules/backend/dtc/dtc_config.hpp"
-#include "../modules/backend/trigger_tower_config.hpp"
+#include "../modules/backend/trigger_tower/trigger_tower_config.hpp"
 #include "../modules/road_analyzer/road_analyzer_config.hpp"
 
 #include <vector>
