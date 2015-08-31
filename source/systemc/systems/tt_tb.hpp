@@ -11,8 +11,8 @@
  */
 
 #include "../modules/hit_generator/hit_generator.hpp"
-#include "../modules/frontend/sensor_module.hpp"
-#include "../modules/frontend/sensor_module_address.hpp"
+#include "../modules/frontend/sensor_module/sensor_module.hpp"
+#include "../modules/frontend/sensor_module/sensor_module_address.hpp"
 #include "../modules/backend/dtc/dtc.hpp"
 #include "../modules/backend/trigger_tower.hpp"
 #include "../modules/backend/trigger_tower_address.hpp"

@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include "frontend_chip/frontend_chip.hpp"
-#include "data_concentrator/data_concentrator.hpp"
-#include "gbt/gbt.hpp"
+#include "../frontend_chip/frontend_chip.hpp"
+#include "../data_concentrator/data_concentrator.hpp"
+#include "../gbt/gbt.hpp"
 
 #include "sensor_module_config.hpp"
 

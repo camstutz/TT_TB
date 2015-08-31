@@ -14,7 +14,7 @@
 
 #include "../../data_formats/HitSF/HitSF.h"
 #include "../../data_formats/stub/stub.hpp"
-#include "../frontend/chip_address.hpp"
+#include "../frontend/sensor_module/chip_address.hpp"
 
 #include "hit_generator_config.hpp"
 

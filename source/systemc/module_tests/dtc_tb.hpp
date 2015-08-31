@@ -15,7 +15,7 @@
 
 
 #include "../modules/backend/dtc/dtc.hpp"
-#include "../modules/frontend/sensor_module_address.hpp"
+#include "../modules/frontend/sensor_module/sensor_module_address.hpp"
 
 #include "../data_formats/gbt_link_format/gbt_link_format.hpp"
 #include "../data_formats/CIC_frame/CIC_frame.hpp"

@@ -17,7 +17,7 @@
 #include "dtc_input_unit_config.hpp"
 #include "dtc_output_unit_config.hpp"
 
-#include "../../frontend/sensor_module_address.hpp"
+#include "../../frontend/sensor_module/sensor_module_address.hpp"
 
 // *****************************************************************************
 /*!

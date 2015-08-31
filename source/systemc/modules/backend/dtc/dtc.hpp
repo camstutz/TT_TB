@@ -19,7 +19,7 @@
 #include "dtc_buffer_element.hpp"
 
 #include "dtc_config.hpp"
-#include "../../frontend/sensor_module_address.hpp"
+#include "../../frontend/sensor_module/sensor_module_address.hpp"
 
 #include "sc_map.hpp"
 #include "sc_delay_signal.hpp"

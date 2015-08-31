@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include "frontend_chip/frontend_chip_config.hpp"
-#include "data_concentrator/data_concentrator_config.hpp"
-#include "gbt/gbt_config.hpp"
+#include "../frontend_chip/frontend_chip_config.hpp"
+#include "../data_concentrator/data_concentrator_config.hpp"
+#include "../gbt/gbt_config.hpp"
 
 #include <boost/optional.hpp>
 
