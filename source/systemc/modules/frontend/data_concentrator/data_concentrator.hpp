@@ -33,6 +33,8 @@
 class data_concentrator : public sc_module
 {
 private:
+    data_concentrator_config configuration;
+
     const unsigned int nr_fe_chips;
     const unsigned int max_in_stubs_per_cycle;
     const unsigned int collection_cycles;

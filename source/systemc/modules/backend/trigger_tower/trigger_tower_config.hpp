@@ -25,6 +25,7 @@
 class trigger_tower_config
 {
 public:
+    unsigned int id;
     trigger_tower_address address;
     //std::string pattern_bank_file;
     trigger_tower_type_config type;
@@ -33,6 +34,6 @@ public:
     std::vector<data_organizer_config> data_organizers;
     std::vector<processor_organizer_config> processor_organizers;
 
-    //trigger_tower_config();
-    //trigger_tower_config(trigger_tower_type_config *type, trigger_tower_address address);
+    trigger_tower_config();
+    trigger_tower_config(const trigger_tower_type_config& type);
 };

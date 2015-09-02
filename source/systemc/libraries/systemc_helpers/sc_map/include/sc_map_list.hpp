@@ -1,7 +1,7 @@
 /*!
  * @file sc_map_list.hpp
  * @author Christian Amstutz
- * @date June 17, 2015
+ * @date September 1, 2015
  *
  * @brief
  *
@@ -18,6 +18,7 @@
 
 #include <string>
 #include <sstream>
+#include <map>
 #include "sc_map_list_range.hpp"
 
 //******************************************************************************
@@ -38,14 +39,16 @@ public:
     sc_map_list(const range_type& new_range, const sc_module_name name);
     template <typename config_T>
     sc_map_list(const range_type& new_range, const sc_module_name name, const config_T& configuration);
+    template <typename config_T>
+    sc_map_list(const sc_module_name name, const std::map<key_value_T, config_T>& configuration);
     virtual ~sc_map_list() {};
 };
 
 //******************************************************************************
 
 //******************************************************************************
-template <typename value_T, typename object_T>
-sc_map_list<value_T, object_T>::sc_map_list(const key_value_vector_type& key_vector,
+template <typename key_value_T, typename object_T>
+sc_map_list<key_value_T, object_T>::sc_map_list(const key_value_vector_type& key_vector,
         const sc_module_name name) :
         sc_map_base<range_type, object_T>(name)
 {
@@ -64,9 +67,9 @@ sc_map_list<value_T, object_T>::sc_map_list(const key_value_vector_type& key_vec
 }
 
 //******************************************************************************
-template <typename value_T, typename object_T>
+template <typename key_value_T, typename object_T>
 template <typename config_T>
-sc_map_list<value_T, object_T>::sc_map_list(const key_value_vector_type& key_vector,
+sc_map_list<key_value_T, object_T>::sc_map_list(const key_value_vector_type& key_vector,
         const sc_module_name name, const config_T& configuration) :
         sc_map_base<range_type, object_T>(name)
 {
@@ -85,9 +88,10 @@ sc_map_list<value_T, object_T>::sc_map_list(const key_value_vector_type& key_vec
 }
 
 //******************************************************************************
-template <typename value_T, typename object_T>
-sc_map_list<value_T, object_T>::sc_map_list(const range_type& new_range,
-        const sc_module_name name)
+template <typename key_value_T, typename object_T>
+sc_map_list<key_value_T, object_T>::sc_map_list(const range_type& new_range,
+        const sc_module_name name) :
+        sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator());
 
@@ -95,12 +99,36 @@ sc_map_list<value_T, object_T>::sc_map_list(const range_type& new_range,
 }
 
 //******************************************************************************
-template <typename value_T, typename object_T>
+template <typename key_value_T, typename object_T>
 template <typename config_T>
-sc_map_list<value_T, object_T>::sc_map_list(const range_type& new_range,
-        const sc_module_name name, const config_T& configuration)
+sc_map_list<key_value_T, object_T>::sc_map_list(const range_type& new_range,
+        const sc_module_name name, const config_T& configuration) :
+        sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator(), configuration);
+
+    return;
+}
+
+//******************************************************************************
+template <typename key_value_T, typename object_T>
+template <typename config_T>
+sc_map_list<key_value_T, object_T>::sc_map_list(const sc_module_name name,
+        const std::map<key_value_T, config_T>& configuration) :
+        sc_map_base<range_type, object_T>(name)
+{
+    key_vector_type new_range;
+    std::vector<config_T> configuration_vec;
+
+    for (typename std::map<key_value_T, config_T>::const_iterator single_config = configuration.begin();
+         single_config != configuration.end();
+         ++single_config)
+    {
+        new_range.push_back(key_type(single_config->first));
+        configuration_vec.push_back(single_config->second);
+    }
+
+    this->init(new_range, typename base::creator(), configuration_vec);
 
     return;
 }

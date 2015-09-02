@@ -1,7 +1,7 @@
 /*!
  * @file dtc_config.hpp
  * @author Christian Amstutz
- * @date August 31, 2015
+ * @date September 2, 2015
  *
  * @brief
  *
@@ -23,8 +23,18 @@
  */
 class dtc_config
 {
+    friend class dtc;
+
+private:
+    std::vector<sensor_module_address> sensor_modules;
+
 public:
+    unsigned int id;
     dtc_type_config type;
 
-    std::vector<sensor_module_address> sensor_modules;
+    dtc_config();
+
+    void add_sensor_module(const sensor_module_address& sensor_module);
+    unsigned int get_input_nr() const;
+    std::vector<sensor_module_address> get_sensor_modules() const;
 };

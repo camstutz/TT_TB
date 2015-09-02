@@ -24,17 +24,17 @@ SC_MODULE_EXPORT(tt_tb);
  */
 
 tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuration) :
-        LHC_clock("LHC_clock", configuration.LHC_clock_period, SC_NS, 0.5, 25, SC_NS, true),
+        LHC_clock("LHC_clock", configuration.LHC_clock_period_ns, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("true_sig"),
         hit_fifos(configuration.get_chip_addresses(), "hit_fifo", configuration.hit_FIFO_size),
         gbt_links(configuration.get_module_addresses(), "GBT_link"),
         dtc_links(configuration.dtcs.size(), "DTC_link"),
-        result_hits(configuration.trigger_tower.prb_nr * configuration.trigger_tower.AM_boards_per_prb, configuration.trigger_tower.layer_nr, "result_road"),
+        result_hits(configuration.trigger_tower.get_prb_nr() * configuration.trigger_tower.get_AM_boards_per_prb(), configuration.trigger_tower.get_layer_nr(), "result_road"),
         hit_cnt_sig("hit_cnt_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
-        sensor_modules(configuration.get_module_addresses(), "sensor_module", configuration.sensor_modules),
-        DTCs(configuration.dtcs.size(), "DTC", configuration.dtcs),
-        trigger_towers(configuration.get_trigger_tower_addresses(), "trigger_tower", configuration.trigger_towers),
+        sensor_modules("sensor_module", configuration.sensor_modules),
+        DTCs("DTC", configuration.dtcs),
+        trigger_towers("trigger_tower", configuration.trigger_towers),
         roadAnalyzer("road_analyzer", configuration.road_analyzer)
 {
     hitGenerator.stub_outputs.bind(hit_fifos);
@@ -52,19 +52,19 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
     }
 
     unsigned int dtc_id = 0;
-    for ( sc_map_linear<dtc>::iterator dtc_it = DTCs.begin();
+    for ( sc_map_list<track_trigger_config::dtc_id_t, dtc>::iterator dtc_it = DTCs.begin();
           dtc_it != DTCs.end();
           ++dtc_it)
     {
         dtc_it->clk.bind(LHC_clock);
-        sc_map_list_range<sensor_module_address> module_list(dtc_it->configuration.sensor_modules);
+        sc_map_list_range<sensor_module_address> module_list(dtc_it->configuration.get_sensor_modules());
         dtc_it->gbt_inputs.bind(gbt_links(module_list));
         dtc_it->tower_output.bind(dtc_links[dtc_id]);
 
         ++dtc_id;
     }
 
-    for ( sc_map_list<trigger_tower_address, trigger_tower>::iterator tower_it = trigger_towers.begin();
+    for ( sc_map_list<track_trigger_config::tower_id_t, trigger_tower>::iterator tower_it = trigger_towers.begin();
           tower_it != trigger_towers.end();
           ++tower_it)
     {

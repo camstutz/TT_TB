@@ -16,17 +16,27 @@
 #include "am_chip_write_ctrl_config.hpp"
 #include "../pattern_bank/pattern_bank.hpp"
 
+#include "../../../../../TT_configuration/configuration_defaults.hpp"
+
 // *****************************************************************************
 /*!
  * @brief
  */
 class am_chip_config
 {
-public:
+friend class am_chip;
+
+private:
     unsigned int layer_nr;
     unsigned int road_detection_threshold;
-
     unsigned int latency_cycles;
 
     am_chip_write_ctrl_config write_ctrl;
+
+public:
+    am_chip_config();
+
+    void set_layer_nr(unsigned int layer_nr);
+    void set_road_detection_threshold(unsigned int threshold);
+    void set_latency(unsigned int cycles);
 };

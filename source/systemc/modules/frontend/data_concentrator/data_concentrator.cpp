@@ -19,7 +19,8 @@
  * The module is sensitive to ....
  */
 data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_config configuration) :
-        sc_module(_name) ,
+        sc_module(_name),
+        configuration(configuration),
         nr_fe_chips(configuration.fe_chips_count),
         max_in_stubs_per_cycle(configuration.frontend_chip_type.max_stubs_per_cycle),
         collection_cycles(configuration.frontend_chip_type.collection_cycles),
@@ -147,6 +148,14 @@ typename data_concentrator::output_t data_concentrator::create_output_buffer()
     // TODO: output_header.set_fe_type();
     output_header.set_hw_status(output_t::header_t::status_OK);
     output_header.set_bunch_crossing(LHC_bunch_crossing.read() - output_window_cycles);
+    if (configuration.output_stub.pixel_bits > 0)
+    {
+        output_header.set_fe_type(CIC::header::MPA);
+    }
+    else
+    {
+        output_header.set_fe_type(CIC::header::CBC);
+    }
 
     output_t output_frame(output_stub_config);
     output_frame.set_header(output_header);

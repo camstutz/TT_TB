@@ -1,7 +1,7 @@
 /*!
  * @file hit_procesor_config.hpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date August 31, 2015
  *
  * @brief
  *
@@ -15,14 +15,23 @@
 
 #include "hit_processor_one_layer_config.hpp"
 
+#include "../../../../../TT_configuration/configuration_defaults.hpp"
+
 // *****************************************************************************
 /*!
  * @brief
  */
 class hit_processor_config
 {
-public:
+    friend class hit_processor;
+
+private:
     unsigned int layer_nr;
 
+public:
     hit_processor_one_layer_config hit_processor_one_layer;
+
+    hit_processor_config();
+
+    void set_layer_nr(unsigned int layer_nr);
 };

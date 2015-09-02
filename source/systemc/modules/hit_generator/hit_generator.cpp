@@ -115,8 +115,8 @@ void hit_generator::schedule_hits()
 }
 
 // *****************************************************************************
-int hit_generator::readFile(const std::string &hit_file) {
-
+int hit_generator::readFile(const std::string &hit_file)
+{
     //! todo: check that input file fits to detector architecture, check for validity of data and adapt to given range if possible
 
     std::ifstream hitFile;

@@ -54,8 +54,8 @@ public:
     // ----- Module Instantiations ---------------------------------------------
     hit_generator hitGenerator;
     sc_map_list<sensor_module_address, sensor_module> sensor_modules;
-    sc_map_linear<dtc> DTCs;
-    sc_map_list<trigger_tower_address, trigger_tower> trigger_towers;
+    sc_map_list<track_trigger_config::dtc_id_t, dtc> DTCs;
+    sc_map_list<track_trigger_config::tower_id_t, trigger_tower> trigger_towers;
     road_analyzer roadAnalyzer;
 
     // ----- Constructor -------------------------------------------------------

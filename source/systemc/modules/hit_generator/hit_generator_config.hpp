@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator_config.hpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date August 31, 2015
  *
  * @brief
  *
@@ -14,7 +14,10 @@
 #pragma once
 
 #include "../../data_formats/stub/stub_config.hpp"
+#include "../../modules/frontend/sensor_module/sensor_module_config.hpp"
 #include "../../modules/frontend/sensor_module/chip_address.hpp"
+
+#include "../../TT_configuration/configuration_defaults.hpp"
 
 #include <string>
 #include <vector>
@@ -25,12 +28,22 @@
  */
 class hit_generator_config
 {
-public:
+    friend class hit_generator;
+
+private:
     unsigned int LHC_clock_period_ns;
     std::string input_file;
 
+    std::vector<chip_address> chip_addresses;
+
+public:
     stub_config output_stub_cbc;
     stub_config output_stub_mpa;
 
-    std::vector<chip_address> chip_addresses;
+    hit_generator_config();
+    hit_generator_config(unsigned int LHC_clock_period_ns);
+
+    void set_LHC_clock_period_ns(unsigned int LHC_clock_period_ns);
+
+    void add_chips(sensor_module_config module);
 };

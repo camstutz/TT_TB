@@ -25,12 +25,19 @@
  */
 class track_finder_config
 {
-public:
+friend class track_finder;
+
+private:
     unsigned int layer_nr;
 
+public:
     hit_processor_config hit_processor;
     road_processor_config road_processor;
     am_chip_config am_chip;
     pattern_memory_config pattern_memory;
     hit_buffer_config hit_buffer;
+
+    track_finder_config();
+
+    void set_layer_nr(unsigned int layer_nr);
 };

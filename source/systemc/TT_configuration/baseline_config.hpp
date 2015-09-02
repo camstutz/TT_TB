@@ -1,5 +1,5 @@
 /*!
- * @file configuration.hpp
+ * @file baseline_configuration.hpp
  * @author Christian Amstutz
  * @date August 27, 2015
  *
@@ -19,189 +19,120 @@ inline track_trigger_config baseline_config()
 {
     track_trigger_config configuration;
 
-    configuration.LHC_clock_period = 25;
-    configuration.hit_FIFO_size = 20;
-
-    configuration.cbc_frontend_chip.max_stubs_per_cycle = 3;
-    configuration.cbc_frontend_chip.collection_cycles = 1;
-    configuration.cbc_frontend_chip.latency_cycles = 0;
-
-    configuration.cbc_frontend_chip.input_stub.valid_bits = 0;
-    configuration.cbc_frontend_chip.input_stub.bx_bits = 0;
-    configuration.cbc_frontend_chip.input_stub.fechip_bits = 0;
-    configuration.cbc_frontend_chip.input_stub.strip_bits = 8;
-    configuration.cbc_frontend_chip.input_stub.bend_bits = 5;
-    configuration.cbc_frontend_chip.input_stub.pixel_bits = 0;
-    configuration.cbc_frontend_chip.output_stub = configuration.cbc_frontend_chip.input_stub;
-
-    configuration.cbc_data_concentrator.frontend_chip_type = configuration.cbc_frontend_chip;
-    configuration.cbc_data_concentrator.output_stub = configuration.cbc_frontend_chip.output_stub;
-    configuration.cbc_data_concentrator.output_stub.valid_bits = 1;
-    configuration.cbc_data_concentrator.output_stub.bx_bits = 3;
-    configuration.cbc_data_concentrator.fe_chips_count = 8;
-    configuration.cbc_data_concentrator.max_output_stubs = 12;
-    configuration.cbc_data_concentrator.output_window_cycles = 8;
-    configuration.cbc_data_concentrator.delay_cycles = 0;
-
-    configuration.mpa_frontend_chip.max_stubs_per_cycle = 2;
-    configuration.mpa_frontend_chip.collection_cycles = 2;
-    configuration.mpa_frontend_chip.latency_cycles = 0;
-
-    configuration.mpa_frontend_chip.input_stub.valid_bits = 0;
-    configuration.mpa_frontend_chip.input_stub.bx_bits = 1;
-    configuration.mpa_frontend_chip.input_stub.fechip_bits = 0;
-    configuration.mpa_frontend_chip.input_stub.strip_bits = 8;
-    configuration.mpa_frontend_chip.input_stub.bend_bits = 5;
-    configuration.mpa_frontend_chip.input_stub.pixel_bits = 4;
-
-    configuration.mpa_frontend_chip.output_stub = configuration.mpa_frontend_chip.input_stub;
-    configuration.mpa_frontend_chip.output_stub.bx_bits = 1;
-
-    configuration.mpa_data_concentrator.frontend_chip_type = configuration.mpa_frontend_chip;
-    configuration.mpa_data_concentrator.output_stub = configuration.mpa_frontend_chip.output_stub;
-    configuration.mpa_data_concentrator.output_stub.valid_bits = 1;
-    configuration.mpa_data_concentrator.output_stub.bx_bits = 3;
-    configuration.mpa_data_concentrator.fe_chips_count = 8;
-    configuration.mpa_data_concentrator.max_output_stubs = 10;
-    configuration.mpa_data_concentrator.output_window_cycles = 8;
-    configuration.mpa_data_concentrator.delay_cycles = 0;
-
-    // Configure general GBT module
-    configuration.gbt.input_link_count = 2;
+    // CBC front-end
 
     configuration.cbc_sensor_module.fe_chip_per_side = 8;
     configuration.cbc_sensor_module.side_count = 2;
-    configuration.cbc_sensor_module.frontend_chip = configuration.cbc_frontend_chip;
-    configuration.cbc_sensor_module.data_concentrator = configuration.cbc_data_concentrator;
-    configuration.cbc_sensor_module.gbt = configuration.gbt;
-    configuration.cbc_sensor_module_test.type = configuration.cbc_sensor_module;
+
+    configuration.cbc_sensor_module.frontend_chip.max_stubs_per_cycle = 3;
+    configuration.cbc_sensor_module.frontend_chip.collection_cycles = 1;
+    configuration.cbc_sensor_module.frontend_chip.latency_cycles = 0;
+
+    configuration.cbc_sensor_module.frontend_chip.input_stub.valid_bits = 0;
+    configuration.cbc_sensor_module.frontend_chip.input_stub.bx_bits = 0;
+    configuration.cbc_sensor_module.frontend_chip.input_stub.fechip_bits = 0;
+    configuration.cbc_sensor_module.frontend_chip.input_stub.strip_bits = 8;
+    configuration.cbc_sensor_module.frontend_chip.input_stub.bend_bits = 5;
+    configuration.cbc_sensor_module.frontend_chip.input_stub.pixel_bits = 0;
+    configuration.cbc_sensor_module.frontend_chip.output_stub = configuration.cbc_sensor_module.frontend_chip.input_stub;
+
+    configuration.cbc_sensor_module.data_concentrator.output_stub = configuration.mpa_sensor_module.frontend_chip.output_stub;
+    configuration.cbc_sensor_module.data_concentrator.output_stub.valid_bits = 1;
+    configuration.cbc_sensor_module.data_concentrator.output_stub.bx_bits = 3;
+    configuration.cbc_sensor_module.data_concentrator.fe_chips_count = 8;
+    configuration.cbc_sensor_module.data_concentrator.max_output_stubs = 12;
+    configuration.cbc_sensor_module.data_concentrator.output_window_cycles = 8;
+    configuration.cbc_sensor_module.data_concentrator.delay_cycles = 0;
+    configuration.cbc_sensor_module.data_concentrator.frontend_chip_type = configuration.cbc_sensor_module.frontend_chip;
+
+    configuration.cbc_sensor_module.gbt.input_link_count = 2;
+
+    // MPA front-end
+
+    configuration.mpa_sensor_module.frontend_chip.max_stubs_per_cycle = 2;
+    configuration.mpa_sensor_module.frontend_chip.collection_cycles = 2;
+    configuration.mpa_sensor_module.frontend_chip.latency_cycles = 0;
+
+    configuration.mpa_sensor_module.frontend_chip.input_stub.valid_bits = 0;
+    configuration.mpa_sensor_module.frontend_chip.input_stub.bx_bits = 1;
+    configuration.mpa_sensor_module.frontend_chip.input_stub.fechip_bits = 0;
+    configuration.mpa_sensor_module.frontend_chip.input_stub.strip_bits = 8;
+    configuration.mpa_sensor_module.frontend_chip.input_stub.bend_bits = 5;
+    configuration.mpa_sensor_module.frontend_chip.input_stub.pixel_bits = 4;
+
+    configuration.mpa_sensor_module.frontend_chip.output_stub = configuration.mpa_sensor_module.frontend_chip.input_stub;
+    configuration.mpa_sensor_module.frontend_chip.output_stub.bx_bits = 1;
+
+    configuration.mpa_sensor_module.data_concentrator.output_stub = configuration.mpa_sensor_module.frontend_chip.output_stub;
+    configuration.mpa_sensor_module.data_concentrator.output_stub.valid_bits = 1;
+    configuration.mpa_sensor_module.data_concentrator.output_stub.bx_bits = 3;
+    configuration.mpa_sensor_module.data_concentrator.fe_chips_count = 8;
+    configuration.mpa_sensor_module.data_concentrator.max_output_stubs = 10;
+    configuration.mpa_sensor_module.data_concentrator.output_window_cycles = 8;
+    configuration.mpa_sensor_module.data_concentrator.delay_cycles = 0;
+    configuration.mpa_sensor_module.data_concentrator.frontend_chip_type = configuration.mpa_sensor_module.frontend_chip;
 
     configuration.mpa_sensor_module.fe_chip_per_side = 8;
     configuration.mpa_sensor_module.side_count = 2;
-    configuration.mpa_sensor_module.frontend_chip = configuration.mpa_frontend_chip;
-    configuration.mpa_sensor_module.data_concentrator = configuration.mpa_data_concentrator;
-    configuration.mpa_sensor_module.gbt = configuration.gbt;
-    configuration.mpa_sensor_module_test.type = configuration.mpa_sensor_module;
+
+    configuration.mpa_sensor_module.gbt.input_link_count = 2;
 
     // Hit Generator
-    configuration.hit_generator.LHC_clock_period_ns = 25;
-    configuration.hit_generator.output_stub_cbc = configuration.cbc_frontend_chip.input_stub;
-    configuration.hit_generator.output_stub_mpa = configuration.mpa_frontend_chip.input_stub;
+    configuration.hit_generator.output_stub_cbc = configuration.mpa_sensor_module.frontend_chip.input_stub;
+    configuration.hit_generator.output_stub_mpa = configuration.mpa_sensor_module.frontend_chip.input_stub;
 
-    configuration.sensor_modules.push_back(sensor_module_config(configuration.mpa_sensor_module, 0, sensor_module_address(0,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(configuration.mpa_sensor_module, 1, sensor_module_address(1,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(configuration.mpa_sensor_module, 2, sensor_module_address(2,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(configuration.cbc_sensor_module, 3, sensor_module_address(3,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(configuration.cbc_sensor_module, 4, sensor_module_address(4,0,0)));
-    configuration.sensor_modules.push_back(sensor_module_config(configuration.cbc_sensor_module, 5, sensor_module_address(5,0,0)));
-
-    std::vector<chip_address> new_chips;
-    for(auto module : configuration.sensor_modules)
-    {
-        new_chips = module.address.get_chips(module.type);
-        configuration.hit_generator.chip_addresses.insert(configuration.hit_generator.chip_addresses.end(), new_chips.begin(), new_chips.end());
-    }
+    configuration.add_sensor_module(sensor_module_address(0,0,0), configuration.mpa_sensor_module);
+    configuration.add_sensor_module(sensor_module_address(1,0,0), configuration.mpa_sensor_module);
+    configuration.add_sensor_module(sensor_module_address(2,0,0), configuration.mpa_sensor_module);
+    configuration.add_sensor_module(sensor_module_address(3,0,0), configuration.cbc_sensor_module);
+    configuration.add_sensor_module(sensor_module_address(4,0,0), configuration.cbc_sensor_module);
+    configuration.add_sensor_module(sensor_module_address(5,0,0), configuration.cbc_sensor_module);
 
     // DTC
-    configuration.dtc.collection_cycles = 8;
+    configuration.dtc.set_fe_collection_cycles(8);
     configuration.dtc.bx_buffer_FIFO_size = 20;
-    configuration.dtc.controller.fe_collect_cycles = 8;
-    configuration.dtc.input_unit.CBC_input_stub = configuration.cbc_frontend_chip.input_stub;
-    configuration.dtc.input_unit.MPA_input_stub = configuration.mpa_frontend_chip.input_stub;
+    configuration.dtc.input_unit.CBC_input_stub = configuration.cbc_sensor_module.frontend_chip.input_stub;
+    configuration.dtc.input_unit.MPA_input_stub = configuration.mpa_sensor_module.frontend_chip.input_stub;
     configuration.dtc.input_unit.fe_id = 0xFF;
-    configuration.dtc.input_unit.fe_collect_cycles = 8;
-    configuration.dtc.output_unit.fe_collect_cycles = 8;
 
-    configuration.dtcs.resize(2);
-    configuration.dtcs[0].type = configuration.dtc;
-    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(0,0,0));
-    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(1,0,0));
-    configuration.dtcs[0].sensor_modules.push_back(sensor_module_address(2,0,0));
-    configuration.dtcs[0].type.output_unit.dtc_input_nr = configuration.dtcs[0].sensor_modules.size();
-    configuration.dtcs[1].type = configuration.dtc;
-    configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(3,0,0));
-    configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(4,0,0));
-    configuration.dtcs[1].sensor_modules.push_back(sensor_module_address(5,0,0));
-    configuration.dtcs[1].type.output_unit.dtc_input_nr = configuration.dtcs[1].sensor_modules.size();
+    std::vector<sensor_module_address> modules;
+    modules.push_back(sensor_module_address(0,0,0));
+    modules.push_back(sensor_module_address(1,0,0));
+    modules.push_back(sensor_module_address(2,0,0));
+    configuration.add_DTC(modules);
+    modules.clear();
+    modules.push_back(sensor_module_address(3,0,0));
+    modules.push_back(sensor_module_address(4,0,0));
+    modules.push_back(sensor_module_address(5,0,0));
+    configuration.add_DTC(modules);
 
     // Trigger Tower
-    configuration.trigger_tower.layer_nr = 6;
-    configuration.trigger_tower.dtc_per_prb = 2;
-    configuration.trigger_tower.prb_nr = 4;
-    configuration.trigger_tower.AM_boards_per_prb = 2;
+    configuration.trigger_tower.set_layer_nr(6);
+    configuration.trigger_tower.set_dtc_per_prb(2);
+    configuration.trigger_tower.set_prb_nr(4);
+    configuration.trigger_tower.set_AM_boards_per_prb(2);
 
-    configuration.trigger_tower.data_organizer.proc_unit_nr = 4;
-    configuration.trigger_tower.data_organizer.stub_buffer_in_FIFO_size = 100;
-    configuration.trigger_tower.data_organizer.stub_buffer_out_FIFO_size = 100;
     configuration.trigger_tower.data_organizer.input_collector.input_nr = 1;
     configuration.trigger_tower.data_organizer.demultiplexer.bx_divider = 1;
     configuration.trigger_tower.data_organizer.demultiplexer.bx_offset = 0;
-    configuration.trigger_tower.data_organizer.demultiplexer.layer_nr = 1;
-    configuration.trigger_tower.data_organizer.demultiplexer.proc_unit_nr = 4;
     configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;
 
-    configuration.trigger_tower.processor_organizer.do_input_nr = 4;
-    configuration.trigger_tower.processor_organizer.processor_output_nr = 2;
-    configuration.trigger_tower.processor_organizer.layer_nr = 6;
-    configuration.trigger_tower.processor_organizer.stub_buffer_in_FIFO_size = 100;
-    configuration.trigger_tower.processor_organizer.stub_buffer_out_FIFO_size = 100;
-    configuration.trigger_tower.processor_organizer.layer_splittet_FIFO_size = 20;
+    configuration.trigger_tower.processor_organizer.set_do_input_nr(4);
     configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
     configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
-    configuration.trigger_tower.processor_organizer.demultiplexer.layer_nr = 6;
-    configuration.trigger_tower.processor_organizer.demultiplexer.proc_unit_nr = 2;
     configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -40;
-    configuration.trigger_tower.processor_organizer.layer_splitter.layer_nr = 6;
 
     // AM Board
-    configuration.trigger_tower.am_board.layer_nr = 6;
-
-    configuration.trigger_tower.am_board.input_module.layer_nr = 6;
-    configuration.trigger_tower.am_board.input_module.controller.layer_nr = 6;
-
-    configuration.trigger_tower.am_board.track_finder.layer_nr = 6;
-
-    configuration.trigger_tower.am_board.track_finder.hit_processor.layer_nr = 6;
     configuration.trigger_tower.am_board.track_finder.hit_processor.hit_processor_one_layer.SS_width_bits = 2;
-    configuration.trigger_tower.am_board.track_finder.am_chip.layer_nr = 6;
-    configuration.trigger_tower.am_board.track_finder.am_chip.latency_cycles = 0;
-    configuration.trigger_tower.am_board.track_finder.am_chip.road_detection_threshold = 5;
-    configuration.trigger_tower.am_board.track_finder.am_chip.write_ctrl.layer_nr = 6;
-    configuration.trigger_tower.am_board.track_finder.road_processor.layer_nr = 6;
-    configuration.trigger_tower.am_board.track_finder.pattern_memory.layer_nr = 6;
-
-    configuration.trigger_tower.am_board.track_finder.hit_buffer.layer_nr = 6;
-    configuration.trigger_tower.am_board.track_finder.hit_buffer.SS_width_bit = 2;
-    configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_write_ctrl.layer_nr = 6;
-    configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_lookup_ctrl.layer_nr = 6;
-    configuration.trigger_tower.am_board.track_finder.hit_buffer.hit_buffer_output_ctrl.layer_nr = 6;
-
-    trigger_tower_config trigger_tower;
-    trigger_tower.type = configuration.trigger_tower;
-
-    data_organizer_config data_org;
-    data_org.type = configuration.trigger_tower.data_organizer;
-    data_org.DTCs.push_back(0);
-    trigger_tower.data_organizers.push_back(data_org);
-    data_org.DTCs.clear();
-    data_org.DTCs.push_back(1);
-    trigger_tower.data_organizers.push_back(data_org);
-
-    for (unsigned int i = 0; i < configuration.trigger_tower.prb_nr; ++i)
-    {
-        processor_organizer_config processor_organizer = configuration.trigger_tower.processor_organizer;
-        processor_organizer.demultiplexer.bx_offset = i;
-        trigger_tower.processor_organizers.push_back(processor_organizer);
-    }
-
-    trigger_tower.DTC_ids.push_back(0);
-    trigger_tower.DTC_ids.push_back(1);
-    configuration.trigger_towers.push_back(trigger_tower);
+    configuration.trigger_tower.am_board.track_finder.am_chip.set_road_detection_threshold(5);
+    configuration.trigger_tower.am_board.track_finder.hit_buffer.set_SS_width_bit(2);
 
     // Road Analyzer
     configuration.road_analyzer.output_file = "data/output/roads.txt";
     configuration.road_analyzer.nr_inputs = 8;
     configuration.road_analyzer.nr_layers = 6;
+
+    configuration.read_track_trigger_config("source/systemc/TT_configuration/baseline");
 
     return configuration;
 }

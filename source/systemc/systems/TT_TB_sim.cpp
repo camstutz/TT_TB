@@ -32,7 +32,6 @@ int sc_main(int argc, char *agv[])
     // Configure model
     track_trigger_config test_config = baseline_config();
 
-    test_config.hit_generator.input_file = "data/hits.txt";
     tt_tb testbench("TT_TB", test_config);
 
     // ----- Time unit / resolution setup --------------------------------------

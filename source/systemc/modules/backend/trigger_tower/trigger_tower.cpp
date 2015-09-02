@@ -36,7 +36,7 @@ trigger_tower::trigger_tower(const sc_module_name _name,
     {
         data_organizer_it->clk.bind(clk);
 
-        sc_map_list_range<unsigned int> DO_dtc_range(data_organizer_it->configuration.DTCs);
+        sc_map_list_range<unsigned int> DO_dtc_range(data_organizer_it->configuration.get_dtcs());
         sc_map_list<unsigned int, sc_in<data_organizer::dtc_input_t> >::iterator dtc_input_it = dtc_inputs(DO_dtc_range);
         data_organizer_it->dtc_inputs.bind(dtc_input_it);
 

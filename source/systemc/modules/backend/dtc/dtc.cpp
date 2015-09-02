@@ -21,7 +21,7 @@ dtc::dtc(sc_module_name _name, const dtc_config& configuration) :
         sc_module(_name),
         configuration(configuration),
         input_nr(configuration.sensor_modules.size()),
-        collection_cycles(configuration.type.collection_cycles),
+        collection_cycles(configuration.type.fe_collection_cycles),
         clk("clk"),
         gbt_inputs(configuration.sensor_modules, "gbt_input"),
         tower_output("tower_output"),
