@@ -39,89 +39,89 @@ void track_trigger_config::set_hit_FIFO_size(unsigned int hit_FIFO_size)
     return;
 }
 
-// *****************************************************************************
-void track_trigger_config::add_sensor_module(
-        const sensor_module_address& address,
-        const sensor_module_type_config& type)
-{
-    sensor_module_config module;
-    module.address = address;
-    module.type = type;
-
-    sensor_modules[module.address] = module;
-
-    hit_generator.add_chips(module);
-
-    return;
-}
-
-// *****************************************************************************
-void track_trigger_config::add_sensor_modules(
-        const std::vector<sensor_module_address>& addresses,
-        const sensor_module_type_config& type)
-{
-    for (std::vector<sensor_module_address>::const_iterator address = addresses.begin();
-         address != addresses.end();
-         ++address)
-    {
-        add_sensor_module(*address, type);
-    }
-
-    return;
-}
-
-// *****************************************************************************
-void track_trigger_config::add_DTC(const dtc_id_t id,
-        const std::vector<sensor_module_address>& sensor_modules)
-{
-    add_DTC(id, sensor_modules, this->dtc);
-
-    return;
-}
-
-// *****************************************************************************
-void track_trigger_config::add_DTC(const dtc_id_t id,
-        const std::vector<sensor_module_address>& sensor_modules,
-        const dtc_type_config& type)
-{
-    dtc_config new_dtc;
-    new_dtc.type = type;
-    for (std::vector<sensor_module_address>::const_iterator module = sensor_modules.begin();
-         module != sensor_modules.end();
-         ++module)
-    {
-        new_dtc.add_sensor_module(*module);
-    }
-
-    dtcs[id] = new_dtc;
-
-    return;
-}
-
-// *****************************************************************************
-void track_trigger_config::add_DTC(const std::vector<sensor_module_address>&
-        sensor_modules)
-{
-    add_DTC(sensor_modules, this->dtc);
-
-    return;
-}
-
-// *****************************************************************************
-void track_trigger_config::add_DTC(const std::vector<sensor_module_address>&
-        sensor_modules, const dtc_type_config& type)
-{
-    dtc_id_t id;
-    if (!dtcs.empty())
-    {
-        id = dtcs.rbegin()->first;
-        ++id;
-    }
-
-    add_DTC(id, sensor_modules, type);
-
-    return;
-}
+//// *****************************************************************************
+//void track_trigger_config::add_sensor_module(
+//        const sensor_module_address& address,
+//        const sensor_module_type_config& type)
+//{
+//    sensor_module_config module;
+//    module.address = address;
+//    module.type = type;
+//
+//    sensor_modules[module.address] = module;
+//
+//    hit_generator.add_chips(module);
+//
+//    return;
+//}
+//
+//// *****************************************************************************
+//void track_trigger_config::add_sensor_modules(
+//        const std::vector<sensor_module_address>& addresses,
+//        const sensor_module_type_config& type)
+//{
+//    for (std::vector<sensor_module_address>::const_iterator address = addresses.begin();
+//         address != addresses.end();
+//         ++address)
+//    {
+//        add_sensor_module(*address, type);
+//    }
+//
+//    return;
+//}
+//
+//// *****************************************************************************
+//void track_trigger_config::add_DTC(const dtc_id_t id,
+//        const std::vector<sensor_module_address>& sensor_modules)
+//{
+//    add_DTC(id, sensor_modules, this->dtc);
+//
+//    return;
+//}
+//
+//// *****************************************************************************
+//void track_trigger_config::add_DTC(const dtc_id_t id,
+//        const std::vector<sensor_module_address>& sensor_modules,
+//        const dtc_type_config& type)
+//{
+//    dtc_config new_dtc;
+//    new_dtc.type = type;
+//    for (std::vector<sensor_module_address>::const_iterator module = sensor_modules.begin();
+//         module != sensor_modules.end();
+//         ++module)
+//    {
+//        new_dtc.add_sensor_module(*module);
+//    }
+//
+//    dtcs[id] = new_dtc;
+//
+//    return;
+//}
+//
+//// *****************************************************************************
+//void track_trigger_config::add_DTC(const std::vector<sensor_module_address>&
+//        sensor_modules)
+//{
+//    add_DTC(sensor_modules, this->dtc);
+//
+//    return;
+//}
+//
+//// *****************************************************************************
+//void track_trigger_config::add_DTC(const std::vector<sensor_module_address>&
+//        sensor_modules, const dtc_type_config& type)
+//{
+//    dtc_id_t id;
+//    if (!dtcs.empty())
+//    {
+//        id = dtcs.rbegin()->first;
+//        ++id;
+//    }
+//
+//    add_DTC(id, sensor_modules, type);
+//
+//    return;
+//}
 
 // *****************************************************************************
 void track_trigger_config::add_sensor_module(
@@ -129,6 +129,7 @@ void track_trigger_config::add_sensor_module(
 {
     sensor_modules[new_sensor_module.address] = new_sensor_module;
 
+    hit_generator.add_chips(new_sensor_module);
     if (dtcs.count(dtc_id) > 0)
     {
         dtcs[dtc_id].add_sensor_module(new_sensor_module.address);
@@ -152,7 +153,7 @@ void track_trigger_config::add_dtc(
     if (trigger_towers.count(tower_id) > 0)
     {
         trigger_towers[tower_id].DTC_ids.push_back(new_dtc.id);
-        trigger_towers[tower_id].data_organizers[DO_id].add_dtc(new_dtc.id);
+        trigger_towers[tower_id].get_data_organizer(DO_id).add_dtc(new_dtc.id);
     }
     else
     {
@@ -345,7 +346,7 @@ int track_trigger_config::read_tower_file(const std::string& file_base)
                 {
                     data_organizer_config new_do;
                     new_do.type = trigger_tower.data_organizer;
-                    new_tower.data_organizers.push_back(new_do);
+                    new_tower.add_do(new_do);
                 }
 
                 add_trigger_tower(new_tower);

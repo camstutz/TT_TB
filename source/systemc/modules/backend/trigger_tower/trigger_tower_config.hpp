@@ -24,6 +24,11 @@
  */
 class trigger_tower_config
 {
+    friend class trigger_tower;
+
+private:
+    std::vector<data_organizer_config> data_organizers;
+
 public:
     unsigned int id;
     trigger_tower_address address;
@@ -31,9 +36,11 @@ public:
     trigger_tower_type_config type;
 
     std::vector<unsigned int> DTC_ids;
-    std::vector<data_organizer_config> data_organizers;
     std::vector<processor_organizer_config> processor_organizers;
 
     trigger_tower_config();
     trigger_tower_config(const trigger_tower_type_config& type);
+
+    void add_do(const data_organizer_config& new_do);
+    data_organizer_config& get_data_organizer(unsigned int DO_id);
 };

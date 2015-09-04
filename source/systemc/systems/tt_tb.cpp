@@ -23,7 +23,7 @@ SC_MODULE_EXPORT(tt_tb);
  *
  */
 
-tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuration) :
+tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configuration) :
         LHC_clock("LHC_clock", configuration.LHC_clock_period_ns, SC_NS, 0.5, 25, SC_NS, true),
         true_sig("true_sig"),
         hit_fifos(configuration.get_chip_addresses(), "hit_fifo", configuration.hit_FIFO_size),
@@ -87,6 +87,73 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config configuratio
     do_stub_out_sig.register_signal_modelsim<do_out_data>();
     fifo_stub_in.register_signal_modelsim<fm_out_data>();
 #endif
+
+    return;
+}
+
+// *****************************************************************************
+void tt_tb::print_system()
+{
+    std::cout << "Sensor modules:" << std::endl;
+    std::cout << "---------------" << std::endl;
+    for (sc_map_list<sensor_module_address, sensor_module>::iterator module = sensor_modules.begin();
+         module != sensor_modules.end();
+         ++module)
+    {
+        std::cout << module->name() << " --> ";
+        for (sc_map_list<track_trigger_config::dtc_id_t, dtc>::iterator dtc = DTCs.begin();
+             dtc != DTCs.end();
+             ++dtc)
+        {
+            for (sc_map_list<sensor_module_address, sc_in<dtc::input_t> >::iterator input = dtc->gbt_inputs.begin();
+                 input != dtc->gbt_inputs.end();
+                 ++input)
+            {
+                if (sensor_modules.get_key(*module).second == dtc->gbt_inputs.get_key(*input).second)
+                {
+                    std::cout << input->name();
+                }
+            }
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+    std::cout << "DTCs:" << std::endl;
+    std::cout << "-----" << std::endl;
+    for (sc_map_list<track_trigger_config::dtc_id_t, dtc>::iterator dtc = DTCs.begin();
+         dtc != DTCs.end();
+         ++dtc)
+    {
+        std::cout << dtc->name() << " --> ";
+        for (sc_map_list<track_trigger_config::tower_id_t, trigger_tower>::iterator tower = trigger_towers.begin();
+             tower != trigger_towers.end();
+             ++tower)
+        {
+            unsigned do_id = 0;
+            for (sc_map_list<unsigned int, sc_in<data_organizer::dtc_input_t> >::iterator input = tower->dtc_inputs.begin();
+                 input != tower->dtc_inputs.end();
+                 ++input)
+            {
+                if (DTCs.get_key(*dtc).second == tower->dtc_inputs.get_key(*input).second)
+                {
+                    std::cout << input->name() << " --> DO_" << do_id;
+                }
+                ++do_id;
+            }
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+    std::cout << "Trigger towers:" << std::endl;
+    std::cout << "---------------" << std::endl;
+    for (sc_map_list<track_trigger_config::tower_id_t, trigger_tower>::iterator tower = trigger_towers.begin();
+         tower != trigger_towers.end();
+         ++tower)
+    {
+        std::cout << tower->name() << std::endl;
+    }
 
     return;
 }

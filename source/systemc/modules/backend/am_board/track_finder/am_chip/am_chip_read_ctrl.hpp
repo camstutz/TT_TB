@@ -16,6 +16,7 @@
 #include "../../simple_stream_protocol.hpp"
 
 #include "../../../../../systems/TT_configuration.hpp"
+#include "../../../../../systems/tt_tb_logger.hpp"
 
 //#include "sc_map.hpp"
 

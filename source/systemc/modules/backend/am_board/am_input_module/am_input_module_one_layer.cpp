@@ -124,6 +124,11 @@ void am_input_module_one_layer::create_stream()
             stub_stream_output.write(track_finder::hit_stream::START_WORD);
 
             frame_processing.write(true);
+
+            SYSTEMC_LOG << "Start sending frame "
+                        << processed_frame.get_bunch_crossing()
+                        << " with " << processed_frame.stub_count()
+                        << " stubs to Track Finder";
         }
         else
         {
@@ -151,9 +156,9 @@ am_input_module_one_layer::hit_t am_input_module_one_layer::get_AM_hit_address(
     hit |= (stub.get_fe_chip_ID()      & 0x03) << 8;
     hit |= (stub.get_concentrator_ID() & 0x01) << 11;
     hit |= (stub.get_fe_module()       & 0x02) << 12;
-    hit |= (stub.get_dtc()             & 0x02) << 14;
-    hit |= (stub.get_prb()             & 0x02) << 16;
-    hit |= (stub.get_z()               & 0x04) << 18;
+    //hit |= (stub.get_dtc()             & 0x02) << 14;
+    //hit |= (stub.get_prb()             & 0x02) << 16;
+    //hit |= (stub.get_z()               & 0x04) << 18;
 
     return hit;
 }

@@ -127,6 +127,7 @@ void time_demux<FRAME_T>::transfer_stubs()
                             << " with " << output_frame.stub_count() << " stubs sent to "
                             << "(out=" << (((bx_counter.read() - bx_offset) / bx_divider)%proc_unit_output_nr)
                             << ", layer=" << layer_id << ").";
+                    SYSTEMC_LOG << output_frame;
                 }
             }
         }

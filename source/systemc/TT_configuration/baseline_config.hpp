@@ -81,30 +81,12 @@ inline track_trigger_config baseline_config()
     configuration.hit_generator.output_stub_cbc = configuration.mpa_sensor_module.frontend_chip.input_stub;
     configuration.hit_generator.output_stub_mpa = configuration.mpa_sensor_module.frontend_chip.input_stub;
 
-    configuration.add_sensor_module(sensor_module_address(0,0,0), configuration.mpa_sensor_module);
-    configuration.add_sensor_module(sensor_module_address(1,0,0), configuration.mpa_sensor_module);
-    configuration.add_sensor_module(sensor_module_address(2,0,0), configuration.mpa_sensor_module);
-    configuration.add_sensor_module(sensor_module_address(3,0,0), configuration.cbc_sensor_module);
-    configuration.add_sensor_module(sensor_module_address(4,0,0), configuration.cbc_sensor_module);
-    configuration.add_sensor_module(sensor_module_address(5,0,0), configuration.cbc_sensor_module);
-
     // DTC
     configuration.dtc.set_fe_collection_cycles(8);
     configuration.dtc.bx_buffer_FIFO_size = 20;
     configuration.dtc.input_unit.CBC_input_stub = configuration.cbc_sensor_module.frontend_chip.input_stub;
     configuration.dtc.input_unit.MPA_input_stub = configuration.mpa_sensor_module.frontend_chip.input_stub;
     configuration.dtc.input_unit.fe_id = 0xFF;
-
-    std::vector<sensor_module_address> modules;
-    modules.push_back(sensor_module_address(0,0,0));
-    modules.push_back(sensor_module_address(1,0,0));
-    modules.push_back(sensor_module_address(2,0,0));
-    configuration.add_DTC(modules);
-    modules.clear();
-    modules.push_back(sensor_module_address(3,0,0));
-    modules.push_back(sensor_module_address(4,0,0));
-    modules.push_back(sensor_module_address(5,0,0));
-    configuration.add_DTC(modules);
 
     // Trigger Tower
     configuration.trigger_tower.set_layer_nr(6);

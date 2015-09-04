@@ -33,6 +33,7 @@ int sc_main(int argc, char *agv[])
     track_trigger_config test_config = baseline_config();
 
     tt_tb testbench("TT_TB", test_config);
+    //testbench.print_system();
 
     // ----- Time unit / resolution setup --------------------------------------
 

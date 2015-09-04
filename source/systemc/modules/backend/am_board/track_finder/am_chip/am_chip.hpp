@@ -19,9 +19,10 @@
 
 #include "am_chip_config.hpp"
 
+#include "../../simple_stream_protocol.hpp"
+
 #include "sc_delay_signal.hpp"
 #include "sc_map.hpp"
-#include "../../simple_stream_protocol.hpp"
 
 #include <systemc.h>
 

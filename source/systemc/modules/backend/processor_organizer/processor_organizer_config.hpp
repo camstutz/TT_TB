@@ -43,6 +43,7 @@ public:
 
     processor_organizer_config();
 
+    void add_do();
     void set_do_input_nr(unsigned int input_nr);
     void set_layer_nr(unsigned int layer_nr);
     void set_processor_output_nr(unsigned int output_nr);

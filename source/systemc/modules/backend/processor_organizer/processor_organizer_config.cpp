@@ -27,6 +27,14 @@ processor_organizer_config::processor_organizer_config()
 }
 
 // *****************************************************************************
+void processor_organizer_config::add_do()
+{
+    set_do_input_nr(++do_input_nr);
+
+    return;
+}
+
+// *****************************************************************************
 void processor_organizer_config::set_do_input_nr(unsigned int input_nr)
 {
     this->do_input_nr = input_nr;

@@ -15,7 +15,8 @@
 
 #include "../track_finder/track_finder.hpp"
 #include "../../../../data_formats/prbf/PRBF.hpp"
-#include "../../../../systems/TT_configuration.hpp"
+//#include "../../../../systems/TT_configuration.hpp"
+#include "../../../../systems/tt_tb_logger.hpp"
 
 #include <systemc.h>
 

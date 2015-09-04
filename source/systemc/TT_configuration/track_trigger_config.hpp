@@ -67,12 +67,12 @@ public:
     void set_LHC_clock_period_ns(unsigned int LHC_clock_period_ns);
     void set_hit_FIFO_size(unsigned int hit_FIFO_size);
 
-    void add_sensor_module(const sensor_module_address& address, const sensor_module_type_config& type);
-    void add_sensor_modules(const std::vector<sensor_module_address>& addresses, const sensor_module_type_config& type);
-    void add_DTC(const dtc_id_t id, const std::vector<sensor_module_address>& sensor_modules);
-    void add_DTC(const dtc_id_t id, const std::vector<sensor_module_address>& sensor_modules, const dtc_type_config& type);
-    void add_DTC(const std::vector<sensor_module_address>& sensor_modules);
-    void add_DTC(const std::vector<sensor_module_address>& sensor_modules, const dtc_type_config& type);
+//    void add_sensor_module(const sensor_module_address& address, const sensor_module_type_config& type);
+//    void add_sensor_modules(const std::vector<sensor_module_address>& addresses, const sensor_module_type_config& type);
+//    void add_DTC(const dtc_id_t id, const std::vector<sensor_module_address>& sensor_modules);
+//    void add_DTC(const dtc_id_t id, const std::vector<sensor_module_address>& sensor_modules, const dtc_type_config& type);
+//    void add_DTC(const std::vector<sensor_module_address>& sensor_modules);
+//    void add_DTC(const std::vector<sensor_module_address>& sensor_modules, const dtc_type_config& type);
 
     void add_sensor_module(const sensor_module_config& new_sensor_module, const unsigned int dtc_id);
     void add_dtc(const dtc_config& new_dtc, const unsigned int tower_id, const unsigned int DO_id);

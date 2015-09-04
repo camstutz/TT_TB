@@ -40,7 +40,7 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
         sensitive << process_roads_sig;
     SC_THREAD(check_detected_road_buffer);
         sensitive << detected_roads_buffer.data_written_event()
-                << detected_roads_buffer.data_read_event();
+                  << detected_roads_buffer.data_read_event();
 
     // ----- Module channel/variable initialization ----------------------------
 

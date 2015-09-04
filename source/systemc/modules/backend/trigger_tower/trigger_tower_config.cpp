@@ -32,3 +32,24 @@ trigger_tower_config::trigger_tower_config(const trigger_tower_type_config& type
 
     return;
 }
+
+// *****************************************************************************
+void trigger_tower_config::add_do(const data_organizer_config& new_do)
+{
+    data_organizers.push_back(new_do);
+    for (std::vector<processor_organizer_config>::iterator po_it = processor_organizers.begin();
+         po_it != processor_organizers.end();
+         ++po_it)
+    {
+        po_it->add_do();
+    }
+
+    return;
+}
+
+// *****************************************************************************
+data_organizer_config& trigger_tower_config::get_data_organizer(
+        unsigned int DO_id)
+{
+    return data_organizers[DO_id];
+}
