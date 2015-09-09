@@ -5,13 +5,11 @@ librarypaths := /usr/local/lib/systemc-2.3.1/lib-linux64 /usr/local/lib/root sou
 libraries := systemc_helpers
 libraries += systemc
 libraries += boost_system boost_serialization boost_iostreams boost_thread boost_log
-libraries += Hist Gpad Thread Physics Graf Graf3d Matrix RIO Net Core Tree
+libraries += Hist Gpad Thread Physics Graf Graf3d Matrix RIO Net Core Tree MathCore
 
 modules   := source/systemc/systems
-
 DFDIR     := source/systemc/data_formats
 modules   += $(DFDIR)/CIC_frame $(DFDIR)/gbt_link_format $(DFDIR)/hit_file $(DFDIR)/HitSF $(DFDIR)/prbf $(DFDIR)/stub
-
 MODULEDIR := source/systemc/modules
 modules   += source/systemc/TT_configuration
 modules   += $(MODULEDIR)/hit_generator
@@ -80,7 +78,7 @@ SED := sed
 all: TT_TB_sim libraries
 
 TT_TB_sim: $(dependencies) $(objects) $(sim_dependencies) $(sim_objects)
-	$(CC) source/systemc/systems/TT_TB_sim.cpp -o $@ $(sim_objects) $(objects) $(CPPFLAGS) $(LINK_LIBS) $(TARGET_ARCH) -pthread
+	$(CC) -o $@ $(sim_objects) $(objects) $(CPPFLAGS) $(LINK_LIBS) $(TARGET_ARCH) -pthread
 
 .PHONY: test
 test: TT_TB_test libraries
@@ -97,15 +95,31 @@ clean:
 .PHONY: libraries
 libraries:
 	+make -C source/systemc/libraries/systemc_helpers
-	
-%.d: %.cpp
+
+%.d: %.cpp %.hpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
+	@MV $*.d $*.d.tmp
+	@SED -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@SED -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+	 SED -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@RM $*.d.tmp
 
 %.d: %.cc
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cc,.d,$<)
+	@MV $*.d $*.d.tmp
+	@SED -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@SED -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+	 SED -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@RM $*.d.tmp
+
+source/systemc/systems/TT_TB_sim.d : source/systemc/systems/TT_TB_sim.cpp
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
 
 #%.o: %.cpp %.cc
 #	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
 
--include $(dependencies)
--include $(tb_dependencies)
+ifneq ($(MAKECMDGOALS),clean)
+   -include $(dependencies)
+   -include $(sim_dependencies)
+   -include $(tb_dependencies)
+endif
