@@ -108,6 +108,7 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.am_board.track_finder.hit_processor.hit_processor_one_layer.SS_width_bits = 2;
     configuration.trigger_tower.am_board.track_finder.am_chip.set_road_detection_threshold(5);
     configuration.trigger_tower.am_board.track_finder.hit_buffer.set_SS_width_bit(2);
+    configuration.trigger_tower.am_board.track_finder.pattern_bank_file = "data/pattern_banks/text_binary_test_patterns.txt";
 
     // Road Analyzer
     configuration.road_analyzer.output_file = "data/output/roads.txt";

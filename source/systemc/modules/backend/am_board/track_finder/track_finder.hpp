@@ -1,7 +1,7 @@
 /*!
  * @file track_finder.hpp
  * @author Christian Amstutz
- * @date April 27, 2015
+ * @date September 9, 2015
  *
  * @brief
  */
@@ -39,7 +39,7 @@ public:
     typedef simple_stream_protocol<substrip_t> substrip_stream;
     typedef simple_stream_protocol<road_t> road_stream;
 
-    const unsigned int layer_nr;
+    const track_finder_config configuration;
 
     // ----- Port Declarations -------------------------------------------------
     sc_in<bool> clk;

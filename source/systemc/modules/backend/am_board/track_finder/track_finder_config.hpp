@@ -1,7 +1,7 @@
 /*!
  * @file track_finder_config.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date September 9, 2015
  *
  * @brief
  *
@@ -36,6 +36,8 @@ public:
     am_chip_config am_chip;
     pattern_memory_config pattern_memory;
     hit_buffer_config hit_buffer;
+
+    std::string pattern_bank_file;
 
     track_finder_config();
 

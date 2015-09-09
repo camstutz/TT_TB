@@ -355,7 +355,6 @@ void pattern_bank::load_text_binary_file(const std::string& filename)
             }
         }
 
-        std::cout << file_layer_nr << " - " << nr_dc_bits << std::endl;
         if (file_layer_nr != layer_nr)
         {
             std::cerr << "Layers of pattern bank " << filename << " does not fit with model." << std::endl;
