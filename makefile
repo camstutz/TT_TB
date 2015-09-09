@@ -98,19 +98,19 @@ libraries:
 
 %.d: %.cpp %.hpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
-	@MV $*.d $*.d.tmp
-	@SED -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
-	@SED -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
-	 SED -e 's/^ *//' -e 's/$$/:/' >> $*.d
-	@RM $*.d.tmp
+	@$(MV) $*.d $*.d.tmp
+	@$(SED) -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@$(SED) -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+	 $(SED) -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@$(RM) $*.d.tmp
 
 %.d: %.cc
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cc,.d,$<)
-	@MV $*.d $*.d.tmp
-	@SED -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
-	@SED -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
-	 SED -e 's/^ *//' -e 's/$$/:/' >> $*.d
-	@RM $*.d.tmp
+	@$(MV) $*.d $*.d.tmp
+	@$(SED) -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@$(SED) -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+	 $(SED) -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@$(RM) $*.d.tmp
 
 source/systemc/systems/TT_TB_sim.d : source/systemc/systems/TT_TB_sim.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
