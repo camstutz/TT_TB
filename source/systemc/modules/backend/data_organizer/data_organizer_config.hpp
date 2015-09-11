@@ -25,12 +25,14 @@ class data_organizer_config
 {
     friend class data_organizer;
 
-private:
-    std::vector<unsigned int> DTCs;
-
 public:
+    typedef std::vector<unsigned int> DTC_table_t;
+
     data_organizer_type_config type;
 
     void add_dtc(unsigned int dtc_id);
-    std::vector<unsigned int> get_dtcs() const;
+    DTC_table_t get_dtcs() const;
+
+private:
+    DTC_table_t DTCs;
 };

@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.hpp
  * @author Christian Amstutz
- * @date August 31, 2015
+ * @date September 11, 2015
  *
  * @brief
  *
@@ -12,6 +12,8 @@
  */
 
 #pragma once
+
+#include "local_module_address.hpp"
 
 #include "../modules/hit_generator/hit_generator_config.hpp"
 #include "../modules/frontend/frontend_chip/frontend_chip_config.hpp"
@@ -67,13 +69,6 @@ public:
     void set_LHC_clock_period_ns(unsigned int LHC_clock_period_ns);
     void set_hit_FIFO_size(unsigned int hit_FIFO_size);
 
-//    void add_sensor_module(const sensor_module_address& address, const sensor_module_type_config& type);
-//    void add_sensor_modules(const std::vector<sensor_module_address>& addresses, const sensor_module_type_config& type);
-//    void add_DTC(const dtc_id_t id, const std::vector<sensor_module_address>& sensor_modules);
-//    void add_DTC(const dtc_id_t id, const std::vector<sensor_module_address>& sensor_modules, const dtc_type_config& type);
-//    void add_DTC(const std::vector<sensor_module_address>& sensor_modules);
-//    void add_DTC(const std::vector<sensor_module_address>& sensor_modules, const dtc_type_config& type);
-
     void add_sensor_module(const sensor_module_config& new_sensor_module, const unsigned int dtc_id);
     void add_dtc(const dtc_config& new_dtc, const unsigned int tower_id, const unsigned int DO_id);
     void add_trigger_tower(const trigger_tower_config& new_trigger_tower);
@@ -82,8 +77,13 @@ public:
     int read_module_file(const std::string& file_base);
     int read_dtc_file(const std::string& file_base);
     int read_tower_file(const std::string& file_base);
+    void update_layer_lookup_tables();
 
     std::vector<sensor_module_address> get_module_addresses() const;
     std::vector<chip_address> get_chip_addresses() const;
     std::vector<trigger_tower_address> get_trigger_tower_addresses() const;
+    local_module_address get_local_address(const sensor_module_address& module_address) const;
+
+    bool find_module_in_dtcs(const sensor_module_address& module_address, unsigned int& dtc_id, unsigned int& relative_module) const;
+    bool find_dtc_in_towers(unsigned int dtc_id, unsigned int& trigger_tower, unsigned int& relative_prb, unsigned int& relative_dtc) const;
 };

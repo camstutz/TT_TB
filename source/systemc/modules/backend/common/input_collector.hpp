@@ -99,7 +99,7 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
     {
         wait();
 
-        unsigned int dtc_id = 0;
+        unsigned int input_id = 0;
         typename sc_map_linear<sc_in<input_t> >::iterator input_it = frame_inputs.begin();
         for(; input_it != frame_inputs.end(); ++input_it)
         {
@@ -120,7 +120,7 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
                 while (input_frame.get_stub(in_stub_element))
                 {
                     typename input_frame_t::stub_element_t::type_field_t  type_field = in_stub_element.get_type_field();
-                    typename output_frame_t::stub_t out_stub(dtc_id, in_stub_element.get_stub());
+                    typename output_frame_t::stub_t out_stub(input_id, in_stub_element.get_stub());
 
                     typename output_frame_t::stub_element_t out_stub_element(type_field, out_stub);
                     output_t output_bx_stub(bx, out_stub_element);
@@ -132,7 +132,7 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
                     }
                 }
             }
-            ++dtc_id;
+            ++input_id;
         }
     }
 

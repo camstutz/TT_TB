@@ -37,9 +37,9 @@ private:
     unsigned int layer_splittet_FIFO_size;
 
 public:
-    po_layer_splitter_config layer_splitter;
     input_collector_config input_collector;
     time_demux_config demultiplexer;
+    po_layer_splitter_config layer_splitter;
 
     processor_organizer_config();
 

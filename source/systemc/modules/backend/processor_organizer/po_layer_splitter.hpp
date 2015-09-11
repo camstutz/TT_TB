@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter.hpp
  * @author Christian Amstutz
- * @date July 1, 2015
+ * @date September 11, 2015
  *
  * @brief
  *
@@ -16,11 +16,12 @@
 #include "../../../data_formats/prbf/PRBF.hpp"
 
 #include "po_layer_splitter_config.hpp"
-//#include "../../../systems/TT_configuration.hpp"
 
 #include "sc_map.hpp"
 
 #include <systemc.h>
+
+#include <iostream>
 
 /*!
  * @brief
@@ -31,7 +32,7 @@ public:
     typedef PRBF_2 frame_t;
     typedef frame_t::stub_element_t element_t;
 
-    const unsigned int layer_nr;
+    const po_layer_splitter_config configuration;
 
 // ----- Port Declarations -----------------------------------------------------
     sc_fifo_in<element_t> input_stubs;

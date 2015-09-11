@@ -23,7 +23,7 @@
 dtc_input_unit::dtc_input_unit(sc_module_name _name,
         dtc_input_unit_config configuration) :
         sc_module(_name),
-        fe_collect_cycles(configuration.fe_collect_cycles),
+        fe_collect_cycles(configuration.type.fe_collect_cycles),
         fe_id(configuration.fe_id),
         clk("clk"),
         gbt_input("gbt_input"),
@@ -65,7 +65,7 @@ void dtc_input_unit::process_stubs()
                     SYSTEMC_LOG << "CBC frame with " << stub_nr << " stubs received.";
                 }
 
-                stub input_stub(configuration.CBC_input_stub);
+                stub input_stub(configuration.type.CBC_input_stub);
                 while (input_frame[in_frame_id].get_stub(input_stub))
                 {
                     output_element_t::stub_t output_stub;
@@ -104,7 +104,7 @@ void dtc_input_unit::process_stubs()
                     SYSTEMC_LOG << "MPA frame with " << stub_nr << " stubs received.";
                 }
 
-                stub input_stub(configuration.MPA_input_stub);
+                stub input_stub(configuration.type.MPA_input_stub);
                 while (input_frame[in_frame_id].get_stub(input_stub))
                 {
                     output_element_t::stub_t output_stub;

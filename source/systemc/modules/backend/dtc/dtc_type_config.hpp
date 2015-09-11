@@ -1,7 +1,7 @@
 /*!
  * @file dtc_type_config.hpp
  * @author Christian Amstutz
- * @date September 1, 2015
+ * @date September 11, 2015
  *
  * @brief
  *
@@ -34,7 +34,7 @@ public:
     unsigned int bx_buffer_FIFO_size;
 
     dtc_controller_config controller;
-    dtc_input_unit_config input_unit;
+    dtc_input_unit_type_config input_unit;
     dtc_output_unit_config output_unit;
 
     dtc_type_config();

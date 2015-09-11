@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower_config.hpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date September 11, 2015
  *
  * @brief
  *
@@ -15,6 +15,7 @@
 
 #include "trigger_tower_type_config.hpp"
 #include "trigger_tower_address.hpp"
+#include "../../frontend/sensor_module/sensor_module_address.hpp"
 
 #include <vector>
 
@@ -26,13 +27,11 @@ class trigger_tower_config
 {
     friend class trigger_tower;
 
-private:
-    std::vector<data_organizer_config> data_organizers;
-
 public:
+    typedef std::vector<data_organizer_config> data_organizer_table_t;
+
     unsigned int id;
     trigger_tower_address address;
-    //std::string pattern_bank_file;
     trigger_tower_type_config type;
 
     std::vector<unsigned int> DTC_ids;
@@ -43,4 +42,8 @@ public:
 
     void add_do(const data_organizer_config& new_do);
     data_organizer_config& get_data_organizer(unsigned int DO_id);
+    data_organizer_table_t get_data_organizers() const;
+
+private:
+    data_organizer_table_t data_organizers;
 };

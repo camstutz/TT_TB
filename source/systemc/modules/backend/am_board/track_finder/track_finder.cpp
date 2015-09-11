@@ -40,9 +40,9 @@ track_finder::track_finder(const sc_module_name _name,
         pattern_lookup("pattern_lookup", configuration.pattern_memory),
         road_proc("road_processor", configuration.road_processor)
 {
-    patterns.load_text_binary_file("data/pattern_banks/text_binary_test_patterns.txt");
+    //patterns.load_text_binary_file("data/pattern_banks/text_binary_test_patterns.txt");
     //patterns.load_CMSSW_patterns();
-    //patterns.generate_patterns_straight(10000);
+    patterns.generate_patterns_straight(10000);
 
     hit_proc.clk.bind(clk);
     hit_proc.hit_input.bind(hit_input);

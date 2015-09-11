@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.cpp
  * @author Christian Amstutz
- * @date September 2, 2015
+ * @date September 11, 2015
  *
  * @brief
  *
@@ -38,90 +38,6 @@ void track_trigger_config::set_hit_FIFO_size(unsigned int hit_FIFO_size)
 
     return;
 }
-
-//// *****************************************************************************
-//void track_trigger_config::add_sensor_module(
-//        const sensor_module_address& address,
-//        const sensor_module_type_config& type)
-//{
-//    sensor_module_config module;
-//    module.address = address;
-//    module.type = type;
-//
-//    sensor_modules[module.address] = module;
-//
-//    hit_generator.add_chips(module);
-//
-//    return;
-//}
-//
-//// *****************************************************************************
-//void track_trigger_config::add_sensor_modules(
-//        const std::vector<sensor_module_address>& addresses,
-//        const sensor_module_type_config& type)
-//{
-//    for (std::vector<sensor_module_address>::const_iterator address = addresses.begin();
-//         address != addresses.end();
-//         ++address)
-//    {
-//        add_sensor_module(*address, type);
-//    }
-//
-//    return;
-//}
-//
-//// *****************************************************************************
-//void track_trigger_config::add_DTC(const dtc_id_t id,
-//        const std::vector<sensor_module_address>& sensor_modules)
-//{
-//    add_DTC(id, sensor_modules, this->dtc);
-//
-//    return;
-//}
-//
-//// *****************************************************************************
-//void track_trigger_config::add_DTC(const dtc_id_t id,
-//        const std::vector<sensor_module_address>& sensor_modules,
-//        const dtc_type_config& type)
-//{
-//    dtc_config new_dtc;
-//    new_dtc.type = type;
-//    for (std::vector<sensor_module_address>::const_iterator module = sensor_modules.begin();
-//         module != sensor_modules.end();
-//         ++module)
-//    {
-//        new_dtc.add_sensor_module(*module);
-//    }
-//
-//    dtcs[id] = new_dtc;
-//
-//    return;
-//}
-//
-//// *****************************************************************************
-//void track_trigger_config::add_DTC(const std::vector<sensor_module_address>&
-//        sensor_modules)
-//{
-//    add_DTC(sensor_modules, this->dtc);
-//
-//    return;
-//}
-//
-//// *****************************************************************************
-//void track_trigger_config::add_DTC(const std::vector<sensor_module_address>&
-//        sensor_modules, const dtc_type_config& type)
-//{
-//    dtc_id_t id;
-//    if (!dtcs.empty())
-//    {
-//        id = dtcs.rbegin()->first;
-//        ++id;
-//    }
-//
-//    add_DTC(id, sensor_modules, type);
-//
-//    return;
-//}
 
 // *****************************************************************************
 void track_trigger_config::add_sensor_module(
@@ -181,6 +97,7 @@ int track_trigger_config::read_track_trigger_config(const std::string& file_base
     error += read_tower_file(file_base);
     error += read_dtc_file(file_base);
     error += read_module_file(file_base);
+    update_layer_lookup_tables();
 
     return error;
 }
@@ -219,7 +136,6 @@ int track_trigger_config::read_module_file(const std::string& file_base)
                 line_valid = false;
             }
 
-            // check for valid stub in the read line
             if (line_valid)
             {
                 sensor_module_config new_module;
@@ -366,6 +282,27 @@ int track_trigger_config::read_tower_file(const std::string& file_base)
 }
 
 // *****************************************************************************
+void track_trigger_config::update_layer_lookup_tables()
+{
+    for (sensor_module_table_t::const_iterator module_it = sensor_modules.begin();
+         module_it != sensor_modules.end();
+         ++module_it)
+    {
+        local_module_address local_address = get_local_address(module_it->second.address);
+        trigger_tower_config& tower = trigger_towers[local_address.trigger_tower];
+        for (std::vector<processor_organizer_config>::iterator proc_organizer = tower.processor_organizers.begin();
+             proc_organizer != tower.processor_organizers.end();
+             ++proc_organizer)
+        {
+            unsigned int layer = module_it->second.address.layer;
+            proc_organizer->layer_splitter.layer_lookup_table[local_address] = layer;
+        }
+    }
+
+    return;
+}
+
+// *****************************************************************************
 std::vector<sensor_module_address> track_trigger_config::get_module_addresses() const
 {
     std::vector<sensor_module_address> module_addresses;
@@ -407,4 +344,80 @@ std::vector<trigger_tower_address> track_trigger_config::get_trigger_tower_addre
     }
 
     return tower_addresses;
+}
+
+// *****************************************************************************
+local_module_address track_trigger_config::get_local_address(
+        const sensor_module_address& module_address) const
+{
+    unsigned int trigger_tower = 0;
+    unsigned int relative_prb = 0;
+    unsigned int dtc_id = 0;
+    unsigned int relative_dtc = 0;
+    unsigned int relative_module = 0;
+
+    find_module_in_dtcs(module_address, dtc_id, relative_module);
+    find_dtc_in_towers(dtc_id, trigger_tower, relative_prb, relative_dtc);
+
+    return local_module_address(trigger_tower, relative_prb, relative_dtc, relative_module);
+}
+
+// *****************************************************************************
+bool track_trigger_config::find_module_in_dtcs(
+        const sensor_module_address& module_address, unsigned int& dtc_id,
+        unsigned int& relative_module) const
+{
+    for (dtc_table_t::const_iterator dtc_it = dtcs.begin(); dtc_it != dtcs.end(); ++dtc_it)
+    {
+        std::vector<sensor_module_address> dtc_modules = dtc_it->second.get_sensor_modules();
+        relative_module = 0;
+        for (std::vector<sensor_module_address>::iterator module_it = dtc_modules.begin();
+             module_it != dtc_modules.end();
+             ++module_it)
+        {
+            if (*module_it == module_address)
+            {
+                dtc_id = dtc_it->second.id;
+                return true;
+            }
+            ++relative_module;
+        }
+    }
+
+    return false;
+}
+
+// *****************************************************************************
+bool track_trigger_config::find_dtc_in_towers(unsigned int dtc_id,
+        unsigned int& trigger_tower, unsigned int& relative_prb,
+        unsigned int& relative_dtc) const
+{
+    for (tower_table_t::const_iterator tower_it = trigger_towers.begin();
+         tower_it != trigger_towers.end();
+         ++tower_it)
+    {
+        trigger_tower_config::data_organizer_table_t DOs = tower_it->second.get_data_organizers();
+        relative_prb = 0;
+        for (trigger_tower_config::data_organizer_table_t::const_iterator DO_it = DOs.begin();
+             DO_it != DOs.end();
+             ++DO_it)
+        {
+            data_organizer_config::DTC_table_t DTCs = DO_it->get_dtcs();
+            relative_dtc = 0;
+            for (data_organizer_config::DTC_table_t::const_iterator dtc_it = DTCs.begin();
+                 dtc_it != DTCs.end();
+                 ++dtc_it)
+            {
+                if (dtc_id == *dtc_it)
+                {
+                    trigger_tower = tower_it->second.id;
+                    return true;
+                }
+                ++relative_dtc;
+            }
+            ++relative_prb;
+        }
+    }
+
+    return false;
 }

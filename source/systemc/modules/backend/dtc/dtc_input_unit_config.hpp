@@ -1,7 +1,7 @@
 /*!
  * @file dtc_input_unit_config.hpp
  * @author Christian Amstutz
- * @date July 29, 2015
+ * @date September, 2015
  *
  * @brief
  *
@@ -13,7 +13,8 @@
 
 #pragma once
 
-#include "../../../data_formats/stub/stub_config.hpp"
+#include "dtc_input_unit_type_config.hpp"
+
 
 // *****************************************************************************
 /*!
@@ -22,9 +23,7 @@
 class dtc_input_unit_config
 {
 public:
-    stub_config CBC_input_stub;
-    stub_config MPA_input_stub;
+    dtc_input_unit_type_config type;
 
-    unsigned int fe_collect_cycles;
     unsigned int fe_id;
 };

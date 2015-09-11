@@ -31,7 +31,7 @@ dtc::dtc(sc_module_name _name, const dtc_config& configuration) :
         write_buffer_sig("write_buffer_sig"),
         tower_output_sig("tower_output_sig"),
         controller("controller", configuration.type.controller),
-        input_units(input_nr, "input_unit", configuration.type.input_unit),
+        input_units(input_nr, "input_unit", configuration.input_units),
         output_unit("output_unit", configuration.type.output_unit),
         delay_output("delay_output", 0)
 {

@@ -23,7 +23,7 @@ void data_organizer_config::add_dtc(unsigned int dtc_id)
 }
 
 // *****************************************************************************
-std::vector<unsigned int> data_organizer_config::get_dtcs() const
+data_organizer_config::DTC_table_t data_organizer_config::get_dtcs() const
 {
     return DTCs;
 }

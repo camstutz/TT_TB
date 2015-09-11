@@ -31,6 +31,7 @@ private:
 public:
     unsigned int id;
     dtc_type_config type;
+    std::vector<dtc_input_unit_config> input_units;
 
     dtc_config();
 

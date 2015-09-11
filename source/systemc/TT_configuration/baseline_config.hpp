@@ -86,7 +86,6 @@ inline track_trigger_config baseline_config()
     configuration.dtc.bx_buffer_FIFO_size = 20;
     configuration.dtc.input_unit.CBC_input_stub = configuration.cbc_sensor_module.frontend_chip.input_stub;
     configuration.dtc.input_unit.MPA_input_stub = configuration.mpa_sensor_module.frontend_chip.input_stub;
-    configuration.dtc.input_unit.fe_id = 0xFF;
 
     // Trigger Tower
     configuration.trigger_tower.set_layer_nr(6);

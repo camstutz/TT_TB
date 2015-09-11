@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower_config.cpp
  * @author Christian Amstutz
- * @date September 2, 2015
+ * @date September 11, 2015
  *
  * @brief
  *
@@ -52,4 +52,11 @@ data_organizer_config& trigger_tower_config::get_data_organizer(
         unsigned int DO_id)
 {
     return data_organizers[DO_id];
+}
+
+// *****************************************************************************
+trigger_tower_config::data_organizer_table_t
+        trigger_tower_config::get_data_organizers() const
+{
+    return data_organizers;
 }
