@@ -1,11 +1,11 @@
 # id layer ladder module type DTC
    0     0      0      0   PS   2
-   1     1      0      0   PS   0
+   1     1      0      0   PS   1
    2     2      0      0   PS   0
    3     3      0      0   2S   1
-   4     4      0      0   2S   1
+   4     4      0      0   2S   2
    5     5      0      0   2S   1
-   6     0      1      0   PS   0
+   6     0      1      0   PS   2
    7     1      1      0   PS   0
    8     2      1      0   PS   0
    9     3      1      0   2S   1

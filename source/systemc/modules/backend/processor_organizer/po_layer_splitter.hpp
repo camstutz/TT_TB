@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter.hpp
  * @author Christian Amstutz
- * @date September 11, 2015
+ * @date September 14, 2015
  *
  * @brief
  *
@@ -46,6 +46,7 @@ public:
     void split_stubs();
 
 // ----- Other Method Declarations ---------------------------------------------
+    void print_layer_table();
 
 // ----- Module Instantiations -------------------------------------------------
 

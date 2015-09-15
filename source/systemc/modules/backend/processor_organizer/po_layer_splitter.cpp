@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter.cpp
  * @author Christian Amstutz
- * @date September 11, 2015
+ * @date September 14, 2015
  *
  * @brief
  */
@@ -73,4 +73,23 @@ void po_layer_splitter::split_stubs()
         }
     }
 
+}
+
+// *****************************************************************************
+void po_layer_splitter::print_layer_table()
+{
+    std::cout << "Layer Translation table of " << name()
+              << " sized " << configuration.layer_lookup_table.size() << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
+    for (po_layer_splitter_config::layer_lookup_table_t::const_iterator layer_table_line = configuration.layer_lookup_table.begin();
+         layer_table_line != configuration.layer_lookup_table.end();
+         ++layer_table_line)
+    {
+        std::cout << layer_table_line->first
+                  << " --> "
+                  << layer_table_line->second
+                  << std::endl;
+    }
+
+    return;
 }

@@ -87,6 +87,10 @@ void hit_generator::schedule_hits()
                           << name() << ".stub_outputs[" << hit_chip_address << "]"
                           << std::endl;
             }
+            else
+            {
+                SYSTEMC_LOG << "Stub sent to: " << hit_chip_address;
+            }
         }
         else
         {

@@ -139,6 +139,8 @@ void am_input_module_one_layer::create_stream()
                 hit_t hit = get_AM_hit_address(stub);
                 stub_stream_output.write(hit);
 
+                SYSTEMC_LOG << stub << "/" << hit;
+
                 frame_processing.write(true);
             }
         }
@@ -150,15 +152,15 @@ void am_input_module_one_layer::create_stream()
 am_input_module_one_layer::hit_t am_input_module_one_layer::get_AM_hit_address(
         frame_t::stub_t stub)
 {
-    hit_t hit = 0x00;
+    hit_t hit = 0x0000;
 
     hit |= (stub.get_strip()           & 0xFF);
-    hit |= (stub.get_fe_chip_ID()      & 0x03) << 8;
+    hit |= (stub.get_fe_chip_ID()      & 0x07) <<  8;
     hit |= (stub.get_concentrator_ID() & 0x01) << 11;
-    hit |= (stub.get_fe_module()       & 0x02) << 12;
-    //hit |= (stub.get_dtc()             & 0x02) << 14;
-    //hit |= (stub.get_prb()             & 0x02) << 16;
-    //hit |= (stub.get_z()               & 0x04) << 18;
+//    hit |= (stub.get_fe_module()       & 0x7F) << 12;
+//    hit |= (stub.get_dtc()             & 0x0F) << 19;
+//    hit |= (stub.get_prb()             & 0x0F) << 23;
+//    hit |= (stub.get_z()               & 0x0F) << 27;
 
     return hit;
 }

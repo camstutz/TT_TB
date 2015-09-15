@@ -70,7 +70,7 @@ void road_analyzer::detect_hits()
                     {
                         road_file << sc_time_stamp() << " @ " << input_id
                                   << "," << layer <<" : "
-                                  <<  std::hex << read_hit.get_value() << std::endl;
+                                  <<  read_hit.get_value() << std::endl;
                         ++filtered_hits_cnt;
                     }
                 }
