@@ -30,7 +30,8 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         gbt_links(configuration.get_module_addresses(), "GBT_link"),
         dtc_links(configuration.dtcs.size(), "DTC_link"),
         result_hits(configuration.trigger_tower.get_prb_nr() * configuration.trigger_tower.get_AM_boards_per_prb(), configuration.trigger_tower.get_layer_nr(), "result_road"),
-        hit_cnt_sig("hit_cnt_sig"),
+        hits_accepted_sig("hits_accepted_sig"),
+        hits_discarded_sig("hits_discarded_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
         sensor_modules("sensor_module", configuration.sensor_modules),
         DTCs("DTC", configuration.dtcs),
@@ -38,7 +39,8 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         roadAnalyzer("road_analyzer", configuration.road_analyzer)
 {
     hitGenerator.stub_outputs.bind(hit_fifos);
-    hitGenerator.hit_cnt(hit_cnt_sig);
+    hitGenerator.hits_accepted.bind(hits_accepted_sig);
+    hitGenerator.hits_discarded.bind(hits_discarded_sig);
 
     for( sc_map_list<sensor_module_address, sensor_module>::iterator module_it = sensor_modules.begin();
          module_it != sensor_modules.end();
@@ -79,7 +81,8 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         tower_it->hit_outputs.bind(result_hits);
     }
 
-    roadAnalyzer.hit_cnt.bind(hit_cnt_sig);
+    roadAnalyzer.hits_accepted.bind(hits_accepted_sig);
+    roadAnalyzer.hits_discarded.bind(hits_discarded_sig);
     roadAnalyzer.filtered_hits.bind(result_hits);
 
 #ifdef MTI_SYSTEMC

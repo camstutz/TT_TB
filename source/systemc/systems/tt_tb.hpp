@@ -45,7 +45,8 @@ public:
     sc_map_linear<sc_buffer<dtc::output_t> > dtc_links;
     sc_map_square<sc_buffer<track_finder::hit_stream> > result_hits;
 
-    sc_signal<unsigned int> hit_cnt_sig;
+    sc_signal<unsigned int> hits_accepted_sig;
+    sc_signal<unsigned int> hits_discarded_sig;
 
     // ----- Process Declarations ----------------------------------------------
 

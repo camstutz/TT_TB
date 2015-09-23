@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.hpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date September 23, 2015
  *
  * @brief
  */
@@ -47,7 +47,8 @@ public:
     /** Signal that indicates the number of stubs read from the input file. This
      * is used to analyze the system.
      */
-    sc_out<unsigned int> hit_cnt;
+    sc_out<unsigned int> hits_accepted;
+    sc_out<unsigned int> hits_discarded;
 
 // ----- Local Channel Declarations --------------------------------------------
 
@@ -71,7 +72,9 @@ private:
     hit_generator_config configuration;
 
     std::queue<HitSF> hit_queue;
-    unsigned int hit_counter;
+
+    unsigned int hits_accepted_cnt;
+    unsigned int hits_discarded_cnt;
 
     /** Reads the hit_file and stores them in the hit_queue where the
      * schedule_hits process reads it from. This function is called from the

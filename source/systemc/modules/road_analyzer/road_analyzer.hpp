@@ -1,7 +1,7 @@
 /*!
  * @file road_analyzer.hpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date September 23, 2015
  *
  * @brief
  */
@@ -35,7 +35,8 @@ public:
     const unsigned int nr_layers;
 
 // ----- Port Declarations -----------------------------------------------------
-	sc_in<unsigned int> hit_cnt;
+	sc_in<unsigned int> hits_accepted;
+	sc_in<unsigned int> hits_discarded;
 	sc_map_square<sc_in<track_finder::hit_stream> > filtered_hits;
 
 // ----- Local Channel Declarations --------------------------------------------
@@ -58,6 +59,5 @@ public:
 
 private:
     ofstream road_file;
-    unsigned int hit_counter;
     unsigned int filtered_hits_cnt;
 };

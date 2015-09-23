@@ -1,7 +1,7 @@
 /*!
  * @file hit_generator.cpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date September 23, 2015
  *
  * @brief
  */
@@ -18,9 +18,11 @@ hit_generator::hit_generator(sc_module_name _name ,
         const hit_generator_config configuration) :
         sc_module(_name),
         stub_outputs(configuration.chip_addresses, "hit_output"),
-        hit_cnt("hit_cnt"),
+        hits_accepted("hits_accepted"),
+        hits_discarded("hits_discarded"),
         configuration(configuration),
-        hit_counter(0)
+        hits_accepted_cnt(),
+        hits_discarded_cnt()
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(schedule_hits);
@@ -37,7 +39,8 @@ hit_generator::hit_generator(sc_module_name _name ,
 // *****************************************************************************
 void hit_generator::schedule_hits()
 {
-    hit_cnt.write(0);
+    hits_accepted.write(hits_accepted_cnt);
+    hits_discarded.write(hits_discarded_cnt);
 
     while (!hit_queue.empty())
     {
@@ -81,6 +84,8 @@ void hit_generator::schedule_hits()
                       hit_chip_address)
             != configuration.chip_addresses.end())
         {
+            ++hits_accepted_cnt;
+
             if (!stub_outputs.at(hit_chip_address).nb_write(output_stub))
             {
                 std::cerr << sc_time_stamp() << ": FIFO overflow @ "
@@ -94,13 +99,15 @@ void hit_generator::schedule_hits()
         }
         else
         {
+            ++hits_discarded_cnt;
+
             SYSTEMC_LOG << "Stub cannot be sent to: "
                         << layer << "," << ladder << "," << module_cnt
                         << ". Module does not exist.";
         }
 
-        ++hit_counter;
-        hit_cnt.write(hit_counter);
+        hits_accepted.write(hits_accepted_cnt);
+        hits_discarded.write(hits_discarded_cnt);
 
         #ifdef DEBUG
         std::cout << std::hex << sc_time_stamp() << " hit_generator @ "

@@ -162,8 +162,8 @@ int track_trigger_config::read_module_file(const std::string& file_base)
     }
     else
     {
-        std::cout << "File with DTC configuration could not be read: "
-                  << struct_file << std::endl;
+        std::cout << "File with module configuration could not be read: "
+                  << file_name << std::endl;
         return 1;
     }
 
@@ -215,7 +215,7 @@ int track_trigger_config::read_dtc_file(const std::string& file_base)
     else
     {
         std::cout << "File with DTC configuration could not be read: "
-                  << struct_file << std::endl;
+                  << file_name << std::endl;
         return 1;
     }
 
@@ -274,7 +274,7 @@ int track_trigger_config::read_tower_file(const std::string& file_base)
     else
     {
         std::cout << "File with trigger tower configuration could not be read: "
-                  << struct_file << std::endl;
+                  << file_name << std::endl;
         return 1;
     }
 
