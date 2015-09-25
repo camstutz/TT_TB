@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.hpp
  * @author Christian Amstutz
- * @date September 11, 2015
+ * @date September 24, 2015
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include "local_module_address.hpp"
+#include "sector_id.hpp"
 
 #include "../modules/hit_generator/hit_generator_config.hpp"
 #include "../modules/frontend/frontend_chip/frontend_chip_config.hpp"
@@ -47,6 +48,7 @@ public:
     typedef std::map<dtc_id_t, dtc_config> dtc_table_t;
     typedef unsigned int tower_id_t;
     typedef std::map<tower_id_t, trigger_tower_config> tower_table_t;
+    typedef std::map<sensor_module_id_t, sector_id> sector_assign_table_t;
 
     unsigned int LHC_clock_period_ns;
     unsigned int hit_FIFO_size;
@@ -63,6 +65,7 @@ public:
     sensor_module_table_t sensor_modules;
     dtc_table_t dtcs;
     tower_table_t trigger_towers;
+    sector_assign_table_t sector_assignments;
 
     track_trigger_config();
 
@@ -73,10 +76,11 @@ public:
     void add_dtc(const dtc_config& new_dtc, const unsigned int tower_id, const unsigned int DO_id);
     void add_trigger_tower(const trigger_tower_config& new_trigger_tower);
 
-    int read_track_trigger_config(const std::string& file_base);
+    int read_track_trigger_config(const std::string& file_base, const std::string& sector_file_name);
     int read_module_file(const std::string& file_base);
     int read_dtc_file(const std::string& file_base);
     int read_tower_file(const std::string& file_base);
+    int read_sector_file(const std::string& file_name);
     void update_layer_lookup_tables();
 
     std::vector<sensor_module_address> get_module_addresses() const;

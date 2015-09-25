@@ -29,6 +29,16 @@ sensor_module_address::sensor_module_address(unsigned int layer,
 {}
 
 // *****************************************************************************
+sensor_module_address::sensor_module_address(unsigned int module_id)
+{
+    layer = module_id / 10000;
+    ladder = (module_id % 10000) / 100;
+    module = module_id % 100;
+
+    return;
+}
+
+// *****************************************************************************
 std::vector<chip_address> sensor_module_address::get_chips (
         const unsigned int nr_segments, const unsigned int nr_chips) const
 {

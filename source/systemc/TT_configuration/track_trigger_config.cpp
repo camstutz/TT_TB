@@ -90,10 +90,12 @@ void track_trigger_config::add_trigger_tower(
 }
 
 // *****************************************************************************
-int track_trigger_config::read_track_trigger_config(const std::string& file_base)
+int track_trigger_config::read_track_trigger_config(const std::string& file_base,
+        const std::string& sector_file_name)
 {
     int error = 0;
 
+    error += read_sector_file(sector_file_name);
     error += read_tower_file(file_base);
     error += read_dtc_file(file_base);
     error += read_module_file(file_base);
@@ -274,6 +276,71 @@ int track_trigger_config::read_tower_file(const std::string& file_base)
     else
     {
         std::cout << "File with trigger tower configuration could not be read: "
+                  << file_name << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+// *****************************************************************************
+int track_trigger_config::read_sector_file(const std::string& file_name)
+{
+    std::ifstream sector_file;
+    sector_file.open(file_name.c_str());
+    if (sector_file.is_open())
+    {
+        // read all the trigger towers from the file
+        std::string fileLine;
+        // read header line and not use it
+        std::getline(sector_file, fileLine);
+
+        while (std::getline(sector_file, fileLine))
+        {
+            if ( !sector_file.fail() )
+            {
+                std::stringstream lineStream(fileLine);
+                std::vector<unsigned int> numbers_in_line;
+                std::string cell;
+                while (std::getline(lineStream, cell, ','))
+                {
+                    std::stringstream cell_stream(cell);
+                    unsigned int value;
+                    cell_stream >> value;
+                    numbers_in_line.push_back(value);
+                }
+
+                if (numbers_in_line.size() > 2)
+                {
+                    unsigned int sector_eta = numbers_in_line[0];
+                    unsigned int sector_phi = numbers_in_line[1];
+                    for (std::vector<unsigned int>::iterator module_id_it = numbers_in_line.begin()+2;
+                         module_id_it != numbers_in_line.end();
+                         ++module_id_it)
+                    {
+                        sector_id sector(0, sector_eta, sector_phi);
+                        sensor_module_address module_address = sensor_module_address(*module_id_it);
+                        sector_assignments[module_address] = sector;
+                    }
+
+                    // process the sectors, calculate id and local sector coordinates
+                    unsigned int id = 0;
+                    for (sector_assign_table_t::iterator sector_it = sector_assignments.begin();
+                         sector_it != sector_assignments.end();
+                         ++sector_it)
+                    {
+                        sector_it->second.id = id;
+                        ++id;
+                    }
+                }
+            }
+        }
+
+        sector_file.close();
+    }
+    else
+    {
+        std::cout << "File with sector configuration could not be read: "
                   << file_name << std::endl;
         return 1;
     }

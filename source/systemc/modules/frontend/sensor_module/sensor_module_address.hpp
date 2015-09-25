@@ -21,6 +21,8 @@
 #include <sstream>
 #include <ostream>
 
+#include <iostream>   // only debug
+
 // *****************************************************************************
 /*!
  * @brief
@@ -34,6 +36,7 @@ public:
 
     sensor_module_address();
     sensor_module_address(unsigned int layer, unsigned int ladder, unsigned int module);
+    sensor_module_address(unsigned int module_id);
 
     std::vector<chip_address> get_chips(const unsigned int nr_segments, const unsigned int nr_chips) const;
     std::vector<chip_address> get_chips(const sensor_module_type_config& sensor_mod_config) const;
