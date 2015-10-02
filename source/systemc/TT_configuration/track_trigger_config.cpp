@@ -1,7 +1,7 @@
 /*!
  * @file track_trigger_config.cpp
  * @author Christian Amstutz
- * @date September 11, 2015
+ * @date September 30, 2015
  *
  * @brief
  *
@@ -18,6 +18,19 @@ track_trigger_config::track_trigger_config()
 {
     set_LHC_clock_period_ns(LHC_CLOCK_PERIOD_NS_DEFAULT);
     set_hit_FIFO_size(HIT_FIFO_SIZE_DEFAULT);
+
+    return;
+}
+
+// *****************************************************************************
+track_trigger_config::~track_trigger_config()
+{
+    for (sector_table_t::iterator sector_it=sectors.begin();
+         sector_it != sectors.end();
+         ++sector_it)
+    {
+        delete sector_it->second;
+    }
 
     return;
 }
@@ -295,6 +308,7 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
         // read header line and not use it
         std::getline(sector_file, fileLine);
 
+        int sector_id = sector_start_id;
         while (std::getline(sector_file, fileLine))
         {
             if ( !sector_file.fail() )
@@ -314,26 +328,20 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
                 {
                     unsigned int sector_eta = numbers_in_line[0];
                     unsigned int sector_phi = numbers_in_line[1];
+                    sector_info* sector = new sector_info(sector_id, sector_eta, sector_phi);
+                    sectors[sector_id] = sector;
+
                     for (std::vector<unsigned int>::iterator module_id_it = numbers_in_line.begin()+2;
                          module_id_it != numbers_in_line.end();
                          ++module_id_it)
                     {
-                        sector_id sector(0, sector_eta, sector_phi);
                         sensor_module_address module_address = sensor_module_address(*module_id_it);
                         sector_assignments[module_address] = sector;
-                    }
-
-                    // process the sectors, calculate id and local sector coordinates
-                    unsigned int id = 0;
-                    for (sector_assign_table_t::iterator sector_it = sector_assignments.begin();
-                         sector_it != sector_assignments.end();
-                         ++sector_it)
-                    {
-                        sector_it->second.id = id;
-                        ++id;
+                        sector->add_modules(module_address);
                     }
                 }
             }
+            ++sector_id;
         }
 
         sector_file.close();
@@ -355,7 +363,7 @@ void track_trigger_config::update_layer_lookup_tables()
          module_it != sensor_modules.end();
          ++module_it)
     {
-        local_module_address local_address = get_local_address(module_it->second.address);
+        prbf_module_address local_address = get_prbf_address(module_it->second.address);
         trigger_tower_config& tower = trigger_towers[local_address.trigger_tower];
         for (std::vector<processor_organizer_config>::iterator proc_organizer = tower.processor_organizers.begin();
              proc_organizer != tower.processor_organizers.end();
@@ -414,7 +422,7 @@ std::vector<trigger_tower_address> track_trigger_config::get_trigger_tower_addre
 }
 
 // *****************************************************************************
-local_module_address track_trigger_config::get_local_address(
+prbf_module_address track_trigger_config::get_prbf_address(
         const sensor_module_address& module_address) const
 {
     unsigned int trigger_tower = 0;
@@ -426,7 +434,7 @@ local_module_address track_trigger_config::get_local_address(
     find_module_in_dtcs(module_address, dtc_id, relative_module);
     find_dtc_in_towers(dtc_id, trigger_tower, relative_prb, relative_dtc);
 
-    return local_module_address(trigger_tower, relative_prb, relative_dtc, relative_module);
+    return prbf_module_address(trigger_tower, relative_prb, relative_dtc, relative_module);
 }
 
 // *****************************************************************************

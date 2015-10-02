@@ -51,7 +51,7 @@ void po_layer_splitter::split_stubs()
             unsigned int local_prb = stub.get_stub().get_prb();
             unsigned int local_dtc = stub.get_stub().get_dtc();
             unsigned int local_mod = stub.get_stub().get_fe_module();
-            local_module_address local_address = local_module_address(configuration.trigger_tower_id, local_prb, local_dtc, local_mod);
+            prbf_module_address local_address = prbf_module_address(configuration.trigger_tower_id, local_prb, local_dtc, local_mod);
 
             po_layer_splitter_config::layer_lookup_table_t::const_iterator layer_it = configuration.layer_lookup_table.find(local_address);
             if (layer_it != configuration.layer_lookup_table.end())

@@ -1,7 +1,7 @@
 /*!
- * @file sensor_module_address.hpp
+ * @file local_module_address.hpp
  * @author Christian Amstutz
- * @date September 10, 2015
+ * @date October 1, 2015
  *
  * @brief
  *
@@ -25,13 +25,12 @@
 class local_module_address
 {
 public:
-    unsigned int trigger_tower;
-    unsigned int rel_prb;
-    unsigned int rel_dtc;
-    unsigned int rel_module;
+    unsigned int layer;
+    unsigned int ladder;
+    unsigned int module;
 
     local_module_address();
-    local_module_address(unsigned int trigger_tower, unsigned int rel_prb, unsigned int rel_dtc, unsigned int rel_module);
+    local_module_address(const unsigned int layer, const unsigned int ladder, const unsigned int module);
 
     bool operator== (const local_module_address& rhs) const;
     bool operator< (const local_module_address& rhs) const;

@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter_config.hpp
  * @author Christian Amstutz
- * @date September 11, 2015
+ * @date October 1, 2015
  *
  * @brief
  *
@@ -13,9 +13,8 @@
 
 #pragma once
 
-#include "../../../TT_configuration/local_module_address.hpp"
-
 #include <map>
+#include "../../../TT_configuration/prbf_module_address.hpp"
 
 // *****************************************************************************
 /*!
@@ -24,7 +23,7 @@
 class po_layer_splitter_config
 {
 public:
-    typedef std::map<local_module_address, unsigned int> layer_lookup_table_t;
+    typedef std::map<prbf_module_address, unsigned int> layer_lookup_table_t;
 
     unsigned int layer_nr;
 

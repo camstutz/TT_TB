@@ -114,7 +114,7 @@ inline track_trigger_config baseline_config()
     configuration.road_analyzer.nr_inputs = 8;
     configuration.road_analyzer.nr_layers = 6;
 
-    configuration.read_track_trigger_config("source/systemc/TT_configuration/baseline", "data/configuration/Eta7_Phi8_sector_map.csv");
+    configuration.read_track_trigger_config("source/systemc/TT_configuration/baseline", "data/configuration/baseline_Eta6_Phi8.csv");
 
     return configuration;
 }
