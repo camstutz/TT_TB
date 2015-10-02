@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower_config.cpp
  * @author Christian Amstutz
- * @date September 11, 2015
+ * @date October 2, 2015
  *
  * @brief
  *
@@ -28,6 +28,21 @@ trigger_tower_config::trigger_tower_config(const trigger_tower_type_config& type
         new_po = type.processor_organizer;
         new_po.demultiplexer.bx_offset = i;
         processor_organizers.push_back(new_po);
+    }
+
+    return;
+}
+
+// *****************************************************************************
+void trigger_tower_config::add_layer(const unsigned int layer_nr)
+{
+    layers.insert(layer_nr);
+
+    for (std::vector<processor_organizer_config>::iterator po_it = processor_organizers.begin();
+         po_it != processor_organizers.end();
+         ++po_it)
+    {
+        po_it->add_layer(layer_nr);
     }
 
     return;

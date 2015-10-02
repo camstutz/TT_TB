@@ -22,6 +22,7 @@
 #include <systemc.h>
 
 #include <iostream>
+#include <iterator>
 
 /*!
  * @brief

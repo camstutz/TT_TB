@@ -1,7 +1,7 @@
 /*!
  * @file processor_organizer_config.cpp
  * @author Christian Amstutz
- * @date September 1, 2015
+ * @date October 2, 2015
  *
  * @brief
  *
@@ -17,7 +17,6 @@
 processor_organizer_config::processor_organizer_config()
 {
     set_do_input_nr(PRB_NR_PER_TOWER_DEFAULT);
-    set_layer_nr(LAYER_DEFAULT);
     set_processor_output_nr(PRB_NR_PER_TOWER_DEFAULT);
     set_stub_buffer_in_FIFO_size(PO_STUB_IN_FIFO_DEFAULT);
     set_stub_buffer_out_FIFO_size(PO_STUB_OUT_FIFO_DEFAULT);
@@ -45,12 +44,12 @@ void processor_organizer_config::set_do_input_nr(unsigned int input_nr)
 }
 
 // *****************************************************************************
-void processor_organizer_config::set_layer_nr(unsigned int layer_nr)
+void processor_organizer_config::add_layer(const unsigned int layer_nr)
 {
-    this->layer_nr = layer_nr;
+    layers.insert(layer_nr);
 
-    demultiplexer.layer_nr = layer_nr;
-    layer_splitter.layer_nr = layer_nr;
+    demultiplexer.layer_nr = layers.size();
+    layer_splitter.add_layer(layer_nr);
 
     return;
 }

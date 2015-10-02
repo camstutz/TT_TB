@@ -29,7 +29,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         hit_fifos(configuration.get_chip_addresses(), "hit_fifo", configuration.hit_FIFO_size),
         gbt_links(configuration.get_module_addresses(), "GBT_link"),
         dtc_links(configuration.dtcs.size(), "DTC_link"),
-        result_hits(configuration.trigger_tower.get_prb_nr() * configuration.trigger_tower.get_AM_boards_per_prb(), configuration.trigger_tower.get_layer_nr(), "result_road"),
+        result_hits(configuration.trigger_towers.size(), configuration.trigger_tower.get_prb_nr(), configuration.trigger_tower.get_AM_boards_per_prb(), 10, "result_hit"),
         hits_accepted_sig("hits_accepted_sig"),
         hits_discarded_sig("hits_discarded_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
@@ -66,6 +66,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         ++dtc_id;
     }
 
+    unsigned int tower_id = 0;
     for ( sc_map_list<track_trigger_config::tower_id_t, trigger_tower>::iterator tower_it = trigger_towers.begin();
           tower_it != trigger_towers.end();
           ++tower_it)
@@ -78,7 +79,44 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
             unsigned int dtc_key = tower_it->dtc_inputs.get_key(*input_it).second;
             input_it->bind(dtc_links[dtc_key]);
         }
-        tower_it->hit_outputs.bind(result_hits);
+
+//        unsigned int first_AM_board = tower_nr*configuration.trigger_tower.get_AM_boards_per_prb();
+//        unsigned int last_AM_board = (tower_nr+1)*configuration.trigger_tower.get_AM_boards_per_prb()-1;
+//        sc_map_square<sc_buffer<track_finder::hit_stream> >::iterator result_hit_it = result_hits(sc_map_square_key(first_AM_board, 0), sc_map_square_key(last_AM_board, 10));
+//        for (sc_map_cube<sc_out<am_board::output_stream_t> >::iterator hit_output_it = tower_it->hit_outputs.begin();
+//             hit_output_it != tower_it->hit_outputs.end();
+//             ++hit_output_it)
+//        {
+//            hit_output_it->bind(*result_hit_it);
+//            ++result_hit_it;
+//        }
+
+        for (unsigned int prb_id = 0;
+             prb_id < configuration.trigger_tower.get_prb_nr();
+             ++prb_id)
+        {
+            for (unsigned int am_id = 0;
+                 am_id != configuration.trigger_tower.get_AM_boards_per_prb();
+                 ++am_id)
+            {
+                std::cout << tower_it->configuration.layers.size() << std::endl;
+                for (typedef std::set<unsigned int>::iterator layer_it2 = tower_it->configuration.layers.begin();
+                     layer_it2 != tower_it->configuration.layers.end();
+                     ++layer_it2)
+                {
+                    std::cout << *layer_it2 << ", ";
+                }
+                for (unsigned int layer_id = 0;
+                     layer_id < tower_it->configuration.layers.size();
+                     ++layer_id)
+                {
+                    tower_it->hit_outputs.at(prb_id, am_id, layer_id).bind(result_hits.at(tower_id, prb_id, am_id, layer_id));
+                }
+            }
+
+        }
+
+        ++tower_id;
     }
 
     roadAnalyzer.hits_accepted.bind(hits_accepted_sig);

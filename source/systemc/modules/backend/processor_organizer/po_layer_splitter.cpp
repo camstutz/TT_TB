@@ -1,7 +1,7 @@
 /*!
  * @file po_layer_splitter.cpp
  * @author Christian Amstutz
- * @date September 14, 2015
+ * @date October 2, 2015
  *
  * @brief
  */
@@ -24,7 +24,7 @@ po_layer_splitter::po_layer_splitter(sc_module_name _name,
         po_layer_splitter_config configuration) :
         configuration(configuration),
         input_stubs("input_stubs"),
-        splitted_stubs(configuration.layer_nr, "splitted_stubs")
+        splitted_stubs(configuration.layers.size(), "splitted_stubs")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(split_stubs);
@@ -57,11 +57,12 @@ void po_layer_splitter::split_stubs()
             if (layer_it != configuration.layer_lookup_table.end())
             {
                 unsigned int layer_id = layer_it->second;
-                if (!splitted_stubs[layer_id].nb_write(stub))
+                unsigned int output_id = std::distance(configuration.layers.begin(), configuration.layers.find(layer_id));
+                if (!splitted_stubs[output_id].nb_write(stub))
                 {
                     std::cerr << sc_time_stamp() << ": FIFO overflow @ "
                               << name() << ".splitted stubs["
-                              << layer_id << "]" << std::endl;
+                              << output_id << "]" << std::endl;
                 }
             }
             else

@@ -19,6 +19,8 @@
 
 #include "../../../TT_configuration/configuration_defaults.hpp"
 
+#include <set>
+
 // *****************************************************************************
 /*!
  * @brief
@@ -29,12 +31,13 @@ class processor_organizer_config
 
 private:
     unsigned int do_input_nr;
-    unsigned int layer_nr;
     unsigned int processor_output_nr;
 
     unsigned int stub_buffer_in_FIFO_size;
     unsigned int stub_buffer_out_FIFO_size;
     unsigned int layer_splittet_FIFO_size;
+
+    std::set<unsigned int> layers;
 
 public:
     input_collector_config input_collector;
@@ -45,7 +48,7 @@ public:
 
     void add_do();
     void set_do_input_nr(unsigned int input_nr);
-    void set_layer_nr(unsigned int layer_nr);
+    void add_layer(const unsigned int layer_nr);
     void set_processor_output_nr(unsigned int output_nr);
     void set_stub_buffer_in_FIFO_size(unsigned int stub_buffer_in_FIFO_size);
     void set_stub_buffer_out_FIFO_size(unsigned int stub_buffer_out_FIFO_size);
