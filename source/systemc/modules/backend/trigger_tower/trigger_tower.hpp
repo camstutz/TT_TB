@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.hpp
  * @author Christian Amstutz
- * @date August 17, 2015
+ * @date October 6, 2015
  *
  * @brief
  *
@@ -30,8 +30,10 @@
  */
 class trigger_tower : public sc_module
 {
+private:
+    const trigger_tower_config* configuration;
+
 public:
-    const trigger_tower_config configuration;
     const unsigned int layer_nr;
     const unsigned int prb_nr;
     const unsigned int dtc_per_prb;

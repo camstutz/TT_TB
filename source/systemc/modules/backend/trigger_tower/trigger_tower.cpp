@@ -16,7 +16,7 @@
 trigger_tower::trigger_tower(const sc_module_name _name,
         const trigger_tower_config& configuration) :
         sc_module(_name),
-        configuration(configuration),
+        configuration(&configuration),
         layer_nr(configuration.layers.size()),
         prb_nr(configuration.type.prb_nr),
         dtc_per_prb(configuration.type.dtc_per_prb),

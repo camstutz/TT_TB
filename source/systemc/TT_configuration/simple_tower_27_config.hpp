@@ -89,7 +89,6 @@ inline track_trigger_config simple_tower_27_config()
 //    configuration.dtc.input_unit.MPA_input_stub = configuration.mpa_sensor_module.frontend_chip.input_stub;
 //
 //    // Trigger Tower
-//    configuration.trigger_tower.set_layer_nr(6);
 //    configuration.trigger_tower.set_dtc_per_prb(2);
     configuration.trigger_tower.set_prb_nr(1);
 //    configuration.trigger_tower.set_AM_boards_per_prb(2);

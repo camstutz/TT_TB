@@ -49,7 +49,6 @@ void processor_organizer_config::add_layer(const unsigned int layer_nr)
     layers.insert(layer_nr);
 
     demultiplexer.layer_nr = layers.size();
-    layer_splitter.add_layer(layer_nr);
 
     return;
 }

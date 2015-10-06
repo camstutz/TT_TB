@@ -371,7 +371,7 @@ void track_trigger_config::update_layer_lookup_tables()
         {
             unsigned int layer = module_it->second.address.layer;
             tower.add_layer(layer);
-            proc_organizer->layer_splitter.layer_lookup_table[local_address] = layer;
+            proc_organizer->layer_splitter.add_module(local_address, layer);
         }
     }
 

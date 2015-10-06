@@ -29,7 +29,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         hit_fifos(configuration.get_chip_addresses(), "hit_fifo", configuration.hit_FIFO_size),
         gbt_links(configuration.get_module_addresses(), "GBT_link"),
         dtc_links(configuration.dtcs.size(), "DTC_link"),
-        result_hits(configuration.trigger_towers.size(), configuration.trigger_tower.get_prb_nr(), configuration.trigger_tower.get_AM_boards_per_prb(), 12, "result_hit"),
+        result_hits(configuration.trigger_towers.size(), configuration.trigger_tower.get_prb_nr(), configuration.trigger_tower.get_AM_boards_per_prb(), 10, "result_hit"),
         hits_accepted_sig("hits_accepted_sig"),
         hits_discarded_sig("hits_discarded_sig"),
         hitGenerator("Hit_Generator", configuration.hit_generator),
@@ -99,13 +99,12 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
                  am_id != configuration.trigger_tower.get_AM_boards_per_prb();
                  ++am_id)
             {
-                unsigned int rel_layer_id = 0;
-                for (typename std::set<unsigned int>::iterator layer_it = tower_it->configuration.layers.begin();
-                     layer_it != tower_it->configuration.layers.end();
-                     ++layer_it)
+
+                for (unsigned int rel_layer_id = 0;
+                     rel_layer_id < tower_it->layer_nr;
+                     ++rel_layer_id)
                 {
                      tower_it->hit_outputs.at(prb_id, am_id, rel_layer_id).bind(result_hits.at(tower_id, prb_id, am_id, rel_layer_id));
-                     ++rel_layer_id;
                 }
             }
 

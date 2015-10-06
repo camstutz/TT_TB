@@ -24,7 +24,7 @@ po_layer_splitter::po_layer_splitter(sc_module_name _name,
         po_layer_splitter_config configuration) :
         configuration(configuration),
         input_stubs("input_stubs"),
-        splitted_stubs(configuration.layers.size(), "splitted_stubs")
+        splitted_stubs(configuration.get_layer_nr(), "splitted_stubs")
 {
     // ----- Process registration ----------------------------------------------
     SC_THREAD(split_stubs);
@@ -51,13 +51,13 @@ void po_layer_splitter::split_stubs()
             unsigned int local_prb = stub.get_stub().get_prb();
             unsigned int local_dtc = stub.get_stub().get_dtc();
             unsigned int local_mod = stub.get_stub().get_fe_module();
-            prbf_module_address local_address = prbf_module_address(configuration.trigger_tower_id, local_prb, local_dtc, local_mod);
+            prbf_module_address local_address = prbf_module_address(configuration.get_trigger_tower_id(), local_prb, local_dtc, local_mod);
 
-            po_layer_splitter_config::layer_lookup_table_t::const_iterator layer_it = configuration.layer_lookup_table.find(local_address);
-            if (layer_it != configuration.layer_lookup_table.end())
+            std::pair<bool, unsigned int> layer_result = configuration.get_layer(local_address);
+            if (layer_result.first)
             {
-                unsigned int layer_id = layer_it->second;
-                unsigned int output_id = std::distance(configuration.layers.begin(), configuration.layers.find(layer_id));
+                unsigned int layer_id = layer_result.second;
+                unsigned int output_id = configuration.get_layer_pos(layer_id);
                 if (!splitted_stubs[output_id].nb_write(stub))
                 {
                     std::cerr << sc_time_stamp() << ": FIFO overflow @ "
@@ -74,23 +74,4 @@ void po_layer_splitter::split_stubs()
         }
     }
 
-}
-
-// *****************************************************************************
-void po_layer_splitter::print_layer_table()
-{
-    std::cout << "Layer Translation table of " << name()
-              << " sized " << configuration.layer_lookup_table.size() << std::endl;
-    std::cout << "-----------------------------------------------" << std::endl;
-    for (po_layer_splitter_config::layer_lookup_table_t::const_iterator layer_table_line = configuration.layer_lookup_table.begin();
-         layer_table_line != configuration.layer_lookup_table.end();
-         ++layer_table_line)
-    {
-        std::cout << layer_table_line->first
-                  << " --> "
-                  << layer_table_line->second
-                  << std::endl;
-    }
-
-    return;
 }

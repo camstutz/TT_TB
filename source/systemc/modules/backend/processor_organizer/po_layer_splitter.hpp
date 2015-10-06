@@ -47,7 +47,6 @@ public:
     void split_stubs();
 
 // ----- Other Method Declarations ---------------------------------------------
-    void print_layer_table();
 
 // ----- Module Instantiations -------------------------------------------------
 
