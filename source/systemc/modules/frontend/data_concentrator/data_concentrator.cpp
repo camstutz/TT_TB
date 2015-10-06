@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date July 30, 2015
+ * @date October 6, 2015
  *
  * @brief
  */
@@ -37,12 +37,15 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
         output_stub_config(configuration.output_stub)
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(controller);
+    SC_METHOD(controller);
         sensitive << clk.pos();
-    SC_THREAD(read_FE_chips);
+        dont_initialize();
+    SC_METHOD(read_FE_chips);
         sensitive << clk.pos();
+        dont_initialize();
     SC_THREAD(write_output);
         sensitive << clk.pos();
+        dont_initialize();
 
     // ----- Module variable initialization ------------------------------------
 
@@ -53,6 +56,7 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
 
     stub_buffer.resize(2, stub_buffer_type());
 
+    LHC_bunch_crossing.write(0);
     clock_phase.write(0);
     stub_buffer_write_sel.write(0);
     stub_buffer_read_sel.write(1);
@@ -63,82 +67,68 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
 // *****************************************************************************
 void data_concentrator::read_FE_chips()
 {
-    while(1)
+    sc_map_square<sc_in<bool> >::iterator data_valid_it = data_valid.begin();
+    typename sc_map_square<sc_in<fe_stub_t> >::iterator fe_in_it = fe_stub_in.begin();
+    for (; fe_in_it != fe_stub_in.end(); ++fe_in_it)
     {
-        wait();
-
-        sc_map_square<sc_in<bool> >::iterator data_valid_it = data_valid.begin();
-        typename sc_map_square<sc_in<fe_stub_t> >::iterator fe_in_it = fe_stub_in.begin();
-        for (; fe_in_it != fe_stub_in.end(); ++fe_in_it)
+        if (*data_valid_it == true)
         {
-            if (*data_valid_it == true)
-            {
-                fe_stub_t fe_data = fe_in_it->read();
-                std::pair<bool, typename sc_map_square<sc_in<fe_stub_t> >::key_type>
-                        signal_key = fe_stub_in.get_key(*fe_in_it);
+            fe_stub_t fe_data = fe_in_it->read();
+            std::pair<bool, typename sc_map_square<sc_in<fe_stub_t> >::key_type>
+                    signal_key = fe_stub_in.get_key(*fe_in_it);
 
-                output_stub_t stub(output_stub_config);
-                stub.set_strip(fe_data.get_strip());
-                stub.set_bend(fe_data.get_bend());
-                stub.set_bx(calculate_bx(clock_phase.read(), fe_data.get_bx()));
+            output_stub_t stub(output_stub_config);
+            stub.set_strip(fe_data.get_strip());
+            stub.set_bend(fe_data.get_bend());
+            stub.set_bx(calculate_bx(clock_phase.read(), fe_data.get_bx()));
 
-                stub.set_fechip(signal_key.second.Y);
+            stub.set_fechip(signal_key.second.Y);
 
-                stub_buffer[stub_buffer_write_sel].push_back(stub);
-            }
-
-            ++data_valid_it;
+            stub_buffer[stub_buffer_write_sel].push_back(stub);
         }
+
+        ++data_valid_it;
     }
 
+    return;
 }
 
 // *****************************************************************************
 void data_concentrator::controller()
 {
-    LHC_bunch_crossing.write(0);
+    LHC_bunch_crossing.write(LHC_bunch_crossing.read() + 1);
 
-    while (1)
+    if (clock_phase.read() == output_window_cycles-1)
     {
-        wait();
-
-        LHC_bunch_crossing.write(LHC_bunch_crossing.read() + 1);
-
-        if (clock_phase.read() == output_window_cycles-1)
-        {
-            clock_phase.write(0);
-            stub_buffer_write_sel.write( !stub_buffer_write_sel.read() );
-            stub_buffer_read_sel.write( !stub_buffer_read_sel.read() );
-        }
-        else
-        {
-            clock_phase.write(clock_phase.read()+1);
-        }
+        clock_phase.write(0);
+        stub_buffer_write_sel.write( !stub_buffer_write_sel.read() );
+        stub_buffer_read_sel.write( !stub_buffer_read_sel.read() );
+    }
+    else
+    {
+        clock_phase.write(clock_phase.read()+1);
     }
 
+    return;
 }
 
 // *****************************************************************************
 void data_concentrator::write_output()
 {
-    while(1)
+    if (clock_phase.read() == 0)
     {
-        wait();
+        output_t output_frame = create_output_buffer();
+        dc_out_sig.write(output_frame);
 
-        if (clock_phase.read() == 0)
+        if (output_frame.stub_count() > 0)
         {
-            output_t output_frame = create_output_buffer();
-            dc_out_sig.write(output_frame);
-
-            if (output_frame.stub_count() > 0)
-            {
-                SYSTEMC_LOG << "Frame @ bx=" << output_frame.get_header().get_bunch_crossing()
-                            << " with "
-                            << output_frame.get_header().get_stub_count() << " stubs transmitted.";
-            }
+            SYSTEMC_LOG << "Frame @ bx=" << output_frame.get_header().get_bunch_crossing()
+                        << " with "
+                        << output_frame.get_header().get_stub_count() << " stubs transmitted.";
         }
     }
 
+    return;
 }
 
 // *****************************************************************************
