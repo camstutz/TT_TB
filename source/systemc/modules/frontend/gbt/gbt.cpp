@@ -1,7 +1,7 @@
 /*!
 i * @file gbt.cpp
  * @author Christian Amstutz
- * @date May 5, 2015
+ * @date October 8, 2015
  *
  * @brief
  *
@@ -21,8 +21,9 @@ gbt::gbt(sc_module_name _name, gbt_config configuration) :
     optical_link("optical_link")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(combine_inputs);
+    SC_METHOD(combine_inputs);
         sensitive << cic_in;
+        dont_initialize();
 
     // ----- Module variable initialization ------------------------------------
 
@@ -34,23 +35,19 @@ gbt::gbt(sc_module_name _name, gbt_config configuration) :
 // *****************************************************************************
 void gbt::combine_inputs()
 {
-    while (1)
+    // TODO: adapt to more than 2 inputs
+
+    output_t out_value(cic_in.at(0).read(), cic_in.at(1).read() );
+    optical_link.write(out_value);
+
+    if ((cic_in[0].read().stub_count() > 0) | (cic_in[1].read().stub_count() > 0))
     {
-        wait();
-
-        // TODO: adapt to more than 2 inputs
-
-        output_t out_value(cic_in.at(0).read(), cic_in.at(1).read() );
-        optical_link.write(out_value);
-
-        if ((cic_in[0].read().stub_count() > 0) | (cic_in[1].read().stub_count() > 0))
-        {
-            SYSTEMC_LOG << "Frames @ bx=" << cic_in[0].read().get_header().get_bunch_crossing()
-                    << " with "
-                    << cic_in[0].read().stub_count() << "|"
-                    << cic_in[1].read().stub_count()
-                    << " stubs transmitted.";
-        }
+        SYSTEMC_LOG << "Frames @ bx=" << cic_in[0].read().get_header().get_bunch_crossing()
+                << " with "
+                << cic_in[0].read().stub_count() << "|"
+                << cic_in[1].read().stub_count()
+                << " stubs transmitted.";
     }
 
+    return;
 }
