@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date August 22, 2015
+ * @date October 8, 2015
  *
  * @brief
  *
@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../../../data_formats/stub/stub.hpp"
+#include "buffer_stub.hpp"
 #include "frontend_chip_config.hpp"
 
 #include "sc_delay_signal.hpp"
@@ -23,6 +24,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <string>
 
 /*!
@@ -33,6 +35,7 @@ class frontend_chip: public sc_module
 public:
     typedef stub input_stub_t;
     typedef stub output_stub_t;
+    typedef buffer_stub sorted_buffer_stub_t;
 
 // ----- Configuration ---------------------------------------------------------
     stub_config input_stub_config;
@@ -45,11 +48,15 @@ public:
     sc_map_linear<sc_out<output_stub_t> > stub_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_fifo<output_stub_t> selected_stubs;
     sc_map_linear<sc_signal<bool> > data_valid_sig;
     sc_map_linear<sc_signal<output_stub_t> > stub_output_sig;
 
+    sc_signal<unsigned int> clock_cycle;
+    sc_signal<unsigned int> wbuf_selector;
+    sc_signal<unsigned int> rbuf_selector;
+
 // ----- Process Declarations --------------------------------------------------
+    void controller();
     void read_input();
     void write_hits();
 
@@ -71,10 +78,5 @@ private:
     unsigned int collection_cycles;
     unsigned int total_collected_stubs;
 
-	typedef std::multimap<typename output_stub_t::bend_t, output_stub_t> ordering_buffer_t;
-
-	ordering_buffer_t ordered_stubs;
-    std::vector<std::vector<input_stub_t> > collection_buffer;
-
-    void prioritize_hits();
+    std::vector<std::set<sorted_buffer_stub_t> > sorted_buffers;
 };

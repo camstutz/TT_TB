@@ -41,7 +41,8 @@ public:
 
     /** Constructor: All member variables are set to 0 by default. */
     stub();
-    stub(stub_config configuration);
+    stub(const stub&);
+    stub(const stub_config& configuration);
     stub(stub_config configuration, const valid_t valid, const bx_t bx,
             const fechip_t fechip, const strip_t strip, const bend_t bend,
             const pixel_t pixel);

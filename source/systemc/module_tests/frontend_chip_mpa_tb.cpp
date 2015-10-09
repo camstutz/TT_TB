@@ -22,7 +22,7 @@ frontend_chip_mpa_tb::frontend_chip_mpa_tb(sc_module_name _name,
         data_valid_signals(configuration.mpa_sensor_module.frontend_chip.max_stubs_per_cycle, "data_valid_sig"),
         fe_out_signals(configuration.mpa_sensor_module.frontend_chip.max_stubs_per_cycle, "fe_out_sig"),
         LHC_clock("LHC_clock", 25, SC_NS, 0.5, 50, SC_NS, true),
-        dut_front_end_chip("Front_End_Chip_DUT", configuration.mpa_frontend_chip)
+        dut_front_end_chip("Front_End_Chip_DUT", configuration.mpa_sensor_module.frontend_chip)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_front_end_chip.clk.bind(LHC_clock);
@@ -63,51 +63,47 @@ frontend_chip_mpa_tb::~frontend_chip_mpa_tb()
 void frontend_chip_mpa_tb::generate_stubs()
 {
     // at 60 ns
-    wait(60, SC_NS);
+    wait(85, SC_NS);
     en_sig.write(1);
-    write_stub(0x0, 0x7, 0xFF, 0x1);
+    write_stub(0x0, 0x7, 0x01, 0x1);
 
     // at 92 ns
     wait(32, SC_NS);
-    write_stub(0x0, 0x8, 0x80, 0x2);
-    write_stub(0x0, 0x9, 0x90, 0x3);
-    write_stub(0x0, 0x9, 0x91, 0x3);
-    write_stub(0x0, 0x9, 0x92, 0x3);
+    write_stub(0x0, 0x8, 0x01, 0x2);
+    write_stub(0x0, 0x9, 0x01, 0x3);
+    write_stub(0x0, 0x9, 0x02, 0x3);
+    write_stub(0x0, 0x9, 0x03, 0x3);
 
     // at 93 ns
     wait(1, SC_NS);
-    write_stub(0x0, 0xA, 0x81, 0x4);
+    write_stub(0x0, 0xA, 0x01, 0x4);
 
-    // at 94 ns
     wait(25, SC_NS);
-    write_stub(0x0, 0xB, 0x82, 0x5);
-    write_stub(0x0, 0xB, 0x42, 0x6);
+    write_stub(0x0, 0xB, 0x01, 0x5);
+    write_stub(0x0, 0xB, 0x01, 0x6);
 
-    // at 119 ns
     wait(25, SC_NS);
-    write_stub(0x0, 0xC, 0x1, 0x6);
+    write_stub(0x0, 0xC, 0x02, 0x6);
 
-    // at 144 ns
     wait(25, SC_NS);
-    write_stub(0x0, 0xD, 0x12, 0x7);
-    write_stub(0x0, 0xE, 0x15, 0x8);
+    write_stub(0x0, 0xD, 0x01, 0x7);
+    write_stub(0x0, 0xE, 0x01, 0x8);
 
-    //! todo: there is an error here with this event falling on a clock edge and does not show on the output
     // at 160 ns
     wait(16, SC_NS);
-    write_stub(0x1, 0x14, 0x14, 0x9);
+    write_stub(0x1, 0x14, 0x01, 0x9);
 
     // at 161 ns
     wait(1, SC_NS);
-    write_stub(0x0, 0xF, 0x1, 0xA);
+    write_stub(0x0, 0xF, 0x01, 0xA);
 
     // at 200 ns
     wait(19, SC_NS);
-    write_stub(0x1, 0x10, 0xB, 0xB);
+    write_stub(0x1, 0x10, 0x01, 0xB);
 
     // at 201 ns
     wait(1, SC_NS);
-    write_stub(0x1, 0x12, 0x1, 0xC);
+    write_stub(0x1, 0x12, 0x01, 0xC);
 
     return;
 }

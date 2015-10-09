@@ -49,8 +49,8 @@ public:
     sc_out<gbt_link_t> gbt_link;
 
     // ----- Local Channel Declarations ----------------------------------------
-    sc_map_cube<sc_signal<bool> > fe_data_valid_signals;
-    sc_map_cube<sc_signal<fe_stub_t> > fe_out_signals;
+    sc_map_cube<sc_buffer<bool> > fe_data_valid_signals;
+    sc_map_cube<sc_buffer<fe_stub_t> > fe_out_signals;
     sc_map_linear<sc_buffer<cic_out_t> > cic_out_signals;
 
     // ----- Process Declarations ----------------------------------------------

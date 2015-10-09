@@ -31,18 +31,18 @@ TBPATH     := source/systemc/module_tests
 tb_sources += $(TBPATH)/TT_TB_testbench.cpp
 #tb_sources += $(TBPATH)/hit_file_test.cpp
 #tb_sources += $(TBPATH)/prbf_tb.cpp
-tb_sources += $(TBPATH)/hit_generator_tb.cpp
+#tb_sources += $(TBPATH)/hit_generator_tb.cpp
 tb_sources += $(TBPATH)/frontend_chip_cbc_tb.cpp $(TBPATH)/frontend_chip_mpa_tb.cpp
-tb_sources += $(TBPATH)/data_concentrator_cbc_tb.cpp $(TBPATH)/data_concentrator_mpa_tb.cpp
-tb_sources += $(TBPATH)/gbt_tb.cpp 
-tb_sources += $(TBPATH)/dtc_tb.cpp $(TBPATH)/dtc_input_unit_tb.cpp $(TBPATH)/dtc_output_unit_tb.cpp
-tb_sources += $(TBPATH)/backend_common/bx_stub_buffer_tb.cpp $(TBPATH)/backend_common/input_collector_tb.cpp $(TBPATH)/backend_common/time_demux_tb.cpp
-tb_sources += $(TBPATH)/data_organizer/data_organizer_tb.cpp
-tb_sources += $(TBPATH)/processor_organizer/po_layer_splitter_tb.cpp $(TBPATH)/processor_organizer/processor_organizer_tb.cpp
-tb_sources += $(TBPATH)/am_board/am_input_module_one_layer_tb.cpp $(TBPATH)/am_board/am_input_module_tb.cpp
-tb_sources += $(TBPATH)/track_finder/pattern_bank_tb.cpp
+#tb_sources += $(TBPATH)/data_concentrator_cbc_tb.cpp $(TBPATH)/data_concentrator_mpa_tb.cpp
+#tb_sources += $(TBPATH)/gbt_tb.cpp 
+#tb_sources += $(TBPATH)/dtc_tb.cpp $(TBPATH)/dtc_input_unit_tb.cpp $(TBPATH)/dtc_output_unit_tb.cpp
+#tb_sources += $(TBPATH)/backend_common/bx_stub_buffer_tb.cpp $(TBPATH)/backend_common/input_collector_tb.cpp $(TBPATH)/backend_common/time_demux_tb.cpp
+#tb_sources += $(TBPATH)/data_organizer/data_organizer_tb.cpp
+#tb_sources += $(TBPATH)/processor_organizer/po_layer_splitter_tb.cpp $(TBPATH)/processor_organizer/processor_organizer_tb.cpp
+#tb_sources += $(TBPATH)/am_board/am_input_module_one_layer_tb.cpp $(TBPATH)/am_board/am_input_module_tb.cpp
+#tb_sources += $(TBPATH)/track_finder/pattern_bank_tb.cpp
 #tb_sources += $(TBPATH)/track_finder/am_chip_tb.cpp
-tb_sources += $(TBPATH)/trigger_tower_tb.cpp
+#tb_sources += $(TBPATH)/trigger_tower_tb.cpp
  
 #################################################################################################
 
@@ -113,6 +113,9 @@ libraries:
 	@$(RM) $*.d.tmp
 
 source/systemc/systems/TT_TB_sim.d : source/systemc/systems/TT_TB_sim.cpp
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
+
+source/systemc/module_tests/TT_TB_testbench.d : source/systemc/module_tests/TT_TB_testbench.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $< -MM -MF $(subst .cpp,.d,$<)
 
 #%.o: %.cpp %.cc

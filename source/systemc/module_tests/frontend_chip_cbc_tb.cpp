@@ -26,7 +26,7 @@ frontend_chip_cbc_tb::frontend_chip_cbc_tb(sc_module_name _name,
         data_valid_signals(configuration.cbc_sensor_module.frontend_chip.max_stubs_per_cycle, "data_valid_sig"),
         fe_out_signals(configuration.cbc_sensor_module.frontend_chip.max_stubs_per_cycle, "fe_out_sig"),
         LHC_clock("LHC_clock", 25, SC_NS, 0.5, 25, SC_NS, true),
-        dut_front_end_chip("Front_End_Chip_DUT", configuration.cbc_frontend_chip)
+        dut_front_end_chip("Front_End_Chip_DUT", configuration.cbc_sensor_module.frontend_chip)
 {
     // ----- Creation and binding of signals -----------------------------------
     dut_front_end_chip.clk.bind(LHC_clock);

@@ -41,7 +41,7 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
         sensitive << clk.pos();
         dont_initialize();
     SC_METHOD(read_FE_chips);
-        sensitive << clk.pos();
+        sensitive << data_valid;
         dont_initialize();
     SC_METHOD(write_output);
         sensitive << clk.pos();

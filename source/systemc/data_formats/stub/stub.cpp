@@ -14,31 +14,36 @@
 #include "stub.hpp"
 
 // *****************************************************************************
-stub::stub()
-{
-    this->valid = 0;
-    this->bx = 0;
-    this->fechip = 0;
-    this->strip = 0;
-    this->bend = 0;
-    this->pixel = 0;
-
-    return;
-}
+stub::stub() :
+        valid(0),
+        bx(0),
+        fechip(0),
+        strip(0),
+        bend(0),
+        pixel(0)
+{}
 
 // *****************************************************************************
-stub::stub(stub_config configuration) :
-                configuration(configuration)
-{
-    this->valid = 0;
-    this->bx = 0;
-    this->fechip = 0;
-    this->strip = 0;
-    this->bend = 0;
-    this->pixel = 0;
+stub::stub(const stub& original) :
+        configuration(original.configuration),
+        valid(original.valid),
+        bx(original.bx),
+        fechip(original.fechip),
+        strip(original.strip),
+        bend(original.bend),
+        pixel(original.pixel)
+{}
 
-    return;
-}
+// *****************************************************************************
+stub::stub(const stub_config& configuration) :
+        configuration(configuration),
+        valid(0),
+        bx(0),
+        fechip(0),
+        strip(0),
+        bend(0),
+        pixel(0)
+{}
 
 // *****************************************************************************
 stub::stub(stub_config configuration, const valid_t valid, const bx_t bx,
