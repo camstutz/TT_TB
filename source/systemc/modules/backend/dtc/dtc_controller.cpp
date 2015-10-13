@@ -1,7 +1,7 @@
 /*!
  * @file dtc_controller.cpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date October 13, 2015
  *
  * @brief
  */
@@ -31,7 +31,7 @@ dtc_controller::dtc_controller(sc_module_name _name,
         bx_counter(-1)
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(update_signals);
+    SC_METHOD(update_signals);
         sensitive << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
@@ -44,15 +44,11 @@ dtc_controller::dtc_controller(sc_module_name _name,
 // *****************************************************************************
 void dtc_controller::update_signals()
 {
-    while (1)
-    {
-        ++bx_counter;
+    ++bx_counter;
 
-        bunch_crossing.write(bx_counter % fe_collect_cycles);
-        write_buffer.write((bx_counter / fe_collect_cycles) % 2);
-        read_buffer.write(((bx_counter + fe_collect_cycles)/ fe_collect_cycles) % 2);
+    bunch_crossing.write(bx_counter % fe_collect_cycles);
+    write_buffer.write((bx_counter / fe_collect_cycles) % 2);
+    read_buffer.write(((bx_counter + fe_collect_cycles)/ fe_collect_cycles) % 2);
 
-        wait();
-    }
-
+    return;
 }

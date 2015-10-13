@@ -1,7 +1,7 @@
 /*!
  * @file dtc_output_unit.cpp
  * @author Christian Amstutz
- * @date July 17, 2015
+ * @date October 13, 2015
  *
  * @brief
  */
@@ -32,8 +32,9 @@ dtc_output_unit::dtc_output_unit(sc_module_name _name,
         tower_out_stream("tower_out_stream")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(generate_frame);
+    SC_METHOD(generate_frame);
         sensitive << clk.pos();
+        dont_initialize();
 
     // ----- Module channel/variable initialization ----------------------------
 
@@ -45,32 +46,28 @@ dtc_output_unit::dtc_output_unit(sc_module_name _name,
 // *****************************************************************************
 void dtc_output_unit::generate_frame()
 {
-    while (1)
+    output_t::header_t::bunch_crossing_ID_t bx;
+    output_t output_frame;
+    for (unsigned int input_id = 0; input_id < dtc_input_nr; ++input_id)
     {
-        wait();
-
-        output_t::header_t::bunch_crossing_ID_t bx;
-        output_t output_frame;
-        for (unsigned int input_id = 0; input_id < dtc_input_nr; ++input_id)
+        sc_fifo_in<dtc_buffer_element>& bx_buffer = bx_buffer_inputs.at(input_id, read_buffer.read(), relative_bx.read());
+        while (bx_buffer.num_available() > 0)
         {
-            sc_fifo_in<dtc_buffer_element>& bx_buffer = bx_buffer_inputs.at(input_id, read_buffer.read(), relative_bx.read());
-            while (bx_buffer.num_available() > 0)
-            {
-                dtc_buffer_element stub_element;
-                stub_element= bx_buffer.read();
-                output_frame.add_stub(stub_element.second);
-                bx = stub_element.first;
-            }
-        }
-
-        if (output_frame.stub_count() > 0)
-        {
-            output_frame.set_bunch_crossing(bx);
-            tower_out_stream.write(output_frame);
-
-            SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
-                    << " with " << output_frame.stub_count() << " stubs transmitted.";
+            dtc_buffer_element stub_element;
+            stub_element= bx_buffer.read();
+            output_frame.add_stub(stub_element.second);
+            bx = stub_element.first;
         }
     }
 
+    if (output_frame.stub_count() > 0)
+    {
+        output_frame.set_bunch_crossing(bx);
+        tower_out_stream.write(output_frame);
+
+        SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
+                << " with " << output_frame.stub_count() << " stubs transmitted.";
+    }
+
+    return;
 }

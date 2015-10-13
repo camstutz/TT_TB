@@ -34,6 +34,7 @@ dtc_input_unit::dtc_input_unit(sc_module_name _name,
     // ----- Process registration ----------------------------------------------
     SC_METHOD(process_stubs);
         sensitive << gbt_input;
+        dont_initialize();
 
     // ----- Module channel/variable initialization ----------------------------
 
