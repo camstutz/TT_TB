@@ -51,9 +51,6 @@ int sc_main(int argc, char *agv[])
     std::cout << "Model constructed." << std::endl;
     std::cout << "Start simulation ..." << std::endl;
 
-    bool temp;
-    std::cin >> temp;
-
     analyzer.register_simulation_start();
     sc_start(1000, SC_NS);
     analyzer.register_simulation_end();
