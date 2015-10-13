@@ -1,7 +1,7 @@
 /*!
  * @file do_input_collector.hpp
  * @author Christian Amstutz
- * @date August 17, 2015
+ * @date October 13, 2015
  *
  * @brief
  *
@@ -81,8 +81,9 @@ input_collector<IN_FRAME, OUT_FRAME>::input_collector(sc_module_name _name,
         stub_output("stub_output")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(process_incoming_frame);
+    SC_METHOD(process_incoming_frame);
         sensitive << frame_inputs;
+        dont_initialize();
 
     // ----- Module channel/variable initialization ----------------------------
 
@@ -95,45 +96,41 @@ input_collector<IN_FRAME, OUT_FRAME>::input_collector(sc_module_name _name,
 template <typename IN_FRAME, typename OUT_FRAME>
 void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
 {
-    while (1)
+    unsigned int input_id = 0;
+    typename sc_map_linear<sc_in<input_t> >::iterator input_it = frame_inputs.begin();
+    for(; input_it != frame_inputs.end(); ++input_it)
     {
-        wait();
-
-        unsigned int input_id = 0;
-        typename sc_map_linear<sc_in<input_t> >::iterator input_it = frame_inputs.begin();
-        for(; input_it != frame_inputs.end(); ++input_it)
+        if (input_it->event())
         {
-            if (input_it->event())
+            input_frame_t input_frame = input_it->read();
+            bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();
+
+            if (input_frame.stub_count() > 0)
             {
-                input_frame_t input_frame = input_it->read();
-                bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();
+                SYSTEMC_LOG << "Frame " << bx
+                        << " @ input " << input_it.get_key().second
+                        << " with " << input_frame.stub_count() << " stubs reveived.";
+            }
 
-                if (input_frame.stub_count() > 0)
+            input_frame.reset_stub_ptr();
+            typename input_frame_t::stub_element_t in_stub_element;
+            while (input_frame.get_stub(in_stub_element))
+            {
+                typename input_frame_t::stub_element_t::type_field_t  type_field = in_stub_element.get_type_field();
+                typename output_frame_t::stub_t out_stub(input_id, in_stub_element.get_stub());
+
+                typename output_frame_t::stub_element_t out_stub_element(type_field, out_stub);
+                output_t output_bx_stub(bx, out_stub_element);
+
+                if (!stub_output.nb_write(output_bx_stub))
                 {
-                    SYSTEMC_LOG << "Frame " << bx
-                            << " @ input " << input_it.get_key().second
-                            << " with " << input_frame.stub_count() << " stubs reveived.";
-                }
-
-                input_frame.reset_stub_ptr();
-                typename input_frame_t::stub_element_t in_stub_element;
-                while (input_frame.get_stub(in_stub_element))
-                {
-                    typename input_frame_t::stub_element_t::type_field_t  type_field = in_stub_element.get_type_field();
-                    typename output_frame_t::stub_t out_stub(input_id, in_stub_element.get_stub());
-
-                    typename output_frame_t::stub_element_t out_stub_element(type_field, out_stub);
-                    output_t output_bx_stub(bx, out_stub_element);
-
-                    if (!stub_output.nb_write(output_bx_stub))
-                    {
-                        std::cerr << sc_time_stamp() << ": FIFO overflow @ "
-                                  << name() << ".stub_output" << std::endl;
-                    }
+                    std::cerr << sc_time_stamp() << ": FIFO overflow @ "
+                              << name() << ".stub_output" << std::endl;
                 }
             }
-            ++input_id;
         }
+        ++input_id;
     }
 
+    return;
 }

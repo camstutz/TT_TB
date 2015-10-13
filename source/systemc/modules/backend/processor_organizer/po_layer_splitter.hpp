@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../../../data_formats/prbf/PRBF.hpp"
+#include "../../../TT_configuration/prbf_module_address.hpp"
 
 #include "po_layer_splitter_config.hpp"
 

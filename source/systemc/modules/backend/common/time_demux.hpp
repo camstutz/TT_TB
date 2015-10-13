@@ -1,7 +1,7 @@
 /*!
  * @file time_demux.hpp
  * @author Christian Amstutz
- * @date August 17, 2015
+ * @date October 13, 2015
  *
  * @brief
  *
@@ -89,8 +89,9 @@ time_demux<FRAME_T>::time_demux(sc_module_name _name,
         bx_counter("bx_counter")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(transfer_stubs);
+    SC_METHOD(transfer_stubs);
         sensitive << clk.pos();
+        dont_initialize();
 
     // ----- Module channel/variable initialization ----------------------------
     bx_counter.write(timer_start);
@@ -104,34 +105,30 @@ time_demux<FRAME_T>::time_demux(sc_module_name _name,
 template <typename FRAME_T>
 void time_demux<FRAME_T>::transfer_stubs()
 {
-    while (1)
+    bunch_crossing_request.write(bx_counter.read());
+
+    if ((bx_counter.read() % bx_divider) == bx_offset)
     {
-        wait();
-
-        bunch_crossing_request.write(bx_counter.read());
-
-        if ((bx_counter.read() % bx_divider) == bx_offset)
+        for (unsigned int layer_id = 0; layer_id < layer_nr; ++layer_id)
         {
-            for (unsigned int layer_id = 0; layer_id < layer_nr; ++layer_id)
+            frame_t output_frame(bx_counter.read()-1);
+            while (stub_input[layer_id].num_available() > 0)
             {
-                frame_t output_frame(bx_counter.read()-1);
-                while (stub_input[layer_id].num_available() > 0)
-                {
-                    output_frame.add_stub(stub_input[layer_id].read());
-                }
-                proc_unit_outputs.at(((bx_counter.read() - bx_offset) / bx_divider)%proc_unit_output_nr, layer_id).write(output_frame);
+                output_frame.add_stub(stub_input[layer_id].read());
+            }
+            proc_unit_outputs.at(((bx_counter.read() - bx_offset) / bx_divider)%proc_unit_output_nr, layer_id).write(output_frame);
 
-                if (output_frame.stub_count() > 0)
-                {
-                    SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
-                            << " with " << output_frame.stub_count() << " stubs sent to "
-                            << "(out=" << (((bx_counter.read() - bx_offset) / bx_divider)%proc_unit_output_nr)
-                            << ", layer=" << layer_id << ").";
-                }
+            if (output_frame.stub_count() > 0)
+            {
+                SYSTEMC_LOG << "Frame " << output_frame.get_bunch_crossing()
+                        << " with " << output_frame.stub_count() << " stubs sent to "
+                        << "(out=" << (((bx_counter.read() - bx_offset) / bx_divider)%proc_unit_output_nr)
+                        << ", layer=" << layer_id << ").";
             }
         }
-
-        bx_counter.write(bx_counter.read() + 1);
     }
 
+    bx_counter.write(bx_counter.read() + 1);
+
+    return;
 }
