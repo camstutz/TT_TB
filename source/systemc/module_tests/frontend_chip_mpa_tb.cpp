@@ -63,12 +63,12 @@ frontend_chip_mpa_tb::~frontend_chip_mpa_tb()
 void frontend_chip_mpa_tb::generate_stubs()
 {
     // at 60 ns
-    wait(85, SC_NS);
+    wait(60, SC_NS);
     en_sig.write(1);
     write_stub(0x0, 0x7, 0x01, 0x1);
 
     // at 92 ns
-    wait(32, SC_NS);
+    wait(52, SC_NS);
     write_stub(0x0, 0x8, 0x01, 0x2);
     write_stub(0x0, 0x9, 0x01, 0x3);
     write_stub(0x0, 0x9, 0x02, 0x3);

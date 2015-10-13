@@ -85,15 +85,13 @@ void frontend_chip::controller()
 // *****************************************************************************
 void frontend_chip::read_input()
 {
-
-
     while (stub_input.num_available() > 0)
     {
         input_stub_t in_stub;
         stub_input.nb_read(in_stub);
         sorted_buffer_stub_t new_stub(clock_cycle, in_stub);
         sorted_buffers[wbuf_selector].insert(new_stub);
-std::cout << sc_time_stamp() << ": written to " << wbuf_selector << " - " << new_stub << std::endl;
+std::cout << sc_time_stamp() << ": written to " << wbuf_selector << " @ " << clock_cycle << " - " << new_stub << std::endl;
     }
 
     return;
@@ -107,32 +105,30 @@ void frontend_chip::write_hits()
 
     if (sorted_buffers[rbuf_selector].size() > 0)
     {
-        while (sorted_buffers[rbuf_selector].size() > 0)
+        unsigned int i = 0;
+        typename std::set<sorted_buffer_stub_t>::iterator stub_it = sorted_buffers[rbuf_selector].begin();
+        while ((sorted_buffers[rbuf_selector].size() > 0) & (i < max_stubs_per_cycle))
         {
-            unsigned int i = 0;
-            for (typename std::set<sorted_buffer_stub_t>::iterator stub_it = sorted_buffers[rbuf_selector].begin();
-                 (i < max_stubs_per_cycle) && stub_it != sorted_buffers[rbuf_selector].end();
-                 ++stub_it)
-            {
-                data_valid_sig.at(i).write(true);
-                stub stub_to_write(output_stub_config);
-                stub_to_write = *stub_it;
-                stub_to_write.set_bx(clock_cycle);
-                stub_output_sig.at(i).write(stub_to_write);
+            stub stub_to_write(output_stub_config);
+            stub_to_write = *stub_it;
+            stub_to_write.set_bx(stub_it->get_buffer_bx());
+
+            data_valid_sig.at(i).write(true);
+            stub_output_sig.at(i).write(stub_to_write);
 std::cout << sc_time_stamp() << ": read from " << rbuf_selector << " - " << stub_to_write << std::endl;
 
-                sorted_buffers[rbuf_selector].erase(stub_it);
-                ++i;
-            }
-            if (sorted_buffers[rbuf_selector].size() > 0)
-            {
-                sorted_buffers[rbuf_selector].clear();
-                // TODO: put this to log
-                std::cerr << sc_time_stamp() << ": Front End Chip received more than "
-                          << total_collected_stubs << " hits in " << collection_cycles
-                          << " cycles." << std::endl;
-            }
+            sorted_buffers[rbuf_selector].erase(stub_it);
+            ++i;
+            ++stub_it;
+        }
 
+        if ((clock_cycle == (collection_cycles-1)) & (sorted_buffers[rbuf_selector].size() > 0))
+        {
+            sorted_buffers[rbuf_selector].clear();
+            // TODO: put this to log
+            std::cerr << sc_time_stamp() << ": Front End Chip received more than "
+                      << total_collected_stubs << " hits in " << collection_cycles
+                      << " cycles." << std::endl;
         }
     }
 
