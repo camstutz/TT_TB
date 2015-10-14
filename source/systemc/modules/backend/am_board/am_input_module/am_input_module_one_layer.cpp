@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer.cpp
  * @author Christian Amstutz
- * @date July 21, 2015
+ * @date October 14, 2015
  *
  * @brief
  */
@@ -27,14 +27,19 @@ am_input_module_one_layer::am_input_module_one_layer(const sc_module_name _name)
     // ----- Module instance / channel binding ---------------------------------
 
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(read_frames);
+    SC_METHOD(read_frames);
         sensitive << frame_input;
-    SC_THREAD(update_control_output);
+        dont_initialize();
+
+    SC_METHOD(update_control_output);
         sensitive << clk.pos();
-    SC_THREAD(process_one_frame);
+
+    SC_METHOD(process_one_frame);
         sensitive << start_process_frame.pos();
         sensitive << delete_frame.pos();
-    SC_THREAD(create_stream);
+        dont_initialize();
+
+    SC_METHOD(create_stream);
         sensitive << clk.pos();
 
     // ----- Module variable initialization ------------------------------------
@@ -45,107 +50,87 @@ am_input_module_one_layer::am_input_module_one_layer(const sc_module_name _name)
 // *****************************************************************************
 void am_input_module_one_layer::read_frames()
 {
-    while (1)
-    {
-        wait();
+    frame_t in_frame = frame_input.read();
+    input_frame_buffer.push(in_frame);
 
-        frame_t in_frame = frame_input.read();
-        input_frame_buffer.push(in_frame);
-    }
+    return;
 }
 
 // *****************************************************************************
 void am_input_module_one_layer::update_control_output()
 {
-    frame_available.write(false);
-    frame_empty.write(true);
-
-    while (1)
+    if (!input_frame_buffer.empty())
     {
-        wait();
-
-        if (!input_frame_buffer.empty())
+        frame_available.write(true);
+        if (input_frame_buffer.back().stub_count() == 0)
         {
-            frame_available.write(true);
-            if (input_frame_buffer.back().stub_count() == 0)
-            {
-                frame_empty.write(true);
-            }
-            else
-            {
-                frame_empty.write(false);
-            }
+            frame_empty.write(true);
         }
         else
         {
-            frame_available.write(false);
-            frame_empty.write(true);
+            frame_empty.write(false);
         }
     }
+    else
+    {
+        frame_available.write(false);
+        frame_empty.write(true);
+    }
 
+    return;
 }
 
 // *****************************************************************************
 void am_input_module_one_layer::process_one_frame()
 {
-    while (1)
+    if ((start_process_frame.read() == true) && (!input_frame_buffer.empty()))
     {
-        wait();
+        processed_frame = input_frame_buffer.front();
+        input_frame_buffer.pop();
 
-        if ((start_process_frame.read() == true) && (!input_frame_buffer.empty()))
-        {
-            processed_frame = input_frame_buffer.front();
-            input_frame_buffer.pop();
-
-            processed_frame.reset_stub_ptr();
-        }
-        else if ((delete_frame.read() == true) && (!input_frame_buffer.empty()))
-        {
-            input_frame_buffer.pop();
-        }
+        processed_frame.reset_stub_ptr();
+    }
+    else if ((delete_frame.read() == true) && (!input_frame_buffer.empty()))
+    {
+        input_frame_buffer.pop();
     }
 
+    return;
 }
 
 // *****************************************************************************
 void am_input_module_one_layer::create_stream()
 {
+    frame_processing.write(false);
     stub_stream_output.write(track_finder::hit_stream::IDLE);
 
-    while (1)
+    if (start_process_frame.read() == true)
     {
-        wait();
+        stub_stream_output.write(track_finder::hit_stream::START_WORD);
 
-        frame_processing.write(false);
-        stub_stream_output.write(track_finder::hit_stream::IDLE);
+        frame_processing.write(true);
 
-        if (start_process_frame.read() == true)
+        SYSTEMC_LOG << "Start sending frame "
+                    << processed_frame.get_bunch_crossing()
+                    << " with " << processed_frame.stub_count()
+                    << " stubs to Track Finder";
+    }
+    else
+    {
+        frame_t::stub_element_t stub_element;
+        if (processed_frame.get_stub(stub_element) == true)
         {
-            stub_stream_output.write(track_finder::hit_stream::START_WORD);
+            frame_t::stub_t stub = stub_element.get_stub();
+            hit_t hit = get_AM_hit_address(stub);
+            stub_stream_output.write(hit);
+
+            SYSTEMC_LOG << stub << "/" << hit;
 
             frame_processing.write(true);
-
-            SYSTEMC_LOG << "Start sending frame "
-                        << processed_frame.get_bunch_crossing()
-                        << " with " << processed_frame.stub_count()
-                        << " stubs to Track Finder";
-        }
-        else
-        {
-            frame_t::stub_element_t stub_element;
-            if (processed_frame.get_stub(stub_element) == true)
-            {
-                frame_t::stub_t stub = stub_element.get_stub();
-                hit_t hit = get_AM_hit_address(stub);
-                stub_stream_output.write(hit);
-
-                SYSTEMC_LOG << stub << "/" << hit;
-
-                frame_processing.write(true);
-            }
         }
     }
 
+    return;
 }
 
 // *****************************************************************************
