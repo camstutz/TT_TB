@@ -1,13 +1,13 @@
 /*!
  * @file am_chip_read_ctrl.cpp
  * @author Christian Amstutz
- * @date November 19, 2014
+ * @date October 14, 2015
  *
  * @brief File contains the implementation of the AM board FSM.
  */
 
 /*
- *  Copyright (c) 2014 by Christian Amstutz
+ *  Copyright (c) 2015 by Christian Amstutz
  */
 
 #include "am_chip_read_ctrl.hpp"
@@ -33,10 +33,11 @@ am_chip_read_ctrl::am_chip_read_ctrl(sc_module_name _name) :
         road_output("road_output")
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(controller);
+    SC_METHOD(controller);
         sensitive << roads_detected << clk.pos();
 
     // ----- Module channel/variable initialization ----------------------------
+    current_state = IDLE;
 
     // ----- Module instance / channel binding ---------------------------------
 
@@ -46,46 +47,40 @@ am_chip_read_ctrl::am_chip_read_ctrl(sc_module_name _name) :
 // *****************************************************************************
 void am_chip_read_ctrl::controller()
 {
-    current_state = IDLE;
-    road_output.write(road_stream::IDLE);
-
-    while (1)
+    switch (current_state)
     {
-        wait();
-
-        switch (current_state)
+    case IDLE:
+        if (roads_detected.event() && (roads_detected.read() == true))
         {
-        case IDLE:
-            if (roads_detected.event() && (roads_detected.read() == true))
-            {
-                road_output.write(road_stream::IDLE);
-                current_state = START;
-            }
-            break;
+            road_output.write(road_stream::IDLE);
+            current_state = START;
+        }
+        break;
 
-        case START:
-            road_output.write(road_stream::START_WORD);
-            current_state = TX_ROAD;
+    case START:
+        road_output.write(road_stream::START_WORD);
+        current_state = TX_ROAD;
 
-            SYSTEMC_LOG << road_input.num_available() << " roads detected";
+        SYSTEMC_LOG << road_input.num_available() << " roads detected";
 
-            break;
+        break;
 
-        case TX_ROAD:
-            if (road_input.num_available() > 0)
-            {
-                road_t value = road_input.read();
-                road_output.write(value);
-            }
-            else
-            {
-                road_output.write(road_stream::IDLE);
-                current_state = IDLE;
-            }
-            break;
-
-        default:
+    case TX_ROAD:
+        if (road_input.num_available() > 0)
+        {
+            road_t value = road_input.read();
+            road_output.write(value);
+        }
+        else
+        {
+            road_output.write(road_stream::IDLE);
             current_state = IDLE;
         }
+        break;
+
+    default:
+        current_state = IDLE;
     }
+
+    return;
 }

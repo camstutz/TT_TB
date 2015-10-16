@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date October 14, 2015
  *
  * @brief File containing the implementation of the AM board module.
  */
@@ -34,13 +34,17 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
         patterns()
 {
     // ----- Process registration ----------------------------------------------
-    SC_THREAD(process_incoming_hits);
+    SC_METHOD(process_incoming_hits);
         sensitive << hit_inputs;
+        dont_initialize();
+
     SC_THREAD(detect_roads);
         sensitive << process_roads_sig;
+
     SC_THREAD(check_detected_road_buffer);
-        sensitive << detected_roads_buffer.data_written_event()
-                  << detected_roads_buffer.data_read_event();
+        sensitive << detected_roads_buffer.data_written_event();
+        sensitive << detected_roads_buffer.data_read_event();
+
 
     // ----- Module channel/variable initialization ----------------------------
 
@@ -65,28 +69,24 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
 // *****************************************************************************
 void am_chip::process_incoming_hits()
 {
-    while(1)
+    for (unsigned int layer = 0; layer < layer_nr; ++layer)
     {
-        wait();
-
-        for (unsigned int layer = 0; layer < layer_nr; ++layer)
+        if(process_hits[layer].read() & !hit_inputs[layer].read().is_opcode())
         {
-            if(process_hits[layer].read() & !hit_inputs[layer].read().is_opcode())
-            {
-                superstrip_stream stream_value = hit_inputs[layer].read();
-                std::vector<pattern_bank::pattern_id_t> roads;
-                roads = patterns->find_id(layer, stream_value.get_value());
+            superstrip_stream stream_value = hit_inputs[layer].read();
+            std::vector<pattern_bank::pattern_id_t> roads;
+            roads = patterns->find_id(layer, stream_value.get_value());
 
-                std::vector<pattern_bank::pattern_id_t>::iterator road_it = roads.begin();
-                for (; road_it != roads.end(); ++road_it)
-                {
-                    match_table[*road_it].resize(layer_nr, false);
-                    match_table[*road_it][layer] = true;
-                }
+            std::vector<pattern_bank::pattern_id_t>::iterator road_it = roads.begin();
+            for (; road_it != roads.end(); ++road_it)
+            {
+                match_table[*road_it].resize(layer_nr, false);
+                match_table[*road_it][layer] = true;
             }
         }
     }
 
+    return;
 }
 
 // *****************************************************************************
@@ -133,19 +133,16 @@ void am_chip::detect_roads()
 // *****************************************************************************
 void am_chip::check_detected_road_buffer()
 {
-    while (1)
+    if (detected_roads_buffer.num_available() == 0)
     {
-        if (detected_roads_buffer.num_available() == 0)
-        {
-            output_roads_buffer_empty.write(true);
-        }
-        else
-        {
-            output_roads_buffer_empty.write(false);
-        }
-
-        wait();
+        output_roads_buffer_empty.write(true);
     }
+    else
+    {
+        output_roads_buffer_empty.write(false);
+    }
+
+    return;
 }
 
 // *****************************************************************************

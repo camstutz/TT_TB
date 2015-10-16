@@ -29,6 +29,8 @@
 #include <utility>
 #include <iterator>
 
+#include "module_test/module_test.hpp"
+
 // *****************************************************************************
 /*!
  * @brief
@@ -60,11 +62,13 @@ public:
     sc_map_list<track_trigger_config::tower_id_t, trigger_tower> trigger_towers;
     road_analyzer roadAnalyzer;
 
+module_test test_modules;
+
     // ----- Constructor -------------------------------------------------------
     /*!
      * Constructor:
      */
-    tt_tb(const sc_module_name _name, const track_trigger_config& configuration);
+    tt_tb(const sc_module_name _name, const track_trigger_config& configuration, const std::vector<sensor_module_config>& test_module_configs);
     SC_HAS_PROCESS(tt_tb);
 
     void print_system();
