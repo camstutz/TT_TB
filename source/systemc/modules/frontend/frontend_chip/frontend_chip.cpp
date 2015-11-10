@@ -91,7 +91,6 @@ void frontend_chip::read_input()
         stub_input.nb_read(in_stub);
         sorted_buffer_stub_t new_stub(clock_cycle, in_stub);
         sorted_buffers[wbuf_selector].insert(new_stub);
-std::cout << sc_time_stamp() << ": written to " << wbuf_selector << " @ " << clock_cycle << " - " << new_stub << std::endl;
     }
 
     return;
@@ -115,7 +114,6 @@ void frontend_chip::write_hits()
 
             data_valid_sig.at(i).write(true);
             stub_output_sig.at(i).write(stub_to_write);
-std::cout << sc_time_stamp() << ": read from " << rbuf_selector << " - " << stub_to_write << std::endl;
 
             sorted_buffers[rbuf_selector].erase(stub_it);
             ++i;

@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module_address.cpp
  * @author Christian Amstutz
- * @date August 20, 2015
+ * @date October 16, 2015
  *
  * @brief
  *
@@ -56,10 +56,10 @@ std::vector<chip_address> sensor_module_address::get_chips (
 
 // *****************************************************************************
 std::vector<chip_address> sensor_module_address::get_chips (
-        const sensor_module_type_config& sensor_mod_config) const
+        const sensor_module_type_config* sensor_mod_config) const
 {
-    return get_chips(sensor_mod_config.side_count,
-            sensor_mod_config.fe_chip_per_side);
+    return get_chips(sensor_mod_config->side_count,
+            sensor_mod_config->fe_chip_per_side);
 }
 
 // *****************************************************************************

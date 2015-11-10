@@ -1,7 +1,7 @@
 /*!
  * @file sensor_module_address.hpp
  * @author Christian Amstutz
- * @date August 20, 2015
+ * @date October 16, 2015
  *
  * @brief
  *
@@ -39,7 +39,7 @@ public:
     sensor_module_address(unsigned int module_id);
 
     std::vector<chip_address> get_chips(const unsigned int nr_segments, const unsigned int nr_chips) const;
-    std::vector<chip_address> get_chips(const sensor_module_type_config& sensor_mod_config) const;
+    std::vector<chip_address> get_chips(const sensor_module_type_config* sensor_mod_config) const;
 
     bool operator== (const sensor_module_address& rhs) const;
     bool operator< (const sensor_module_address& rhs) const;

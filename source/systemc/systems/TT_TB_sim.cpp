@@ -33,13 +33,11 @@ int sc_main(int argc, char *agv[])
     // Configure model
     track_trigger_config test_config = simple_tower_27_config();
 
-std::vector<sensor_module_config> test_modules;
 sensor_module_config test_module;
-test_module.type = test_config.cbc_sensor_module;
+test_module.type = &test_config.cbc_sensor_module;
 test_module.id = 348395;
 test_module.address = sensor_module_address(1,1,1);
-test_modules.push_back(test_module);
-    tt_tb testbench("TT_TB", test_config, test_modules);
+    tt_tb testbench("TT_TB", test_config, test_module);
     //testbench.print_system();
 
     // ----- Time unit / resolution setup --------------------------------------

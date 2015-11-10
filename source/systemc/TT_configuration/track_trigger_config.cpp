@@ -158,11 +158,11 @@ int track_trigger_config::read_module_file(const std::string& file_base)
                 new_module.address = sensor_module_address(layer, ladder, module);
                 if (type == "PS")
                 {
-                    new_module.type = mpa_sensor_module;
+                    new_module.type = &mpa_sensor_module;
                 }
                 else if (type == "2S")
                 {
-                    new_module.type = cbc_sensor_module;
+                    new_module.type = &cbc_sensor_module;
                 }
                 else
                 {

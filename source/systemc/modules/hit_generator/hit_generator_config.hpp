@@ -45,5 +45,5 @@ public:
 
     void set_LHC_clock_period_ns(unsigned int LHC_clock_period_ns);
 
-    void add_chips(sensor_module_config module);
+    void add_chips(const sensor_module_config module);
 };

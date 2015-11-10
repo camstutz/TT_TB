@@ -68,7 +68,7 @@ module_test test_modules;
     /*!
      * Constructor:
      */
-    tt_tb(const sc_module_name _name, const track_trigger_config& configuration, const std::vector<sensor_module_config>& test_module_configs);
+    tt_tb(const sc_module_name _name, const track_trigger_config& configuration, sensor_module_config& test_module_configs);
     SC_HAS_PROCESS(tt_tb);
 
     void print_system();

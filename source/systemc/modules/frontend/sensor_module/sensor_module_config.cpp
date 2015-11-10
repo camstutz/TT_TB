@@ -15,13 +15,14 @@
 
 // *****************************************************************************
 sensor_module_config::sensor_module_config() :
+        type(NULL),
         id(0),
         address(sensor_module_address(0,0,0))
 {}
 
 // *****************************************************************************
-sensor_module_config::sensor_module_config(const sensor_module_type_config type,
-        unsigned int id, sensor_module_address address) :
+sensor_module_config::sensor_module_config(const sensor_module_type_config* type,
+        const unsigned int id, const sensor_module_address& address) :
         type(type),
         id(id),
         address(address)

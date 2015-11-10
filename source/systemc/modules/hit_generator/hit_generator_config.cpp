@@ -32,7 +32,7 @@ void hit_generator_config::set_LHC_clock_period_ns(
 }
 
 // *****************************************************************************
-void hit_generator_config::add_chips(sensor_module_config module)
+void hit_generator_config::add_chips(const sensor_module_config module)
 {
     std::vector<chip_address> chips = module.address.get_chips(module.type);
     chip_addresses.insert(chip_addresses.end(), chips.begin(), chips.end());

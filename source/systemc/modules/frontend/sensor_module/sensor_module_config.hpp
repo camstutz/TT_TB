@@ -23,11 +23,11 @@
 class sensor_module_config
 {
 public:
-    sensor_module_type_config type;
+    const sensor_module_type_config* type;
 
     unsigned int id;
     sensor_module_address address;
 
     sensor_module_config();
-    sensor_module_config(const sensor_module_type_config type, unsigned int id, sensor_module_address address);
+    sensor_module_config(const sensor_module_type_config* type, const unsigned int id, const sensor_module_address& address);
 };
