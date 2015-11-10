@@ -36,12 +36,11 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         sensor_modules("sensor_module", configuration.sensor_modules),
         DTCs("DTC", configuration.dtcs),
         trigger_towers("trigger_tower", configuration.trigger_towers),
-        roadAnalyzer("road_analyzer", configuration.road_analyzer),
+        roadAnalyzer("road_analyzer", configuration.road_analyzer)
 
-        test_modules("test_modules", test_module_configs)
+        //test_modules("test_modules", test_module_configs)
 {
-    test_modules.clock.bind(LHC_clock);
-    std::cout << sizeof(sensor_module_config) << std::endl;
+//    test_modules.clock.bind(LHC_clock);
 
     hitGenerator.stub_outputs.bind(hit_fifos);
     hitGenerator.hits_accepted.bind(hits_accepted_sig);

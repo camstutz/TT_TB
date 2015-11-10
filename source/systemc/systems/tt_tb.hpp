@@ -29,7 +29,7 @@
 #include <utility>
 #include <iterator>
 
-#include "module_test/module_test.hpp"
+//#include "module_test/module_test.hpp"
 
 // *****************************************************************************
 /*!
@@ -62,7 +62,7 @@ public:
     sc_map_list<track_trigger_config::tower_id_t, trigger_tower> trigger_towers;
     road_analyzer roadAnalyzer;
 
-module_test test_modules;
+//module_test test_modules;
 
     // ----- Constructor -------------------------------------------------------
     /*!

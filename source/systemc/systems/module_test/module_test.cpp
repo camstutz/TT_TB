@@ -14,10 +14,10 @@ module_test::module_test(const sc_module_name _name, const sensor_module_config&
 //        road_inputs(10000, "road_input"),
 //        road_outputs(10000, "road_output")
 
-        fe_chip_test(100, "fe_chip_test", configuration.type->frontend_chip),
-        stub_input(100, "stub_in_test"),
-        data_valid(100, configuration.type->frontend_chip.max_stubs_per_cycle, "dv_test"),
-        stub_outputs(100, configuration.type->frontend_chip.max_stubs_per_cycle, "stub_out_test")
+        fe_chip_test(10000, "fe_chip_test", configuration.type->frontend_chip),
+        stub_input(10000, "stub_in_test"),
+        data_valid(10000, configuration.type->frontend_chip.max_stubs_per_cycle, "dv_test"),
+        stub_outputs(10000, configuration.type->frontend_chip.max_stubs_per_cycle, "stub_out_test")
 
 //       concentrators_test(10000, "test_concs", configuration.type->data_concentrator),
 //       data_valid_test(10000, configuration.type->data_concentrator.fe_chips_count ,configuration.type->frontend_chip.max_stubs_per_cycle, "dv_test"),

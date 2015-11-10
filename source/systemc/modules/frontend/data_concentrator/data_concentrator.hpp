@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.hpp
  * @author Christian Amstutz
- * @date August 17, 2015
+ * @date November 10, 2015
  *
  * @brief
  *
@@ -63,7 +63,6 @@ public:
     sc_signal<bunch_crossing_t> LHC_bunch_crossing;
     sc_signal<clock_phase_t> clock_phase;
     std::vector<stub_buffer_type> stub_buffer;
-    sc_signal<output_t> dc_out_sig;
 
     /** Control signal that switches between the two stub tables */
     sc_signal<bool> stub_buffer_write_sel;
@@ -78,7 +77,6 @@ public:
     output_t create_output_buffer();
 
     // ----- Module Instantiations ---------------------------------------------
-    sc_delay_signal<output_t> delay_output;
 
     // ----- Constructor -------------------------------------------------------
     data_concentrator(sc_module_name _name, data_concentrator_config configuration);

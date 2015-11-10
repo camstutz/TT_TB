@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.cpp
  * @author Christian Amstutz
- * @date October 8, 2015
+ * @date November 10, 2015
  */
 
 /*
@@ -23,10 +23,6 @@ frontend_chip::frontend_chip(const sc_module_name _name,
         stub_input("stub_input"),
         data_valid(configuration.max_stubs_per_cycle, "data_valid", 0),
         stub_outputs(configuration.max_stubs_per_cycle, "stub_output", 0),
-        data_valid_sig(configuration.max_stubs_per_cycle, "data_valid_sig"),
-        stub_output_sig(configuration.max_stubs_per_cycle, "stub_output_sig"),
-        delay_data_valid(configuration.max_stubs_per_cycle, "delay_data_valid", configuration.latency_cycles),
-        delay_stub_output(configuration.max_stubs_per_cycle, "delay_stub_output", configuration.latency_cycles),
         max_stubs_per_cycle(configuration.max_stubs_per_cycle),
         collection_cycles(configuration.collection_cycles),
         total_collected_stubs(configuration.max_stubs_per_cycle * configuration.collection_cycles)
@@ -49,16 +45,6 @@ frontend_chip::frontend_chip(const sc_module_name _name,
     rbuf_selector.write(1);
 
     // ----- Module instance / channel binding ---------------------------------
-    for (unsigned int i=0; i<configuration.max_stubs_per_cycle; ++i)
-    {
-        delay_data_valid[i].clk.bind(clk);
-        delay_data_valid[i].input.bind(data_valid_sig[i]);
-        delay_data_valid[i].delayed.bind(data_valid[i]);
-
-        delay_stub_output[i].clk.bind(clk);
-        delay_stub_output[i].input.bind(stub_output_sig[i]);
-        delay_stub_output[i].delayed.bind(stub_outputs[i]);
-    }
 
     return;
 }
@@ -99,8 +85,8 @@ void frontend_chip::read_input()
 // *****************************************************************************
 void frontend_chip::write_hits()
 {
-    data_valid_sig.write(0);
-    stub_output_sig.write(output_stub_t(output_stub_config));
+    data_valid.write(0);
+    stub_outputs.write(output_stub_t(output_stub_config));
 
     if (sorted_buffers[rbuf_selector].size() > 0)
     {
@@ -112,8 +98,8 @@ void frontend_chip::write_hits()
             stub_to_write = *stub_it;
             stub_to_write.set_bx(stub_it->get_buffer_bx());
 
-            data_valid_sig.at(i).write(true);
-            stub_output_sig.at(i).write(stub_to_write);
+            data_valid.at(i).write(true);
+            stub_outputs.at(i).write(stub_to_write);
 
             sorted_buffers[rbuf_selector].erase(stub_it);
             ++i;

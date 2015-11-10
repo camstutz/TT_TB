@@ -1,7 +1,7 @@
 /*!
  * @file frontend_chip.hpp
  * @author Christian Amstutz
- * @date October 8, 2015
+ * @date November 10, 2015
  *
  * @brief
  *
@@ -48,9 +48,6 @@ public:
     sc_map_linear<sc_out<output_stub_t> > stub_outputs;
 
 // ----- Local Channel Declarations --------------------------------------------
-    sc_map_linear<sc_signal<bool> > data_valid_sig;
-    sc_map_linear<sc_signal<output_stub_t> > stub_output_sig;
-
     sc_signal<unsigned int> clock_cycle;
     sc_signal<unsigned int> wbuf_selector;
     sc_signal<unsigned int> rbuf_selector;
@@ -63,8 +60,6 @@ public:
 // ----- Other Method Declarations ---------------------------------------------
 
 // ----- Module Instantiations -------------------------------------------------
-    sc_map_linear<sc_delay_signal<bool> > delay_data_valid;
-    sc_map_linear<sc_delay_signal<output_stub_t> > delay_stub_output;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

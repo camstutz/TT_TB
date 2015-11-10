@@ -1,7 +1,7 @@
 /*!
  * @file data_concentrator.cpp
  * @author Christian Amstutz
- * @date October 6, 2015
+ * @date November 10, 2015
  *
  * @brief
  */
@@ -33,7 +33,6 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
         clock_phase("clock_phase"),
         stub_buffer_write_sel("stub_buffer_write_sel"),
         stub_buffer_read_sel("stub_buffer_read_sel"),
-        delay_output("delay_output", configuration.delay_cycles),
         output_stub_config(configuration.output_stub)
 {
     // ----- Process registration ----------------------------------------------
@@ -50,10 +49,6 @@ data_concentrator::data_concentrator(sc_module_name _name, data_concentrator_con
     // ----- Module variable initialization ------------------------------------
 
     // ----- Module instance / channel binding ---------------------------------
-    delay_output.clk.bind(clk);
-    delay_output.input.bind(dc_out_sig);
-    delay_output.delayed.bind(dc_out);
-
     stub_buffer.resize(2, stub_buffer_type());
 
     LHC_bunch_crossing.write(0);
@@ -118,7 +113,7 @@ void data_concentrator::write_output()
     if (clock_phase.read() == 0)
     {
         output_t output_frame = create_output_buffer();
-        dc_out_sig.write(output_frame);
+        dc_out.write(output_frame);
 
         if (output_frame.stub_count() > 0)
         {
