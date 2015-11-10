@@ -37,11 +37,7 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
         DTCs("DTC", configuration.dtcs),
         trigger_towers("trigger_tower", configuration.trigger_towers),
         roadAnalyzer("road_analyzer", configuration.road_analyzer)
-
-        //test_modules("test_modules", test_module_configs)
 {
-//    test_modules.clock.bind(LHC_clock);
-
     hitGenerator.stub_outputs.bind(hit_fifos);
     hitGenerator.hits_accepted.bind(hits_accepted_sig);
     hitGenerator.hits_discarded.bind(hits_discarded_sig);
@@ -83,17 +79,6 @@ tt_tb::tt_tb(const sc_module_name _name, const track_trigger_config& configurati
             unsigned int dtc_key = tower_it->dtc_inputs.get_key(*input_it).second;
             input_it->bind(dtc_links[dtc_key]);
         }
-
-//        unsigned int first_AM_board = tower_nr*configuration.trigger_tower.get_AM_boards_per_prb();
-//        unsigned int last_AM_board = (tower_nr+1)*configuration.trigger_tower.get_AM_boards_per_prb()-1;
-//        sc_map_square<sc_buffer<track_finder::hit_stream> >::iterator result_hit_it = result_hits(sc_map_square_key(first_AM_board, 0), sc_map_square_key(last_AM_board, 10));
-//        for (sc_map_cube<sc_out<am_board::output_stream_t> >::iterator hit_output_it = tower_it->hit_outputs.begin();
-//             hit_output_it != tower_it->hit_outputs.end();
-//             ++hit_output_it)
-//        {
-//            hit_output_it->bind(*result_hit_it);
-//            ++result_hit_it;
-//        }
 
         for (unsigned int prb_id = 0;
              prb_id < configuration.trigger_tower.get_prb_nr();
