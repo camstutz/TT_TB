@@ -33,11 +33,7 @@ int sc_main(int argc, char *agv[])
     // Configure model
     track_trigger_config test_config = simple_tower_27_config();
 
-sensor_module_config test_module;
-test_module.type = &test_config.cbc_sensor_module;
-test_module.id = 348395;
-test_module.address = sensor_module_address(1,1,1);
-    tt_tb testbench("TT_TB", test_config, test_module);
+    tt_tb testbench("TT_TB", test_config);
     //testbench.print_system();
 
     // ----- Time unit / resolution setup --------------------------------------

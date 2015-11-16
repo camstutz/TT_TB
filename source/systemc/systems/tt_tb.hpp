@@ -64,7 +64,7 @@ public:
     /*!
      * Constructor:
      */
-    tt_tb(const sc_module_name _name, const track_trigger_config& configuration, sensor_module_config& test_module_configs);
+    tt_tb(const sc_module_name _name, const track_trigger_config& configuration);
     SC_HAS_PROCESS(tt_tb);
 
     void print_system();
