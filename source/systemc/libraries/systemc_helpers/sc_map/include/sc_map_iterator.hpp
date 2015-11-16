@@ -107,7 +107,6 @@ template <typename sc_map_T>
 sc_map_iterator<sc_map_T>::sc_map_iterator(map_type* sc_map,
         const end_type end_id) :
         map(sc_map),
-        range(sc_map->get_range()),
         end_flag(end_id)
 {
     range = map->get_range()->clone();

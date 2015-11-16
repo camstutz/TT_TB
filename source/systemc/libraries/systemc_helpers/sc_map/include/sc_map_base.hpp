@@ -47,7 +47,7 @@ public:
     iterator begin();
     iterator end();
 
-    range_type* get_range() const;
+    range_type const * get_range() const;
     std::pair<bool, key_type> get_key(object_type& object) const;
 
     //* todo: const versions needed?
@@ -238,10 +238,10 @@ typename sc_map_base<range_T, object_T>::iterator
 
 //******************************************************************************
 template <typename range_T, typename object_T>
-typename sc_map_base<range_T, object_T>::range_type*
+typename sc_map_base<range_T, object_T>::range_type const *
         sc_map_base<range_T, object_T>::get_range() const
 {
-    return range.clone();
+    return &range;
 }
 
 //******************************************************************************
