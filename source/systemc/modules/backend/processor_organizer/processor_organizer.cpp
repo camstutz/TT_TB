@@ -21,7 +21,7 @@
  */
 
 processor_organizer::processor_organizer(sc_module_name _name,
-        processor_organizer_config configuration) :
+        const processor_organizer_config& configuration) :
         sc_module(_name),
         do_input_nr(configuration.do_input_nr),
         layer_nr(configuration.layers.size()),

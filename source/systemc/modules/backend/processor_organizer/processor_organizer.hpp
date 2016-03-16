@@ -71,5 +71,5 @@ public:
     /*!
      * Constructor:
      */
-    processor_organizer(sc_module_name _name, processor_organizer_config configuration);
+    processor_organizer(sc_module_name _name, const processor_organizer_config& configuration);
 };

@@ -16,8 +16,10 @@
 // *****************************************************************************
 processor_organizer_config::processor_organizer_config()
 {
-    set_do_input_nr(PRB_NR_PER_TOWER_DEFAULT);
-    set_processor_output_nr(PRB_NR_PER_TOWER_DEFAULT);
+    //set_do_input_nr(PRB_NR_PER_TOWER_DEFAULT);
+    //set_processor_output_nr(PRB_NR_PER_TOWER_DEFAULT);
+    set_do_input_nr(0);
+    set_processor_output_nr(0);
     set_stub_buffer_in_FIFO_size(PO_STUB_IN_FIFO_DEFAULT);
     set_stub_buffer_out_FIFO_size(PO_STUB_OUT_FIFO_DEFAULT);
     set_layer_splittet_FIFO_size(PO_LAYER_SPLITTET_FIFO_DEFAULT);
@@ -28,7 +30,7 @@ processor_organizer_config::processor_organizer_config()
 // *****************************************************************************
 void processor_organizer_config::add_do()
 {
-    set_do_input_nr(++do_input_nr);
+    set_do_input_nr(do_input_nr+1);
 
     return;
 }
