@@ -17,12 +17,15 @@
 #include "../TT_configuration/simple_tower_27_config.hpp"
 
 #include "sc_analyzer.hpp"
+//#include "size_analyzer.hpp"
 
 #include <systemc.h>
 
 #include <iostream>
 #include <sstream>
 #include <utility>
+
+size_analyzer simulation_size;
 
 int sc_main(int argc, char *agv[])
 {
@@ -58,10 +61,12 @@ int sc_main(int argc, char *agv[])
     sc_close_vcd_trace_file(trace_file);
 
     #ifdef DEBUG
-    std::cout << "Simulation ended." << std::endl;
+    std::cout << "Simulation ended.." << std::endl;
     #endif
 
     analyzer.print_report();
+    std::cout << std::endl;
+    simulation_size.print_report();
 
     return (0);
 }
