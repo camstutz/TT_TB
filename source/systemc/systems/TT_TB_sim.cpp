@@ -13,8 +13,8 @@
 
 #include "tt_tb.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
-//#include "../TT_configuration/baseline_config.hpp"
-//#include "../TT_configuration/simple_tower_27_config.hpp"
+#include "../TT_configuration/baseline_config.hpp"
+#include "../TT_configuration/simple_tower_27_config.hpp"
 #include "../TT_configuration/dsd_config.hpp"
 
 #include "sc_analyzer.hpp"
