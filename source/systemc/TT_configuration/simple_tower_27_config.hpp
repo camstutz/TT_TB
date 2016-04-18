@@ -98,7 +98,6 @@ inline track_trigger_config simple_tower_27_config()
 //    configuration.trigger_tower.data_organizer.demultiplexer.bx_offset = 0;
 //    configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;
 //
-//    configuration.trigger_tower.processor_organizer.set_do_input_nr(4);
 //    configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
 //    configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
 //    configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -40;

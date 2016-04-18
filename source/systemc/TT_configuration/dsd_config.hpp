@@ -90,15 +90,14 @@ inline track_trigger_config dsd_config()
 //
 //    // Trigger Tower
 //    configuration.trigger_tower.set_dtc_per_prb(2);
-    configuration.trigger_tower.set_prb_nr(1);
-//    configuration.trigger_tower.set_AM_boards_per_prb(2);
+    configuration.trigger_tower.set_prb_nr(10);
+    configuration.trigger_tower.set_AM_boards_per_prb(4);
 //
 //    configuration.trigger_tower.data_organizer.input_collector.input_nr = 1;
 //    configuration.trigger_tower.data_organizer.demultiplexer.bx_divider = 1;
 //    configuration.trigger_tower.data_organizer.demultiplexer.bx_offset = 0;
 //    configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;
 //
-//    configuration.trigger_tower.processor_organizer.set_do_input_nr(4);
 //    configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
 //    configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
 //    configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -40;
