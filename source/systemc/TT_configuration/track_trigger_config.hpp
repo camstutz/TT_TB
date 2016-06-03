@@ -48,7 +48,7 @@ public:
     typedef std::map<dtc_id_t, dtc_config> dtc_table_t;
     typedef unsigned int tower_id_t;
     typedef std::map<tower_id_t, trigger_tower_config> tower_table_t;
-    typedef std::map<unsigned int, sector_info*> sector_table_t;
+//    typedef std::map<unsigned int, sector_info*> sector_table_t;
     typedef std::map<sensor_module_id_t, sector_info*> sector_assign_table_t;
 
     static const unsigned int sector_start_id = 0;
@@ -68,7 +68,7 @@ public:
     sensor_module_table_t sensor_modules;
     dtc_table_t dtcs;
     tower_table_t trigger_towers;
-    sector_table_t sectors;
+//    sector_table_t sectors;
     sector_assign_table_t sector_assignments;
 
     track_trigger_config();
@@ -85,7 +85,7 @@ public:
     int read_module_file(const std::string& file_base);
     int read_dtc_file(const std::string& file_base);
     int read_tower_file(const std::string& file_base);
-    int read_sector_file(const std::string& file_name);
+//    int read_sector_file(const std::string& file_name);
     void update_layer_lookup_tables();
 
     std::vector<sensor_module_address> get_module_addresses() const;

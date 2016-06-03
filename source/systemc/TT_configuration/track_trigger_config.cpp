@@ -25,13 +25,13 @@ track_trigger_config::track_trigger_config()
 // *****************************************************************************
 track_trigger_config::~track_trigger_config()
 {
-    for (sector_table_t::iterator sector_it=sectors.begin();
+ /*   for (sector_table_t::iterator sector_it=sectors.begin();
          sector_it != sectors.end();
          ++sector_it)
     {
         delete sector_it->second;
     }
-
+*/
     return;
 }
 
@@ -108,7 +108,7 @@ int track_trigger_config::read_track_trigger_config(const std::string& file_base
 {
     int error = 0;
 
-    error += read_sector_file(sector_file_name);
+//    error += read_sector_file(sector_file_name);
     error += read_tower_file(file_base);
     error += read_dtc_file(file_base);
     error += read_module_file(file_base);
@@ -297,7 +297,7 @@ int track_trigger_config::read_tower_file(const std::string& file_base)
 }
 
 // *****************************************************************************
-int track_trigger_config::read_sector_file(const std::string& file_name)
+/*int track_trigger_config::read_sector_file(const std::string& file_name)
 {
     std::ifstream sector_file;
     sector_file.open(file_name.c_str());
@@ -355,7 +355,7 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
 
     return 0;
 }
-
+*/
 // *****************************************************************************
 void track_trigger_config::update_layer_lookup_tables()
 {
