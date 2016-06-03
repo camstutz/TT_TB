@@ -1,1 +1,2 @@
  - Integrate left/right data concentrator of one sensor module (2S or PS)
+ - optimize sc_delay, by using SC_METHODs
