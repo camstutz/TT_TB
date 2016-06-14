@@ -20,6 +20,7 @@
 
 #include "road_processor_config.hpp"
 #include "../../../../../systems/TT_configuration.hpp"
+#include "../../../../../systems/tt_tb_logger.hpp"
 
 /*!
  * @brief
