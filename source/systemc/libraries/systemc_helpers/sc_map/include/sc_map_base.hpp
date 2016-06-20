@@ -124,7 +124,7 @@ template <typename range_T, typename object_T>
 sc_map_base<range_T, object_T>::sc_map_base(const sc_module_name name) :
         sc_object(name)
 {
-    simulation_size.add_sc_map();
+   // simulation_size.add_sc_map();
 
     return;
 }
@@ -478,7 +478,7 @@ typename sc_map_base<range_T, object_T>::object_type*
     full_name << name << sc_map::key_separator_char << id;
 
     sc_map_base<range_T, object_T>::object_type* new_sc_object = new object_type(full_name.str().c_str());
-    simulation_size.add_element(new_sc_object);
+    //simulation_size.add_element(new_sc_object);
 
     return (new_sc_object);
 }
@@ -497,7 +497,7 @@ typename sc_map_base<range_T, object_T>::object_type*
     full_name << name << sc_map::key_separator_char << id;
 
     sc_map_base<range_T, object_T>::object_type* new_sc_object = new object_type(full_name.str().c_str(), configuration);
-    simulation_size.add_element(new_sc_object);
+    //simulation_size.add_element(new_sc_object);
 
     return (new_sc_object);
 }

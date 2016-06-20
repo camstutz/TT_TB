@@ -101,4 +101,4 @@ public:
     }
 };
 
-extern size_analyzer simulation_size;
+//extern size_analyzer simulation_size;

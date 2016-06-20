@@ -74,7 +74,7 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const key_value_vector_type& key
 
     this->init(range, typename base::creator());
 
-    simulation_size.add_sc_map(kind());
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -97,7 +97,7 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const key_value_vector_type& key
 
     this->init(range, typename base::creator(), configuration);
 
-    simulation_size.add_sc_map(kind());
+//    simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -110,7 +110,7 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const range_type& new_range,
 {
     this->init(new_range, typename base::creator());
 
-    simulation_size.add_sc_map(kind());
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -124,7 +124,7 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const range_type& new_range,
 {
     this->init(new_range, typename base::creator(), configuration);
 
-    simulation_size.add_sc_map(kind());
+//  simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -149,7 +149,7 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const sc_module_name name,
 
     this->init(new_range, typename base::creator(), configuration_vec);
 
-    simulation_size.add_sc_map(kind());
+//    simulation_size.add_sc_map(kind());
 
     return;
 }

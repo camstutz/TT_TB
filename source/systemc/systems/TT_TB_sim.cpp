@@ -26,7 +26,7 @@
 #include <sstream>
 #include <utility>
 
-size_analyzer simulation_size;
+//size_analyzer simulation_size;
 
 int sc_main(int argc, char *agv[])
 {
@@ -67,7 +67,7 @@ int sc_main(int argc, char *agv[])
 
     analyzer.print_report();
     std::cout << std::endl;
-    simulation_size.print_report();
+    //simulation_size.print_report();
 
     return (0);
 }
