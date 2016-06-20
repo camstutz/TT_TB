@@ -44,6 +44,8 @@ public:
     time_demux_config demultiplexer;
     po_layer_splitter_config layer_splitter;
 
+    std::vector<int> fifo_init = {500,500,500,500,500,500};
+
     processor_organizer_config();
 
     void add_do();

@@ -12,7 +12,7 @@ LINK_LIBS     = $(addprefix -l,$(libraries))
 LINK_LIBPATHS = $(addprefix -L,$(librarypaths))
 
 CC       := g++
-CPPFLAGS := -Wall -g3 -O0 -std=c++11 $(addprefix -I,$(include_dirs)) $(LINK_LIBPATHS) $(LINK_LIBS)
+CPPFLAGS := -Wall -O3 -std=c++11 $(addprefix -I,$(include_dirs)) $(LINK_LIBPATHS) $(LINK_LIBS)
 
 SUBLIBS_SRC  := $(addsuffix /src,$(sub_libs))
 SOURCES      := $(foreach _LIB,$(SUBLIBS_SRC),$(wildcard $(_LIB)/*.cpp))

@@ -100,6 +100,8 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
     configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
     configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -40;
+    configuration.trigger_tower.processor_organizer.set_stub_buffer_in_FIFO_size(500);
+    configuration.trigger_tower.processor_organizer.set_stub_buffer_out_FIFO_size(120);
 
     // AM Board
     configuration.trigger_tower.am_board.track_finder.hit_processor.hit_processor_one_layer.SS_width_bits = 2;
