@@ -53,6 +53,8 @@ public:
     virtual ~sc_map_cube() {};
 
     object_T& at(const index_type& Z, const index_type& Y, const index_type& X);
+
+    const char* kind() const;
 };
 
 //******************************************************************************
@@ -68,6 +70,8 @@ sc_map_cube<object_T>::sc_map_cube(const size_type element_cnt_Z,
             sc_map_cube_key(element_cnt_Z-1, element_cnt_Y-1, element_cnt_X-1));
 
     this->init(range, typename base::creator());
+
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -85,6 +89,8 @@ sc_map_cube<object_T>::sc_map_cube(const size_type element_cnt_Z,
 
     this->init(range, typename base::creator());
 
+    //simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -100,6 +106,8 @@ sc_map_cube<object_T>::sc_map_cube(const size_type element_cnt_Z,
             sc_map_cube_key(element_cnt_Z-1, element_cnt_Y-1, element_cnt_X-1));
 
     this->init(range, typename base::creator(), configuration);
+
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -118,6 +126,8 @@ sc_map_cube<object_T>::sc_map_cube(const size_type element_cnt_Z,
             sc_map_cube_key(start_id_Z+element_cnt_Z-1, start_id_Y+element_cnt_Y-1, start_id_X+element_cnt_X-1));
 
     this->init(range, typename base::creator(), configuration);
+
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -177,4 +187,11 @@ object_T& sc_map_cube<object_T>::at(const index_type& Z, const index_type& Y,
         const index_type& X)
 {
     return base::at(key_type(Z, Y, X));
+}
+
+//******************************************************************************
+template <typename object_T>
+const char* sc_map_cube<object_T>::kind() const
+{
+    return ("sc_map_cube");
 }

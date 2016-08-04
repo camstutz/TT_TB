@@ -16,6 +16,8 @@
 #include "sc_map_iterator.hpp"
 #include "sc_map_config.hpp"
 
+#include "../../sc_analyzer/include/size_analyzer.hpp"
+
 #include "../../modelsim_support/include/modelsim_support.hpp"
 
 #include <systemc.h>
@@ -81,6 +83,7 @@ public:
         void register_signal_modelsim();
     #endif
 
+    const char* kind() const;
     std::string print_objects();
 
 public:
@@ -120,7 +123,11 @@ friend sc_sensitive& operator<< (sc_sensitive& sensitivity_list, sc_map_base<sig
 template <typename range_T, typename object_T>
 sc_map_base<range_T, object_T>::sc_map_base(const sc_module_name name) :
         sc_object(name)
-{}
+{
+   // simulation_size.add_sc_map();
+
+    return;
+}
 
 //******************************************************************************
 template <typename range_T, typename object_T>
@@ -395,6 +402,13 @@ void sc_map_base<range_T, object_T>::write(const data_type& value)
 
 //******************************************************************************
 template <typename range_T, typename object_T>
+const char* sc_map_base<range_T, object_T>::kind() const
+{
+    return ("unspecified");
+}
+
+//******************************************************************************
+template <typename range_T, typename object_T>
 std::string sc_map_base<range_T, object_T>::print_objects()
 {
     std::stringstream output_stream;
@@ -463,7 +477,10 @@ typename sc_map_base<range_T, object_T>::object_type*
 
     full_name << name << sc_map::key_separator_char << id;
 
-    return (new object_type(full_name.str().c_str()) );
+    sc_map_base<range_T, object_T>::object_type* new_sc_object = new object_type(full_name.str().c_str());
+    //simulation_size.add_element(new_sc_object);
+
+    return (new_sc_object);
 }
 
 //******************************************************************************
@@ -479,7 +496,10 @@ typename sc_map_base<range_T, object_T>::object_type*
 
     full_name << name << sc_map::key_separator_char << id;
 
-    return (new object_type(full_name.str().c_str(), configuration));
+    sc_map_base<range_T, object_T>::object_type* new_sc_object = new object_type(full_name.str().c_str(), configuration);
+    //simulation_size.add_element(new_sc_object);
+
+    return (new_sc_object);
 }
 
 //// *****************************************************************************

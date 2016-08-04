@@ -24,6 +24,8 @@
 #include <sstream>
 #include <utility>
 
+//size_analyzer simulation_size;
+
 int sc_main(int argc, char *agv[])
 {
     // Setting up analyzer for SystemC simulation
@@ -62,6 +64,8 @@ int sc_main(int argc, char *agv[])
     #endif
 
     analyzer.print_report();
+    std::cout << std::endl;
+    //simulation_size.print_report();
 
     return (0);
 }

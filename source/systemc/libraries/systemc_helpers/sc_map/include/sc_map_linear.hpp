@@ -44,6 +44,8 @@ public:
     template <typename config_type>
     sc_map_linear(const range_type new_range, const sc_module_name name, const config_type& configuration);
     virtual ~sc_map_linear() {};
+
+    const char* kind() const;
 };
 
 //******************************************************************************
@@ -58,6 +60,8 @@ sc_map_linear<object_T>::sc_map_linear(const size_type element_cnt_X,
             sc_map_linear_key(start_id_X+element_cnt_X-1));
 
     this->init(range, typename base::creator());
+
+   // simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -75,6 +79,8 @@ sc_map_linear<object_T>::sc_map_linear(const size_type element_cnt_X,
 
     this->init(range, typename base::creator(), configuration);
 
+   // simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -86,6 +92,8 @@ sc_map_linear<object_T>::sc_map_linear(const key_type start_key,
 {
     range_type range = range_type(start_key, end_key);
     this->init(range, typename base::creator());
+
+  //  simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -101,6 +109,8 @@ sc_map_linear<object_T>::sc_map_linear(const key_type start_key,
     range_type range = range_type(start_key, end_key);
     this->init(range, typename base::creator(), configuration);
 
+   // simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -111,6 +121,8 @@ sc_map_linear<object_T>::sc_map_linear(const range_type new_range,
         sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator());
+
+  //  simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -124,5 +136,14 @@ sc_map_linear<object_T>::sc_map_linear(const range_type new_range,
 {
     this->init(new_range, typename base::creator(), configuration);
 
+  //  simulation_size.add_sc_map(kind());
+
     return;
+}
+
+//******************************************************************************
+template <typename object_T>
+const char* sc_map_linear<object_T>::kind() const
+{
+    return ("sc_map_linear");
 }

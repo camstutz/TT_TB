@@ -51,6 +51,8 @@ public:
     template <typename signal_T>
     void operator()(sc_map_base<range_type, signal_T>& signal_map);
     // TODO: add binding for iterators, which are not in the correct order
+
+    const char* kind() const;
 };
 
 //******************************************************************************
@@ -71,6 +73,8 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const key_value_vector_type& key
     }
 
     this->init(range, typename base::creator());
+
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -93,6 +97,8 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const key_value_vector_type& key
 
     this->init(range, typename base::creator(), configuration);
 
+//    simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -103,6 +109,8 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const range_type& new_range,
         sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator());
+
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -115,6 +123,8 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const range_type& new_range,
         sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator(), configuration);
+
+//  simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -138,6 +148,8 @@ sc_map_list<key_value_T, object_T>::sc_map_list(const sc_module_name name,
     }
 
     this->init(new_range, typename base::creator(), configuration_vec);
+
+//    simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -180,4 +192,11 @@ void sc_map_list<key_value_T, object_T>::operator()(
     bind(signal_map);
 
     return;
+}
+
+//******************************************************************************
+template <typename key_value_T, typename object_T>
+const char* sc_map_list<key_value_T, object_T>::kind() const
+{
+    return ("sc_map_list");
 }

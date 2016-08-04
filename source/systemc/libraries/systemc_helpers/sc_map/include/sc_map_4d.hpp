@@ -53,6 +53,8 @@ public:
     virtual ~sc_map_4d() {};
 
     object_T& at(const index_type& Z, const index_type& Y, const index_type& X, const index_type& W);
+
+    const char* kind() const;
 };
 
 //******************************************************************************
@@ -68,6 +70,8 @@ sc_map_4d<object_T>::sc_map_4d(const size_type element_cnt_Z,
             sc_map_4d_key(element_cnt_Z-1, element_cnt_Y-1, element_cnt_X-1, element_cnt_W-1));
 
     this->init(range, typename base::creator());
+
+   // simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -86,6 +90,8 @@ sc_map_4d<object_T>::sc_map_4d(const size_type element_cnt_Z,
 
     this->init(range, typename base::creator());
 
+   // simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -102,6 +108,8 @@ sc_map_4d<object_T>::sc_map_4d(const size_type element_cnt_Z,
             sc_map_4d_key(element_cnt_Z-1, element_cnt_Y-1, element_cnt_X-1, element_cnt_W-1));
 
     this->init(range, typename base::creator(), configuration);
+
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -122,6 +130,8 @@ sc_map_4d<object_T>::sc_map_4d(const size_type element_cnt_Z,
 
     this->init(range, typename base::creator(), configuration);
 
+   // simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -133,6 +143,8 @@ sc_map_4d<object_T>::sc_map_4d(const key_type& start_key,
 {
     range_type range = range_type(start_key, end_key);
     this->init(range, typename base::creator());
+
+   // simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -148,6 +160,8 @@ sc_map_4d<object_T>::sc_map_4d(const key_type& start_key,
     range_type range = range_type(start_key, end_key);
     this->init(range, typename base::creator(), configuration);
 
+  //  simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -158,6 +172,8 @@ sc_map_4d<object_T>::sc_map_4d(const range_type& new_range,
         sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator());
+
+  //  simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -171,6 +187,8 @@ sc_map_4d<object_T>::sc_map_4d(const range_type& new_range,
 {
     this->init(new_range, typename base::creator(), configuration);
 
+  //  simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -180,4 +198,11 @@ object_T& sc_map_4d<object_T>::at(const index_type& Z, const index_type& Y,
         const index_type& X, const index_type& W)
 {
     return base::at(key_type(Z, Y, X, W));
+}
+
+//******************************************************************************
+template <typename object_T>
+const char* sc_map_4d<object_T>::kind() const
+{
+    return ("sc_map_4d");
 }

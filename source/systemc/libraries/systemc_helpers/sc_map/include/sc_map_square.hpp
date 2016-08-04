@@ -52,6 +52,8 @@ public:
     virtual ~sc_map_square() {};
 
     object_T& at(const index_type& Y, const index_type& X);
+
+    const char* kind() const;
 };
 
 //******************************************************************************
@@ -66,6 +68,8 @@ sc_map_square<object_T>::sc_map_square(const size_type element_cnt_Y,
             sc_map_square_key(element_cnt_Y-1, element_cnt_X-1));
 
     this->init(range, typename base::creator());
+
+ //   simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -82,6 +86,8 @@ sc_map_square<object_T>::sc_map_square(const size_type element_cnt_Y,
 
     this->init(range, typename base::creator());
 
+ //   simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -97,6 +103,8 @@ sc_map_square<object_T>::sc_map_square(const size_type element_cnt_Y,
             sc_map_square_key(element_cnt_Y-1, element_cnt_X-1));
 
     this->init(range, typename base::creator(), configuration);
+
+    //simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -115,6 +123,8 @@ sc_map_square<object_T>::sc_map_square(const size_type element_cnt_Y,
 
     this->init(range, typename base::creator(), configuration);
 
+ //   simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -126,6 +136,8 @@ sc_map_square<object_T>::sc_map_square(const key_type& start_key,
 {
     range_type range = range_type(start_key, end_key);
     this->init(range, typename base::creator());
+
+  //  simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -141,6 +153,8 @@ sc_map_square<object_T>::sc_map_square(const key_type& start_key,
     range_type range = range_type(start_key, end_key);
     this->init(range, typename base::creator(), configuration);
 
+   // simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -151,6 +165,8 @@ sc_map_square<object_T>::sc_map_square(const range_type& new_range,
         sc_map_base<range_type, object_T>(name)
 {
     this->init(new_range, typename base::creator());
+
+  //  simulation_size.add_sc_map(kind());
 
     return;
 }
@@ -164,6 +180,8 @@ sc_map_square<object_T>::sc_map_square(const range_type& new_range,
 {
     this->init(new_range, typename base::creator(), configuration);
 
+   // simulation_size.add_sc_map(kind());
+
     return;
 }
 
@@ -173,4 +191,11 @@ object_T& sc_map_square<object_T>::at(const index_type& Y,
         const index_type& X)
 {
     return base::at(key_type(Y, X));
+}
+
+//******************************************************************************
+template <typename object_T>
+const char* sc_map_square<object_T>::kind() const
+{
+    return ("sc_map_square");
 }
