@@ -105,12 +105,12 @@ void input_collector<IN_FRAME, OUT_FRAME>::process_incoming_frame()
             input_frame_t input_frame = input_it->read();
             bunch_crossing_t bx = input_frame.get_header().get_bunch_crossing_ID();
 
-            if (input_frame.stub_count() > 0)
-            {
-                SYSTEMC_LOG << "Frame " << bx
-                        << " @ input " << input_it.get_key().second
-                        << " with " << input_frame.stub_count() << " stubs reveived.";
-            }
+           // if (input_frame.stub_count() > 0)
+            //{
+                //SYSTEMC_LOG << "Frame " << bx
+                //        << " @ input " << input_it.get_key().second
+                 //       << " with " << input_frame.stub_count() << " stubs reveived.";
+            //}
 
             input_frame.reset_stub_ptr();
             typename input_frame_t::stub_element_t in_stub_element;

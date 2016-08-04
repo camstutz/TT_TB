@@ -34,8 +34,9 @@ BOOST_LOG_GLOBAL_LOGGER(sysC_logger, boost::log::sources::logger)
 
 unsigned int sim_time_nano_seconds();
 
-#define SYSTEMC_LOG                                                                  \
+/*#define SYSTEMC_LOG                                                                  \
         BOOST_LOG(sysC_logger::get())                                                \
                 << std::right << std::setw(6) << sim_time_nano_seconds() << " ns"    \
                 << " @ " <<  std::left << std::setw(55) << this->name()              \
                 << ": "
+*/

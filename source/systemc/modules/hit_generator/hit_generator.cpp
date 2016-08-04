@@ -94,16 +94,16 @@ void hit_generator::schedule_hits()
             }
             else
             {
-                SYSTEMC_LOG << "Stub sent to: " << hit_chip_address;
+                //SYSTEMC_LOG << "Stub sent to: " << hit_chip_address;
             }
         }
         else
         {
             ++hits_discarded_cnt;
 
-            SYSTEMC_LOG << "Stub cannot be sent to: "
-                        << layer << "," << ladder << "," << module_cnt
-                        << ". Module does not exist.";
+//            SYSTEMC_LOG << "Stub cannot be sent to: "
+//                        << layer << "," << ladder << "," << module_cnt
+//                        << ". Module does not exist.";
         }
 
         hits_accepted.write(hits_accepted_cnt);
@@ -135,7 +135,7 @@ int hit_generator::readFile(const std::string &hit_file)
     hitFile.open(hit_file.c_str());
     if (hitFile.is_open())
     {
-        SYSTEMC_LOG << "File: " << hit_file << " opened ...";
+        //SYSTEMC_LOG << "File: " << hit_file << " opened ...";
 
         // clear the event queue
         std::queue<HitSF> empty;
@@ -171,7 +171,7 @@ int hit_generator::readFile(const std::string &hit_file)
 
         hitFile.close();
 
-        SYSTEMC_LOG << "File: " << hit_file << " closed.";
+        //SYSTEMC_LOG << "File: " << hit_file << " closed.";
     }
     else
     {

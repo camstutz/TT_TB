@@ -115,12 +115,12 @@ void data_concentrator::write_output()
         output_t output_frame = create_output_buffer();
         dc_out.write(output_frame);
 
-        if (output_frame.stub_count() > 0)
-        {
-            SYSTEMC_LOG << "Frame @ bx=" << output_frame.get_header().get_bunch_crossing()
-                        << " with "
-                        << output_frame.get_header().get_stub_count() << " stubs transmitted.";
-        }
+//        if (output_frame.stub_count() > 0)
+//        {
+//            SYSTEMC_LOG << "Frame @ bx=" << output_frame.get_header().get_bunch_crossing()
+//                        << " with "
+//                        << output_frame.get_header().get_stub_count() << " stubs transmitted.";
+//        }
     }
 
     return;
@@ -145,12 +145,12 @@ typename data_concentrator::output_t data_concentrator::create_output_buffer()
     output_t output_frame(output_stub_config);
     output_frame.set_header(output_header);
 
-    if (stub_buffer[stub_buffer_read_sel].size() > max_output_stubs)
-    {
-        SYSTEMC_LOG << "Stub buffer overflow! ("
-                    << stub_buffer[stub_buffer_read_sel].size() << "/"
-                    << max_output_stubs<< ")";
-    }
+//    if (stub_buffer[stub_buffer_read_sel].size() > max_output_stubs)
+//    {
+//        SYSTEMC_LOG << "Stub buffer overflow! ("
+//                    << stub_buffer[stub_buffer_read_sel].size() << "/"
+//                    << max_output_stubs<< ")";
+//    }
     // cut the stubs that are too much for transmission to the back end
     // TODO: cut stubs by bend
     if (stub_buffer[stub_buffer_read_sel].size() > max_output_stubs)

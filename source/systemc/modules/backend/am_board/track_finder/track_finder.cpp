@@ -42,7 +42,7 @@ track_finder::track_finder(const sc_module_name _name,
 {
     //patterns.load_text_binary_file("data/pattern_banks/text_binary_test_patterns.txt");
     //patterns.load_CMSSW_patterns();
-    patterns.generate_patterns_straight(10000);
+    patterns.generate_patterns_straight(100000);
 
     hit_proc.clk.bind(clk);
     hit_proc.hit_input.bind(hit_input);

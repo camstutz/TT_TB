@@ -61,7 +61,7 @@ void am_chip_read_ctrl::controller()
         road_output.write(road_stream::START_WORD);
         current_state = TX_ROAD;
 
-        SYSTEMC_LOG << road_input.num_available() << " roads detected";
+        //SYSTEMC_LOG << road_input.num_available() << " roads detected";
 
         break;
 

@@ -56,7 +56,7 @@ int sc_main(int argc, char *agv[])
     std::cout << "Start simulation ..." << std::endl;
 
     analyzer.register_simulation_start();
-    sc_start(10000, SC_NS);
+    sc_start(5000, SC_NS);
     analyzer.register_simulation_end();
 
     sc_close_vcd_trace_file(trace_file);

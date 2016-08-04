@@ -110,10 +110,10 @@ void am_input_module_one_layer::create_stream()
 
         frame_processing.write(true);
 
-        SYSTEMC_LOG << "Start sending frame "
+        /*SYSTEMC_LOG << "Start sending frame "
                     << processed_frame.get_bunch_crossing()
                     << " with " << processed_frame.stub_count()
-                    << " stubs to Track Finder";
+                    << " stubs to Track Finder";*/
     }
     else
     {
@@ -124,7 +124,7 @@ void am_input_module_one_layer::create_stream()
             hit_t hit = get_AM_hit_address(stub);
             stub_stream_output.write(hit);
 
-            SYSTEMC_LOG << stub << "/" << hit;
+            //SYSTEMC_LOG << stub << "/" << hit;
 
             frame_processing.write(true);
         }
