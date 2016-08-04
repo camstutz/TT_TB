@@ -14,7 +14,8 @@
 #include "tt_tb.hpp"
 #include "../TT_configuration/track_trigger_config.hpp"
 //#include "../TT_configuration/baseline_config.hpp"
-#include "../TT_configuration/simple_tower_27_config.hpp"
+//#include "../TT_configuration/simple_tower_27_config.hpp"
+#include "../TT_configuration/dsd/dsd_config.hpp"
 
 #include "sc_analyzer.hpp"
 
@@ -33,7 +34,8 @@ int sc_main(int argc, char *agv[])
     analyzer.register_model_setup_start();
 
     // Configure model
-    track_trigger_config test_config = simple_tower_27_config();
+    //track_trigger_config test_config = simple_tower_27_config();
+    track_trigger_config test_config = dsd_config();
 
     tt_tb testbench("TT_TB", test_config);
     //testbench.print_system();
