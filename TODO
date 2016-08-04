@@ -1,1 +1,4 @@
  - Integrate left/right data concentrator of one sensor module (2S or PS)
+ 
+ - Problem in source/systemc/modules/backend/processor_organizer/processor_organizer.cpp
+   Configuration of FIFO size not good

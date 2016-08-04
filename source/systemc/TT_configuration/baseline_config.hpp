@@ -97,10 +97,11 @@ inline track_trigger_config baseline_config()
     configuration.trigger_tower.data_organizer.demultiplexer.bx_offset = 0;
     configuration.trigger_tower.data_organizer.demultiplexer.timer_start = -25;
 
-    configuration.trigger_tower.processor_organizer.set_do_input_nr(4);
     configuration.trigger_tower.processor_organizer.input_collector.input_nr = 2;
     configuration.trigger_tower.processor_organizer.demultiplexer.bx_divider = 4;
     configuration.trigger_tower.processor_organizer.demultiplexer.timer_start = -40;
+    configuration.trigger_tower.processor_organizer.set_stub_buffer_in_FIFO_size(500);
+    configuration.trigger_tower.processor_organizer.set_stub_buffer_out_FIFO_size(120);
 
     // AM Board
     configuration.trigger_tower.am_board.track_finder.hit_processor.hit_processor_one_layer.SS_width_bits = 2;
@@ -110,7 +111,7 @@ inline track_trigger_config baseline_config()
 
     // Road Analyzer
     configuration.road_analyzer.output_file = "data/output/roads.txt";
-    configuration.road_analyzer.nr_inputs = 8;
+    configuration.road_analyzer.nr_inputs = 120;
     configuration.road_analyzer.nr_layers = 6;
 
     //configuration.read_track_trigger_config("source/systemc/TT_configuration/baseline", "data/configuration/baseline_Eta6_Phi8.csv");

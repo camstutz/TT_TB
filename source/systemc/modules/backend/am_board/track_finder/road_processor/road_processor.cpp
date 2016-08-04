@@ -65,6 +65,9 @@ void road_processor::process_incoming_roads()
 		if (!stream_value.is_opcode())
 		{
 		    road_lookup.write(stream_value.get_value());
+
+		    SYSTEMC_LOG << "Received Superstrip: "
+	                    << stream_value.get_value();
 		}
 		command_buffer_write_sig.write(stream_value);
 	}
@@ -106,6 +109,9 @@ void road_processor::lookup_superstrips()
                 for (unsigned int layer = 0; layer < layer_nr; ++layer)
                 {
                     superstrip_lookup[layer].write(found_pattern[layer].read());
+
+                    SYSTEMC_LOG << "Hit lookup (L" << layer << "): "
+                                << found_pattern[layer].read();
                 }
             }
         } while (command_buffer.num_available() > 0);
@@ -125,6 +131,12 @@ void road_processor::output_result()
             if (hit_lookup_result[layer].event())
             {
                 hit_output[layer].write(hit_lookup_result[layer]);
+
+                if (!hit_lookup_result[layer].read().is_opcode())
+                {
+                    SYSTEMC_LOG << "Hit delivered (L" << layer << "): "
+                                << hit_lookup_result[layer];
+                }
             }
         }
     }
