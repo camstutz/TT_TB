@@ -32,11 +32,12 @@ class hit_generator_config
 
 private:
     unsigned int LHC_clock_period_ns;
-    std::string input_file;
 
     std::vector<chip_address> chip_addresses;
 
 public:
+    std::string input_file;
+
     stub_config output_stub_cbc;
     stub_config output_stub_mpa;
 

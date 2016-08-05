@@ -142,10 +142,10 @@ am_input_module_one_layer::hit_t am_input_module_one_layer::get_AM_hit_address(
     hit |= (stub.get_strip()           & 0xFF);
     hit |= (stub.get_fe_chip_ID()      & 0x07) <<  8;
     hit |= (stub.get_concentrator_ID() & 0x01) << 11;
-//    hit |= (stub.get_fe_module()       & 0x7F) << 12;
-//    hit |= (stub.get_dtc()             & 0x0F) << 19;
-//    hit |= (stub.get_prb()             & 0x0F) << 23;
-//    hit |= (stub.get_z()               & 0x0F) << 27;
+    hit |= (stub.get_fe_module()       & 0x7F) << 12;
+    hit |= (stub.get_dtc()             & 0x0F) << 19;
+    hit |= (stub.get_prb()             & 0x0F) << 23;
+    hit |= (stub.get_z()               & 0x0F) << 27;
 
     return hit;
 }

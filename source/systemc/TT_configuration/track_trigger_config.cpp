@@ -303,9 +303,11 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
     sector_file.open(file_name.c_str());
     if (sector_file.is_open())
     {
+        std::cout << "Read sectors from: " << file_name << std::endl;
+
         // read all the trigger towers from the file
         std::string fileLine;
-        // read header line and not use it
+        // read header line and discard it
         std::getline(sector_file, fileLine);
 
         int sector_id = sector_start_id;
@@ -324,6 +326,7 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
                     numbers_in_line.push_back(value);
                 }
 
+                // check if sector contains modules
                 if (numbers_in_line.size() > 2)
                 {
                     unsigned int sector_eta = numbers_in_line[0];
@@ -331,6 +334,7 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
                     sector_info* sector = new sector_info(sector_id, sector_eta, sector_phi);
                     sectors[sector_id] = sector;
 
+                    // add all modules to the sector
                     for (std::vector<unsigned int>::iterator module_id_it = numbers_in_line.begin()+2;
                          module_id_it != numbers_in_line.end();
                          ++module_id_it)

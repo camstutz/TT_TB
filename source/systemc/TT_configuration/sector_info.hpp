@@ -31,7 +31,7 @@ class sector_info
 public:
     typedef unsigned int layer_t;
     typedef unsigned int ladder_t;
-    typedef unsigned int layer_ladder_t;
+    //typedef unsigned int layer_ladder_t;
     typedef unsigned int module_t;
 
     unsigned int id;
