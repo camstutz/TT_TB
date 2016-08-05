@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.hpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date August 4, 2016
  *
  * @brief
  */
@@ -10,7 +10,7 @@
  *  Copyright (c) 2015 by Christian Amstutz
  */
 
-#include "../pattern_bank/pattern_bank.hpp"
+#include "../../../trigger_tower/pattern_bank/pattern_bank.hpp"
 
 #include "../../../../../systems/TT_configuration.hpp"
 #include "pattern_memory_config.hpp"
@@ -42,6 +42,7 @@ public:
     void lookup_road();
 
     // ----- Other Method Declarations -----------------------------------------
+    void set_pattern_bank(pattern_bank* pat_bank);
 
     // ----- Module Instantiations ---------------------------------------------
     sc_map_linear<sc_delay_signal<superstrip_t> > delay_superstrip_outputs;
@@ -52,8 +53,6 @@ public:
      */
     pattern_memory(const sc_module_name _name, const pattern_memory_config configuration);
     SC_HAS_PROCESS(pattern_memory);
-
-    void link_pattern_bank(pattern_bank* bank);
 
 private:
     void print_pattern_bank();

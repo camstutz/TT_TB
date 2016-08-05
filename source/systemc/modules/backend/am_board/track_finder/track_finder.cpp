@@ -33,17 +33,12 @@ track_finder::track_finder(const sc_module_name _name,
         pattern_mem_out_sig(configuration.layer_nr, "pattern_mem_out_sig"),
         hit_search_sig(configuration.layer_nr, "hit_search_sig"),
         hit_result_sig(configuration.layer_nr, "hit_result_sig"),
-        patterns(configuration.layer_nr),
         hit_proc("hit_processor", configuration.hit_processor),
         temp_hit_buffer("temp_hit_buffer", configuration.hit_buffer),
         road_lookup("road_lookup", configuration.am_chip),
         pattern_lookup("pattern_lookup", configuration.pattern_memory),
         road_proc("road_processor", configuration.road_processor)
 {
-    //patterns.load_text_binary_file("data/pattern_banks/text_binary_test_patterns.txt");
-    //patterns.load_CMSSW_patterns();
-    patterns.generate_patterns_straight(10000);
-
     hit_proc.clk.bind(clk);
     hit_proc.hit_input.bind(hit_input);
     hit_proc.am_superstrip_out.bind(am_input_sig);
@@ -59,12 +54,10 @@ track_finder::track_finder(const sc_module_name _name,
     road_lookup.clk.bind(clk);
     road_lookup.hit_inputs.bind(am_input_sig);
     road_lookup.road_output.bind(am_output_sig);
-    road_lookup.link_pattern_bank(&patterns);
 
     pattern_lookup.clk.bind(clk);
     pattern_lookup.road_input.bind(pattern_mem_addr_sig);
     pattern_lookup.superstrip_outputs.bind(pattern_mem_out_sig);
-    pattern_lookup.link_pattern_bank(&patterns);
 
     road_proc.clk.bind(clk);
     road_proc.road_input.bind(am_output_sig);
@@ -73,6 +66,15 @@ track_finder::track_finder(const sc_module_name _name,
     road_proc.superstrip_lookup.bind(hit_search_sig);
     road_proc.hit_lookup_result.bind(hit_result_sig);
     road_proc.hit_output.bind(hit_output);
+
+    return;
+}
+
+// *****************************************************************************
+void track_finder::set_pattern_bank(pattern_bank* pat_bank)
+{
+    road_lookup.set_pattern_bank(pat_bank);
+    pattern_lookup.set_pattern_bank(pat_bank);
 
     return;
 }

@@ -1,7 +1,7 @@
 /*!
  * @file am_board.hpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 4, 2016
  *
  * @brief
  *
@@ -48,6 +48,7 @@ public:
     // ----- Process Declarations ----------------------------------------------
 
     // ----- Other Method Declarations -----------------------------------------
+    void set_pattern_bank(pattern_bank* pat_bank);
 
     // ----- Module Instantiations ---------------------------------------------
     am_input_module AM_InputModule;

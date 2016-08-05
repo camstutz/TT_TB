@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.hpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 4, 2016
  *
  * @brief
  */
@@ -15,7 +15,7 @@
 #include "am_chip_read_ctrl.hpp"
 #include "am_chip_write_ctrl.hpp"
 
-#include "../pattern_bank/pattern_bank.hpp"
+#include "../../../trigger_tower/pattern_bank/pattern_bank.hpp"
 
 #include "am_chip_config.hpp"
 
@@ -138,6 +138,8 @@ public:
      */
     void print_match_table();
 
+    void set_pattern_bank(pattern_bank* pat_bank);
+
 // ----- Module Instantiations -------------------------------------------------
 
     /** @brief The FSM module controls the AM board.
@@ -163,8 +165,6 @@ public:
      */
     am_chip(sc_module_name _name, const am_chip_config configuration);
     SC_HAS_PROCESS(am_chip);
-
-    void link_pattern_bank(pattern_bank* bank);
 
 private:
     pattern_bank *patterns;

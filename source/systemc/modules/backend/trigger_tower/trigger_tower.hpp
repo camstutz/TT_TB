@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.hpp
  * @author Christian Amstutz
- * @date October 6, 2015
+ * @date August 4, 2016
  *
  * @brief
  *
@@ -13,6 +13,7 @@
 
 #pragma once
 
+#include "pattern_bank/pattern_bank.hpp"
 #include "../data_organizer/data_organizer.hpp"
 #include "../processor_organizer/processor_organizer.hpp"
 #include "../am_board/am_board.hpp"
@@ -59,8 +60,9 @@ public:
 // ----- Module Instantiations -------------------------------------------------
     sc_map_linear<data_organizer> dataOrganizers;
     sc_map_linear<processor_organizer> processorOrganizers;
-    //processor_organizer* processorOrganizers[4];
     sc_map_square<am_board> amBoards;
+
+    pattern_bank patternBank;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

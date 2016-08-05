@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory.cpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date August 4, 2016
  *
  * @brief
  */
@@ -79,9 +79,9 @@ void pattern_memory::lookup_road()
 }
 
 // *****************************************************************************
-void pattern_memory::link_pattern_bank(pattern_bank* bank)
+void pattern_memory::set_pattern_bank(pattern_bank* pat_bank)
 {
-    patterns = bank;
+    patterns = pat_bank;
 
     return;
 }

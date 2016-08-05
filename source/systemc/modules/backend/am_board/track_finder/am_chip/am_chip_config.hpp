@@ -1,7 +1,7 @@
 /*!
  * @file am_chip_config.hpp
  * @author Christian Amstutz
- * @date August 19, 2015
+ * @date August 4, 2016
  *
  * @brief
  *
@@ -14,7 +14,6 @@
 #pragma once
 
 #include "am_chip_write_ctrl_config.hpp"
-#include "../pattern_bank/pattern_bank.hpp"
 
 #include "../../../../../TT_configuration/configuration_defaults.hpp"
 

@@ -1,7 +1,7 @@
 /*!
  * @file trigger_tower.cpp
  * @author Christian Amstutz
- * @date August 31, 2015
+ * @date August 4, 2016
  *
  * @brief
  */
@@ -28,8 +28,11 @@ trigger_tower::trigger_tower(const sc_module_name _name,
         am_board_in_sig(prb_nr, AM_boards_per_proc_unit, layer_nr, "am_board_sig"),
         dataOrganizers(configuration.data_organizers.size(), "dataOrganizer", configuration.data_organizers),
         processorOrganizers(prb_nr, "processorOrganizer", configuration.processor_organizers),
-        amBoards(prb_nr, AM_boards_per_proc_unit, "AM_Board", configuration.type.am_board)
+        amBoards(prb_nr, AM_boards_per_proc_unit, "AM_Board", configuration.type.am_board),
+        patternBank(configuration.layers.size())
 {
+    patternBank.generate_patterns_straight(1000);
+
     unsigned int do_id = 0;
     sc_map_linear<data_organizer>::iterator data_organizer_it = dataOrganizers.begin();
     for (; data_organizer_it != dataOrganizers.end(); ++data_organizer_it)
@@ -60,6 +63,7 @@ trigger_tower::trigger_tower(const sc_module_name _name,
             am_board_ptr->clk.bind(clk);
             am_board_ptr->frame_inputs.bind(am_board_in_sig(sc_map_cube_key(prb_id, am_board_id, 0), sc_map_cube_key(prb_id, am_board_id, layer_nr) ));
             am_board_ptr->hit_output.bind(hit_outputs(sc_map_cube_key(prb_id, am_board_id, 0), sc_map_cube_key(prb_id, am_board_id, layer_nr)));
+            am_board_ptr->set_pattern_bank(&patternBank);
         }
     }
 

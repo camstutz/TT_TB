@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include "../../../../../libraries/CMSSW_extraction/CMSPatternLayer.h"
-#include "../../../../../libraries/CMSSW_extraction/SectorTree.h"
-#include "../../../../../libraries/CMSSW_extraction/Sector.h"
+#include "../../../../libraries/CMSSW_extraction/CMSPatternLayer.h"
+#include "../../../../libraries/CMSSW_extraction/SectorTree.h"
+#include "../../../../libraries/CMSSW_extraction/Sector.h"
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/iostreams/filtering_stream.hpp>

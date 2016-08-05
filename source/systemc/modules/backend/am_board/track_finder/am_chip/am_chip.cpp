@@ -1,7 +1,7 @@
 /*!
  * @file am_chip.cpp
  * @author Christian Amstutz
- * @date October 14, 2015
+ * @date August 4, 2016
  *
  * @brief File containing the implementation of the AM board module.
  */
@@ -30,8 +30,7 @@ am_chip::am_chip(sc_module_name _name, const am_chip_config configuration) :
         detected_roads_buffer("detected_roads_buffer"),
         read_controller("read_controller"),
         write_controller("write_controller", configuration.write_ctrl),
-		delay_road_output("delay_road_output", configuration.latency_cycles),
-        patterns()
+		delay_road_output("delay_road_output", configuration.latency_cycles)
 {
     // ----- Process registration ----------------------------------------------
     SC_METHOD(process_incoming_hits);
@@ -184,11 +183,9 @@ void am_chip::print_match_table()
 }
 
 // *****************************************************************************
-void am_chip::link_pattern_bank(pattern_bank* bank)
+void am_chip::set_pattern_bank(pattern_bank* pat_bank)
 {
-    patterns = bank;
-
-    return;
+    patterns = pat_bank;
 }
 
 // *****************************************************************************

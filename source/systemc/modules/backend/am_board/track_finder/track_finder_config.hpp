@@ -19,6 +19,8 @@
 #include "pattern_memory/pattern_memory_config.hpp"
 #include "hit_buffer/hit_buffer_config.hpp"
 
+#include <string>
+
 // *****************************************************************************
 /*!
  * @brief

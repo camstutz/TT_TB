@@ -1,7 +1,7 @@
 /*!
  * @file pattern_memory_config.hpp
  * @author Christian Amstutz
- * @date August 27, 2015
+ * @date August 4, 2016
  *
  * @brief
  *
@@ -12,8 +12,6 @@
  */
 
 #pragma once
-
-#include "../pattern_bank/pattern_bank.hpp"
 
 // *****************************************************************************
 /*!

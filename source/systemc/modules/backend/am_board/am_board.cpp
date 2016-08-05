@@ -1,7 +1,7 @@
 /*!
  * @file am_board.cpp
  * @author Christian Amstutz
- * @date July 3, 2015
+ * @date August 4, 2016
  *
  * @brief
  */
@@ -42,4 +42,10 @@ am_board::am_board(const sc_module_name _name, const am_board_config configurati
     // ----- Module variable initialization ------------------------------------
 
     return;
+}
+
+// *****************************************************************************
+void am_board::set_pattern_bank(pattern_bank* pat_bank)
+{
+    TrackFinder.set_pattern_bank(pat_bank);
 }

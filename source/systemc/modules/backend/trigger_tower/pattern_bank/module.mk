@@ -1,4 +1,4 @@
-local_dir := source/systemc/modules/backend/am_board/track_finder/pattern_bank
+local_dir := source/systemc/modules/backend/trigger_tower/pattern_bank
 srcs      := pattern_bank.cpp
 
 local_src := $(addprefix $(local_dir)/, $(srcs)) 

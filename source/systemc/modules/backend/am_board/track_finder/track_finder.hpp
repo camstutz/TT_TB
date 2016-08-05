@@ -1,7 +1,7 @@
 /*!
  * @file track_finder.hpp
  * @author Christian Amstutz
- * @date September 9, 2015
+ * @date August 4, 2016
  *
  * @brief
  */
@@ -13,7 +13,6 @@
 #pragma once
 
 #include "hit_processor/hit_processor.hpp"
-#include "pattern_bank/pattern_bank.hpp"
 #include "am_chip/am_chip.hpp"
 #include "hit_buffer/hit_buffer.hpp"
 #include "pattern_memory/pattern_memory.hpp"
@@ -59,9 +58,9 @@ public:
     // ----- Process Declarations ----------------------------------------------
 
     // ----- Other Method Declarations -----------------------------------------
+    void set_pattern_bank(pattern_bank* pat_bank);
 
     // ----- Module Instantiations ---------------------------------------------
-    pattern_bank patterns;
     hit_processor hit_proc;
     hit_buffer temp_hit_buffer;
     am_chip road_lookup;
