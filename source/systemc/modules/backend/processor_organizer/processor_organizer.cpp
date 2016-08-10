@@ -60,3 +60,11 @@ processor_organizer::processor_organizer(sc_module_name _name,
 
     return;
 }
+
+// *****************************************************************************
+void processor_organizer::set_address_lookup(module_address_lookup* address_lu)
+{
+    layer_splitter.set_address_lookup(address_lu);
+
+    return;
+}

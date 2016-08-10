@@ -1,14 +1,14 @@
 /*!
  * @file processor_organizer.hpp
  * @author Christian Amstutz
- * @date August 17, 2015
+ * @date August 10, 2015
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2015 by Christian Amstutz
+ *  Copyright (c) 2016 by Christian Amstutz
  */
 
 #pragma once
@@ -19,7 +19,7 @@
 #include "po_layer_splitter.hpp"
 #include "../../../data_formats/prbf/PRBF.hpp"
 #include "processor_organizer_config.hpp"
-
+#include "../trigger_tower/module_address_lookup/module_address_lookup.hpp"
 
 #include "sc_map.hpp"
 
@@ -60,6 +60,7 @@ public:
 // ----- Process Declarations --------------------------------------------------
 
 // ----- Other Method Declarations ---------------------------------------------
+    void set_address_lookup(module_address_lookup* address_lu);
 
 // ----- Module Instantiations -------------------------------------------------
     po_input_collector in_collector;

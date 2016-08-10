@@ -48,4 +48,14 @@ am_board::am_board(const sc_module_name _name, const am_board_config configurati
 void am_board::set_pattern_bank(pattern_bank* pat_bank)
 {
     TrackFinder.set_pattern_bank(pat_bank);
+
+    return;
+}
+
+// *****************************************************************************
+void am_board::set_module_address_lookup(module_address_lookup* address_lu)
+{
+    AM_InputModule.set_module_address_lookup(address_lu);
+
+    return;
 }

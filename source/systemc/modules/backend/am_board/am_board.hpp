@@ -49,6 +49,7 @@ public:
 
     // ----- Other Method Declarations -----------------------------------------
     void set_pattern_bank(pattern_bank* pat_bank);
+    void set_module_address_lookup(module_address_lookup* address_lu);
 
     // ----- Module Instantiations ---------------------------------------------
     am_input_module AM_InputModule;

@@ -1,7 +1,7 @@
 /*!
  * @file am_input_module_one_layer.hpp
  * @author Christian Amstutz
- * @date April 22, 2015
+ * @date August 4, 2016
  *
  * @brief
  *
@@ -13,9 +13,10 @@
 
 #pragma once
 
+#include "../../trigger_tower/module_address_lookup/module_address_lookup.hpp"
+
 #include "../track_finder/track_finder.hpp"
 #include "../../../../data_formats/prbf/PRBF.hpp"
-//#include "../../../../systems/TT_configuration.hpp"
 #include "../../../../systems/tt_tb_logger.hpp"
 
 #include <systemc.h>
@@ -51,8 +52,10 @@ public:
 
     // ----- Other Method Declarations -----------------------------------------
     hit_t get_AM_hit_address(frame_t::stub_t stub);
+    void set_address_lookup(module_address_lookup* address_lu);
 
     // ----- Module Instantiations ---------------------------------------------
+    module_address_lookup* addressLookup;
 
     // ----- Constructor -------------------------------------------------------
     /*!

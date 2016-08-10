@@ -25,6 +25,7 @@
 #include "../modules/road_analyzer/road_analyzer_config.hpp"
 
 #include "sector_info.hpp"
+#include "prbf_module_address.hpp"
 
 #include "../systems/tt_tb_logger.hpp"
 #include "../TT_configuration/configuration_defaults.hpp"
@@ -33,7 +34,7 @@
 #include <map>
 #include <string>
 #include <sstream>
-#include "prbf_module_address.hpp"
+#include <stdexcept>
 
 // *****************************************************************************
 /*!
@@ -49,7 +50,7 @@ public:
     typedef unsigned int tower_id_t;
     typedef std::map<tower_id_t, trigger_tower_config> tower_table_t;
     typedef std::map<unsigned int, sector_info*> sector_table_t;
-    typedef std::map<sensor_module_id_t, sector_info*> sector_assign_table_t;
+    typedef std::multimap<sensor_module_id_t, sector_info*> sector_assign_table_t;
 
     static const unsigned int sector_start_id = 0;
 
@@ -86,13 +87,13 @@ public:
     int read_dtc_file(const std::string& file_base);
     int read_tower_file(const std::string& file_base);
     int read_sector_file(const std::string& file_name);
-    void update_layer_lookup_tables();
+    void integrate_configuration();
 
     std::vector<sensor_module_address> get_module_addresses() const;
     std::vector<chip_address> get_chip_addresses() const;
     std::vector<trigger_tower_address> get_trigger_tower_addresses() const;
-    prbf_module_address get_prbf_address(const sensor_module_address& module_address) const;
+    prbf_module_address get_prbf_address(const unsigned int tower_id, const sensor_module_address& module_address) const;
 
     bool find_module_in_dtcs(const sensor_module_address& module_address, unsigned int& dtc_id, unsigned int& relative_module) const;
-    bool find_dtc_in_towers(unsigned int dtc_id, unsigned int& trigger_tower, unsigned int& relative_prb, unsigned int& relative_dtc) const;
+    bool find_dtc_in_tower(unsigned int tower_id, unsigned int dtc_id, unsigned int& relative_prb, unsigned int& relative_dtc) const;
 };

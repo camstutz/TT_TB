@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include "sensor_module_type_config.hpp"
 #include "sensor_module_address.hpp"
+#include "sensor_module_type_config.hpp"
 
 // *****************************************************************************
 /*!

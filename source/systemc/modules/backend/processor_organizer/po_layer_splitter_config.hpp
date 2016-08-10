@@ -28,22 +28,21 @@
 class po_layer_splitter_config
 {
 public:
-    typedef std::map<prbf_module_address, unsigned int> layer_lookup_table_t;
+    //typedef std::map<prbf_module_address, unsigned int> layer_lookup_table_t;
     typedef unsigned int layer_t;
 
-    void add_module(const prbf_module_address& rel_address, const layer_t layer);
+    //void add_module(const prbf_module_address& rel_address, const layer_t layer);
+    void add_layer(const layer_t layer_nr);
     unsigned int get_layer_nr() const;
     unsigned int get_layer_pos(const layer_t layer) const;
-    std::pair<bool, layer_t> get_layer(const prbf_module_address& rel_address) const;
+//    std::pair<bool, layer_t> get_layer(const prbf_module_address& rel_address) const;
     unsigned int get_trigger_tower_id() const;
 
-    void print_layer_table(sc_module_name _name) const;
+    //void print_layer_table(sc_module_name _name) const;
 
 private:
     std::set<layer_t> layers;
 
     unsigned int trigger_tower_id;
-    layer_lookup_table_t layer_lookup_table;
-
-    void add_layer(const layer_t layer_nr);
+    //layer_lookup_table_t layer_lookup_table;
 };

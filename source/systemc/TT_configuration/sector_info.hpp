@@ -60,10 +60,5 @@ private:
     ladder_set_t ladders;
     module_set_t modules;
 
-    template<typename T>
-    typename std::set<T>::iterator first_in_set(const std::set<T>& test_set) const;
-    template<typename T>
-    typename std::set<T>::iterator next_in_set(const std::set<T>& test_set, const typename std::set<T>::iterator& actual_pos) const;
-
     friend std::ostream& operator<< (std::ostream &os, sector_info const &v);
 };

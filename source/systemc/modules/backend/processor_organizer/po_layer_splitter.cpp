@@ -48,12 +48,12 @@ void po_layer_splitter::split_stubs()
         unsigned int local_prb = stub.get_stub().get_prb();
         unsigned int local_dtc = stub.get_stub().get_dtc();
         unsigned int local_mod = stub.get_stub().get_fe_module();
-        prbf_module_address local_address = prbf_module_address(configuration.get_trigger_tower_id(), local_prb, local_dtc, local_mod);
+        prbf_module_address hw_address = prbf_module_address(configuration.get_trigger_tower_id(), local_prb, local_dtc, local_mod);
 
-        std::pair<bool, unsigned int> layer_result = configuration.get_layer(local_address);
-        if (layer_result.first)
+        std::pair<bool, module_address_lookup::local_address_t> local_address = addressLookup->get_local_address(hw_address);
+        if (local_address.first)
         {
-            unsigned int layer_id = layer_result.second;
+            unsigned int layer_id = local_address.second.layer;
             unsigned int output_id = configuration.get_layer_pos(layer_id);
             if (!splitted_stubs[output_id].nb_write(stub))
             {
@@ -65,10 +65,18 @@ void po_layer_splitter::split_stubs()
         else
         {
             std::cerr << sc_time_stamp() << ": Layer for module "
-                      << local_address << " could not be retrieved."
+                      << hw_address << " could not be retrieved."
                       << std::endl;
         }
     }
+
+    return;
+}
+
+// *****************************************************************************
+void po_layer_splitter::set_address_lookup(module_address_lookup* address_lu)
+{
+    addressLookup = address_lu;
 
     return;
 }

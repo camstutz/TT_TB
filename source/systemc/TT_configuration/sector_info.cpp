@@ -86,36 +86,37 @@ std::pair<bool, local_module_address> sector_info::get_local_address(
 {
     std::pair<bool, local_module_address> found_address;
 
+    // Does information about the module exist?
     if (modules[global_address.layer][global_address.ladder].count(global_address.module))
     {
         found_address.first = true;
 
-//        unsigned int local_layer = 0;
-//        layer_set_t::iterator layer_it = layers.begin();
-//        while (*layer_it != global_address.layer)
-//        {
-//            ++layer_it;
-//            ++local_layer;
-//        }
-
         unsigned int local_ladder = 0;
-        std::set<ladder_t>::iterator ladder_it = first_in_set(ladders[global_address.layer]);
-        while (*ladder_it != global_address.ladder)
+        for (std::set<ladder_t>::iterator ladder_it = ladders[global_address.layer].begin();
+             ladder_it != ladders[global_address.layer].end();
+             ++ladder_it)
         {
-            ladder_it = next_in_set(ladders[global_address.layer], ladder_it);
+            if (*ladder_it == global_address.ladder)
+            {
+                break;
+            }
             ++local_ladder;
         }
 
         unsigned int local_module = 0;
-        std::set<module_t>::iterator module_it = first_in_set(modules[global_address.layer][global_address.ladder]);
-        while (*module_it != global_address.module)
+        for (std::set<module_t>::iterator module_it = modules[global_address.layer][global_address.ladder].begin();
+             module_it != modules[global_address.layer][global_address.ladder].end();
+             ++module_it)
         {
-            module_it = next_in_set(modules[global_address.layer][global_address.ladder], module_it);
+            if (*module_it == global_address.module)
+            {
+                break;
+            }
             ++local_module;
         }
 
         local_module_address local_address(global_address.layer, local_ladder, local_module);
-        found_address.second = local_module_address(local_address);
+        found_address.second = local_address;
     }
     else
     {
@@ -123,7 +124,7 @@ std::pair<bool, local_module_address> sector_info::get_local_address(
         found_address.second = local_module_address();
     }
 
-    return found_address;
+    return  found_address;
 }
 
 // *****************************************************************************
@@ -190,61 +191,6 @@ void sector_info::print_modules()
     }
 
     return;
-}
-
-// *****************************************************************************
-template<typename T>
-typename std::set<T>::iterator sector_info::first_in_set(
-        const std::set<T>& test_set) const
-{
-    typename std::set<T>::iterator first_it = test_set.begin();
-
-    T delta = 1;
-    typename std::set<T>::iterator previous_value_it = test_set.begin();
-    typename std::set<T>::iterator actual_value_it = test_set.begin();
-    for (++actual_value_it;
-         actual_value_it != test_set.end();
-         ++actual_value_it)
-    {
-        if ((*actual_value_it - *previous_value_it) > delta)
-        {
-            delta = (*actual_value_it - *previous_value_it);
-            first_it = actual_value_it;
-        }
-
-        previous_value_it = actual_value_it;
-    }
-
-    return first_it;
-}
-
-// *****************************************************************************
-template<typename T>
-typename std::set<T>::iterator sector_info::next_in_set( const std::set<T>&
-        test_set, const typename std::set<T>::iterator& actual_pos) const
-{
-    typename std::set<T>::iterator first_pos = first_in_set(test_set);
-    typename std::set<T>::iterator last_pos = first_pos;
-    --last_pos;
-
-    typename std::set<T>::iterator new_pos = actual_pos;
-    if (actual_pos == last_pos)
-    {
-        new_pos == test_set.end();
-    }
-    else
-    {
-        ++new_pos;
-        if (!(first_pos == test_set.begin()))
-        {
-            if (new_pos == test_set.end())
-            {
-                new_pos = test_set.begin();
-            }
-        }
-    }
-
-    return new_pos;
 }
 
 // *****************************************************************************

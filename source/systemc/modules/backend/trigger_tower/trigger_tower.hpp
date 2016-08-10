@@ -63,6 +63,7 @@ public:
     sc_map_square<am_board> amBoards;
 
     pattern_bank patternBank;
+    module_address_lookup moduleAddressLookup;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

@@ -149,3 +149,11 @@ am_input_module_one_layer::hit_t am_input_module_one_layer::get_AM_hit_address(
 
     return hit;
 }
+
+// *****************************************************************************
+void am_input_module_one_layer::set_address_lookup(module_address_lookup* address_lu)
+{
+    addressLookup = address_lu;
+
+    return;
+}

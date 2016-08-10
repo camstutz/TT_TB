@@ -52,6 +52,7 @@ public:
     void create_stream();
 
     // ----- Other Method Declarations -----------------------------------------
+    void set_module_address_lookup(module_address_lookup* address_lu);
 
     // ----- Module Instantiations ---------------------------------------------
     am_input_module_ctrl controller;

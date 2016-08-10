@@ -67,3 +67,15 @@ am_input_module::am_input_module(const sc_module_name _name,
 
     return;
 }
+
+// *****************************************************************************
+void am_input_module::set_module_address_lookup(module_address_lookup* address_lu)
+{
+    sc_map_linear<am_input_module_one_layer>::iterator input_modules_it = input_modules.begin();
+    for (; input_modules_it != input_modules.end(); ++input_modules_it)
+    {
+        input_modules_it->set_address_lookup(address_lu);
+    }
+
+    return;
+}

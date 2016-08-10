@@ -15,6 +15,7 @@
 
 #include "../../../data_formats/prbf/PRBF.hpp"
 #include "../../../TT_configuration/prbf_module_address.hpp"
+#include "../trigger_tower/module_address_lookup/module_address_lookup.hpp"
 
 #include "po_layer_splitter_config.hpp"
 
@@ -48,8 +49,10 @@ public:
     void split_stubs();
 
 // ----- Other Method Declarations ---------------------------------------------
+    void set_address_lookup(module_address_lookup* address_lu);
 
 // ----- Module Instantiations -------------------------------------------------
+    module_address_lookup* addressLookup;
 
 // ----- Constructor -----------------------------------------------------------
     /*!

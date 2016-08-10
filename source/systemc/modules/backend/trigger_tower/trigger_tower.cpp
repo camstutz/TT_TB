@@ -29,9 +29,10 @@ trigger_tower::trigger_tower(const sc_module_name _name,
         dataOrganizers(configuration.data_organizers.size(), "dataOrganizer", configuration.data_organizers),
         processorOrganizers(prb_nr, "processorOrganizer", configuration.processor_organizers),
         amBoards(prb_nr, AM_boards_per_proc_unit, "AM_Board", configuration.type.am_board),
-        patternBank(configuration.layers.size())
+        patternBank(configuration.layers.size()),
+        moduleAddressLookup(configuration.module_lookup)
 {
-    patternBank.generate_patterns_straight(1000);
+    patternBank.generate_patterns_straight(10000);
 
     unsigned int do_id = 0;
     sc_map_linear<data_organizer>::iterator data_organizer_it = dataOrganizers.begin();
@@ -53,6 +54,7 @@ trigger_tower::trigger_tower(const sc_module_name _name,
         processorOrganizers.at(po_id).clk.bind(clk);
         processorOrganizers.at(po_id).do_inputs.bind(trigger_tower_interconnect(sc_map_square_key(0, po_id), sc_map_square_key(prb_nr-1 , po_id)));
         processorOrganizers.at(po_id).processor_outputs.bind(am_board_in_sig(sc_map_cube_key(po_id, 0, 0), sc_map_cube_key(po_id, AM_boards_per_proc_unit-1, layer_nr-1)));
+        processorOrganizers.at(po_id).set_address_lookup(&moduleAddressLookup);
     }
 
     for (unsigned int prb_id = 0; prb_id < prb_nr; ++prb_id)
@@ -64,6 +66,7 @@ trigger_tower::trigger_tower(const sc_module_name _name,
             am_board_ptr->frame_inputs.bind(am_board_in_sig(sc_map_cube_key(prb_id, am_board_id, 0), sc_map_cube_key(prb_id, am_board_id, layer_nr) ));
             am_board_ptr->hit_output.bind(hit_outputs(sc_map_cube_key(prb_id, am_board_id, 0), sc_map_cube_key(prb_id, am_board_id, layer_nr)));
             am_board_ptr->set_pattern_bank(&patternBank);
+            am_board_ptr->set_module_address_lookup(&moduleAddressLookup);
         }
     }
 

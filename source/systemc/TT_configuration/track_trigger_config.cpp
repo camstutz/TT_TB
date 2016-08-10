@@ -112,7 +112,8 @@ int track_trigger_config::read_track_trigger_config(const std::string& file_base
     error += read_tower_file(file_base);
     error += read_dtc_file(file_base);
     error += read_module_file(file_base);
-    update_layer_lookup_tables();
+
+    integrate_configuration();
 
     return error;
 }
@@ -340,7 +341,7 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
                          ++module_id_it)
                     {
                         sensor_module_address module_address = sensor_module_address(*module_id_it);
-                        sector_assignments[module_address] = sector;
+                        sector_assignments.insert(std::pair<sensor_module_id_t, sector_info*>(module_address, sector));
                         sector->add_modules(module_address);
                     }
                 }
@@ -361,21 +362,27 @@ int track_trigger_config::read_sector_file(const std::string& file_name)
 }
 
 // *****************************************************************************
-void track_trigger_config::update_layer_lookup_tables()
+void track_trigger_config::integrate_configuration()
 {
-    for (sensor_module_table_t::const_iterator module_it = sensor_modules.begin();
-         module_it != sensor_modules.end();
-         ++module_it)
+    for (tower_table_t::iterator tower_it = trigger_towers.begin();
+         tower_it != trigger_towers.end();
+         ++tower_it)
     {
-        prbf_module_address local_address = get_prbf_address(module_it->second.address);
-        trigger_tower_config& tower = trigger_towers[local_address.trigger_tower];
-        for (std::vector<processor_organizer_config>::iterator proc_organizer = tower.processor_organizers.begin();
-             proc_organizer != tower.processor_organizers.end();
-             ++proc_organizer)
+        // todo: assign modules to the correct trigger tower sector.
+
+        for (sensor_module_table_t::iterator sensor_mod_it = sensor_modules.begin();
+             sensor_mod_it != sensor_modules.end();
+             ++sensor_mod_it)
         {
-            unsigned int layer = module_it->second.address.layer;
-            tower.add_layer(layer);
-            proc_organizer->layer_splitter.add_module(local_address, layer);
+            unsigned int tower_id = tower_it->second.id;
+            sensor_module_address global_address = sensor_mod_it->second.address;
+
+            prbf_module_address hw_address = get_prbf_address(tower_id, global_address);
+            std::pair<bool, local_module_address> local_pair = sectors.at(tower_id)->get_local_address(global_address);
+            local_module_address local_address = local_pair.second;
+
+            tower_it->second.add_layer(sensor_mod_it->second.address.layer);
+            tower_it->second.module_lookup.add_module(hw_address, local_address, global_address);
         }
     }
 
@@ -427,19 +434,18 @@ std::vector<trigger_tower_address> track_trigger_config::get_trigger_tower_addre
 }
 
 // *****************************************************************************
-prbf_module_address track_trigger_config::get_prbf_address(
+prbf_module_address track_trigger_config::get_prbf_address(const unsigned int tower_id,
         const sensor_module_address& module_address) const
 {
-    unsigned int trigger_tower = 0;
     unsigned int relative_prb = 0;
     unsigned int dtc_id = 0;
     unsigned int relative_dtc = 0;
     unsigned int relative_module = 0;
 
     find_module_in_dtcs(module_address, dtc_id, relative_module);
-    find_dtc_in_towers(dtc_id, trigger_tower, relative_prb, relative_dtc);
+    find_dtc_in_tower(tower_id, dtc_id, relative_prb, relative_dtc);
 
-    return prbf_module_address(trigger_tower, relative_prb, relative_dtc, relative_module);
+    return prbf_module_address(tower_id, relative_prb, relative_dtc, relative_module);
 }
 
 // *****************************************************************************
@@ -468,15 +474,16 @@ bool track_trigger_config::find_module_in_dtcs(
 }
 
 // *****************************************************************************
-bool track_trigger_config::find_dtc_in_towers(unsigned int dtc_id,
-        unsigned int& trigger_tower, unsigned int& relative_prb,
+bool track_trigger_config::find_dtc_in_tower(unsigned int tower_id,
+        unsigned int dtc_id, unsigned int& relative_prb,
         unsigned int& relative_dtc) const
 {
-    for (tower_table_t::const_iterator tower_it = trigger_towers.begin();
-         tower_it != trigger_towers.end();
-         ++tower_it)
+    try
     {
-        trigger_tower_config::data_organizer_table_t DOs = tower_it->second.get_data_organizers();
+        trigger_tower_config tower = trigger_towers.at(tower_id);
+
+        trigger_tower_config::data_organizer_table_t DOs = tower.get_data_organizers();
+
         relative_prb = 0;
         for (trigger_tower_config::data_organizer_table_t::const_iterator DO_it = DOs.begin();
              DO_it != DOs.end();
@@ -490,13 +497,16 @@ bool track_trigger_config::find_dtc_in_towers(unsigned int dtc_id,
             {
                 if (dtc_id == *dtc_it)
                 {
-                    trigger_tower = tower_it->second.id;
-                    return true;
+                     return true;
                 }
                 ++relative_dtc;
             }
             ++relative_prb;
         }
+    }
+    catch (const std::out_of_range& oor)
+    {
+        return false;
     }
 
     return false;

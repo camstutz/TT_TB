@@ -39,7 +39,7 @@ int sc_main(int argc, char *agv[])
     //track_trigger_config test_config = dsd_config();
     track_trigger_config test_config = debug_2x2_config();
 
-    test_config.hit_generator.input_file = "source/systemc/TT_configuration/debug_2x2/hits_debug_1track.txt";
+    test_config.hit_generator.input_file = "source/systemc/TT_configuration/debug_2x2/hits_debug_8track.txt";
 
     tt_tb testbench("TT_TB", test_config);
     //testbench.print_system();

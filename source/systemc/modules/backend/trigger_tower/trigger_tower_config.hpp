@@ -1,21 +1,21 @@
 /*!
  * @file trigger_tower_config.hpp
  * @author Christian Amstutz
- * @date October 2, 2015
+ * @date August 8, 2016
  *
  * @brief
  *
  */
 
 /*
- *  Copyright (c) 2015 by Christian Amstutz
+ *  Copyright (c) 2016 by Christian Amstutz
  */
 
 #pragma once
 
 #include "trigger_tower_type_config.hpp"
 #include "trigger_tower_address.hpp"
-#include "../../frontend/sensor_module/sensor_module_address.hpp"
+#include "module_address_lookup/module_address_lookup_config.hpp"
 
 #include <set>
 
@@ -37,6 +37,8 @@ public:
 
     std::vector<unsigned int> DTC_ids;
     std::vector<processor_organizer_config> processor_organizers;
+    module_address_lookup_config module_lookup;
+
 
     trigger_tower_config();
     trigger_tower_config(const trigger_tower_type_config& type);

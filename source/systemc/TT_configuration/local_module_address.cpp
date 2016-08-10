@@ -70,9 +70,9 @@ bool local_module_address::operator< (const local_module_address& rhs) const
 // *****************************************************************************
 std::ostream& operator<< (std::ostream &os, local_module_address const &v)
 {
-    os << "Llay=" << v.layer;
-    os << ",Llad=" << v.ladder;
-    os << ",Lmod=" << v.module;
+    os << "LocalLay=" << v.layer;
+    os << ",LocalLad=" << v.ladder;
+    os << ",LocalMod=" << v.module;
 
     return os;
 };
