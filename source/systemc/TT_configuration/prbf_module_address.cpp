@@ -22,8 +22,9 @@ prbf_module_address::prbf_module_address() :
 {}
 
 // *****************************************************************************
-prbf_module_address::prbf_module_address(unsigned int trigger_tower,
-        unsigned int rel_prb, unsigned int rel_dtc, unsigned int rel_module) :
+prbf_module_address::prbf_module_address(const trigger_tower_t trigger_tower,
+        const rel_prb_t rel_prb, const rel_dtc_t rel_dtc,
+        const rel_module_t rel_module) :
         trigger_tower(trigger_tower),
         rel_prb(rel_prb),
         rel_dtc(rel_dtc),

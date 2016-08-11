@@ -431,7 +431,7 @@ void pattern_bank::load_binary_file(const std::string& filename)
     }
     else
     {
-        std::cerr << "Error reading binary pattern file" << filename << "." << std::endl;
+        std::cerr << "Error reading binary pattern file: " << filename << std::endl;
     }
 
     file.close();

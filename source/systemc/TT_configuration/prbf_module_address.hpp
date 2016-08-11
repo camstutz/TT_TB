@@ -25,13 +25,18 @@
 class prbf_module_address
 {
 public:
-    unsigned int trigger_tower;
-    unsigned int rel_prb;
-    unsigned int rel_dtc;
-    unsigned int rel_module;
+    typedef unsigned int trigger_tower_t ;
+    typedef unsigned int rel_prb_t;
+    typedef unsigned int rel_dtc_t;
+    typedef unsigned int rel_module_t;
+
+    trigger_tower_t trigger_tower;
+    rel_prb_t rel_prb;
+    rel_dtc_t rel_dtc;
+    rel_module_t rel_module;
 
     prbf_module_address();
-    prbf_module_address(unsigned int trigger_tower, unsigned int rel_prb, unsigned int rel_dtc, unsigned int rel_module);
+    prbf_module_address(const trigger_tower_t trigger_tower, const rel_prb_t rel_prb, const rel_dtc_t rel_dtc, const rel_module_t rel_module);
 
     bool operator== (const prbf_module_address& rhs) const;
     bool operator< (const prbf_module_address& rhs) const;

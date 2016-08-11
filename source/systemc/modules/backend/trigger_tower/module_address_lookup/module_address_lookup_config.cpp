@@ -16,6 +16,9 @@
 void module_address_lookup_config::add_module(hw_address_t hw_address,
         local_address_t local_address, global_address_t global_address)
 {
+    hw_address_t local_hw_address = hw_address;
+    local_hw_address.trigger_tower = 0;
+
     local_table[hw_address] = local_address;
     global_table[local_address] = global_address;
 

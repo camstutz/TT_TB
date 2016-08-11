@@ -137,6 +137,10 @@ void am_input_module_one_layer::create_stream()
 am_input_module_one_layer::hit_t am_input_module_one_layer::get_AM_hit_address(
         frame_t::stub_t stub)
 {
+    //prbf_module_address hw_address = prbf_module_address(0, stub.get_prb(), stub.get_dtc(), stub.get_fe_module());
+    //std::pair<bool, local_module_address> local_address = addressLookup->get_local_address(hw_address);
+
+
     hit_t hit = 0x0000;
 
     hit |= (stub.get_strip()           & 0xFF);
