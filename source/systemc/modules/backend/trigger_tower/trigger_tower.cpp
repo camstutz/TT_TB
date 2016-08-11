@@ -32,7 +32,7 @@ trigger_tower::trigger_tower(const sc_module_name _name,
         patternBank(configuration.layers.size()),
         moduleAddressLookup(configuration.module_lookup)
 {
-    patternBank.generate_patterns_straight(10000);
+    patternBank.generate_patterns_straight(100000);
 
     unsigned int do_id = 0;
     sc_map_linear<data_organizer>::iterator data_organizer_it = dataOrganizers.begin();

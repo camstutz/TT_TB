@@ -137,19 +137,17 @@ void am_input_module_one_layer::create_stream()
 am_input_module_one_layer::hit_t am_input_module_one_layer::get_AM_hit_address(
         frame_t::stub_t stub)
 {
-    //prbf_module_address hw_address = prbf_module_address(0, stub.get_prb(), stub.get_dtc(), stub.get_fe_module());
-    //std::pair<bool, local_module_address> local_address = addressLookup->get_local_address(hw_address);
-
+    prbf_module_address hw_address = prbf_module_address(0, stub.get_prb(), stub.get_dtc(), stub.get_fe_module());
+    std::pair<bool, local_module_address> local_address = addressLookup->get_local_address(hw_address);
 
     hit_t hit = 0x0000;
 
-    hit |= (stub.get_strip()           & 0xFF);
-    hit |= (stub.get_fe_chip_ID()      & 0x07) <<  8;
-    hit |= (stub.get_concentrator_ID() & 0x01) << 11;
-//    hit |= (stub.get_fe_module()       & 0x7F) << 12;
-//    hit |= (stub.get_dtc()             & 0x0F) << 19;
-//    hit |= (stub.get_prb()             & 0x0F) << 23;
-//    hit |= (stub.get_z()               & 0x0F) << 27;
+    hit |= (stub.get_strip()            & 0xFF);
+    hit |= (stub.get_fe_chip_ID()       & 0x07) <<  8;
+    hit |= (stub.get_concentrator_ID()  & 0x01) << 11;
+    hit |= (local_address.second.module & 0x0F) << 12;
+    hit |= (local_address.second.ladder & 0x0F) << 16;
+    //hit |= (stub.get_z()               & 0x0F) << 27;
 
     return hit;
 }
